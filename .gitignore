@@ -1,0 +1,60 @@
+# Archivos temporales y de respaldo de AutoCAD
+*.ac$
+*.bak
+*.dwl
+*.dwl2
+*.log
+*.sv$
+*.tmp
+
+# Configuración local del editor y del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+
+# Entornos virtuales locales
+.venv/
+analysis/.venv/
+__pycache__/
+*.py[cod]
+
+# Planos locales: no publicar archivos DWG en GitHub
+planos_edificio_ing/
+
+# Archivos generados por SAP2000
+test.*
+*.sbk
+*.LOG
+*.OUT
+*.K_*
+*.Y*
+*.msh
+*.ico
+results/*.sdb
+
+# Archivos generados por Unity si el proyecto se abre desde la raíz por error
+/Library/
+/Temp/
+/Logs/
+/UserSettings/
+/Build/
+/MemoryCaptures/
+/ProjectSettings/
+/Packages/
+/*.csproj
+/*.sln
+/*.slnx
+/.vs/
+
+# Archivos generados por Unity
+UnityProject/Library/
+UnityProject/Temp/
+UnityProject/Logs/
+UnityProject/UserSettings/
+UnityProject/Build/
+UnityProject/MemoryCaptures/
+UnityProject/*.csproj
+UnityProject/*.sln
+UnityProject/*.slnx
+UnityProject/.vs/
