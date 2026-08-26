@@ -1,0 +1,20 @@
+# Archivos temporales y de respaldo de AutoCAD
+*.ac$
+*.bak
+*.dwl
+*.dwl2
+*.log
+*.sv$
+*.tmp
+
+# Configuración local del editor y del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+
+# Entornos virtuales locales
+analysis/.venv/
+
+# Planos locales: no publicar archivos DWG en GitHub
+planos_edificio_ing/
