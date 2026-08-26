@@ -18,3 +18,14 @@ analysis/.venv/
 
 # Planos locales: no publicar archivos DWG en GitHub
 planos_edificio_ing/
+
+# Archivos generados por Unity
+UnityProject/Library/
+UnityProject/Temp/
+UnityProject/Logs/
+UnityProject/UserSettings/
+UnityProject/Build/
+UnityProject/MemoryCaptures/
+UnityProject/*.csproj
+UnityProject/*.sln
+UnityProject/.vs/
