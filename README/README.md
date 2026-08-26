@@ -1,65 +1,103 @@
 # Contexto del Proyecto
 
-## Identificacion
+## 1. Identificacion
 
-- Proyecto: Proyecto 1 de MCOC.
-- Responsable inicial: Juan Pablo Caceres.
-- Colaboradores previstos: `benjagarciag` y `nagarcia4`.
-- Repositorio previsto: `Proyecto-1-MCOC`.
+- Asignatura: MCOC.
+- Proyecto: Proyecto 1.
+- Responsable del repositorio: Juan Pablo Caceres.
+- Colaboradores: `benjagarciag` y `nagarcia4`.
+- Repositorio de GitHub: https://github.com/jpCaceres123/Proyecto-1-MCOC
+- Rama principal: `main`.
 
-## Proposito
+## 2. Proposito
 
-Este repositorio centraliza el trabajo del grupo y los planos del edificio
-entregados para el proyecto. La carpeta `planos_edificio_ing` contiene los
-archivos originales en formato DWG, que serviran como base para el desarrollo,
-revision y documentacion del proyecto.
+Este repositorio es el espacio de trabajo colaborativo del grupo. Aqui se
+guardan la documentacion, los analisis, las decisiones y los resultados del
+Proyecto 1 de MCOC.
 
-## Estado actual
+El proyecto parte de un conjunto de planos de un edificio en formato DWG. Esos
+planos sirven como material de referencia para estudiar el problema, organizar
+el trabajo y desarrollar los entregables que defina el grupo.
 
-- Los planos originales estan en `planos_edificio_ing/`.
-- Hay 38 archivos DWG versionados con Git LFS.
-- El repositorio local usa `main` como rama principal.
-- Existe un commit inicial con los planos y la documentacion basica.
-- El repositorio remoto de GitHub aun debe crearse y publicarse.
-- La cuenta de GitHub debe autenticarse con `gh auth login` antes de publicar.
+## 3. Estado actual
 
-## Objetivos de trabajo
+- El repositorio de GitHub ya esta creado y es publico.
+- GitHub contiene actualmente solo la documentacion del proyecto.
+- Los planos DWG se conservan en la carpeta local `planos_edificio_ing/`, pero
+  no se publican en GitHub.
+- La carpeta `analysis/` es material de trabajo local y no debe subirse sin
+  revisar primero su contenido.
+- El objetivo tecnico, la metodologia y los entregables detallados deben ser
+  completados por el grupo cuando se definan.
 
-1. Revisar y clasificar los planos disponibles.
-2. Definir las tareas tecnicas y repartirlas entre los integrantes.
-3. Registrar avances, decisiones y resultados en el repositorio.
-4. Mantener los archivos originales sin modificaciones accidentales.
-5. Revisar los cambios mediante ramas y Pull Requests.
+## 4. Objetivos de trabajo
 
-## Organizacion de archivos
+1. Entender el problema y el contexto entregado para el Proyecto 1.
+2. Revisar y clasificar la informacion disponible en los planos.
+3. Definir las tareas tecnicas y repartirlas entre los integrantes.
+4. Desarrollar los analisis o calculos que sean necesarios.
+5. Registrar los avances, decisiones, resultados y problemas encontrados.
+6. Preparar los entregables finales de forma reproducible y ordenada.
 
-- `planos_edificio_ing/`: archivos DWG originales del edificio.
-- `README/README.md`: este documento, que mantiene el contexto general.
-- `README.md`: guia corta del repositorio y flujo de trabajo.
-- `.gitattributes`: configuracion de Git LFS para archivos DWG.
-- `.gitignore`: archivos temporales que no deben versionarse.
+## 5. Estructura del proyecto
 
-## Reglas de colaboracion
+- `README.md`: resumen general y flujo de trabajo del repositorio.
+- `README/README.md`: este documento, con el contexto completo y el estado
+  actualizado del proyecto.
+- `planos_edificio_ing/`: copias locales de los planos DWG originales. No se
+  publican en GitHub.
+- `analysis/`: espacio local para analisis y desarrollo. Antes de versionar
+  archivos aqui, el grupo debe revisar que sean relevantes y livianos.
+- `.gitignore`: archivos y carpetas que Git no debe incluir.
+- `.gitattributes`: reglas de tratamiento para archivos DWG si en el futuro el
+  grupo decide publicar alguno de manera explicita.
 
-- No trabajar directamente sobre `main` salvo para integraciones revisadas.
-- Crear una rama por tarea, por ejemplo `revision-planos`.
-- Usar commits breves y descriptivos.
-- No subir archivos temporales de AutoCAD (`.bak`, `.dwl`, `.dwl2`, entre otros).
-- Antes de modificar un DWG original, confirmar con el grupo si debe conservarse
-  una copia de referencia.
-- Abrir un Pull Request para revisar cambios importantes antes de integrarlos.
+## 6. Forma de trabajo
 
-## Pendientes
+1. Antes de comenzar una tarea, revisar este documento y el estado del proyecto.
+2. Crear una rama descriptiva, por ejemplo `analisis-planos` o
+   `documentar-metodologia`.
+3. Trabajar solo en los archivos relacionados con la tarea.
+4. Crear commits pequenos con mensajes claros.
+5. Subir la rama y abrir un Pull Request cuando el cambio este listo para
+   revision.
+6. Integrar el Pull Request a `main` despues de que otro integrante lo revise.
+7. Actualizar este README cuando cambien los objetivos, las decisiones o la
+   estructura del proyecto.
 
-- Autenticar GitHub en la maquina de trabajo.
-- Crear el repositorio remoto `Proyecto-1-MCOC`.
-- Agregar como colaboradores a `benjagarciag` y `nagarcia4`.
-- Completar el objetivo tecnico, metodologia y entregables especificos del
-  proyecto cuando el grupo los defina.
-- Documentar aqui las decisiones importantes y el avance de cada etapa.
+## 7. Reglas importantes
 
-## Como mantener este contexto
+- No trabajar directamente sobre `main` para tareas nuevas.
+- No subir planos DWG, archivos temporales de AutoCAD ni entornos virtuales.
+- No modificar ni reemplazar los planos originales sin avisar al grupo.
+- Mantener separados los archivos de entrada, los analisis y los resultados.
+- Documentar las unidades, supuestos, fuentes y criterios usados en cada
+  analisis.
+- No incluir contrasenas, tokens ni informacion personal en el repositorio.
 
-Cada vez que cambie el objetivo, la metodologia, la estructura de archivos o
-la distribucion de tareas, actualizar este documento. Asi cualquier integrante
-puede entender el estado del proyecto antes de comenzar a trabajar.
+## 8. Decisiones y avances
+
+Registrar aqui las decisiones relevantes con fecha y responsable. Ejemplo:
+
+| Fecha | Decision o avance | Responsable |
+| --- | --- | --- |
+| 2026-08-25 | Se preparo el repositorio colaborativo y su documentacion inicial. | Juan Pablo Caceres |
+
+## 9. Pendientes iniciales
+
+- Definir con precision el problema tecnico que resolvera el proyecto.
+- Escribir la metodologia de trabajo.
+- Identificar los entregables y la fecha de entrega.
+- Revisar los planos y anotar cuales son relevantes para cada tarea.
+- Organizar las primeras tareas entre `jpCaceres123`, `benjagarciag` y
+  `nagarcia4`.
+- Agregar al repositorio los analisis y resultados que sean necesarios, sin
+  publicar los planos originales.
+
+## 10. Mantenimiento del contexto
+
+Este archivo debe actualizarse cada vez que el grupo tome una decision
+importante o cambie el alcance, la metodologia, la distribucion de tareas, la
+estructura de archivos o el estado de los entregables. La informacion de este
+documento debe ser suficiente para que cualquier integrante pueda retomar el
+trabajo sin depender de conversaciones externas.
