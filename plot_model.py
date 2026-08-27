@@ -6,7 +6,7 @@ from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 out = Path(__file__).parent / 'results'
 nodes = {1:(0,0,0), 2:(6,0,0), 3:(6,5,0), 4:(0,5,0), 5:(0,0,3), 6:(6,0,3), 7:(6,5,3), 8:(0,5,3)}
 members = [(1,5),(2,6),(3,7),(4,8),(5,6),(8,7),(5,8),(6,7)]
-fig = plt.figure(figsize=(8,6)); ax = fig.add_subplot(111, projection='3d')
+fig = plt.figure(figsize=(11, 8)); ax = fig.add_subplot(111, projection='3d')
 for i,j in members:
     x,y,z = zip(nodes[i], nodes[j]); ax.plot(x,y,z,'k-',lw=2)
 for n,(x,y,z) in nodes.items(): ax.scatter(x,y,z,c='tab:blue'); ax.text(x,y,z,f' {n}')

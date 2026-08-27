@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using UnityEngine;
 
 public class OpenSeesViewer : MonoBehaviour
@@ -8,22 +10,87 @@ public class OpenSeesViewer : MonoBehaviour
     public bool showLoads = true;
     public bool showTributaryAreas = true;
 
-    private readonly Vector3[] nodes =
+    [Serializable] private class JsonNode
+    {
+        public int nodeTag;
+        public float x_m;
+        public float y_m;
+        public float z_m;
+        public float uz_m;
+    }
+
+    [Serializable] private class JsonElement
+    {
+        public int elementTag;
+        public int nodeI;
+        public int nodeJ;
+        public string kind;
+    }
+
+    [Serializable] private class JsonModel
+    {
+        public JsonNode[] nodes;
+        public JsonElement[] elements;
+    }
+
+    private Vector3[] nodes =
     {
         new(0, 0, 0), new(6, 0, 0), new(6, 0, 5), new(0, 0, 5),
         new(0, 3, 0), new(6, 3, 0), new(6, 3, 5), new(0, 3, 5)
     };
 
-    private readonly int[,] members =
+    private int[,] members =
     {
         { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 },
         { 4, 5 }, { 7, 6 }, { 4, 7 }, { 5, 6 }
     };
+    private string[] memberKinds = { "Column", "Column", "Column", "Column", "Beam", "Beam", "Beam", "Beam" };
+    private float[] verticalDisplacements = { 0f, 0f, 0f, 0f, -0.00005f, -0.00005f, -0.00005f, -0.00005f };
 
     private void Start()
     {
+        LoadModelJson();
         BuildRuntimeModel();
         SetupCamera();
+    }
+
+    private void LoadModelJson()
+    {
+        string path = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "results", "model.json"));
+        if (!File.Exists(path))
+        {
+            Debug.LogWarning("OpenSees results/model.json not found; using fallback geometry.");
+            return;
+        }
+
+        JsonModel model = JsonUtility.FromJson<JsonModel>(File.ReadAllText(path));
+        if (model == null || model.nodes == null || model.elements == null || model.nodes.Length == 0)
+        {
+            Debug.LogError("Invalid OpenSees model.json.");
+            return;
+        }
+
+        var nodeIndex = new System.Collections.Generic.Dictionary<int, int>();
+        nodes = new Vector3[model.nodes.Length];
+        verticalDisplacements = new float[model.nodes.Length];
+        for (int i = 0; i < model.nodes.Length; i++)
+        {
+            JsonNode node = model.nodes[i];
+            nodeIndex[node.nodeTag] = i;
+            // OpenSees uses global Z as vertical in this model; Unity uses Y.
+            nodes[i] = new Vector3(node.x_m, node.z_m, node.y_m);
+            verticalDisplacements[i] = node.uz_m;
+        }
+        members = new int[model.elements.Length, 2];
+        memberKinds = new string[model.elements.Length];
+        for (int i = 0; i < model.elements.Length; i++)
+        {
+            JsonElement element = model.elements[i];
+            members[i, 0] = nodeIndex[element.nodeI];
+            members[i, 1] = nodeIndex[element.nodeJ];
+            memberKinds[i] = element.kind == "column" ? "Column" : "Beam";
+        }
+        Debug.Log($"Loaded OpenSees model.json: {nodes.Length} nodes, {members.GetLength(0)} elements.");
     }
 
     private void OnDrawGizmos()
@@ -41,19 +108,18 @@ public class OpenSeesViewer : MonoBehaviour
         Gizmos.color = color;
         for (int i = 0; i < members.GetLength(0); i++)
         {
-            Vector3 a = Deformed(nodes[members[i, 0]], scale);
-            Vector3 b = Deformed(nodes[members[i, 1]], scale);
+            Vector3 a = Deformed(members[i, 0], scale);
+            Vector3 b = Deformed(members[i, 1], scale);
             Gizmos.DrawLine(a, b);
         }
         for (int i = 0; i < nodes.Length; i++)
-            Gizmos.DrawSphere(Deformed(nodes[i], scale), 0.08f);
+            Gizmos.DrawSphere(Deformed(i, scale), 0.08f);
     }
 
-    private Vector3 Deformed(Vector3 p, float scale)
+    private Vector3 Deformed(int nodeIndex, float scale)
     {
-        // Approximate the computed vertical displacement using the reported node-7 value.
-        float uz = p.y > 2.9f ? -0.00005f : 0f;
-        return p + new Vector3(0f, uz * scale, 0f);
+        Vector3 p = nodes[nodeIndex];
+        return p + Vector3.up * (verticalDisplacements[nodeIndex] * scale);
     }
 
     private void DrawAxes()
@@ -147,9 +213,10 @@ public class OpenSeesViewer : MonoBehaviour
         Material nodeMaterial = MakeMaterial(new Color(1f, 0.65f, 0.05f));
         for (int i = 0; i < members.GetLength(0); i++)
         {
-            float thickness = i < 4 ? 0.30f : 0.25f;
+            bool isColumn = memberKinds[i] == "Column";
+            float thickness = isColumn ? 0.30f : 0.25f;
             MakeMember(nodes[members[i, 0]], nodes[members[i, 1]], frameMaterial,
-                i < 4 ? "Column" : "Beam", thickness);
+                memberKinds[i], thickness);
         }
         for (int i = 0; i < nodes.Length; i++)
         {

@@ -54,6 +54,10 @@ UnityProject/Logs/
 UnityProject/UserSettings/
 UnityProject/Build/
 UnityProject/MemoryCaptures/
+UnityProject/Assets/Temp/
+UnityProject/Assets/Logs/
+UnityProject/Assets/Assets/
+UnityProject/Assets/Scenes/Assets/
 UnityProject/*.csproj
 UnityProject/*.sln
 UnityProject/*.slnx

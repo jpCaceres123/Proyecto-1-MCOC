@@ -12,7 +12,7 @@ python model.py
 python plot_model.py
 ```
 
-`model.py` crea `results/nodal_displacements.csv`, `results/reactions.csv`, `results/element_forces.csv` y `results/verification.md`. `plot_model.py` crea `results/geometry.png`.
+`model.py` crea `results/nodal_displacements.csv`, `results/reactions.csv`, `results/element_forces.csv`, `results/model.json`, `results/verification.json` y `results/verification.md`. `plot_model.py` crea `results/geometry.png`.
 
 ## Caso adoptado
 
@@ -28,6 +28,8 @@ python plot_model.py
 - La carga total de losa es `5 kN/m2 * 6 m * 5 m = 150 kN` hacia `-Z`.
 
 El archivo `results/verification.md` es el artefacto que debe enlazarse en Canvas después de ejecutar el modelo.
+
+`results/model.json` es el contrato de geometría para Unity. Debe regenerarse con `python model.py` antes de abrir la escena; contiene unidades explícitas, nodos, elementos y apoyos.
 
 ## Defensa
 

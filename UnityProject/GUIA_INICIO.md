@@ -9,10 +9,10 @@ Abrir **Unity Hub** desde el menú Inicio de Windows.
 En **Projects**, elegir **Add > Add project from disk** y seleccionar exactamente:
 
 ```text
-C:\Users\nico0\Desktop\Proyecto-1-MCOC-main\UnityProject
+<clon-del-repositorio>\UnityProject
 ```
 
-Abrirlo con **Unity 6000.0.82f1**. Esta es la instalación que contiene el Package Manager funcional.
+Abrirlo con la versión indicada en `ProjectSettings/ProjectVersion.txt`.
 
 ## 3. Abrir la escena
 
@@ -46,4 +46,4 @@ Si la ventana `Game` está pequeña, usar el menú `Display 1` y seleccionar `Fr
 
 ## 7. Resultado esperado
 
-Debe verse un marco rectangular de `6 m x 5 m`, altura `3 m`, cuatro columnas y cuatro vigas. Cada columna termina en un empotramiento formado por placa base gris, pedestal cilíndrico y cuatro pernos dorados. Los ejes se muestran como X rojo, Y verde y Z azul. La deformación vertical se amplifica `1000` veces para poder apreciarla. La losa muestra dos trapecios amarillos tributando a las vigas de `6 m` y dos triángulos verdes tributando a las vigas de `5 m`. Las cargas se muestran en rojo con flechas hacia abajo y una envolvente del diagrama, con intensidad máxima `12.5 kN/m`.
+Debe verse un marco rectangular de `6 m x 5 m`, altura `3 m`, cuatro columnas y vigas segmentadas según las estaciones de carga de OpenSees. La geometría se lee de `../results/model.json`, generado ejecutando `python model.py` desde la raíz del repositorio. Cada columna termina en un empotramiento formado por placa base gris, pedestal cilíndrico y cuatro pernos dorados. Los ejes se muestran como X rojo, Y verde y Z azul. La deformación vertical se amplifica `1000` veces para poder apreciarla. La losa muestra dos trapecios amarillos tributando a las vigas de `6 m` y dos triángulos verdes tributando a las vigas de `5 m`. Las cargas se muestran en rojo con flechas hacia abajo y una envolvente del diagrama, con intensidad máxima `12.5 kN/m`.

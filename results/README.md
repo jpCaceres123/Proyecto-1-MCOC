@@ -6,4 +6,5 @@ Esta carpeta recibe los archivos generados por `python model.py` y `python plot_
 - `reactions.csv`: seis componentes de reacción por apoyo.
 - `element_forces.csv`: fuerzas locales de cada elemento.
 - `verification.json` y `verification.md`: verificaciones obligatorias.
+- `model.json`: geometria, conectividad, apoyos y desplazamientos para Unity.
 - `geometry.png`: geometría y ejes globales.
