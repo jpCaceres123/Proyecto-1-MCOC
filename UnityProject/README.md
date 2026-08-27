@@ -1,6 +1,6 @@
 # Visualización Unity del marco OpenSeesPy
 
-Abrir esta carpeta desde Unity Hub como proyecto existente. La escena `Assets/Scenes/Frame3D.unity` dibuja la geometría, nodos, ejes globales y una forma deformada amplificada.
+Abrir esta carpeta desde Unity Hub como proyecto existente. La escena `Assets/Scenes/Frame3D.unity` dibuja la geometría, la losa física de `6 m x 5 m`, nodos, ejes globales y una forma deformada amplificada.
 
 El visualizador no reemplaza el análisis OpenSeesPy: usa la geometría y los desplazamientos nodales exportados en `results/model.json`.
 

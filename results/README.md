@@ -8,3 +8,4 @@ Esta carpeta recibe los archivos generados por `python model.py` y `python plot_
 - `verification.json` y `verification.md`: verificaciones obligatorias.
 - `model.json`: geometria, conectividad, apoyos y desplazamientos para Unity.
 - `geometry.png`: geometría y ejes globales.
+- `discretization.png`: nodos adicionales generados cada 0.5 m en las vigas superiores.

@@ -228,11 +228,23 @@ public class OpenSeesViewer : MonoBehaviour
             node.transform.SetParent(transform);
         }
         for (int i = 0; i < 4; i++) MakeFixedSupport(nodes[i]);
+        MakeSlab();
         MakeMember(Vector3.zero, Vector3.right * 1.5f, MakeMaterial(Color.red), "Global X", 0.035f);
         MakeMember(Vector3.zero, Vector3.forward * 1.5f, MakeMaterial(Color.green), "Global Y", 0.035f);
         MakeMember(Vector3.zero, Vector3.up * 1.5f, MakeMaterial(Color.blue), "Global Z", 0.035f);
         if (showTributaryAreas) MakeTributaryAreas();
         if (showLoads) MakeLoads();
+    }
+
+    private void MakeSlab()
+    {
+        GameObject slab = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        slab.name = "Physical slab 6 m x 5 m";
+        slab.transform.position = new Vector3(3f, 3.19f, 2.5f);
+        slab.transform.localScale = new Vector3(6f, 0.12f, 5f);
+        slab.GetComponent<Renderer>().material = MakeTransparentMaterial(
+            new Color(0.25f, 0.55f, 0.85f, 0.28f));
+        slab.transform.SetParent(transform);
     }
 
     private void MakeTributaryAreas()
