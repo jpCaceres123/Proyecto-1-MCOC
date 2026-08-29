@@ -1,0 +1,2880 @@
+{
+  "source": "geometria_manual.json",
+  "status": "MANUAL_REVIEW",
+  "units": "kN-m-s",
+  "nodes": [
+    {
+      "id": 1,
+      "level": 0,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 101,
+      "level": 0,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 0.0,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 201,
+      "level": 0,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 0.0,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1001,
+      "level": 0,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 7.25,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1101,
+      "level": 0,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 7.25,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1201,
+      "level": 0,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 7.25,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 2001,
+      "level": 0,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 15.84,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 2101,
+      "level": 0,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 15.84,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 2201,
+      "level": 0,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 15.84,
+      "z_m": 0.0,
+      "restraint": true,
+      "status": "MANUAL"
+    },
+    {
+      "id": 100001,
+      "level": 1,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 100101,
+      "level": 1,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 0.0,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 100201,
+      "level": 1,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 0.0,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 100301,
+      "level": 1,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 0.0,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 100401,
+      "level": 1,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 0.0,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 100451,
+      "level": 1,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 0.0,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 101001,
+      "level": 1,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 7.25,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 101101,
+      "level": 1,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 7.25,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 101201,
+      "level": 1,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 7.25,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 101301,
+      "level": 1,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 7.25,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 101401,
+      "level": 1,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 7.25,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 101451,
+      "level": 1,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 7.25,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 102001,
+      "level": 1,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 15.84,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 102101,
+      "level": 1,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 15.84,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 102201,
+      "level": 1,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 15.84,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 102301,
+      "level": 1,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 15.84,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 102401,
+      "level": 1,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 15.84,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 102451,
+      "level": 1,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 15.84,
+      "z_m": 3.96,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 200001,
+      "level": 2,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 200101,
+      "level": 2,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 200201,
+      "level": 2,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 200301,
+      "level": 2,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 200401,
+      "level": 2,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 200451,
+      "level": 2,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 201001,
+      "level": 2,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 7.25,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 201101,
+      "level": 2,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 7.25,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 201201,
+      "level": 2,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 7.25,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 201301,
+      "level": 2,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 7.25,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 201401,
+      "level": 2,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 7.25,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 201451,
+      "level": 2,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 7.25,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 202001,
+      "level": 2,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 202101,
+      "level": 2,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 202201,
+      "level": 2,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 202301,
+      "level": 2,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 202401,
+      "level": 2,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 202451,
+      "level": 2,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 300001,
+      "level": 3,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 300101,
+      "level": 3,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 300201,
+      "level": 3,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 300301,
+      "level": 3,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 300401,
+      "level": 3,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 300451,
+      "level": 3,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 301001,
+      "level": 3,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 7.25,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 301101,
+      "level": 3,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 7.25,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 301201,
+      "level": 3,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 7.25,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 301301,
+      "level": 3,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 7.25,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 301401,
+      "level": 3,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 7.25,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 301451,
+      "level": 3,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 7.25,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 302001,
+      "level": 3,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 302101,
+      "level": 3,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 302201,
+      "level": 3,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 302301,
+      "level": 3,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 302401,
+      "level": 3,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 302451,
+      "level": 3,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 400001,
+      "level": 4,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 400101,
+      "level": 4,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 400201,
+      "level": 4,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 400301,
+      "level": 4,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 400401,
+      "level": 4,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 400451,
+      "level": 4,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 400501,
+      "level": 4,
+      "axis": "J",
+      "x_m": 50.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 401001,
+      "level": 4,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 401101,
+      "level": 4,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 401201,
+      "level": 4,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 401301,
+      "level": 4,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 401401,
+      "level": 4,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 401451,
+      "level": 4,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 401501,
+      "level": 4,
+      "axis": "J",
+      "x_m": 50.0,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 402001,
+      "level": 4,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 402101,
+      "level": 4,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 402201,
+      "level": 4,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 402301,
+      "level": 4,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 402401,
+      "level": 4,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 402451,
+      "level": 4,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 402501,
+      "level": 4,
+      "axis": "J",
+      "x_m": 50.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 500001,
+      "level": 5,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 500101,
+      "level": 5,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 500201,
+      "level": 5,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 500301,
+      "level": 5,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 500401,
+      "level": 5,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 500451,
+      "level": 5,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 500501,
+      "level": 5,
+      "axis": "J",
+      "x_m": 50.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 501001,
+      "level": 5,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 7.25,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 501101,
+      "level": 5,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 7.25,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 501201,
+      "level": 5,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 7.25,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 501301,
+      "level": 5,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 7.25,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 501401,
+      "level": 5,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 7.25,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 501451,
+      "level": 5,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 7.25,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 501501,
+      "level": 5,
+      "axis": "J",
+      "x_m": 50.0,
+      "y_m": 7.25,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 502001,
+      "level": 5,
+      "axis": "E",
+      "x_m": 0.0,
+      "y_m": 15.84,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 502101,
+      "level": 5,
+      "axis": "F",
+      "x_m": 10.0,
+      "y_m": 15.84,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 502201,
+      "level": 5,
+      "axis": "G",
+      "x_m": 20.0,
+      "y_m": 15.84,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 502301,
+      "level": 5,
+      "axis": "H",
+      "x_m": 30.0,
+      "y_m": 15.84,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 502401,
+      "level": 5,
+      "axis": "I",
+      "x_m": 40.0,
+      "y_m": 15.84,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 502451,
+      "level": 5,
+      "axis": "I_prima",
+      "x_m": 45.0,
+      "y_m": 15.84,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 502501,
+      "level": 5,
+      "axis": "J",
+      "x_m": 50.0,
+      "y_m": 15.84,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL"
+    },
+    {
+      "id": 900000,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 10.0,
+      "y_m": -4.12,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900001,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": -4.12,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900002,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900003,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900004,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900005,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900006,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900007,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": 7.25,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900008,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 35.0,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900009,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": 35.0,
+      "y_m": 15.84,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900010,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 20.0,
+      "y_m": -2.46,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900011,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900012,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": -2.46,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900013,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 30.0,
+      "y_m": -2.46,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900014,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 10.0,
+      "y_m": -2.46,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900015,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 12.2,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900016,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 12.2,
+      "y_m": -2.46,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900017,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 12.2,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900018,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 20.0,
+      "y_m": -4.12,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900019,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 30.0,
+      "y_m": -4.12,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900020,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 47.55,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900021,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 47.55,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900022,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 10.0,
+      "y_m": -4.12,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900023,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": -4.12,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900024,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900025,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900026,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900027,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900028,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": 7.25,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900029,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 35.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900030,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 35.0,
+      "y_m": 15.84,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900031,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900032,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900033,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900034,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900035,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900036,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": 7.25,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900037,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 35.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900038,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 35.0,
+      "y_m": 15.84,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    }
+  ],
+  "elements": [
+    {
+      "id": 1,
+      "type": "COLUMN",
+      "i": 1,
+      "j": 100001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 2,
+      "type": "COLUMN",
+      "i": 101,
+      "j": 100101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 3,
+      "type": "COLUMN",
+      "i": 201,
+      "j": 100201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 4,
+      "type": "COLUMN",
+      "i": 1001,
+      "j": 101001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 5,
+      "type": "COLUMN",
+      "i": 1101,
+      "j": 101101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 6,
+      "type": "COLUMN",
+      "i": 1201,
+      "j": 101201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 7,
+      "type": "COLUMN",
+      "i": 2001,
+      "j": 102001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 8,
+      "type": "COLUMN",
+      "i": 2101,
+      "j": 102101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 9,
+      "type": "COLUMN",
+      "i": 2201,
+      "j": 102201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 10,
+      "type": "COLUMN",
+      "i": 100001,
+      "j": 200001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 11,
+      "type": "COLUMN",
+      "i": 100101,
+      "j": 200101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 12,
+      "type": "COLUMN",
+      "i": 100201,
+      "j": 200201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 13,
+      "type": "COLUMN",
+      "i": 100301,
+      "j": 200301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 14,
+      "type": "COLUMN",
+      "i": 100401,
+      "j": 200401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 15,
+      "type": "COLUMN",
+      "i": 100451,
+      "j": 200451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 16,
+      "type": "COLUMN",
+      "i": 101001,
+      "j": 201001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 17,
+      "type": "COLUMN",
+      "i": 101101,
+      "j": 201101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 18,
+      "type": "COLUMN",
+      "i": 101201,
+      "j": 201201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 19,
+      "type": "COLUMN",
+      "i": 101301,
+      "j": 201301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 20,
+      "type": "COLUMN",
+      "i": 101401,
+      "j": 201401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 21,
+      "type": "COLUMN",
+      "i": 101451,
+      "j": 201451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 22,
+      "type": "COLUMN",
+      "i": 102001,
+      "j": 202001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 23,
+      "type": "COLUMN",
+      "i": 102101,
+      "j": 202101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 24,
+      "type": "COLUMN",
+      "i": 102201,
+      "j": 202201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 25,
+      "type": "COLUMN",
+      "i": 102301,
+      "j": 202301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 26,
+      "type": "COLUMN",
+      "i": 102401,
+      "j": 202401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 27,
+      "type": "COLUMN",
+      "i": 102451,
+      "j": 202451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 28,
+      "type": "COLUMN",
+      "i": 200001,
+      "j": 300001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 29,
+      "type": "COLUMN",
+      "i": 200101,
+      "j": 300101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 30,
+      "type": "COLUMN",
+      "i": 200201,
+      "j": 300201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 31,
+      "type": "COLUMN",
+      "i": 200301,
+      "j": 300301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 32,
+      "type": "COLUMN",
+      "i": 200401,
+      "j": 300401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 33,
+      "type": "COLUMN",
+      "i": 200451,
+      "j": 300451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 34,
+      "type": "COLUMN",
+      "i": 201001,
+      "j": 301001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 35,
+      "type": "COLUMN",
+      "i": 201101,
+      "j": 301101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 36,
+      "type": "COLUMN",
+      "i": 201201,
+      "j": 301201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 37,
+      "type": "COLUMN",
+      "i": 201301,
+      "j": 301301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 38,
+      "type": "COLUMN",
+      "i": 201401,
+      "j": 301401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 39,
+      "type": "COLUMN",
+      "i": 201451,
+      "j": 301451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 40,
+      "type": "COLUMN",
+      "i": 202001,
+      "j": 302001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 41,
+      "type": "COLUMN",
+      "i": 202101,
+      "j": 302101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 42,
+      "type": "COLUMN",
+      "i": 202201,
+      "j": 302201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 43,
+      "type": "COLUMN",
+      "i": 202301,
+      "j": 302301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 44,
+      "type": "COLUMN",
+      "i": 202401,
+      "j": 302401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 45,
+      "type": "COLUMN",
+      "i": 202451,
+      "j": 302451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 46,
+      "type": "COLUMN",
+      "i": 300001,
+      "j": 400001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 47,
+      "type": "COLUMN",
+      "i": 300101,
+      "j": 400101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 48,
+      "type": "COLUMN",
+      "i": 300201,
+      "j": 400201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 49,
+      "type": "COLUMN",
+      "i": 300301,
+      "j": 400301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 50,
+      "type": "COLUMN",
+      "i": 300401,
+      "j": 400401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 51,
+      "type": "COLUMN",
+      "i": 300451,
+      "j": 400451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 52,
+      "type": "COLUMN",
+      "i": 301001,
+      "j": 401001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 53,
+      "type": "COLUMN",
+      "i": 301101,
+      "j": 401101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 54,
+      "type": "COLUMN",
+      "i": 301201,
+      "j": 401201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 55,
+      "type": "COLUMN",
+      "i": 301301,
+      "j": 401301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 56,
+      "type": "COLUMN",
+      "i": 301401,
+      "j": 401401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 57,
+      "type": "COLUMN",
+      "i": 301451,
+      "j": 401451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 58,
+      "type": "COLUMN",
+      "i": 302001,
+      "j": 402001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 59,
+      "type": "COLUMN",
+      "i": 302101,
+      "j": 402101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 60,
+      "type": "COLUMN",
+      "i": 302201,
+      "j": 402201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 61,
+      "type": "COLUMN",
+      "i": 302301,
+      "j": 402301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 62,
+      "type": "COLUMN",
+      "i": 302401,
+      "j": 402401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 63,
+      "type": "COLUMN",
+      "i": 302451,
+      "j": 402451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 64,
+      "type": "COLUMN",
+      "i": 400001,
+      "j": 500001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 65,
+      "type": "COLUMN",
+      "i": 400101,
+      "j": 500101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 66,
+      "type": "COLUMN",
+      "i": 400201,
+      "j": 500201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 67,
+      "type": "COLUMN",
+      "i": 400301,
+      "j": 500301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 68,
+      "type": "COLUMN",
+      "i": 400401,
+      "j": 500401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 69,
+      "type": "COLUMN",
+      "i": 400451,
+      "j": 500451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 70,
+      "type": "COLUMN",
+      "i": 400501,
+      "j": 500501,
+      "status": "MANUAL"
+    },
+    {
+      "id": 71,
+      "type": "COLUMN",
+      "i": 401001,
+      "j": 501001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 72,
+      "type": "COLUMN",
+      "i": 401101,
+      "j": 501101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 73,
+      "type": "COLUMN",
+      "i": 401201,
+      "j": 501201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 74,
+      "type": "COLUMN",
+      "i": 401301,
+      "j": 501301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 75,
+      "type": "COLUMN",
+      "i": 401401,
+      "j": 501401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 76,
+      "type": "COLUMN",
+      "i": 401451,
+      "j": 501451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 77,
+      "type": "COLUMN",
+      "i": 401501,
+      "j": 501501,
+      "status": "MANUAL"
+    },
+    {
+      "id": 78,
+      "type": "COLUMN",
+      "i": 402001,
+      "j": 502001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 79,
+      "type": "COLUMN",
+      "i": 402101,
+      "j": 502101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 80,
+      "type": "COLUMN",
+      "i": 402201,
+      "j": 502201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 81,
+      "type": "COLUMN",
+      "i": 402301,
+      "j": 502301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 82,
+      "type": "COLUMN",
+      "i": 402401,
+      "j": 502401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 83,
+      "type": "COLUMN",
+      "i": 402451,
+      "j": 502451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 84,
+      "type": "COLUMN",
+      "i": 402501,
+      "j": 502501,
+      "status": "MANUAL"
+    },
+    {
+      "id": 85,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 100001,
+      "j": 100101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 86,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 101001,
+      "j": 101101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 87,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 102001,
+      "j": 102101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 88,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 100001,
+      "j": 101001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 89,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 101001,
+      "j": 102001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 90,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 100101,
+      "j": 101101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 91,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 101101,
+      "j": 102101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 92,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 200001,
+      "j": 200451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 93,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 201001,
+      "j": 201451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 94,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 202001,
+      "j": 202451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 95,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900000,
+      "j": 900001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 96,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 200001,
+      "j": 202001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 97,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 200101,
+      "j": 202101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 98,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 200201,
+      "j": 202201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 99,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 200301,
+      "j": 202301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 100,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 200401,
+      "j": 202401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 101,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 200451,
+      "j": 202451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 102,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900000,
+      "j": 200101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 103,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900002,
+      "j": 900003,
+      "status": "MANUAL"
+    },
+    {
+      "id": 104,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900004,
+      "j": 900005,
+      "status": "MANUAL"
+    },
+    {
+      "id": 105,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900006,
+      "j": 900007,
+      "status": "MANUAL"
+    },
+    {
+      "id": 106,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900001,
+      "j": 900006,
+      "status": "MANUAL"
+    },
+    {
+      "id": 107,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900008,
+      "j": 900009,
+      "status": "MANUAL"
+    },
+    {
+      "id": 108,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300201,
+      "j": 900010,
+      "status": "MANUAL"
+    },
+    {
+      "id": 109,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900011,
+      "j": 900012,
+      "status": "MANUAL"
+    },
+    {
+      "id": 110,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300301,
+      "j": 900013,
+      "status": "MANUAL"
+    },
+    {
+      "id": 111,
+      "type": "BEAM_SMALL",
+      "direction": "X",
+      "i": 900010,
+      "j": 900012,
+      "status": "MANUAL"
+    },
+    {
+      "id": 112,
+      "type": "BEAM_SMALL",
+      "direction": "X",
+      "i": 900012,
+      "j": 900013,
+      "status": "MANUAL"
+    },
+    {
+      "id": 113,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400101,
+      "j": 900014,
+      "status": "MANUAL"
+    },
+    {
+      "id": 114,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900015,
+      "j": 900016,
+      "status": "MANUAL"
+    },
+    {
+      "id": 115,
+      "type": "BEAM_VARIABLE",
+      "direction": "X",
+      "i": 900014,
+      "j": 900016,
+      "status": "MANUAL"
+    },
+    {
+      "id": 116,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900015,
+      "j": 900017,
+      "status": "MANUAL"
+    },
+    {
+      "id": 117,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400201,
+      "j": 900018,
+      "status": "MANUAL"
+    },
+    {
+      "id": 118,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400301,
+      "j": 900019,
+      "status": "MANUAL"
+    },
+    {
+      "id": 119,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900018,
+      "j": 900019,
+      "status": "MANUAL"
+    },
+    {
+      "id": 120,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 402451,
+      "j": 402501,
+      "status": "MANUAL"
+    },
+    {
+      "id": 121,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 401451,
+      "j": 401501,
+      "status": "MANUAL"
+    },
+    {
+      "id": 122,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 400451,
+      "j": 400501,
+      "status": "MANUAL"
+    },
+    {
+      "id": 123,
+      "type": "BEAM_40x60",
+      "direction": "Y",
+      "i": 900020,
+      "j": 900021,
+      "status": "MANUAL"
+    },
+    {
+      "id": 124,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400501,
+      "j": 402501,
+      "status": "MANUAL"
+    },
+    {
+      "id": 125,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 300001,
+      "j": 300451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 126,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 301001,
+      "j": 301451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 127,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 302001,
+      "j": 302451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 128,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900022,
+      "j": 900023,
+      "status": "MANUAL"
+    },
+    {
+      "id": 129,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300001,
+      "j": 302001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 130,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300101,
+      "j": 302101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 131,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300201,
+      "j": 302201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 132,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300301,
+      "j": 302301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 133,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300401,
+      "j": 302401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 134,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300451,
+      "j": 302451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 135,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900022,
+      "j": 300101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 136,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900024,
+      "j": 900025,
+      "status": "MANUAL"
+    },
+    {
+      "id": 137,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900011,
+      "j": 900026,
+      "status": "MANUAL"
+    },
+    {
+      "id": 138,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900027,
+      "j": 900028,
+      "status": "MANUAL"
+    },
+    {
+      "id": 139,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900023,
+      "j": 900027,
+      "status": "MANUAL"
+    },
+    {
+      "id": 140,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900029,
+      "j": 900030,
+      "status": "MANUAL"
+    },
+    {
+      "id": 141,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 400001,
+      "j": 400451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 142,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 401001,
+      "j": 401451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 143,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 402001,
+      "j": 402451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 144,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400001,
+      "j": 402001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 145,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400101,
+      "j": 402101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 146,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400201,
+      "j": 402201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 147,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400301,
+      "j": 402301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 148,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400401,
+      "j": 402401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 149,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 400451,
+      "j": 402451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 150,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900031,
+      "j": 900032,
+      "status": "MANUAL"
+    },
+    {
+      "id": 151,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900033,
+      "j": 900034,
+      "status": "MANUAL"
+    },
+    {
+      "id": 152,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900035,
+      "j": 900036,
+      "status": "MANUAL"
+    },
+    {
+      "id": 153,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900037,
+      "j": 900038,
+      "status": "MANUAL"
+    },
+    {
+      "id": 154,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 500001,
+      "j": 500101,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 155,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 500101,
+      "j": 500201,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 156,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 500201,
+      "j": 500301,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 157,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 500301,
+      "j": 500401,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 158,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 500401,
+      "j": 500451,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 159,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 500451,
+      "j": 500501,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 160,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 501001,
+      "j": 501101,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 161,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 501101,
+      "j": 501201,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 162,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 501201,
+      "j": 501301,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 163,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 501301,
+      "j": 501401,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 164,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 501401,
+      "j": 501451,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 165,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 501451,
+      "j": 501501,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 166,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 502001,
+      "j": 502101,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 167,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 502101,
+      "j": 502201,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 168,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 502201,
+      "j": 502301,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 169,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 502301,
+      "j": 502401,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 170,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 502401,
+      "j": 502451,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 171,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 502451,
+      "j": 502501,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 172,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500001,
+      "j": 501001,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 173,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 501001,
+      "j": 502001,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 174,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500101,
+      "j": 501101,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 175,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 501101,
+      "j": 502101,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 176,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500201,
+      "j": 501201,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 177,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 501201,
+      "j": 502201,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 178,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500301,
+      "j": 501301,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 179,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 501301,
+      "j": 502301,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 180,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500401,
+      "j": 501401,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 181,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 501401,
+      "j": 502401,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 182,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500451,
+      "j": 501451,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 183,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 501451,
+      "j": 502451,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 184,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500501,
+      "j": 501501,
+      "status": "PROVISIONAL_BEAM"
+    },
+    {
+      "id": 185,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 501501,
+      "j": 502501,
+      "status": "PROVISIONAL_BEAM"
+    }
+  ],
+  "section_columns": {
+    "A_m2": 0.49,
+    "Iy_m4": 0.020004,
+    "Iz_m4": 0.020004,
+    "J_m4": 0.040008
+  },
+  "section_beams": {
+    "A_m2": 0.48,
+    "Iy_m4": 0.0256,
+    "Iz_m4": 0.0144,
+    "J_m4": 0.002
+  },
+  "section_small_beams": {
+    "A_m2": 0.135,
+    "Iy_m4": 0.002278,
+    "Iz_m4": 0.000506,
+    "J_m4": 0.0002
+  },
+  "section_variable_beams": {
+    "A_m2": 0.21,
+    "Iy_m4": 0.005,
+    "Iz_m4": 0.0015,
+    "J_m4": 0.0004
+  },
+  "section_40x60_beams": {
+    "A_m2": 0.24,
+    "Iy_m4": 0.0072,
+    "Iz_m4": 0.0032,
+    "J_m4": 0.0008
+  },
+  "material": {
+    "E_kPa": 30000000.0,
+    "nu": 0.2
+  },
+  "mass_per_node_t": 10.0
+}

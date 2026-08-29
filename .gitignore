@@ -1,0 +1,19 @@
+# Unity generated files
+UnityVisualization/Library/
+UnityVisualization/Logs/
+UnityVisualization/UserSettings/
+UnityVisualization/Temp/
+UnityVisualization/Obj/
+UnityVisualization/Build/*_BackUpThisFolder_ButDontShipItWithYourGame/
+UnityVisualization/Build/Il2CppOutputProject/
+
+# Python generated files
+__pycache__/
+*.py[cod]
+
+# Local editor and OS files
+.vs/
+*.user
+*.suo
+Thumbs.db
+Desktop.ini
