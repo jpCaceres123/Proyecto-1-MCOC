@@ -1,0 +1,168 @@
+P1 - Honors Track
+Honors Track — Semana 7
+Propósito
+El núcleo obligatorio puede alcanzar la nota máxima normal.
+
+Los objetivos Honors permiten reconocer implementaciones claramente por sobre ese alcance.
+
+Puntaje sugerido:
+
+proyecto base: hasta 100;
+
+Honors: hasta +20;
+
+máximo extendido: 120/100.
+
+La conversión a nota puede permitir una calificación superior al 7,0 convencional como reconocimiento especial, según la política definida por el profesor.
+
+H1 — Google Cardboard VR — hasta +4
+render estereoscópico;
+
+head tracking;
+
+locomoción;
+
+selección de elementos;
+
+resultados OpenSees;
+
+interacción con diagramas/capacidad.
+
+H2 — AR avanzada — hasta +4
+múltiples markers;
+
+registro de un sector mayor;
+
+cuantificación del error;
+
+anchors robustos;
+
+persistencia si la plataforma lo soporta.
+
+H3 — AR estructural avanzada — hasta +4
+diagramas sobre elementos físicos;
+
+deformada sobre la estructura real;
+
+selección de varios elementos;
+
+P-M junto al elemento;
+
+visualización de áreas tributarias en AR.
+
+H4 — Reanálisis OpenSees en vivo — hasta +4
+Unity envía cambios a un backend Python/OpenSees y recibe nuevos resultados.
+
+Debe incluir:
+
+validación;
+
+manejo de errores;
+
+ejecución reproducible;
+
+comparación contra corrida directa.
+
+H5 — Capacidad/análisis avanzado — hasta +4
+Ejemplos:
+
+P-Mx-My;
+
+capacidad de miembro vs sección;
+
+segundo orden;
+
+cambio de refuerzo con regeneración de interacción;
+
+otro objetivo estructural comparable.
+
+Rúbrica Honors
+Nivel	Puntos	Descripción
+No funcional	0	Sin evidencia válida
+Parcial	1	Demostración incompleta
+Funcional	2	Opera en condiciones controladas
+Sólido	3	Reproducible y verificado
+Honors	4	Integrado, robusto y claramente sobre el alcance base
+Condición
+No se evalúan puntos Honors si existen errores graves en el núcleo:
+
+equilibrio;
+
+unidades;
+
+ejes;
+
+cargas;
+
+superposición;
+
+curvas P-M;
+
+AR básica.
+
+Recursos técnicos recomendados
+OpenSees / OpenSeesPy
+OpenSees: https://opensees.berkeley.edu/Links to an external site.
+
+OpenSees Documentation: https://opensees.github.io/OpenSeesDocumentation/Links to an external site.
+
+OpenSeesPy: https://openseespydoc.readthedocs.io/Links to an external site.
+
+elasticBeamColumn: https://openseespydoc.readthedocs.io/en/latest/src/elasticBeamColumn.htmlLinks to an external site.
+
+Transformaciones geométricas: https://openseespydoc.readthedocs.io/en/latest/src/geomTransf.htmlLinks to an external site.
+
+rigidDiaphragm: https://openseespydoc.readthedocs.io/en/latest/src/rigidDiaphragm.htmlLinks to an external site.
+
+Fiber Section: https://openseespydoc.readthedocs.io/en/latest/src/fibersection.htmlLinks to an external site.
+
+DisplacementControl: https://openseespydoc.readthedocs.io/en/latest/src/displacementControl.htmlLinks to an external site.
+
+Salidas / recorders: https://opensees.github.io/OpenSeesDocumentation/user/manual/output/ElementRecorder.htmlLinks to an external site.
+
+Unity
+Unity Manual: https://docs.unity3d.com/Manual/index.htmlLinks to an external site.
+
+Unity Scripting API: https://docs.unity3d.com/ScriptReference/Links to an external site.
+
+glTF / GLB: https://www.khronos.org/gltf/Links to an external site.
+
+AR Foundation
+AR Foundation: https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/Links to an external site.
+
+Image Tracking: https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@6.1/manual/features/image-tracking.htmlLinks to an external site.
+
+Anchors: https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@6.0/manual/features/anchors/introduction.htmlLinks to an external site.
+
+Samples oficiales: https://github.com/Unity-Technologies/arfoundation-samplesLinks to an external site.
+
+ARCore: https://developers.google.com/arLinks to an external site.
+
+Dispositivos compatibles con ARCore: https://developers.google.com/ar/devicesLinks to an external site.
+
+Google Cardboard — Honors Track
+Cardboard: https://developers.google.com/cardboardLinks to an external site.
+
+Quickstart Unity: https://developers.google.com/cardboard/develop/unity/quickstart?hl=es-419Links to an external site.
+
+Cardboard XR Plugin: https://github.com/googlevr/cardboard-xr-pluginLinks to an external site.
+
+Git / GitHub
+Git: https://git-scm.com/docLinks to an external site.
+
+GitHub Docs: https://docs.github.com/Links to an external site.
+
+Issues: https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issuesLinks to an external site.
+
+Pull Requests: https://docs.github.com/en/pull-requestsLinks to an external site.
+
+Code review: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requestsLinks to an external site.
+
+OpenCode
+Documentación: https://opencode.ai/docs/Links to an external site.
+
+AGENTS.md: https://opencode.ai/docs/rules/Links to an external site.
+
+Agents: https://opencode.ai/docs/agents/Links to an external site.
+
+Permissions: https://opencode.ai/docs/permissions/Links to an external site.

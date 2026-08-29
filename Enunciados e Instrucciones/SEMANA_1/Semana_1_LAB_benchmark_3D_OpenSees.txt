@@ -1,0 +1,89 @@
+Semana 1 — LAB: benchmark 3D OpenSees
+Objetivo
+Construir y verificar un caso estructural 3D propuesto por su grupo. La idea es que sea como un marco tridimensional de al menos un vano en cada dirección. Considere una losa y considere como "descarga" la losa sobre cada viga. En clases explicaremos una metodología clara, pero por mientras haga supuestos. 
+
+El problema se entrega completamente definido en geometría, secciones, materiales, apoyos y cargas.
+
+Entregable de laboratorio
+Repositorio con:
+
+modelo OpenSeesPy;
+script reproducible;
+extracción de desplazamientos;
+reacciones;
+fuerzas de elementos;
+visualización simple de geometría y ejes;
+archivo de resultados de verificación.
+Verificaciones obligatorias
+Comparar con valores de referencia obtenidos de alguna estimación u otro programa.
+
+Como mínimo:
+
+suma de cargas;
+suma de reacciones;
+desplazamiento de un nodo;
+fuerza axial de un elemento;
+momento de extremo de un elemento.
+Defensa individual
+El estudiante debe poder explicar:
+
+los 6 GDL;
+qué representa geomTransf;
+diferencia local/global;
+qué representa Iy y Iz;
+qué está resolviendo OpenSees;
+por qué converger/terminar no significa estar correcto.
+Forma de entrega
+Entrega grupal, grupos de 3 estudiantes.
+Todo código debe estar en el repositorio Git.
+En Canvas se entrega:
+enlace al repositorio;
+commit hash o tag exacto a evaluar;
+enlace directo al informe Markdown correspondiente cuando aplique.
+La entrega de laboratorio se demuestra en vivo.
+El profesor podrá escoger al azar a cualquier integrante para explicar cualquier parte del sistema.
+Una demostración que funciona pero que el grupo no puede explicar no se considera completamente lograda.
+Rúbrica — 10 puntos
+Criterio	Puntos
+Modelo reproducible	2
+Resultados de referencia reproducidos	3
+Equilibrio y verificación	2
+Ejes/GDL/interpretación	1
+Defensa individual	2
+Recursos técnicos recomendados
+OpenSees / OpenSeesPy
+OpenSees: https://opensees.berkeley.edu/
+OpenSees Documentation: https://opensees.github.io/OpenSeesDocumentation/
+OpenSeesPy: https://openseespydoc.readthedocs.io/
+elasticBeamColumn: https://openseespydoc.readthedocs.io/en/latest/src/elasticBeamColumn.html
+Transformaciones geométricas: https://openseespydoc.readthedocs.io/en/latest/src/geomTransf.html
+rigidDiaphragm: https://openseespydoc.readthedocs.io/en/latest/src/rigidDiaphragm.html
+Fiber Section: https://openseespydoc.readthedocs.io/en/latest/src/fibersection.html
+DisplacementControl: https://openseespydoc.readthedocs.io/en/latest/src/displacementControl.html
+Salidas / recorders: https://opensees.github.io/OpenSeesDocumentation/user/manual/output/ElementRecorder.html
+Unity
+Unity Manual: https://docs.unity3d.com/Manual/index.html
+Unity Scripting API: https://docs.unity3d.com/ScriptReference/
+glTF / GLB: https://www.khronos.org/gltf/
+AR Foundation
+AR Foundation: https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/
+Image Tracking: https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@6.1/manual/features/image-tracking.html
+Anchors: https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@6.0/manual/features/anchors/introduction.html
+Samples oficiales: https://github.com/Unity-Technologies/arfoundation-samples
+ARCore: https://developers.google.com/ar
+Dispositivos compatibles con ARCore: https://developers.google.com/ar/devices
+Google Cardboard — Honors Track
+Cardboard: https://developers.google.com/cardboard
+Quickstart Unity: https://developers.google.com/cardboard/develop/unity/quickstart?hl=es-419
+Cardboard XR Plugin: https://github.com/googlevr/cardboard-xr-plugin
+Git / GitHub
+Git: https://git-scm.com/doc
+GitHub Docs: https://docs.github.com/
+Issues: https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues
+Pull Requests: https://docs.github.com/en/pull-requests
+Code review: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests
+OpenCode
+Documentación: https://opencode.ai/docs/
+AGENTS.md: https://opencode.ai/docs/rules/
+Agents: https://opencode.ai/docs/agents/
+Permissions: https://opencode.ai/docs/permissions/

@@ -21,8 +21,6 @@ __pycache__/
 
 # Planos locales: no publicar archivos DWG en GitHub
 planos_edificio_ing/
-/Planos/
-Planos.rar
 
 # Archivos generados por SAP2000
 test.*
@@ -50,13 +48,6 @@ results/*.sdb
 /.vs/
 
 # Archivos generados por Unity
-unity/Library/
-unity/Temp/
-unity/Logs/
-unity/UserSettings/
-unity/Build/
-unity/MemoryCaptures/
-unity/.vs/
 UnityProject/Library/
 UnityProject/Temp/
 UnityProject/Logs/

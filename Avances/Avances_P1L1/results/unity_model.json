@@ -1,0 +1,3710 @@
+{
+  "schema": "structural_model_unity_v1",
+  "units": {
+    "length": "m",
+    "force": "kN",
+    "stress": "kPa",
+    "moment": "kN*m"
+  },
+  "source": {
+    "model": "LT1 3D OpenSeesPy benchmark",
+    "sourcePlans": [
+      "2017_67-102.pdf",
+      "2017_67-103.pdf",
+      "2017_67-300.pdf",
+      "2017_67-304.pdf"
+    ]
+  },
+  "coordinateMapping": {
+    "openSeesAxes": "X horizontal, Y horizontal, Z vertical",
+    "unityAxes": "X right, Y up, Z forward",
+    "openSeesToUnity": "(x_os, y_os, z_os) -> (x_unity, y_unity, z_unity) = (x_os, z_os, y_os)"
+  },
+  "geometry": {
+    "axisLabels": {
+      "x": [
+        "E",
+        "F",
+        "G"
+      ],
+      "y": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "xCoordinates_m": [
+      0.0,
+      10.0,
+      20.0
+    ],
+    "yCoordinates_m": [
+      0.0,
+      8.9,
+      16.15
+    ],
+    "zLevels_m": [
+      -7.97,
+      -4.01,
+      -0.05,
+      3.91,
+      7.87,
+      11.83
+    ],
+    "rigidOffsets_m": {
+      "E_prime_to_E": 0.25,
+      "F_to_F_prime": 0.25
+    }
+  },
+  "sections": [
+    {
+      "sectionId": "C70x70",
+      "kind": "column",
+      "width_m": 0.7,
+      "height_m": 0.7,
+      "area_m2": 0.48999999999999994,
+      "material": {
+        "fc_kPa": 25000.0,
+        "E_kPa": 743135.2501395692,
+        "G_kPa": 309639.6875581538,
+        "nu": 0.2
+      }
+    },
+    {
+      "sectionId": "B60x80",
+      "kind": "beam",
+      "width_m": 0.6,
+      "height_m": 0.8,
+      "area_m2": 0.48,
+      "material": {
+        "fc_kPa": 25000.0,
+        "E_kPa": 743135.2501395692,
+        "G_kPa": 309639.6875581538,
+        "nu": 0.2
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "nodeTag": 1,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -7.97,
+        "z_m": 0.0
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 2,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 8.9,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -7.97,
+        "z_m": 8.9
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 3,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 16.15,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -7.97,
+        "z_m": 16.15
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 101,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 0.0,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -7.97,
+        "z_m": 0.0
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 102,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 8.9,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -7.97,
+        "z_m": 8.9
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 103,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 16.15,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -7.97,
+        "z_m": 16.15
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 201,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 0.0,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -7.97,
+        "z_m": 0.0
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 202,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 8.9,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -7.97,
+        "z_m": 8.9
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 203,
+      "levelIndex": 0,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 16.15,
+        "z_m": -7.97
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -7.97,
+        "z_m": 16.15
+      },
+      "isSupport": true
+    },
+    {
+      "nodeTag": 1001,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -4.01,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 1002,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 8.9,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -4.01,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 1003,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 16.15,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -4.01,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 1101,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 0.0,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -4.01,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 1102,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 8.9,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -4.01,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 1103,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 16.15,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -4.01,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 1201,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 0.0,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -4.01,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 1202,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 8.9,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -4.01,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 1203,
+      "levelIndex": 1,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 16.15,
+        "z_m": -4.01
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -4.01,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2001,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -0.05,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2002,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 8.9,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -0.05,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2003,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 16.15,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": -0.05,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2101,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 0.0,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -0.05,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2102,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 8.9,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -0.05,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2103,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 16.15,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": -0.05,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2201,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 0.0,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -0.05,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2202,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 8.9,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -0.05,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 2203,
+      "levelIndex": 2,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 16.15,
+        "z_m": -0.05
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": -0.05,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3001,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 3.91,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3002,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 8.9,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 3.91,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3003,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 16.15,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 3.91,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3101,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 0.0,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 3.91,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3102,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 8.9,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 3.91,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3103,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 16.15,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 3.91,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3201,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 0.0,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 3.91,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3202,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 8.9,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 3.91,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 3203,
+      "levelIndex": 3,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 16.15,
+        "z_m": 3.91
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 3.91,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4001,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 7.87,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4002,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 8.9,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 7.87,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4003,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 16.15,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 7.87,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4101,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 0.0,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 7.87,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4102,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 8.9,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 7.87,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4103,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 16.15,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 7.87,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4201,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 0.0,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 7.87,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4202,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 8.9,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 7.87,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 4203,
+      "levelIndex": 4,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 16.15,
+        "z_m": 7.87
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 7.87,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5001,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 11.83,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5002,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 8.9,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 11.83,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5003,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 0.0,
+        "y_m": 16.15,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 0.0,
+        "y_m": 11.83,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5101,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 0.0,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 11.83,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5102,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 8.9,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 11.83,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5103,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 10.0,
+        "y_m": 16.15,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 10.0,
+        "y_m": 11.83,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5201,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 0.0,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 11.83,
+        "z_m": 0.0
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5202,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 8.9,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 11.83,
+        "z_m": 8.9
+      },
+      "isSupport": false
+    },
+    {
+      "nodeTag": 5203,
+      "levelIndex": 5,
+      "position_os_m": {
+        "x_m": 20.0,
+        "y_m": 16.15,
+        "z_m": 11.83
+      },
+      "position_unity_m": {
+        "x_m": 20.0,
+        "y_m": 11.83,
+        "z_m": 16.15
+      },
+      "isSupport": false
+    }
+  ],
+  "elements": [
+    {
+      "elementTag": 1,
+      "kind": "column",
+      "nodeI": 1,
+      "nodeJ": 1001,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 2,
+      "kind": "column",
+      "nodeI": 2,
+      "nodeJ": 1002,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 3,
+      "kind": "column",
+      "nodeI": 3,
+      "nodeJ": 1003,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 4,
+      "kind": "column",
+      "nodeI": 101,
+      "nodeJ": 1101,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 5,
+      "kind": "column",
+      "nodeI": 102,
+      "nodeJ": 1102,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 6,
+      "kind": "column",
+      "nodeI": 103,
+      "nodeJ": 1103,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 7,
+      "kind": "column",
+      "nodeI": 201,
+      "nodeJ": 1201,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 8,
+      "kind": "column",
+      "nodeI": 202,
+      "nodeJ": 1202,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 9,
+      "kind": "column",
+      "nodeI": 203,
+      "nodeJ": 1203,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 10,
+      "kind": "column",
+      "nodeI": 1001,
+      "nodeJ": 2001,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 11,
+      "kind": "column",
+      "nodeI": 1002,
+      "nodeJ": 2002,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 12,
+      "kind": "column",
+      "nodeI": 1003,
+      "nodeJ": 2003,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 13,
+      "kind": "column",
+      "nodeI": 1101,
+      "nodeJ": 2101,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 14,
+      "kind": "column",
+      "nodeI": 1102,
+      "nodeJ": 2102,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 15,
+      "kind": "column",
+      "nodeI": 1103,
+      "nodeJ": 2103,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 16,
+      "kind": "column",
+      "nodeI": 1201,
+      "nodeJ": 2201,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 17,
+      "kind": "column",
+      "nodeI": 1202,
+      "nodeJ": 2202,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 18,
+      "kind": "column",
+      "nodeI": 1203,
+      "nodeJ": 2203,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 19,
+      "kind": "column",
+      "nodeI": 2001,
+      "nodeJ": 3001,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 20,
+      "kind": "column",
+      "nodeI": 2002,
+      "nodeJ": 3002,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 21,
+      "kind": "column",
+      "nodeI": 2003,
+      "nodeJ": 3003,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 22,
+      "kind": "column",
+      "nodeI": 2101,
+      "nodeJ": 3101,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 23,
+      "kind": "column",
+      "nodeI": 2102,
+      "nodeJ": 3102,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 24,
+      "kind": "column",
+      "nodeI": 2103,
+      "nodeJ": 3103,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 25,
+      "kind": "column",
+      "nodeI": 2201,
+      "nodeJ": 3201,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 26,
+      "kind": "column",
+      "nodeI": 2202,
+      "nodeJ": 3202,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 27,
+      "kind": "column",
+      "nodeI": 2203,
+      "nodeJ": 3203,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 28,
+      "kind": "column",
+      "nodeI": 3001,
+      "nodeJ": 4001,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 29,
+      "kind": "column",
+      "nodeI": 3002,
+      "nodeJ": 4002,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 30,
+      "kind": "column",
+      "nodeI": 3003,
+      "nodeJ": 4003,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 31,
+      "kind": "column",
+      "nodeI": 3101,
+      "nodeJ": 4101,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 32,
+      "kind": "column",
+      "nodeI": 3102,
+      "nodeJ": 4102,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 33,
+      "kind": "column",
+      "nodeI": 3103,
+      "nodeJ": 4103,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 34,
+      "kind": "column",
+      "nodeI": 3201,
+      "nodeJ": 4201,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 35,
+      "kind": "column",
+      "nodeI": 3202,
+      "nodeJ": 4202,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 36,
+      "kind": "column",
+      "nodeI": 3203,
+      "nodeJ": 4203,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 37,
+      "kind": "column",
+      "nodeI": 4001,
+      "nodeJ": 5001,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 38,
+      "kind": "column",
+      "nodeI": 4002,
+      "nodeJ": 5002,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 39,
+      "kind": "column",
+      "nodeI": 4003,
+      "nodeJ": 5003,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 40,
+      "kind": "column",
+      "nodeI": 4101,
+      "nodeJ": 5101,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 41,
+      "kind": "column",
+      "nodeI": 4102,
+      "nodeJ": 5102,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 42,
+      "kind": "column",
+      "nodeI": 4103,
+      "nodeJ": 5103,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 43,
+      "kind": "column",
+      "nodeI": 4201,
+      "nodeJ": 5201,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 44,
+      "kind": "column",
+      "nodeI": 4202,
+      "nodeJ": 5202,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 45,
+      "kind": "column",
+      "nodeI": 4203,
+      "nodeJ": 5203,
+      "sectionId": "C70x70",
+      "transformationId": 1,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "y_os": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "z_os": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "elementTag": 46,
+      "kind": "beam_x",
+      "nodeI": 1001,
+      "nodeJ": 1101,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 47,
+      "kind": "beam_x",
+      "nodeI": 1002,
+      "nodeJ": 1102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 48,
+      "kind": "beam_x",
+      "nodeI": 1003,
+      "nodeJ": 1103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 49,
+      "kind": "beam_x",
+      "nodeI": 1101,
+      "nodeJ": 1201,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 50,
+      "kind": "beam_x",
+      "nodeI": 1102,
+      "nodeJ": 1202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 51,
+      "kind": "beam_x",
+      "nodeI": 1103,
+      "nodeJ": 1203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 52,
+      "kind": "beam_y",
+      "nodeI": 1001,
+      "nodeJ": 1002,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 53,
+      "kind": "beam_y",
+      "nodeI": 1002,
+      "nodeJ": 1003,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 54,
+      "kind": "beam_y",
+      "nodeI": 1101,
+      "nodeJ": 1102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 55,
+      "kind": "beam_y",
+      "nodeI": 1102,
+      "nodeJ": 1103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 56,
+      "kind": "beam_y",
+      "nodeI": 1201,
+      "nodeJ": 1202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 57,
+      "kind": "beam_y",
+      "nodeI": 1202,
+      "nodeJ": 1203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 58,
+      "kind": "beam_x",
+      "nodeI": 2001,
+      "nodeJ": 2101,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 59,
+      "kind": "beam_x",
+      "nodeI": 2002,
+      "nodeJ": 2102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 60,
+      "kind": "beam_x",
+      "nodeI": 2003,
+      "nodeJ": 2103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 61,
+      "kind": "beam_x",
+      "nodeI": 2101,
+      "nodeJ": 2201,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 62,
+      "kind": "beam_x",
+      "nodeI": 2102,
+      "nodeJ": 2202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 63,
+      "kind": "beam_x",
+      "nodeI": 2103,
+      "nodeJ": 2203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 64,
+      "kind": "beam_y",
+      "nodeI": 2001,
+      "nodeJ": 2002,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 65,
+      "kind": "beam_y",
+      "nodeI": 2002,
+      "nodeJ": 2003,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 66,
+      "kind": "beam_y",
+      "nodeI": 2101,
+      "nodeJ": 2102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 67,
+      "kind": "beam_y",
+      "nodeI": 2102,
+      "nodeJ": 2103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 68,
+      "kind": "beam_y",
+      "nodeI": 2201,
+      "nodeJ": 2202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 69,
+      "kind": "beam_y",
+      "nodeI": 2202,
+      "nodeJ": 2203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 70,
+      "kind": "beam_x",
+      "nodeI": 3001,
+      "nodeJ": 3101,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 71,
+      "kind": "beam_x",
+      "nodeI": 3002,
+      "nodeJ": 3102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 72,
+      "kind": "beam_x",
+      "nodeI": 3003,
+      "nodeJ": 3103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 73,
+      "kind": "beam_x",
+      "nodeI": 3101,
+      "nodeJ": 3201,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 74,
+      "kind": "beam_x",
+      "nodeI": 3102,
+      "nodeJ": 3202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 75,
+      "kind": "beam_x",
+      "nodeI": 3103,
+      "nodeJ": 3203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 76,
+      "kind": "beam_y",
+      "nodeI": 3001,
+      "nodeJ": 3002,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 77,
+      "kind": "beam_y",
+      "nodeI": 3002,
+      "nodeJ": 3003,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 78,
+      "kind": "beam_y",
+      "nodeI": 3101,
+      "nodeJ": 3102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 79,
+      "kind": "beam_y",
+      "nodeI": 3102,
+      "nodeJ": 3103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 80,
+      "kind": "beam_y",
+      "nodeI": 3201,
+      "nodeJ": 3202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 81,
+      "kind": "beam_y",
+      "nodeI": 3202,
+      "nodeJ": 3203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 82,
+      "kind": "beam_x",
+      "nodeI": 4001,
+      "nodeJ": 4101,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 83,
+      "kind": "beam_x",
+      "nodeI": 4002,
+      "nodeJ": 4102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 84,
+      "kind": "beam_x",
+      "nodeI": 4003,
+      "nodeJ": 4103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 85,
+      "kind": "beam_x",
+      "nodeI": 4101,
+      "nodeJ": 4201,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 86,
+      "kind": "beam_x",
+      "nodeI": 4102,
+      "nodeJ": 4202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 87,
+      "kind": "beam_x",
+      "nodeI": 4103,
+      "nodeJ": 4203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 88,
+      "kind": "beam_y",
+      "nodeI": 4001,
+      "nodeJ": 4002,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 89,
+      "kind": "beam_y",
+      "nodeI": 4002,
+      "nodeJ": 4003,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 90,
+      "kind": "beam_y",
+      "nodeI": 4101,
+      "nodeJ": 4102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 91,
+      "kind": "beam_y",
+      "nodeI": 4102,
+      "nodeJ": 4103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 92,
+      "kind": "beam_y",
+      "nodeI": 4201,
+      "nodeJ": 4202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 93,
+      "kind": "beam_y",
+      "nodeI": 4202,
+      "nodeJ": 4203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 94,
+      "kind": "beam_x",
+      "nodeI": 5001,
+      "nodeJ": 5101,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 95,
+      "kind": "beam_x",
+      "nodeI": 5002,
+      "nodeJ": 5102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 96,
+      "kind": "beam_x",
+      "nodeI": 5003,
+      "nodeJ": 5103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 97,
+      "kind": "beam_x",
+      "nodeI": 5101,
+      "nodeJ": 5201,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 98,
+      "kind": "beam_x",
+      "nodeI": 5102,
+      "nodeJ": 5202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 99,
+      "kind": "beam_x",
+      "nodeI": 5103,
+      "nodeJ": 5203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "y_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 100,
+      "kind": "beam_y",
+      "nodeI": 5001,
+      "nodeJ": 5002,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 101,
+      "kind": "beam_y",
+      "nodeI": 5002,
+      "nodeJ": 5003,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 102,
+      "kind": "beam_y",
+      "nodeI": 5101,
+      "nodeJ": 5102,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 103,
+      "kind": "beam_y",
+      "nodeI": 5102,
+      "nodeJ": 5103,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 104,
+      "kind": "beam_y",
+      "nodeI": 5201,
+      "nodeJ": 5202,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "elementTag": 105,
+      "kind": "beam_y",
+      "nodeI": 5202,
+      "nodeJ": 5203,
+      "sectionId": "B60x80",
+      "transformationId": 2,
+      "localAxes_os": {
+        "x_os": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "y_os": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "z_os": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "supports": [
+    {
+      "nodeTag": 1,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    },
+    {
+      "nodeTag": 2,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    },
+    {
+      "nodeTag": 3,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    },
+    {
+      "nodeTag": 101,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    },
+    {
+      "nodeTag": 102,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    },
+    {
+      "nodeTag": 103,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    },
+    {
+      "nodeTag": 201,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    },
+    {
+      "nodeTag": 202,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    },
+    {
+      "nodeTag": 203,
+      "restrainedDofs": [
+        "Ux",
+        "Uy",
+        "Uz",
+        "Rx",
+        "Ry",
+        "Rz"
+      ]
+    }
+  ],
+  "diaphragms": [
+    {
+      "levelIndex": 1,
+      "masterNodeTag": 1102,
+      "slaveNodeTags": [
+        1001,
+        1002,
+        1003,
+        1101,
+        1103,
+        1201,
+        1202,
+        1203
+      ],
+      "normalAxis_os": "Z"
+    },
+    {
+      "levelIndex": 2,
+      "masterNodeTag": 2102,
+      "slaveNodeTags": [
+        2001,
+        2002,
+        2003,
+        2101,
+        2103,
+        2201,
+        2202,
+        2203
+      ],
+      "normalAxis_os": "Z"
+    },
+    {
+      "levelIndex": 3,
+      "masterNodeTag": 3102,
+      "slaveNodeTags": [
+        3001,
+        3002,
+        3003,
+        3101,
+        3103,
+        3201,
+        3202,
+        3203
+      ],
+      "normalAxis_os": "Z"
+    },
+    {
+      "levelIndex": 4,
+      "masterNodeTag": 4102,
+      "slaveNodeTags": [
+        4001,
+        4002,
+        4003,
+        4101,
+        4103,
+        4201,
+        4202,
+        4203
+      ],
+      "normalAxis_os": "Z"
+    },
+    {
+      "levelIndex": 5,
+      "masterNodeTag": 5102,
+      "slaveNodeTags": [
+        5001,
+        5002,
+        5003,
+        5101,
+        5103,
+        5201,
+        5202,
+        5203
+      ],
+      "normalAxis_os": "Z"
+    }
+  ],
+  "counts": {
+    "nodes": 54,
+    "elements": 105,
+    "supports": 9,
+    "diaphragms": 5
+  }
+}

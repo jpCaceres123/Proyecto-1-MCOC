@@ -1,0 +1,71 @@
+P1A1 - Avance: comprension del benchmark y plan de proyecto
+
+Semana 1 — AVANCE: comprensión del benchmark y plan del proyecto
+Entregable
+Crear reports/semana01.md.
+
+Contenido
+1. Modelo entregado
+Describir:
+
+geometría;
+
+elementos;
+
+apoyos;
+
+cargas;
+
+unidades.
+
+2. Flujo OpenSees
+Explicar:
+
+elemento → ensamblaje → solución → recuperación de fuerzas.
+
+No se exige derivar una matriz 12×12 completa, pero sí explicar qué información entrega cada parte.
+
+3. Ejes locales
+Mostrar al menos tres elementos y explicar su orientación.
+
+4. Verificación
+Tabla:
+
+Magnitud	Referencia	OpenSees	Error
+5. Errores deliberados
+Modificar temporalmente dos aspectos:
+
+sección;
+
+apoyo;
+
+orientación;
+
+signo de carga.
+
+Mostrar cómo cambia la respuesta y cómo se detecta.
+
+6. Arquitectura preliminar del proyecto
+Proponer:
+
+estructura de datos;
+
+estructura de carpetas;
+
+interfaz OpenSees–Unity futura.
+
+7. Uso de IA
+Registrar:
+
+Issue/tarea;
+
+Plan del agente;
+
+implementación;
+
+test;
+
+revisión.
+
+8. Distribución del grupo
+Tabla de responsabilidades y revisión cruzada.

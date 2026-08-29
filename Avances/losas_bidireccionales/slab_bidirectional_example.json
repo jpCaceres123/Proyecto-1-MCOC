@@ -1,0 +1,16 @@
+{
+  "panels": [
+    {
+      "panel_id": "LT1_panel_01_G",
+      "length_x_m": 10.0,
+      "length_y_m": 8.9,
+      "q_kN_m2": 5.1
+    },
+    {
+      "panel_id": "LT1_panel_01_Q",
+      "length_x_m": 10.0,
+      "length_y_m": 8.9,
+      "q_kN_m2": 2.0
+    }
+  ]
+}
