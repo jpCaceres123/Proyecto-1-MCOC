@@ -28,6 +28,18 @@ def main():
                 nodes.append(node)
                 by_level[z].append(node)
 
+        # Some columns occupy only selected intersections of the extended grid.
+        # They are declared explicitly instead of being created at every Y row.
+        for point_index, point in enumerate(config.get("column_points", [])):
+            if z < point.get("z_inicio_m", 0.0):
+                continue
+            tag = 700000 + 1000 * k + point_index + 1
+            node = {"id": tag, "level": k, "axis": point["id"],
+                    "x_m": point["x_m"], "y_m": point["y_m"], "z_m": z,
+                    "restraint": k == 0, "status": "MANUAL"}
+            nodes.append(node)
+            by_level[z].append(node)
+
     manual_beams = list(config.get("manual_beams", []))
     for repeat in config.get("repeat_manual_beams", []):
         def allowed(beam):
@@ -38,7 +50,10 @@ def main():
         manual_beams.extend(
             [dict(beam, z_m=repeat["to_z_m"])
              for beam in manual_beams
-             if round(beam["z_m"], 3) == round(repeat["from_z_m"], 3) and allowed(beam)]
+             if round(beam["z_m"], 3) == round(repeat["from_z_m"], 3)
+             and (not repeat.get("source_group") or beam.get("group") == repeat["source_group"])
+             and beam.get("group") != repeat.get("exclude_group")
+             and allowed(beam)]
         )
 
     elements = []
@@ -103,6 +118,7 @@ def main():
 
     data = {"source": "geometria_manual.json", "status": "MANUAL_REVIEW",
             "units": "kN-m-s", "nodes": nodes, "elements": elements,
+            "walls": config.get("walls", []),
             "section_columns": {"A_m2": 0.49, "Iy_m4": 0.020004, "Iz_m4": 0.020004, "J_m4": 0.040008},
             "section_beams": {"A_m2": 0.48, "Iy_m4": 0.0256, "Iz_m4": 0.0144, "J_m4": 0.002},
             "section_small_beams": {"A_m2": 0.135, "Iy_m4": 0.002278, "Iz_m4": 0.000506, "J_m4": 0.0002},
@@ -114,6 +130,11 @@ def main():
     lines = ["kind,id,type,i,j,x_m,y_m,z_m,level,status"]
     lines.extend(f'N,{n["id"]},NODE,,,,{n["x_m"]},{n["y_m"]},{n["z_m"]},{n["level"]},{n["status"]}' for n in nodes)
     lines.extend(f'E,{e["id"]},{e["type"]},{e["i"]},{e["j"]},,,,,,{e["status"]}' for e in elements)
+    for wall in config.get("walls", []):
+        lines.append(
+            f'W,{wall["id"]},WALL,{wall["x_i_m"]},{wall["y_i_m"]},{wall["z_i_m"]},'
+            f'{wall["x_j_m"]},{wall["y_j_m"]},{wall["z_j_m"]},{wall["thickness_m"]},{wall.get("status", "MANUAL")}'
+        )
     CSV.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     workbook = Workbook()
@@ -129,7 +150,7 @@ def main():
     notes = workbook.create_sheet("Supuestos")
     notes.append(["campo", "valor"])
     notes.append(["niveles", "0, 3.96, 7.92, 11.88, 15.84, 19.80 m"])
-    notes.append(["ejes Y", "Eje 3 = 0; Eje 2 = 7.25; Eje 1 = 15.84 m"])
+    notes.append(["ejes Y", "Eje 3 = 0; Eje 2 = 7.25; Eje 1 = 16.15 m"])
     notes.append(["columnas", "Todas 0.70 x 0.70 m; datos ingresados manualmente"])
     notes.append(["vigas", "Cielo 1 subterraneo: 7; Cielos Piso 1 y Piso 2: base repetida; Piso 2 agrega voladizos; Piso 3 conserva la base y agrega su configuracion especial"])
     notes.append(["modelo", "Solo vigas y columnas; sin losas, muros ni fundaciones"])

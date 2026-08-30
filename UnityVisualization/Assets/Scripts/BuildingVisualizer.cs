@@ -12,6 +12,7 @@ public class BuildingVisualizer : MonoBehaviour
 
     private readonly Dictionary<int, Vector3> nodes = new Dictionary<int, Vector3>();
     private readonly List<(int id, string type, int i, int j)> elements = new List<(int, string, int, int)>();
+    private readonly List<(int id, Vector3 a, Vector3 b, float zMin, float zMax, float thickness)> walls = new List<(int, Vector3, Vector3, float, float, float)>();
     private Transform nodeRoot;
     private Transform elementRoot;
 
@@ -41,7 +42,18 @@ public class BuildingVisualizer : MonoBehaviour
                 nodes[int.Parse(p[1])] = new Vector3(ParseFloat(p[6]), ParseFloat(p[8]), ParseFloat(p[7]));
             else if (p[0] == "E")
                 elements.Add((int.Parse(p[1]), p[2], int.Parse(p[3]), int.Parse(p[4])));
+            else if (p[0] == "W")
+            {
+                Vector3 a = StructuralToUnity(ParseFloat(p[3]), ParseFloat(p[4]), 0.0f);
+                Vector3 b = StructuralToUnity(ParseFloat(p[6]), ParseFloat(p[7]), 0.0f);
+                walls.Add((int.Parse(p[1]), a, b, ParseFloat(p[5]), ParseFloat(p[8]), ParseFloat(p[9])));
+            }
         }
+    }
+
+    private static Vector3 StructuralToUnity(float x, float y, float z)
+    {
+        return new Vector3(x, z, y);
     }
 
     private static float ParseFloat(string value)
@@ -59,8 +71,23 @@ public class BuildingVisualizer : MonoBehaviour
             Color color = e.type == "COLUMN" ? new Color(0.85f, 0.18f, 0.12f) : new Color(0.10f, 0.35f, 0.85f);
             CreateMember(e.type + "_" + e.id, e.type, nodes[e.i], nodes[e.j], color);
         }
+        foreach (var wall in walls)
+            CreateWall(wall.id, wall.a, wall.b, wall.zMin, wall.zMax, wall.thickness);
         if (showNodes)
             foreach (var n in nodes) CreateNode(n.Key, n.Value);
+    }
+
+    private void CreateWall(int id, Vector3 a, Vector3 b, float zMin, float zMax, float thickness)
+    {
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.name = "Muro_" + id;
+        go.transform.SetParent(elementRoot);
+        Vector3 planDelta = b - a;
+        float height = zMax - zMin;
+        go.transform.position = new Vector3((a.x + b.x) * 0.5f, (zMin + zMax) * 0.5f, (a.z + b.z) * 0.5f);
+        go.transform.rotation = Quaternion.LookRotation(planDelta.normalized, Vector3.up);
+        go.transform.localScale = new Vector3(thickness, height, planDelta.magnitude);
+        go.GetComponent<Renderer>().material.color = new Color(0.55f, 0.58f, 0.62f);
     }
 
     private void CreateMember(string name, string type, Vector3 a, Vector3 b, Color color)
