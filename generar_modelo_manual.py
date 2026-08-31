@@ -32,8 +32,13 @@ def main():
     for repeat in config.get("repeat_manual_beams", []):
         def allowed(beam):
             if not repeat.get("exclude_negative_y", False):
-                return True
-            return all(beam.get(key, 0.0) >= 0.0 for key in ("y_m", "y_i_m", "y_j_m") if key in beam)
+                negative_y_allowed = True
+            else:
+                negative_y_allowed = all(beam.get(key, 0.0) >= 0.0 for key in ("y_m", "y_i_m", "y_j_m") if key in beam)
+            if not negative_y_allowed:
+                return False
+            return not any(all(beam.get(key) == value for key, value in rule.items())
+                           for rule in repeat.get("exclude_beams", []))
 
         manual_beams.extend(
             [dict(beam, z_m=repeat["to_z_m"])

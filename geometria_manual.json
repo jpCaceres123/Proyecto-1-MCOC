@@ -17,7 +17,16 @@
   "small_beam_section_m": [0.3, 0.45],
   "repeat_manual_beams": [
     {"from_z_m": 7.92, "to_z_m": 11.88},
-    {"from_z_m": 7.92, "to_z_m": 15.84, "exclude_negative_y": true}
+    {"from_z_m": 7.92, "to_z_m": 15.84, "exclude_negative_y": true, "exclude_beams": [
+      {"x_i_m": 17.49, "y_i_m": 0.0, "x_j_m": 17.49, "y_j_m": 7.25}
+    ]},
+    {"from_z_m": 15.84, "to_z_m": 19.8, "exclude_beams": [
+      {"axis": "F", "y_j_m": -2.46},
+      {"x_i_m": 12.2, "y_j_m": -2.46},
+      {"member_type": "BEAM_VARIABLE", "x_i_m": 10.0, "y_i_m": -2.46},
+      {"x_i_m": 20.0, "y_i_m": -4.12, "x_j_m": 30.0, "y_j_m": -4.12},
+      {"x_i_m": 12.2, "y_i_m": 0.0, "x_j_m": 12.2, "y_j_m": 7.25}
+    ]}
   ],
   "manual_beams": [
     {"z_m": 3.96, "direction": "X", "axis_i": "E", "axis_j": "F", "y_m": 0.0},
@@ -59,7 +68,8 @@
     {"z_m": 15.84, "direction": "X", "axis_i": "I_prima", "axis_j": "J", "y_m": 7.25},
     {"z_m": 15.84, "direction": "X", "axis_i": "I_prima", "axis_j": "J", "y_m": 0.0},
     {"z_m": 15.84, "direction": "Y", "x_i_m": 47.55, "y_i_m": 0.0, "x_j_m": 47.55, "y_j_m": 15.84, "member_type": "BEAM_40x60"},
-    {"z_m": 15.84, "direction": "Y", "axis": "J", "y_i_m": 0.0, "y_j_m": 15.84}
+    {"z_m": 15.84, "direction": "Y", "axis": "J", "y_i_m": 0.0, "y_j_m": 15.84},
+    {"z_m": 19.8, "direction": "X", "x_i_m": 20.0, "y_i_m": -4.12, "x_j_m": 30.0, "y_j_m": -4.12}
   ],
   "material": {"E_kPa": 30000000.0, "nu": 0.2},
   "mass_per_node_t": 10.0
