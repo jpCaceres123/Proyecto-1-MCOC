@@ -25,6 +25,10 @@
   ],
   "column_section_m": [0.7, 0.7],
   "beam_section_m": [0.6, 0.8],
+  "slab_thickness_m": 0.15,
+  "slab_regions": [
+    {"id": "principal_A_I_prima", "x_min_m": -28.30, "x_max_m": 45.00, "y_min_m": 0.00, "y_max_m": 16.15, "z_min_m": 3.96, "z_max_m": 19.80}
+  ],
   "small_beam_section_m": [0.3, 0.45],
   "walls": [
     {"id": 1, "x_i_m": -32.05, "y_i_m": -1.09, "z_i_m": 0.0, "x_j_m": -32.05, "y_j_m": 1.825, "z_j_m": 19.8, "thickness_m": 0.60, "status": "STRUCTURAL_MANUAL"},
@@ -112,7 +116,24 @@
     {"z_m": 15.84, "direction": "X", "axis_i": "I_prima", "axis_j": "J", "y_m": 7.25},
     {"z_m": 15.84, "direction": "X", "axis_i": "I_prima", "axis_j": "J", "y_m": 0.0},
     {"z_m": 15.84, "direction": "Y", "x_i_m": 47.55, "y_i_m": 0.0, "x_j_m": 47.55, "y_j_m": 16.15, "member_type": "BEAM_40x60"},
-    {"z_m": 15.84, "direction": "Y", "axis": "J", "y_i_m": 0.0, "y_j_m": 16.15}
+    {"z_m": 15.84, "direction": "Y", "axis": "J", "y_i_m": 0.0, "y_j_m": 16.15},
+    {"z_m": 19.8, "direction": "X", "x_i_m": 0.0, "y_i_m": 16.15, "x_j_m": 50.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "X", "x_i_m": 0.0, "y_i_m": 7.25, "x_j_m": 50.0, "y_j_m": 7.25, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "X", "x_i_m": 0.0, "y_i_m": 0.0, "x_j_m": 50.0, "y_j_m": 0.0, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 0.0, "y_i_m": 0.0, "x_j_m": 0.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 10.0, "y_i_m": 0.0, "x_j_m": 10.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 20.0, "y_i_m": 0.0, "x_j_m": 20.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 30.0, "y_i_m": 0.0, "x_j_m": 30.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 40.0, "y_i_m": 0.0, "x_j_m": 40.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 45.0, "y_i_m": 0.0, "x_j_m": 45.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 50.0, "y_i_m": 0.0, "x_j_m": 50.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 15.0, "y_i_m": 0.0, "x_j_m": 15.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 25.0, "y_i_m": 0.0, "x_j_m": 25.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 35.0, "y_i_m": 0.0, "x_j_m": 35.0, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 47.55, "y_i_m": 0.0, "x_j_m": 47.55, "y_j_m": 16.15, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 20.0, "y_i_m": -4.12, "x_j_m": 20.0, "y_j_m": 0.0, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "Y", "x_i_m": 30.0, "y_i_m": -4.12, "x_j_m": 30.0, "y_j_m": 0.0, "group": "cielo_piso4_antiguo"},
+    {"z_m": 19.8, "direction": "X", "x_i_m": 20.0, "y_i_m": -4.12, "x_j_m": 30.0, "y_j_m": -4.12, "group": "cielo_piso4_antiguo"}
   ],
   "material": {"E_kPa": 30000000.0, "nu": 0.2},
   "mass_per_node_t": 10.0

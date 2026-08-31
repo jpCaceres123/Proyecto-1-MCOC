@@ -49,11 +49,17 @@ def build_model():
         ops.element("elasticBeamColumn", element["id"], element["i"], element["j"],
                     section["A_m2"], E, G, section["J_m4"], section["Iy_m4"],
                     section["Iz_m4"], transform)
+    if data.get("slabs"):
+        slab_section = 10
+        thickness = data["slabs"][0]["thickness_m"]
+        ops.section("ElasticMembranePlateSection", slab_section, E, data["material"]["nu"], thickness)
+        for slab in data["slabs"]:
+            ops.element("ShellMITC4", slab["id"], *slab["node_ids"], slab_section)
     return data
 
 
 if __name__ == "__main__":
     model = build_model()
-    print(f"Modelo 3D creado: {len(model['nodes'])} nodos, {len(model['elements'])} elementos")
+    print(f"Modelo 3D creado: {len(model['nodes'])} nodos, {len(model['elements'])} elementos y {len(model.get('slabs', []))} losas")
     print(f"Fuente de geometria: {model['source']}")
-    print("ADVERTENCIA: se modelan solo vigas y columnas; revisar en Unity antes del analisis.")
+    print("Las losas se modelan con ShellMITC4; revisar conectividad y malla antes del analisis.")

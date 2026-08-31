@@ -13,6 +13,7 @@ public class BuildingVisualizer : MonoBehaviour
     private readonly Dictionary<int, Vector3> nodes = new Dictionary<int, Vector3>();
     private readonly List<(int id, string type, int i, int j)> elements = new List<(int, string, int, int)>();
     private readonly List<(int id, Vector3 a, Vector3 b, float zMin, float zMax, float thickness)> walls = new List<(int, Vector3, Vector3, float, float, float)>();
+    private readonly List<(int id, int n1, int n2, int n3, int n4, float thickness)> slabs = new List<(int, int, int, int, int, float)>();
     private Transform nodeRoot;
     private Transform elementRoot;
 
@@ -48,6 +49,8 @@ public class BuildingVisualizer : MonoBehaviour
                 Vector3 b = StructuralToUnity(ParseFloat(p[6]), ParseFloat(p[7]), 0.0f);
                 walls.Add((int.Parse(p[1]), a, b, ParseFloat(p[5]), ParseFloat(p[8]), ParseFloat(p[9])));
             }
+            else if (p[0] == "S")
+                slabs.Add((int.Parse(p[1]), int.Parse(p[2]), int.Parse(p[3]), int.Parse(p[4]), int.Parse(p[5]), ParseFloat(p[7])));
         }
     }
 
@@ -73,6 +76,12 @@ public class BuildingVisualizer : MonoBehaviour
         }
         foreach (var wall in walls)
             CreateWall(wall.id, wall.a, wall.b, wall.zMin, wall.zMax, wall.thickness);
+        foreach (var slab in slabs)
+        {
+            if (nodes.ContainsKey(slab.n1) && nodes.ContainsKey(slab.n2)
+                    && nodes.ContainsKey(slab.n3) && nodes.ContainsKey(slab.n4))
+                CreateSlab(slab.id, slab.n1, slab.n2, slab.n3, slab.n4, slab.thickness);
+        }
         if (showNodes)
             foreach (var n in nodes) CreateNode(n.Key, n.Value);
     }
@@ -88,6 +97,29 @@ public class BuildingVisualizer : MonoBehaviour
         go.transform.rotation = Quaternion.LookRotation(planDelta.normalized, Vector3.up);
         go.transform.localScale = new Vector3(thickness, height, planDelta.magnitude);
         go.GetComponent<Renderer>().material.color = new Color(0.55f, 0.58f, 0.62f);
+    }
+
+    private void CreateSlab(int id, int n1, int n2, int n3, int n4, float thickness)
+    {
+        Vector3[] corners = { nodes[n1], nodes[n2], nodes[n3], nodes[n4] };
+        float minX = corners[0].x, maxX = corners[0].x;
+        float minZ = corners[0].z, maxZ = corners[0].z;
+        float y = corners[0].y;
+        foreach (Vector3 corner in corners)
+        {
+            minX = Mathf.Min(minX, corner.x);
+            maxX = Mathf.Max(maxX, corner.x);
+            minZ = Mathf.Min(minZ, corner.z);
+            maxZ = Mathf.Max(maxZ, corner.z);
+            y = Mathf.Max(y, corner.y);
+        }
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.name = "Losa_" + id;
+        go.transform.SetParent(elementRoot);
+        // Align the slab top with the top of the 0.80 m deep beam section.
+        go.transform.position = new Vector3((minX + maxX) * 0.5f, y + 0.40f - thickness * 0.5f, (minZ + maxZ) * 0.5f);
+        go.transform.localScale = new Vector3(maxX - minX, thickness, maxZ - minZ);
+        go.GetComponent<Renderer>().material.color = new Color(0.35f, 0.65f, 0.78f, 0.65f);
     }
 
     private void CreateMember(string name, string type, Vector3 a, Vector3 b, Color color)

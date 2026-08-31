@@ -1925,101 +1925,101 @@
     },
     {
       "id": 900039,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
+      "x_m": 15.0,
       "y_m": 0.0,
-      "z_m": 7.92,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900040,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 0.0,
-      "z_m": 7.92,
+      "x_m": 15.0,
+      "y_m": 16.15,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900041,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 7.25,
-      "z_m": 7.92,
+      "x_m": 25.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900042,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
+      "x_m": 25.0,
       "y_m": 16.15,
-      "z_m": 7.92,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900043,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 16.15,
-      "z_m": 7.92,
+      "x_m": 35.0,
+      "y_m": 0.0,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900044,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 11.885,
-      "z_m": 7.92,
+      "x_m": 35.0,
+      "y_m": 16.15,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900045,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 11.885,
-      "z_m": 7.92,
+      "x_m": 47.55,
+      "y_m": 0.0,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900046,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 4.265,
-      "z_m": 7.92,
+      "x_m": 47.55,
+      "y_m": 16.15,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900047,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 4.265,
-      "z_m": 7.92,
+      "x_m": 20.0,
+      "y_m": -4.12,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900048,
-      "level": 2,
+      "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -28.3,
-      "y_m": 0.0,
-      "z_m": 7.92,
+      "x_m": 30.0,
+      "y_m": -4.12,
+      "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
@@ -2027,8 +2027,8 @@
       "id": 900049,
       "level": 2,
       "axis": "BEAM_MANUAL",
-      "x_m": -28.3,
-      "y_m": 16.15,
+      "x_m": -32.05,
+      "y_m": 0.0,
       "z_m": 7.92,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2037,7 +2037,7 @@
       "id": 900050,
       "level": 2,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
+      "x_m": -0.25,
       "y_m": 0.0,
       "z_m": 7.92,
       "restraint": false,
@@ -2047,8 +2047,8 @@
       "id": 900051,
       "level": 2,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 16.15,
+      "x_m": -0.25,
+      "y_m": 7.25,
       "z_m": 7.92,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2057,8 +2057,8 @@
       "id": 900052,
       "level": 2,
       "axis": "BEAM_MANUAL",
-      "x_m": -15.8,
-      "y_m": 0.0,
+      "x_m": -32.05,
+      "y_m": 16.15,
       "z_m": 7.92,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2067,7 +2067,7 @@
       "id": 900053,
       "level": 2,
       "axis": "BEAM_MANUAL",
-      "x_m": -15.8,
+      "x_m": -0.25,
       "y_m": 16.15,
       "z_m": 7.92,
       "restraint": false,
@@ -2077,6 +2077,106 @@
       "id": 900054,
       "level": 2,
       "axis": "BEAM_MANUAL",
+      "x_m": -32.05,
+      "y_m": 11.885,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900055,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 11.885,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900056,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -32.05,
+      "y_m": 4.265,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900057,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 4.265,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900058,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -28.3,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900059,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -28.3,
+      "y_m": 16.15,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900060,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900061,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 16.15,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900062,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -15.8,
+      "y_m": 0.0,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900063,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
+      "x_m": -15.8,
+      "y_m": 16.15,
+      "z_m": 7.92,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900064,
+      "level": 2,
+      "axis": "BEAM_MANUAL",
       "x_m": -5.8,
       "y_m": 0.0,
       "z_m": 7.92,
@@ -2084,7 +2184,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900055,
+      "id": 900065,
       "level": 2,
       "axis": "BEAM_MANUAL",
       "x_m": -5.8,
@@ -2094,111 +2194,11 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900056,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 0.0,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900057,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 0.0,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900058,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 7.25,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900059,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 16.15,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900060,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 16.15,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900061,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 11.885,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900062,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 11.885,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900063,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 4.265,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900064,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 4.265,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900065,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": -28.3,
-      "y_m": 0.0,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
       "id": 900066,
       "level": 3,
       "axis": "BEAM_MANUAL",
-      "x_m": -28.3,
-      "y_m": 16.15,
+      "x_m": -32.05,
+      "y_m": 0.0,
       "z_m": 11.88,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2207,7 +2207,7 @@
       "id": 900067,
       "level": 3,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
+      "x_m": -0.25,
       "y_m": 0.0,
       "z_m": 11.88,
       "restraint": false,
@@ -2217,8 +2217,8 @@
       "id": 900068,
       "level": 3,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 16.15,
+      "x_m": -0.25,
+      "y_m": 7.25,
       "z_m": 11.88,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2227,8 +2227,8 @@
       "id": 900069,
       "level": 3,
       "axis": "BEAM_MANUAL",
-      "x_m": -15.8,
-      "y_m": 0.0,
+      "x_m": -32.05,
+      "y_m": 16.15,
       "z_m": 11.88,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2237,7 +2237,7 @@
       "id": 900070,
       "level": 3,
       "axis": "BEAM_MANUAL",
-      "x_m": -15.8,
+      "x_m": -0.25,
       "y_m": 16.15,
       "z_m": 11.88,
       "restraint": false,
@@ -2247,6 +2247,106 @@
       "id": 900071,
       "level": 3,
       "axis": "BEAM_MANUAL",
+      "x_m": -32.05,
+      "y_m": 11.885,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900072,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 11.885,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900073,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -32.05,
+      "y_m": 4.265,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900074,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 4.265,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900075,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -28.3,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900076,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -28.3,
+      "y_m": 16.15,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900077,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900078,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 16.15,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900079,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -15.8,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900080,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": -15.8,
+      "y_m": 16.15,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900081,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
       "x_m": -5.8,
       "y_m": 0.0,
       "z_m": 11.88,
@@ -2254,7 +2354,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900072,
+      "id": 900082,
       "level": 3,
       "axis": "BEAM_MANUAL",
       "x_m": -5.8,
@@ -2264,111 +2364,11 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900073,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 0.0,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900074,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 0.0,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900075,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 7.25,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900076,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 16.15,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900077,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 16.15,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900078,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 11.885,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900079,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 11.885,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900080,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 4.265,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900081,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 4.265,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900082,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": -28.3,
-      "y_m": 0.0,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
       "id": 900083,
       "level": 4,
       "axis": "BEAM_MANUAL",
-      "x_m": -28.3,
-      "y_m": 16.15,
+      "x_m": -32.05,
+      "y_m": 0.0,
       "z_m": 15.84,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2377,7 +2377,7 @@
       "id": 900084,
       "level": 4,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
+      "x_m": -0.25,
       "y_m": 0.0,
       "z_m": 15.84,
       "restraint": false,
@@ -2387,8 +2387,8 @@
       "id": 900085,
       "level": 4,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 16.15,
+      "x_m": -0.25,
+      "y_m": 7.25,
       "z_m": 15.84,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2397,8 +2397,8 @@
       "id": 900086,
       "level": 4,
       "axis": "BEAM_MANUAL",
-      "x_m": -15.8,
-      "y_m": 0.0,
+      "x_m": -32.05,
+      "y_m": 16.15,
       "z_m": 15.84,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2407,7 +2407,7 @@
       "id": 900087,
       "level": 4,
       "axis": "BEAM_MANUAL",
-      "x_m": -15.8,
+      "x_m": -0.25,
       "y_m": 16.15,
       "z_m": 15.84,
       "restraint": false,
@@ -2417,6 +2417,106 @@
       "id": 900088,
       "level": 4,
       "axis": "BEAM_MANUAL",
+      "x_m": -32.05,
+      "y_m": 11.885,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900089,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 11.885,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900090,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -32.05,
+      "y_m": 4.265,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900091,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 4.265,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900092,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -28.3,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900093,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -28.3,
+      "y_m": 16.15,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900094,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900095,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 16.15,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900096,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -15.8,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900097,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": -15.8,
+      "y_m": 16.15,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900098,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
       "x_m": -5.8,
       "y_m": 0.0,
       "z_m": 15.84,
@@ -2424,7 +2524,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900089,
+      "id": 900099,
       "level": 4,
       "axis": "BEAM_MANUAL",
       "x_m": -5.8,
@@ -2434,111 +2534,11 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900090,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 0.0,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900091,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 0.0,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900092,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 7.25,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900093,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 16.15,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900094,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -0.25,
-      "y_m": 16.15,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900095,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 11.885,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900096,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 11.885,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900097,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -32.05,
-      "y_m": 4.265,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900098,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 4.265,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900099,
-      "level": 5,
-      "axis": "BEAM_MANUAL",
-      "x_m": -28.3,
-      "y_m": 0.0,
-      "z_m": 19.8,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
       "id": 900100,
       "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -28.3,
-      "y_m": 16.15,
+      "x_m": -32.05,
+      "y_m": 0.0,
       "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2547,7 +2547,7 @@
       "id": 900101,
       "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
+      "x_m": -0.25,
       "y_m": 0.0,
       "z_m": 19.8,
       "restraint": false,
@@ -2557,8 +2557,8 @@
       "id": 900102,
       "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -24.55,
-      "y_m": 16.15,
+      "x_m": -0.25,
+      "y_m": 7.25,
       "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2567,8 +2567,8 @@
       "id": 900103,
       "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -15.8,
-      "y_m": 0.0,
+      "x_m": -32.05,
+      "y_m": 16.15,
       "z_m": 19.8,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
@@ -2577,7 +2577,7 @@
       "id": 900104,
       "level": 5,
       "axis": "BEAM_MANUAL",
-      "x_m": -15.8,
+      "x_m": -0.25,
       "y_m": 16.15,
       "z_m": 19.8,
       "restraint": false,
@@ -2587,6 +2587,106 @@
       "id": 900105,
       "level": 5,
       "axis": "BEAM_MANUAL",
+      "x_m": -32.05,
+      "y_m": 11.885,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900106,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 11.885,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900107,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -32.05,
+      "y_m": 4.265,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900108,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 4.265,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900109,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -28.3,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900110,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -28.3,
+      "y_m": 16.15,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900111,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900112,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -24.55,
+      "y_m": 16.15,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900113,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -15.8,
+      "y_m": 0.0,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900114,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
+      "x_m": -15.8,
+      "y_m": 16.15,
+      "z_m": 19.8,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900115,
+      "level": 5,
+      "axis": "BEAM_MANUAL",
       "x_m": -5.8,
       "y_m": 0.0,
       "z_m": 19.8,
@@ -2594,7 +2694,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900106,
+      "id": 900116,
       "level": 5,
       "axis": "BEAM_MANUAL",
       "x_m": -5.8,
@@ -2604,7 +2704,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900107,
+      "id": 900117,
       "level": 3,
       "axis": "BEAM_MANUAL",
       "x_m": 10.0,
@@ -2614,7 +2714,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900108,
+      "id": 900118,
       "level": 3,
       "axis": "BEAM_MANUAL",
       "x_m": 17.49,
@@ -2624,117 +2724,117 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900109,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": 15.0,
-      "y_m": 0.0,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900110,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": 15.0,
-      "y_m": 16.15,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900111,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": 25.0,
-      "y_m": 16.15,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900112,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": 17.49,
-      "y_m": 0.0,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900113,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": 17.49,
-      "y_m": 7.25,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900114,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": 35.0,
-      "y_m": 0.0,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900115,
-      "level": 3,
-      "axis": "BEAM_MANUAL",
-      "x_m": 35.0,
-      "y_m": 16.15,
-      "z_m": 11.88,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900116,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": 15.0,
-      "y_m": 0.0,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900117,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": 15.0,
-      "y_m": 16.15,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
-      "id": 900118,
-      "level": 4,
-      "axis": "BEAM_MANUAL",
-      "x_m": 25.0,
-      "y_m": 0.0,
-      "z_m": 15.84,
-      "restraint": false,
-      "status": "MANUAL_BEAM_NODE"
-    },
-    {
       "id": 900119,
-      "level": 4,
+      "level": 3,
       "axis": "BEAM_MANUAL",
-      "x_m": 25.0,
-      "y_m": 16.15,
-      "z_m": 15.84,
+      "x_m": 15.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
       "restraint": false,
       "status": "MANUAL_BEAM_NODE"
     },
     {
       "id": 900120,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 16.15,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900121,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 16.15,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900122,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900123,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 17.49,
+      "y_m": 7.25,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900124,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 35.0,
+      "y_m": 0.0,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900125,
+      "level": 3,
+      "axis": "BEAM_MANUAL",
+      "x_m": 35.0,
+      "y_m": 16.15,
+      "z_m": 11.88,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900126,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900127,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 15.0,
+      "y_m": 16.15,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900128,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 0.0,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900129,
+      "level": 4,
+      "axis": "BEAM_MANUAL",
+      "x_m": 25.0,
+      "y_m": 16.15,
+      "z_m": 15.84,
+      "restraint": false,
+      "status": "MANUAL_BEAM_NODE"
+    },
+    {
+      "id": 900130,
       "level": 4,
       "axis": "BEAM_MANUAL",
       "x_m": 17.49,
@@ -2744,7 +2844,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900121,
+      "id": 900131,
       "level": 4,
       "axis": "BEAM_MANUAL",
       "x_m": 17.49,
@@ -2754,7 +2854,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900122,
+      "id": 900132,
       "level": 4,
       "axis": "BEAM_MANUAL",
       "x_m": 35.0,
@@ -2764,7 +2864,7 @@
       "status": "MANUAL_BEAM_NODE"
     },
     {
-      "id": 900123,
+      "id": 900133,
       "level": 4,
       "axis": "BEAM_MANUAL",
       "x_m": 35.0,
@@ -4063,100 +4163,172 @@
       "id": 177,
       "type": "BEAM_X",
       "direction": "X",
-      "i": 900039,
-      "j": 900040,
+      "i": 502001,
+      "j": 502501,
       "status": "MANUAL"
     },
     {
       "id": 178,
       "type": "BEAM_X",
       "direction": "X",
-      "i": 702004,
-      "j": 900041,
+      "i": 501001,
+      "j": 501501,
       "status": "MANUAL"
     },
     {
       "id": 179,
       "type": "BEAM_X",
       "direction": "X",
-      "i": 900042,
-      "j": 900043,
+      "i": 500001,
+      "j": 500501,
       "status": "MANUAL"
     },
     {
       "id": 180,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900044,
-      "j": 900045,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500001,
+      "j": 502001,
       "status": "MANUAL"
     },
     {
       "id": 181,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900046,
-      "j": 900047,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 500101,
+      "j": 502101,
       "status": "MANUAL"
     },
     {
       "id": 182,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900039,
-      "j": 900042,
+      "i": 500201,
+      "j": 502201,
       "status": "MANUAL"
     },
     {
       "id": 183,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900048,
-      "j": 900049,
+      "i": 500301,
+      "j": 502301,
       "status": "MANUAL"
     },
     {
       "id": 184,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 702007,
-      "j": 702001,
+      "i": 500401,
+      "j": 502401,
       "status": "MANUAL"
     },
     {
       "id": 185,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 702008,
-      "j": 702002,
+      "i": 500451,
+      "j": 502451,
       "status": "MANUAL"
     },
     {
       "id": 186,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900050,
-      "j": 900051,
+      "i": 500501,
+      "j": 502501,
       "status": "MANUAL"
     },
     {
       "id": 187,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900052,
-      "j": 900053,
+      "i": 900039,
+      "j": 900040,
       "status": "MANUAL"
     },
     {
       "id": 188,
       "type": "BEAM_Y",
       "direction": "Y",
+      "i": 900041,
+      "j": 900042,
+      "status": "MANUAL"
+    },
+    {
+      "id": 189,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900043,
+      "j": 900044,
+      "status": "MANUAL"
+    },
+    {
+      "id": 190,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900045,
+      "j": 900046,
+      "status": "MANUAL"
+    },
+    {
+      "id": 191,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900047,
+      "j": 500201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 192,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900048,
+      "j": 500301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 193,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900047,
+      "j": 900048,
+      "status": "MANUAL"
+    },
+    {
+      "id": 194,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900049,
+      "j": 900050,
+      "status": "MANUAL"
+    },
+    {
+      "id": 195,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 702004,
+      "j": 900051,
+      "status": "MANUAL"
+    },
+    {
+      "id": 196,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900052,
+      "j": 900053,
+      "status": "MANUAL"
+    },
+    {
+      "id": 197,
+      "type": "BEAM_X",
+      "direction": "X",
       "i": 900054,
       "j": 900055,
       "status": "MANUAL"
     },
     {
-      "id": 189,
+      "id": 198,
       "type": "BEAM_X",
       "direction": "X",
       "i": 900056,
@@ -4164,95 +4336,95 @@
       "status": "MANUAL"
     },
     {
-      "id": 190,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 703004,
-      "j": 900058,
-      "status": "MANUAL"
-    },
-    {
-      "id": 191,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900059,
-      "j": 900060,
-      "status": "MANUAL"
-    },
-    {
-      "id": 192,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900061,
-      "j": 900062,
-      "status": "MANUAL"
-    },
-    {
-      "id": 193,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900063,
-      "j": 900064,
-      "status": "MANUAL"
-    },
-    {
-      "id": 194,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900056,
-      "j": 900059,
-      "status": "MANUAL"
-    },
-    {
-      "id": 195,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900065,
-      "j": 900066,
-      "status": "MANUAL"
-    },
-    {
-      "id": 196,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 703007,
-      "j": 703001,
-      "status": "MANUAL"
-    },
-    {
-      "id": 197,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 703008,
-      "j": 703002,
-      "status": "MANUAL"
-    },
-    {
-      "id": 198,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900067,
-      "j": 900068,
-      "status": "MANUAL"
-    },
-    {
       "id": 199,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900069,
-      "j": 900070,
+      "i": 900049,
+      "j": 900052,
       "status": "MANUAL"
     },
     {
       "id": 200,
       "type": "BEAM_Y",
       "direction": "Y",
+      "i": 900058,
+      "j": 900059,
+      "status": "MANUAL"
+    },
+    {
+      "id": 201,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 702007,
+      "j": 702001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 202,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 702008,
+      "j": 702002,
+      "status": "MANUAL"
+    },
+    {
+      "id": 203,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900060,
+      "j": 900061,
+      "status": "MANUAL"
+    },
+    {
+      "id": 204,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900062,
+      "j": 900063,
+      "status": "MANUAL"
+    },
+    {
+      "id": 205,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900064,
+      "j": 900065,
+      "status": "MANUAL"
+    },
+    {
+      "id": 206,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900066,
+      "j": 900067,
+      "status": "MANUAL"
+    },
+    {
+      "id": 207,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 703004,
+      "j": 900068,
+      "status": "MANUAL"
+    },
+    {
+      "id": 208,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900069,
+      "j": 900070,
+      "status": "MANUAL"
+    },
+    {
+      "id": 209,
+      "type": "BEAM_X",
+      "direction": "X",
       "i": 900071,
       "j": 900072,
       "status": "MANUAL"
     },
     {
-      "id": 201,
+      "id": 210,
       "type": "BEAM_X",
       "direction": "X",
       "i": 900073,
@@ -4260,95 +4432,95 @@
       "status": "MANUAL"
     },
     {
-      "id": 202,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 704004,
-      "j": 900075,
-      "status": "MANUAL"
-    },
-    {
-      "id": 203,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900076,
-      "j": 900077,
-      "status": "MANUAL"
-    },
-    {
-      "id": 204,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900078,
-      "j": 900079,
-      "status": "MANUAL"
-    },
-    {
-      "id": 205,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900080,
-      "j": 900081,
-      "status": "MANUAL"
-    },
-    {
-      "id": 206,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900073,
-      "j": 900076,
-      "status": "MANUAL"
-    },
-    {
-      "id": 207,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900082,
-      "j": 900083,
-      "status": "MANUAL"
-    },
-    {
-      "id": 208,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 704007,
-      "j": 704001,
-      "status": "MANUAL"
-    },
-    {
-      "id": 209,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 704008,
-      "j": 704002,
-      "status": "MANUAL"
-    },
-    {
-      "id": 210,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900084,
-      "j": 900085,
-      "status": "MANUAL"
-    },
-    {
       "id": 211,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900086,
-      "j": 900087,
+      "i": 900066,
+      "j": 900069,
       "status": "MANUAL"
     },
     {
       "id": 212,
       "type": "BEAM_Y",
       "direction": "Y",
+      "i": 900075,
+      "j": 900076,
+      "status": "MANUAL"
+    },
+    {
+      "id": 213,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 703007,
+      "j": 703001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 214,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 703008,
+      "j": 703002,
+      "status": "MANUAL"
+    },
+    {
+      "id": 215,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900077,
+      "j": 900078,
+      "status": "MANUAL"
+    },
+    {
+      "id": 216,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900079,
+      "j": 900080,
+      "status": "MANUAL"
+    },
+    {
+      "id": 217,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900081,
+      "j": 900082,
+      "status": "MANUAL"
+    },
+    {
+      "id": 218,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900083,
+      "j": 900084,
+      "status": "MANUAL"
+    },
+    {
+      "id": 219,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 704004,
+      "j": 900085,
+      "status": "MANUAL"
+    },
+    {
+      "id": 220,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900086,
+      "j": 900087,
+      "status": "MANUAL"
+    },
+    {
+      "id": 221,
+      "type": "BEAM_X",
+      "direction": "X",
       "i": 900088,
       "j": 900089,
       "status": "MANUAL"
     },
     {
-      "id": 213,
+      "id": 222,
       "type": "BEAM_X",
       "direction": "X",
       "i": 900090,
@@ -4356,119 +4528,95 @@
       "status": "MANUAL"
     },
     {
-      "id": 214,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 705004,
-      "j": 900092,
-      "status": "MANUAL"
-    },
-    {
-      "id": 215,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900093,
-      "j": 900094,
-      "status": "MANUAL"
-    },
-    {
-      "id": 216,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900095,
-      "j": 900096,
-      "status": "MANUAL"
-    },
-    {
-      "id": 217,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 900097,
-      "j": 900098,
-      "status": "MANUAL"
-    },
-    {
-      "id": 218,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900090,
-      "j": 900093,
-      "status": "MANUAL"
-    },
-    {
-      "id": 219,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900099,
-      "j": 900100,
-      "status": "MANUAL"
-    },
-    {
-      "id": 220,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 705007,
-      "j": 705001,
-      "status": "MANUAL"
-    },
-    {
-      "id": 221,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 705008,
-      "j": 705002,
-      "status": "MANUAL"
-    },
-    {
-      "id": 222,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 900101,
-      "j": 900102,
-      "status": "MANUAL"
-    },
-    {
       "id": 223,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900103,
-      "j": 900104,
+      "i": 900083,
+      "j": 900086,
       "status": "MANUAL"
     },
     {
       "id": 224,
       "type": "BEAM_Y",
       "direction": "Y",
+      "i": 900092,
+      "j": 900093,
+      "status": "MANUAL"
+    },
+    {
+      "id": 225,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 704007,
+      "j": 704001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 226,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 704008,
+      "j": 704002,
+      "status": "MANUAL"
+    },
+    {
+      "id": 227,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900094,
+      "j": 900095,
+      "status": "MANUAL"
+    },
+    {
+      "id": 228,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900096,
+      "j": 900097,
+      "status": "MANUAL"
+    },
+    {
+      "id": 229,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900098,
+      "j": 900099,
+      "status": "MANUAL"
+    },
+    {
+      "id": 230,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900100,
+      "j": 900101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 231,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 705004,
+      "j": 900102,
+      "status": "MANUAL"
+    },
+    {
+      "id": 232,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900103,
+      "j": 900104,
+      "status": "MANUAL"
+    },
+    {
+      "id": 233,
+      "type": "BEAM_X",
+      "direction": "X",
       "i": 900105,
       "j": 900106,
       "status": "MANUAL"
     },
     {
-      "id": 225,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 300001,
-      "j": 300451,
-      "status": "MANUAL"
-    },
-    {
-      "id": 226,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 301001,
-      "j": 301451,
-      "status": "MANUAL"
-    },
-    {
-      "id": 227,
-      "type": "BEAM_X",
-      "direction": "X",
-      "i": 302001,
-      "j": 302451,
-      "status": "MANUAL"
-    },
-    {
-      "id": 228,
+      "id": 234,
       "type": "BEAM_X",
       "direction": "X",
       "i": 900107,
@@ -4476,59 +4624,11 @@
       "status": "MANUAL"
     },
     {
-      "id": 229,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 300001,
-      "j": 302001,
-      "status": "MANUAL"
-    },
-    {
-      "id": 230,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 300101,
-      "j": 302101,
-      "status": "MANUAL"
-    },
-    {
-      "id": 231,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 300201,
-      "j": 302201,
-      "status": "MANUAL"
-    },
-    {
-      "id": 232,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 300301,
-      "j": 302301,
-      "status": "MANUAL"
-    },
-    {
-      "id": 233,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 300401,
-      "j": 302401,
-      "status": "MANUAL"
-    },
-    {
-      "id": 234,
-      "type": "BEAM_Y",
-      "direction": "Y",
-      "i": 300451,
-      "j": 302451,
-      "status": "MANUAL"
-    },
-    {
       "id": 235,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900107,
-      "j": 300101,
+      "i": 900100,
+      "j": 900103,
       "status": "MANUAL"
     },
     {
@@ -4543,23 +4643,23 @@
       "id": 237,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900028,
-      "j": 900111,
+      "i": 705007,
+      "j": 705001,
       "status": "MANUAL"
     },
     {
       "id": 238,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900112,
-      "j": 900113,
+      "i": 705008,
+      "j": 705002,
       "status": "MANUAL"
     },
     {
       "id": 239,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900108,
+      "i": 900111,
       "j": 900112,
       "status": "MANUAL"
     },
@@ -4567,12 +4667,148 @@
       "id": 240,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900114,
-      "j": 900115,
+      "i": 900113,
+      "j": 900114,
       "status": "MANUAL"
     },
     {
       "id": 241,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900115,
+      "j": 900116,
+      "status": "MANUAL"
+    },
+    {
+      "id": 242,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 300001,
+      "j": 300451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 243,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 301001,
+      "j": 301451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 244,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 302001,
+      "j": 302451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 245,
+      "type": "BEAM_X",
+      "direction": "X",
+      "i": 900117,
+      "j": 900118,
+      "status": "MANUAL"
+    },
+    {
+      "id": 246,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300001,
+      "j": 302001,
+      "status": "MANUAL"
+    },
+    {
+      "id": 247,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300101,
+      "j": 302101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 248,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300201,
+      "j": 302201,
+      "status": "MANUAL"
+    },
+    {
+      "id": 249,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300301,
+      "j": 302301,
+      "status": "MANUAL"
+    },
+    {
+      "id": 250,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300401,
+      "j": 302401,
+      "status": "MANUAL"
+    },
+    {
+      "id": 251,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 300451,
+      "j": 302451,
+      "status": "MANUAL"
+    },
+    {
+      "id": 252,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900117,
+      "j": 300101,
+      "status": "MANUAL"
+    },
+    {
+      "id": 253,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900119,
+      "j": 900120,
+      "status": "MANUAL"
+    },
+    {
+      "id": 254,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900028,
+      "j": 900121,
+      "status": "MANUAL"
+    },
+    {
+      "id": 255,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900122,
+      "j": 900123,
+      "status": "MANUAL"
+    },
+    {
+      "id": 256,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900118,
+      "j": 900122,
+      "status": "MANUAL"
+    },
+    {
+      "id": 257,
+      "type": "BEAM_Y",
+      "direction": "Y",
+      "i": 900124,
+      "j": 900125,
+      "status": "MANUAL"
+    },
+    {
+      "id": 258,
       "type": "BEAM_X",
       "direction": "X",
       "i": 400001,
@@ -4580,7 +4816,7 @@
       "status": "MANUAL"
     },
     {
-      "id": 242,
+      "id": 259,
       "type": "BEAM_X",
       "direction": "X",
       "i": 401001,
@@ -4588,7 +4824,7 @@
       "status": "MANUAL"
     },
     {
-      "id": 243,
+      "id": 260,
       "type": "BEAM_X",
       "direction": "X",
       "i": 402001,
@@ -4596,7 +4832,7 @@
       "status": "MANUAL"
     },
     {
-      "id": 244,
+      "id": 261,
       "type": "BEAM_Y",
       "direction": "Y",
       "i": 400001,
@@ -4604,7 +4840,7 @@
       "status": "MANUAL"
     },
     {
-      "id": 245,
+      "id": 262,
       "type": "BEAM_Y",
       "direction": "Y",
       "i": 400101,
@@ -4612,7 +4848,7 @@
       "status": "MANUAL"
     },
     {
-      "id": 246,
+      "id": 263,
       "type": "BEAM_Y",
       "direction": "Y",
       "i": 400201,
@@ -4620,7 +4856,7 @@
       "status": "MANUAL"
     },
     {
-      "id": 247,
+      "id": 264,
       "type": "BEAM_Y",
       "direction": "Y",
       "i": 400301,
@@ -4628,7 +4864,7 @@
       "status": "MANUAL"
     },
     {
-      "id": 248,
+      "id": 265,
       "type": "BEAM_Y",
       "direction": "Y",
       "i": 400401,
@@ -4636,7 +4872,7 @@
       "status": "MANUAL"
     },
     {
-      "id": 249,
+      "id": 266,
       "type": "BEAM_Y",
       "direction": "Y",
       "i": 400451,
@@ -4644,35 +4880,35 @@
       "status": "MANUAL"
     },
     {
-      "id": 250,
+      "id": 267,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900116,
-      "j": 900117,
+      "i": 900126,
+      "j": 900127,
       "status": "MANUAL"
     },
     {
-      "id": 251,
+      "id": 268,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900118,
-      "j": 900119,
+      "i": 900128,
+      "j": 900129,
       "status": "MANUAL"
     },
     {
-      "id": 252,
+      "id": 269,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900120,
-      "j": 900121,
+      "i": 900130,
+      "j": 900131,
       "status": "MANUAL"
     },
     {
-      "id": 253,
+      "id": 270,
       "type": "BEAM_Y",
       "direction": "Y",
-      "i": 900122,
-      "j": 900123,
+      "i": 900132,
+      "j": 900133,
       "status": "MANUAL"
     }
   ],
@@ -4940,6 +5176,164 @@
       "z_j_m": 7.92,
       "thickness_m": 0.3,
       "status": "STRUCTURAL_MANUAL"
+    }
+  ],
+  "slabs": [
+    {
+      "id": 1000000,
+      "node_ids": [
+        900017,
+        900018,
+        900023,
+        200101
+      ],
+      "z_m": 7.92,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000001,
+      "node_ids": [
+        900027,
+        900029,
+        900028,
+        300201
+      ],
+      "z_m": 11.88,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000002,
+      "node_ids": [
+        900029,
+        900030,
+        300301,
+        900028
+      ],
+      "z_m": 11.88,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000003,
+      "node_ids": [
+        900031,
+        900033,
+        900032,
+        400101
+      ],
+      "z_m": 15.84,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000004,
+      "node_ids": [
+        400451,
+        400501,
+        401501,
+        401451
+      ],
+      "z_m": 15.84,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000005,
+      "node_ids": [
+        401451,
+        401501,
+        402501,
+        402451
+      ],
+      "z_m": 15.84,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000006,
+      "node_ids": [
+        900100,
+        900109,
+        900110,
+        900103
+      ],
+      "z_m": 19.8,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000007,
+      "node_ids": [
+        900047,
+        900048,
+        500301,
+        500201
+      ],
+      "z_m": 19.8,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000008,
+      "node_ids": [
+        900009,
+        100451,
+        102451,
+        900010
+      ],
+      "z_m": 3.96,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000009,
+      "node_ids": [
+        900058,
+        200451,
+        202451,
+        900059
+      ],
+      "z_m": 7.92,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000010,
+      "node_ids": [
+        900075,
+        300451,
+        302451,
+        900076
+      ],
+      "z_m": 11.88,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000011,
+      "node_ids": [
+        900092,
+        400451,
+        402451,
+        900093
+      ],
+      "z_m": 15.84,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
+    },
+    {
+      "id": 1000012,
+      "node_ids": [
+        900109,
+        500451,
+        502451,
+        900110
+      ],
+      "z_m": 19.8,
+      "thickness_m": 0.15,
+      "status": "MANUAL"
     }
   ],
   "section_columns": {

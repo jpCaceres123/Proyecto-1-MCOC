@@ -116,9 +116,89 @@ def main():
                 elements.append({"id": eid, "type": "BEAM_Y", "direction": "Y", "i": a["id"], "j": b["id"], "status": "PROVISIONAL_BEAM"})
                 eid += 1
 
+    def covered(intervals, start, end):
+        current = start
+        for a, b in sorted((min(a, b), max(a, b)) for a, b in intervals):
+            if b <= current + 1e-6:
+                continue
+            if a > current + 1e-6:
+                return False
+            current = max(current, b)
+            if current >= end - 1e-6:
+                return True
+        return current >= end - 1e-6
+
+    # Detect elementary rectangular faces bounded by beams at each floor.
+    slab_faces = []
+    slab_regions = config.get("slab_regions", [])
+    for z in levels[1:]:
+        horizontal = {}
+        vertical = {}
+        for element in elements:
+            if not element["type"].startswith("BEAM"):
+                continue
+            a = next(n for n in nodes if n["id"] == element["i"])
+            b = next(n for n in nodes if n["id"] == element["j"])
+            if abs(a["z_m"] - z) > 1e-6 or abs(b["z_m"] - z) > 1e-6:
+                continue
+            if abs(a["y_m"] - b["y_m"]) < 1e-6:
+                horizontal.setdefault(round(a["y_m"], 6), []).append((a["x_m"], b["x_m"]))
+            elif abs(a["x_m"] - b["x_m"]) < 1e-6:
+                vertical.setdefault(round(a["x_m"], 6), []).append((a["y_m"], b["y_m"]))
+        xs = sorted({x for intervals in horizontal.values() for pair in intervals for x in pair})
+        ys = sorted({y for intervals in vertical.values() for pair in intervals for y in pair})
+        for x0, x1 in zip(xs, xs[1:]):
+            for y0, y1 in zip(ys, ys[1:]):
+                center_x = (x0 + x1) * 0.5
+                center_y = (y0 + y1) * 0.5
+                covered_by_region = any(
+                    region["z_min_m"] <= z <= region["z_max_m"]
+                    and region["x_min_m"] <= center_x <= region["x_max_m"]
+                    and region["y_min_m"] <= center_y <= region["y_max_m"]
+                    for region in slab_regions
+                )
+                if covered_by_region:
+                    continue
+                if (covered(horizontal.get(round(y0, 6), []), x0, x1)
+                        and covered(horizontal.get(round(y1, 6), []), x0, x1)
+                        and covered(vertical.get(round(x0, 6), []), y0, y1)
+                        and covered(vertical.get(round(x1, 6), []), y0, y1)):
+                    slab_faces.append((z, [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]))
+
+    for region in slab_regions:
+        for z in levels[1:]:
+            if region["z_min_m"] <= z <= region["z_max_m"]:
+                slab_faces.append((z, [
+                    (region["x_min_m"], region["y_min_m"]),
+                    (region["x_max_m"], region["y_min_m"]),
+                    (region["x_max_m"], region["y_max_m"]),
+                    (region["x_min_m"], region["y_max_m"]),
+                ]))
+
+    slabs = []
+    next_slab_node = 800000
+    next_slab_element = 1000000
+    for z, face in slab_faces:
+        slab_node_ids = []
+        for x, y in face:
+            key = (round(x, 3), round(y, 3), round(z, 3))
+            if key not in node_by_xyz:
+                node = {"id": next_slab_node, "level": levels.index(z), "axis": "SLAB",
+                        "x_m": x, "y_m": y, "z_m": z, "restraint": False,
+                        "status": "SLAB_NODE"}
+                next_slab_node += 1
+                nodes.append(node)
+                node_by_xyz[key] = node
+            slab_node_ids.append(node_by_xyz[key]["id"])
+        slabs.append({"id": next_slab_element, "node_ids": slab_node_ids,
+                      "z_m": z, "thickness_m": config.get("slab_thickness_m", 0.15),
+                      "status": "MANUAL"})
+        next_slab_element += 1
+
     data = {"source": "geometria_manual.json", "status": "MANUAL_REVIEW",
             "units": "kN-m-s", "nodes": nodes, "elements": elements,
             "walls": config.get("walls", []),
+            "slabs": slabs,
             "section_columns": {"A_m2": 0.49, "Iy_m4": 0.020004, "Iz_m4": 0.020004, "J_m4": 0.040008},
             "section_beams": {"A_m2": 0.48, "Iy_m4": 0.0256, "Iz_m4": 0.0144, "J_m4": 0.002},
             "section_small_beams": {"A_m2": 0.135, "Iy_m4": 0.002278, "Iz_m4": 0.000506, "J_m4": 0.0002},
@@ -135,6 +215,9 @@ def main():
             f'W,{wall["id"]},WALL,{wall["x_i_m"]},{wall["y_i_m"]},{wall["z_i_m"]},'
             f'{wall["x_j_m"]},{wall["y_j_m"]},{wall["z_j_m"]},{wall["thickness_m"]},{wall.get("status", "MANUAL")}'
         )
+    for slab in slabs:
+        n1, n2, n3, n4 = slab["node_ids"]
+        lines.append(f'S,{slab["id"]},{n1},{n2},{n3},{n4},{slab["z_m"]},{slab["thickness_m"]},{slab["status"]}')
     CSV.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     workbook = Workbook()
@@ -147,13 +230,17 @@ def main():
     el_sheet.append(["id", "tipo", "nodo_i", "nodo_j", "estado"])
     for e in elements:
         el_sheet.append([e["id"], e["type"], e["i"], e["j"], e["status"]])
+    slab_sheet = workbook.create_sheet("Losas")
+    slab_sheet.append(["id", "nodo_1", "nodo_2", "nodo_3", "nodo_4", "z_m", "espesor_m", "estado"])
+    for slab in slabs:
+        slab_sheet.append([slab["id"], *slab["node_ids"], slab["z_m"], slab["thickness_m"], slab["status"]])
     notes = workbook.create_sheet("Supuestos")
     notes.append(["campo", "valor"])
     notes.append(["niveles", "0, 3.96, 7.92, 11.88, 15.84, 19.80 m"])
     notes.append(["ejes Y", "Eje 3 = 0; Eje 2 = 7.25; Eje 1 = 16.15 m"])
     notes.append(["columnas", "Todas 0.70 x 0.70 m; datos ingresados manualmente"])
     notes.append(["vigas", "Cielo 1 subterraneo: 7; Cielos Piso 1 y Piso 2: base repetida; Piso 2 agrega voladizos; Piso 3 conserva la base y agrega su configuracion especial"])
-    notes.append(["modelo", "Solo vigas y columnas; sin losas, muros ni fundaciones"])
+    notes.append(["modelo", "Vigas, columnas, muros y losas cerradas por vigas; sin fundaciones"])
     workbook.save(EXCEL)
     print(f"Modelo manual: {len(nodes)} nodos, {len(elements)} elementos; Excel: {EXCEL.name}")
 
