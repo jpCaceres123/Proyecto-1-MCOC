@@ -1,0 +1,65 @@
+Semana 2 — AVANCE: modelo global v1 y transferencia de cargas
+Entregable
+Crear reports/semana02.md.
+
+Contenido
+1. Trazabilidad desde planos
+Mostrar ejemplos:
+
+plano → nodo → elemento → sectionTag → elementTag.
+
+2. Estadísticas
+número de nodos;
+vigas;
+columnas;
+muros;
+diafragmas;
+pisos.
+3. Carga superficial
+Definir:
+
+espesor de losa;
+peso unitario;
+carga de terminaciones;
+q_G.
+4. Áreas tributarias
+Para al menos tres vigas:
+
+polígono;
+área;
+longitud;
+carga superficial;
+carga total;
+distribución aplicada.
+5. Conservación
+Comprobar:
+
+sum(cargas transferidas) = q_G * A_piso
+
+dentro de la tolerancia adoptada.
+
+6. Apoyos y restricciones
+Mostrar gráficamente y documentar todos los tipos usados.
+
+7. Diafragmas
+Explicar la cinemática y verificarla numéricamente.
+
+8. Viewer Unity
+Mostrar:
+
+capas;
+selección;
+IDs;
+ejes;
+apoyos;
+áreas tributarias.
+9. Modificación del modelo
+Implementar al menos una modificación sencilla desde datos o interfaz:
+
+cambiar sección;
+cambiar apoyo;
+editar polígono tributario.
+No es necesario todavía reanalizar automáticamente desde Unity.
+
+10. Uso de IA
+Mostrar una corrección de un error propuesto/generado por el agente.

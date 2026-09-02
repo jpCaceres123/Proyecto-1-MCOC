@@ -1,6 +1,6 @@
 # Resultados
 
-Esta carpeta recibe los archivos generados por `python model.py` y `python plot_model.py`:
+Esta carpeta recibe los archivos generados por `python .\P1L1\model.py` y `python .\P1L1\plot_model.py`:
 
 - `nodal_displacements.csv`: seis GDL por nodo.
 - `reactions.csv`: seis componentes de reacción por apoyo.
