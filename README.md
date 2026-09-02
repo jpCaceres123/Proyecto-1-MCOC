@@ -7,7 +7,7 @@ Repositorio del proyecto colaborativo de modelación estructural, OpenSeesPy y v
 | Laboratorio | Estado | Documentación |
 |---|---|---|
 | Semana 1: benchmark 3D | Completado | [`P1L1/`](P1L1/) |
-| Semana 2: edificio completo y gravedad | En preparación | [`SEMANA_2/`](Enunciados%20e%20Instrucciones/SEMANA_2/) |
+| Semana 2: edificio completo y gravedad | En desarrollo | [`P1L2/`](P1L2/) · [`Enunciado`](Enunciados%20e%20Instrucciones/SEMANA_2/) |
 
 ## Ejecución de Semana 1
 
