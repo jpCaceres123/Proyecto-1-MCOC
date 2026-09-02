@@ -15,11 +15,17 @@ public class OrbitCamera : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             yaw += Input.GetAxis("Mouse X") * sensitivity;
             pitch -= Input.GetAxis("Mouse Y") * sensitivity;
             pitch = Mathf.Clamp(pitch, -80.0f, 80.0f);
+            Apply();
+        }
+        if (Input.GetMouseButton(2))
+        {
+            target -= transform.right * Input.GetAxis("Mouse X") * distance * 0.01f;
+            target -= transform.up * Input.GetAxis("Mouse Y") * distance * 0.01f;
             Apply();
         }
         float wheel = Input.GetAxis("Mouse ScrollWheel");
@@ -30,7 +36,7 @@ public class OrbitCamera : MonoBehaviour
         }
     }
 
-    private void Apply()
+    public void Apply()
     {
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0.0f);
         transform.position = target + rotation * new Vector3(0.0f, 0.0f, -distance);
