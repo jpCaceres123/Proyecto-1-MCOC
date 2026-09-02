@@ -1,4 +1,0 @@
-openseespy>=3.5.0
-numpy>=1.23
-matplotlib>=3.6
-comtypes>=1.4

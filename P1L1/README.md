@@ -1,15 +1,15 @@
 # Benchmark 3D OpenSeesPy
 
-Este repositorio corresponde al proyecto colaborativo P1 de MCOC. El contexto original se encuentra en [`README/README.md`](README/README.md).
+Este laboratorio corresponde a la Semana 1 del proyecto P1 de MCOC. El contexto general se encuentra en [`Contexto_Proyecto.md`](../Contexto_Proyecto.md).
 
 Caso reproducible para P1L1: marco de un vano en cada dirección, con losa descargando sobre las vigas.
 
 ## Ejecución
 
 ```text
-python -m pip install -r requirements.txt
-python model.py
-python plot_model.py
+python -m pip install -r .\P1L1\requirements.txt
+python .\P1L1\model.py
+python .\P1L1\plot_model.py
 ```
 
 `model.py` crea `results/nodal_displacements.csv`, `results/reactions.csv`, `results/element_forces.csv`, `results/model.json`, `results/verification.json` y `results/verification.md`. `plot_model.py` crea `results/geometry.png`.
@@ -29,7 +29,7 @@ python plot_model.py
 
 El archivo `results/verification.md` es el artefacto que debe enlazarse en Canvas después de ejecutar el modelo.
 
-`results/model.json` es el contrato de geometría para Unity. Debe regenerarse con `python model.py` antes de abrir la escena; contiene unidades explícitas, nodos, elementos y apoyos.
+`results/model.json` es el contrato de geometría para Unity. Debe regenerarse con `python .\P1L1\model.py` antes de abrir la escena; contiene unidades explícitas, nodos, elementos y apoyos.
 
 ## Defensa
 
@@ -45,6 +45,8 @@ Los archivos para reproducir la geometría en SAP2000 están en `sap2000/`:
 
 - `sap2000/sap2000_marco_3d.dxf`: geometría 3D importable como frames.
 - `sap2000/sap2000_build_model.py`: script para crear el modelo usando la API de SAP2000.
+
+Los prototipos y avances históricos de P1L1 están en [`Avances/`](Avances/).
 
 La losa bidireccional se modela con dos cargas triangulares en las vigas de `5 m` y dos cargas trapezoidales en las vigas de `6 m`, con intensidad máxima `12.5 kN/m`.
 
