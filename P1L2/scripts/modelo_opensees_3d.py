@@ -1,4 +1,4 @@
-"""Modelo OpenSeesPy 3D de vigas y columnas generado desde modelo_3d.json."""
+"""Modelo OpenSeesPy 3D: vigas, columnas, muros (ShellMITC4) y losas tributarias."""
 
 from pathlib import Path
 import json
@@ -8,6 +8,12 @@ import openseespy.opensees as ops
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = ROOT / "outputs" / "modelo_3d_manual.json"
+
+WALL_MESH_NODE_BASE = 3_000_000
+WALL_ELEMENT_BASE = 500_000
+WALL_SECTION_BASE = 200
+WALL_CONNECT_THRESHOLD_M = 0.35
+WALL_TARGET_H_ELEMENT_M = 2.0
 
 
 def build_model():
@@ -67,11 +73,156 @@ def build_model():
         ops.element("elasticBeamColumn", element["id"], element["i"], element["j"],
                     section["A_m2"], E, G, section["J_m4"], section["Iy_m4"],
                     section["Iz_m4"], transform)
+
+    wall_mesh = create_wall_mesh(data, structural_node_ids)
+    data["wall_mesh"] = wall_mesh
+
+    wall_mesh_ids = set()
+    for wi in wall_mesh.get("walls", []):
+        for nid in wi.get("node_ids", []):
+            wall_mesh_ids.add(nid)
+    data["structural_node_ids"] = sorted(set(data["structural_node_ids"]) | wall_mesh_ids)
+
     if data.get("beam_load_cases") or data.get("beam_slab_loads"):
         apply_slab_loads_to_beams(data)
     data["coincident_nodes"] = merge_coincident_nodes(data)
     data["diaphragms"] = apply_rigid_diaphragms(data)
     return data
+
+
+# ---------------------------------------------------------------------------
+# Wall ShellMITC4 mesh
+# ---------------------------------------------------------------------------
+
+def create_wall_sections(data):
+    """Create ElasticMembranePlateSection for each unique wall thickness."""
+    E = data["material"]["E_kPa"] * 1000.0
+    nu = data["material"]["nu"]
+    rho = 2500.0
+    thicknesses = sorted({w["thickness_m"] for w in data.get("walls", [])})
+    sections = {}
+    for idx, t in enumerate(thicknesses):
+        tag = WALL_SECTION_BASE + idx
+        ops.section("ElasticMembranePlateSection", tag, E, nu, t, rho)
+        sections[t] = tag
+    return sections
+
+
+def create_wall_mesh(data, structural_node_ids):
+    """Discretise every wall as ShellMITC4 elements.
+
+    Returns a dict describing the mesh for downstream bookkeeping.
+    """
+    walls = data.get("walls", [])
+    if not walls:
+        return {"wall_count": 0, "shell_count": 0, "mesh_node_count": 0}
+
+    levels = sorted({round(n["z_m"], 6) for n in data["nodes"]
+                     if n["id"] in data["structural_node_ids"]})
+    frame_nodes = [n for n in data["nodes"] if n["id"] in data["structural_node_ids"]]
+    wall_sections = create_wall_sections(data)
+
+    next_mesh_node = WALL_MESH_NODE_BASE
+    next_shell = WALL_ELEMENT_BASE
+
+    existing_xyz = {
+        (round(n["x_m"], 6), round(n["y_m"], 6), round(n["z_m"], 6)): n["id"]
+        for n in data["nodes"]
+        if n["id"] in structural_node_ids
+    }
+
+    mesh_info = {
+        "wall_count": len(walls), "shell_count": 0, "mesh_node_count": 0,
+        "sections": {str(k): v for k, v in wall_sections.items()},
+        "walls": [],
+    }
+
+    for wall in walls:
+        z0, z1 = wall["z_i_m"], wall["z_j_m"]
+        x0, y0 = wall["x_i_m"], wall["y_i_m"]
+        x1, y1 = wall["x_j_m"], wall["y_j_m"]
+
+        wall_levels = [z for z in levels if z0 - 1e-6 <= z <= z1 + 1e-6]
+        if len(wall_levels) < 2:
+            continue
+
+        dx = x1 - x0
+        dy = y1 - y0
+        wall_len = (dx ** 2 + dy ** 2) ** 0.5
+        if wall_len < 1e-6:
+            continue
+
+        nh = max(1, round(wall_len / WALL_TARGET_H_ELEMENT_M))
+        nv = len(wall_levels) - 1
+        section_tag = wall_sections[wall["thickness_m"]]
+
+        wall_nodes = []
+        for j, z in enumerate(wall_levels):
+            row = []
+            for i in range(nh + 1):
+                t = i / nh
+                x = x0 + t * dx
+                y = y0 + t * dy
+                key = (round(x, 6), round(y, 6), round(z, 6))
+                if key in existing_xyz:
+                    row.append(existing_xyz[key])
+                else:
+                    tag = next_mesh_node
+                    next_mesh_node += 1
+                    ops.node(tag, x, y, z)
+                    ops.mass(tag, 0.01, 0.01, 0.01, 0.0, 0.0, 0.0)
+                    existing_xyz[key] = tag
+                    row.append(tag)
+            wall_nodes.append(row)
+
+        for j in range(nv):
+            for i in range(nh):
+                n1 = wall_nodes[j][i]
+                n2 = wall_nodes[j][i + 1]
+                n3 = wall_nodes[j + 1][i + 1]
+                n4 = wall_nodes[j + 1][i]
+                if n1 == n2 or n2 == n3 or n3 == n4 or n4 == n1:
+                    continue
+                ops.element("ShellMITC4", next_shell, n1, n2, n3, n4, section_tag)
+                next_shell += 1
+
+        mesh_info["shell_count"] += nv * nh
+
+        edge_node_ids = set()
+        for row in wall_nodes:
+            edge_node_ids.add(row[0])
+            edge_node_ids.add(row[-1])
+
+        connected = 0
+        for mesh_nid in edge_node_ids:
+            mx = ops.nodeCoord(mesh_nid, 1)
+            my = ops.nodeCoord(mesh_nid, 2)
+            mz = ops.nodeCoord(mesh_nid, 3)
+            best_dist = WALL_CONNECT_THRESHOLD_M
+            best_frame = None
+            for fn in frame_nodes:
+                if abs(fn["z_m"] - mz) > 1e-6:
+                    continue
+                d = ((fn["x_m"] - mx) ** 2 + (fn["y_m"] - my) ** 2) ** 0.5
+                if d < best_dist:
+                    best_dist = d
+                    best_frame = fn["id"]
+            if best_frame is not None and best_frame != mesh_nid:
+                try:
+                    ops.equalDOF(best_frame, mesh_nid, 1, 2, 3, 4, 5, 6)
+                    connected += 1
+                except Exception:
+                    pass
+
+        mesh_info["walls"].append({
+            "id": wall["id"], "thickness_m": wall["thickness_m"],
+            "nh": nh, "nv": nv, "shell_elements": nv * nh,
+            "edge_nodes_connected": connected,
+            "node_ids": [nid for row in wall_nodes for nid in row],
+        })
+
+    mesh_info["mesh_node_count"] = next_mesh_node - WALL_MESH_NODE_BASE
+    return mesh_info
 
 
 def apply_slab_loads_to_beams(data):
@@ -187,7 +338,9 @@ def merge_coincident_nodes(data):
 
 if __name__ == "__main__":
     model = build_model()
+    wm = model.get("wall_mesh", {})
     print(f"Modelo 3D creado: {len(model['nodes'])} nodos, {len(model['elements'])} elementos y {len(model.get('slabs', []))} losas")
+    print(f"Muros malla: {wm.get('wall_count', 0)} muros, {wm.get('shell_count', 0)} ShellMITC4, {wm.get('mesh_node_count', 0)} nodos de malla")
     print(f"Fuente de geometria: {model['source']}")
     analyze_gravity(model)
     print("Las losas se usan solo para calcular areas tributarias; las cargas se aplican a las vigas.")

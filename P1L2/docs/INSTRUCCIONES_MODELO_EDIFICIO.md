@@ -349,16 +349,24 @@ La geometría de las losas se guarda en `outputs/modelo_3d_manual.json` y en la 
 
 ## 10. OpenSeesPy
 
-Las losas se modelan en `scripts/modelo_opensees_3d.py` mediante:
+Las losas se modelan en `scripts/modelo_opensees_3d.py` mediante áreas tributarias
+(no elementos finitos): cada losa reparte su peso propio y cargas de uso sobre las
+vigas perimetrales mediante la distribución a 45 grados. En OpenSees las cargas
+resultantes se aplican como resultantes puntuales sobre los extremos de las vigas.
+
+Los muros sí se discretizan como elementos finitos. Cada muro geométrico
+(propiedad `walls` de `data/geometria_manual.json`) se convierte en una malla de
+elementos `ShellMITC4` con una sección `ElasticMembranePlateSection` por espesor:
 
 ```text
-ElasticMembranePlateSection
-ShellMITC4
+nh = round(longitud_m / 2.0)  (al menos 1)  -> nº de divisiones horizontales
+nv = n_pisos - 1                            -> nº de divisiones verticales
 ```
 
-Cada losa tiene cuatro nodos y un elemento `ShellMITC4`.
-
-Los muros actualmente se guardan como geometría estructural manual y se visualizan en Unity, pero todavía no se transforman en elementos de muro analíticos de OpenSeesPy. Para el análisis definitivo se debe definir una malla de muro, una sección de placa y su conexión con vigas y columnas.
+Los nodos de la malla se crean en cada nivel y los bordes se conectan a los nodos
+de la estructuras (vigas/columnas) cercanos mediante `equalDOF`, de modo que el
+muro transmite solicitaciones al resto del pórtico. Los nodos de malla se incluyen
+en los diafragmas rígidos de cada nivel.
 
 ## 11. Unity
 
@@ -427,8 +435,7 @@ El estado actual todavía requiere:
 3. Agregar los orificios de losas para escaleras, ascensores u otros vacíos.
 4. Agregar losas en los voladizos donde corresponda.
 5. Revisar la conectividad entre losas, vigas, columnas y muros.
-6. Convertir los muros geométricos en elementos estructurales analíticos de OpenSeesPy.
-7. Revisar secciones, materiales, cargas y apoyos antes del análisis definitivo.
+6. Revisar secciones, materiales, cargas y apoyos antes del análisis definitivo. Los muros ya se discretizan como `ShellMITC4`, pero falta validar su rigidez, el peso propio aplicado y la interacción con el diafragma bajo cargas laterales.
 
 ## 14. Verificación básica
 
