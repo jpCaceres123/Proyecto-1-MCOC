@@ -9,7 +9,7 @@
     {"eje": "F", "x_m": 10.0, "z_inicio_m": 0.0},
     {"eje": "G", "x_m": 20.0, "z_inicio_m": 0.0},
     {"eje": "H", "x_m": 30.0, "z_inicio_m": 3.96},
-    {"eje": "I", "x_m": 40.0, "z_inicio_m": 3.96},
+    {"eje": "I", "x_m": 40.0, "z_inicio_m": 0.0},
     {"eje": "I_prima", "x_m": 45.0, "z_inicio_m": 3.96},
     {"eje": "J", "x_m": 50.0, "z_inicio_m": 15.84}
   ],
@@ -26,6 +26,7 @@
   "column_section_m": [0.7, 0.7],
   "beam_section_m": [0.6, 0.8],
   "slab_thickness_m": 0.15,
+  "slab_density_kg_m3": 2500.0,
   "slab_regions": [
     {"id": "principal_A_I_prima", "x_min_m": -28.30, "x_max_m": 45.00, "y_min_m": 0.00, "y_max_m": 16.15, "z_min_m": 3.96, "z_max_m": 19.80}
   ],

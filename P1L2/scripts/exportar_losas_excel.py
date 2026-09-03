@@ -81,7 +81,12 @@ def main():
         item["count"] += 1
         item["area"] += slab["area_m2"]
     for z, item in sorted(by_level.items()):
-        levels.append([z, item["count"], round(item["area"], 6), round(item["area"] * 3.68, 6)])
+        load = sum(
+            slab["self_weight_kN_m2"] * slab["area_m2"]
+            for slab in data.get("slabs", [])
+            if slab["z_m"] == z
+        )
+        levels.append([z, item["count"], round(item["area"], 6), round(load, 6)])
     style_sheet(levels)
 
     workbook.save(OUTPUT)
