@@ -12,7 +12,9 @@ MODEL = ROOT / "outputs" / "modelo_3d_manual.json"
 WALL_MESH_NODE_BASE = 3_000_000
 WALL_ELEMENT_BASE = 500_000
 WALL_SECTION_BASE = 200
-WALL_CONNECT_THRESHOLD_M = 0.35
+# The source geometry contains wall centerlines offset from frame grid lines.
+# This tolerance is only used at wall boundary nodes, not for interior nodes.
+WALL_CONNECT_THRESHOLD_M = 2.0
 WALL_TARGET_H_ELEMENT_M = 2.0
 
 
@@ -27,6 +29,7 @@ def build_model():
     structural_node_ids = {
         node_id
         for element in data["elements"]
+        if element["type"] != "WALL"
         for node_id in (element["i"], element["j"])
     }
     data["structural_node_ids"] = sorted(structural_node_ids)
@@ -44,6 +47,10 @@ def build_model():
     E = data["material"]["E_kPa"] * 1000.0
     G = E / (2.0 * (1.0 + data["material"]["nu"]))
     for element in data["elements"]:
+        # WALL records remain in the data contract for visualization. Their
+        # analytical representation is generated below with ShellMITC4.
+        if element["type"] == "WALL":
+            continue
         if element["type"] == "COLUMN":
             section = data["section_columns"]
         elif element["type"] == "BEAM_SMALL":
@@ -52,19 +59,10 @@ def build_model():
             section = data["section_variable_beams"]
         elif element["type"] == "BEAM_40x60":
             section = data["section_40x60_beams"]
-        elif element["type"] == "WALL":
-            thickness = element["thickness_m"]
-            wall_width = 1.0
-            section = {
-                "A_m2": thickness * wall_width,
-                "J_m4": thickness * wall_width ** 3 / 12.0,
-                "Iy_m4": thickness * wall_width ** 3 / 12.0,
-                "Iz_m4": wall_width * thickness ** 3 / 12.0,
-            }
         else:
             section = data["section_beams"]
         direction = element.get("direction", element["type"])
-        if element["type"] in ("COLUMN", "WALL"):
+        if element["type"] == "COLUMN":
             transform = 3
         elif direction == "X":
             transform = 1
@@ -85,6 +83,7 @@ def build_model():
 
     if data.get("beam_load_cases") or data.get("beam_slab_loads"):
         apply_slab_loads_to_beams(data)
+    apply_wall_self_weight(wall_mesh)
     data["coincident_nodes"] = merge_coincident_nodes(data)
     data["diaphragms"] = apply_rigid_diaphragms(data)
     return data
@@ -98,7 +97,8 @@ def create_wall_sections(data):
     """Create ElasticMembranePlateSection for each unique wall thickness."""
     E = data["material"]["E_kPa"] * 1000.0
     nu = data["material"]["nu"]
-    rho = 2500.0
+    # Convert kg/m3 to consistent kN-s2/m4 units.
+    rho = data.get("wall_density_kg_m3", 2500.0) * 9.80665 / 1000.0
     thicknesses = sorted({w["thickness_m"] for w in data.get("walls", [])})
     sections = {}
     for idx, t in enumerate(thicknesses):
@@ -118,8 +118,10 @@ def create_wall_mesh(data, structural_node_ids):
         return {"wall_count": 0, "shell_count": 0, "mesh_node_count": 0}
 
     levels = sorted({round(n["z_m"], 6) for n in data["nodes"]
-                     if n["id"] in data["structural_node_ids"]})
-    frame_nodes = [n for n in data["nodes"] if n["id"] in data["structural_node_ids"]]
+                     if n["id"] in structural_node_ids})
+    frame_nodes = [n for n in data["nodes"]
+                   if n["id"] in structural_node_ids
+                   and n.get("status") != "MANUAL_WALL_NODE"]
     wall_sections = create_wall_sections(data)
 
     next_mesh_node = WALL_MESH_NODE_BASE
@@ -135,6 +137,8 @@ def create_wall_mesh(data, structural_node_ids):
         "wall_count": len(walls), "shell_count": 0, "mesh_node_count": 0,
         "sections": {str(k): v for k, v in wall_sections.items()},
         "walls": [],
+        "self_weight_kN": 0.0,
+        "node_self_weight_kN": {},
     }
 
     for wall in walls:
@@ -170,11 +174,21 @@ def create_wall_mesh(data, structural_node_ids):
                     tag = next_mesh_node
                     next_mesh_node += 1
                     ops.node(tag, x, y, z)
-                    ops.mass(tag, 0.01, 0.01, 0.01, 0.0, 0.0, 0.0)
+                    if abs(z) < 1e-6:
+                        ops.fix(tag, 1, 1, 1, 1, 1, 1)
+                    data["nodes"].append({
+                        "id": tag,
+                        "level": min(range(len(levels)),
+                                      key=lambda index: abs(levels[index] - z)),
+                        "axis": "WALL_SHELL", "x_m": x, "y_m": y, "z_m": z,
+                        "restraint": abs(z) < 1e-6,
+                        "status": "WALL_SHELL_NODE", "wall_id": wall["id"],
+                    })
                     existing_xyz[key] = tag
                     row.append(tag)
             wall_nodes.append(row)
 
+        created_shells = 0
         for j in range(nv):
             for i in range(nh):
                 n1 = wall_nodes[j][i]
@@ -185,8 +199,22 @@ def create_wall_mesh(data, structural_node_ids):
                     continue
                 ops.element("ShellMITC4", next_shell, n1, n2, n3, n4, section_tag)
                 next_shell += 1
+                created_shells += 1
 
-        mesh_info["shell_count"] += nv * nh
+                shell_area = (wall_len / nh) * (wall_levels[j + 1] - wall_levels[j])
+                shell_weight = (
+                    data.get("wall_density_kg_m3", 2500.0)
+                    * 9.80665 / 1000.0
+                    * wall["thickness_m"] * shell_area
+                )
+                mesh_info["self_weight_kN"] += shell_weight
+                for node_id in (n1, n2, n3, n4):
+                    mesh_info["node_self_weight_kN"][node_id] = (
+                        mesh_info["node_self_weight_kN"].get(node_id, 0.0)
+                        + shell_weight / 4.0
+                    )
+
+        mesh_info["shell_count"] += created_shells
 
         edge_node_ids = set()
         for row in wall_nodes:
@@ -214,15 +242,43 @@ def create_wall_mesh(data, structural_node_ids):
                 except Exception:
                     pass
 
+        base_diaphragm_connection = False
+        if z0 > 1e-6 and connected == 0:
+            floor_nodes = [node for node in frame_nodes
+                           if abs(node["z_m"] - wall_levels[0]) < 1e-6]
+            if floor_nodes:
+                master = min(floor_nodes, key=lambda node: node["id"])["id"]
+                for node_id in wall_nodes[0]:
+                    if node_id == master:
+                        continue
+                    try:
+                        ops.equalDOF(master, node_id, 1, 2, 3, 4, 5, 6)
+                        connected += 1
+                    except Exception:
+                        pass
+                base_diaphragm_connection = connected > 0
+
         mesh_info["walls"].append({
             "id": wall["id"], "thickness_m": wall["thickness_m"],
-            "nh": nh, "nv": nv, "shell_elements": nv * nh,
+            "nh": nh, "nv": nv, "shell_elements": created_shells,
             "edge_nodes_connected": connected,
+            "base_diaphragm_connection": base_diaphragm_connection,
             "node_ids": [nid for row in wall_nodes for nid in row],
         })
 
     mesh_info["mesh_node_count"] = next_mesh_node - WALL_MESH_NODE_BASE
     return mesh_info
+
+
+def apply_wall_self_weight(wall_mesh):
+    """Apply the wall self-weight as vertical nodal loads."""
+    node_weights = wall_mesh.get("node_self_weight_kN", {})
+    if not node_weights:
+        return
+    ops.timeSeries("Linear", 3)
+    ops.pattern("Plain", 3, 3)
+    for node_id, weight in node_weights.items():
+        ops.load(node_id, 0.0, 0.0, -weight, 0.0, 0.0, 0.0)
 
 
 def apply_slab_loads_to_beams(data):
@@ -286,9 +342,11 @@ def analyze_gravity(data):
     )
     dead_total = sum(load["dead_load_kN"] for load in data.get("beam_load_cases", []))
     live_total = sum(load["live_load_kN"] for load in data.get("beam_load_cases", []))
-    applied_total = dead_total + live_total
+    wall_total = data.get("wall_mesh", {}).get("self_weight_kN", 0.0)
+    applied_total = dead_total + live_total + wall_total
     residual = reaction_z - applied_total
     print(f"Carga muerta aplicada: {dead_total:.6f} kN")
+    print(f"Peso propio de muros: {wall_total:.6f} kN")
     print(f"Sobrecarga aplicada: {live_total:.6f} kN")
     print(f"Reaccion nodal vertical global: {reaction_z:.6f} kN")
     print(f"Reaccion en apoyos directos: {support_reaction_z:.6f} kN")
