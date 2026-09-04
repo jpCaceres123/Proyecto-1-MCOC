@@ -342,7 +342,7 @@ El generador también busca recintos rectangulares cerrados por vigas fuera de e
 La cantidad actual generada es aproximadamente:
 
 ```text
-13 losas
+176 paneles de losa: 167 recintos cerrados y 9 voladizos explícitos
 ```
 
 La geometría de las losas se guarda en `outputs/modelo_3d_manual.json` y en la hoja `Losas` del Excel.
@@ -431,9 +431,9 @@ Se deben regenerar desde `data/geometria_manual.json`.
 El estado actual todavía requiere:
 
 1. Verificar todas las vigas contra los planos.
-2. Completar las losas que no sean rectangulares o que no estén delimitadas completamente por vigas en el archivo actual.
-3. Agregar los orificios de losas para escaleras, ascensores u otros vacíos.
-4. Agregar losas en los voladizos donde corresponda.
+2. Completar las losas no rectangulares que todavía no estén representadas como paneles explícitos.
+3. Los vacíos principales ya se descuentan de las áreas y se exportan al viewer; verificar sus dimensiones contra los planos.
+4. Los voladizos superiores ya se agregan como paneles explícitos y descargan sobre la viga de apoyo en `Y = 16.15 m`; revisar los bordes restantes.
 5. Revisar la conectividad entre losas, vigas, columnas y muros.
 6. Revisar secciones, materiales, cargas y apoyos antes del análisis definitivo. Los muros ya se discretizan como `ShellMITC4`, pero falta validar su rigidez, el peso propio aplicado y la interacción con el diafragma bajo cargas laterales.
 

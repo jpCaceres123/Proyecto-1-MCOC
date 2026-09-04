@@ -44,7 +44,8 @@ def build_model():
             mass = data["mass_per_node_t"] * 9.80665
             ops.mass(tag, mass, mass, mass, 0.0, 0.0, 0.0)
 
-    E = data["material"]["E_kPa"] * 1000.0
+    # 1 kPa is 1 kN/m2, so no numerical conversion is required.
+    E = data["material"]["E_kPa"]
     G = E / (2.0 * (1.0 + data["material"]["nu"]))
     for element in data["elements"]:
         # WALL records remain in the data contract for visualization. Their
@@ -95,7 +96,7 @@ def build_model():
 
 def create_wall_sections(data):
     """Create ElasticMembranePlateSection for each unique wall thickness."""
-    E = data["material"]["E_kPa"] * 1000.0
+    E = data["material"]["E_kPa"]
     nu = data["material"]["nu"]
     # Convert kg/m3 to consistent kN-s2/m4 units.
     rho = data.get("wall_density_kg_m3", 2500.0) * 9.80665 / 1000.0
@@ -354,6 +355,46 @@ def analyze_gravity(data):
     return abs(residual) < 1.0e-5
 
 
+def verify_diaphragm_compatibility(data):
+    """Apply a unit lateral test and check equal floor displacements."""
+    diaphragms = data.get("diaphragms", [])
+    if not diaphragms:
+        print("Compatibilidad de diafragmas: no hay diafragmas para verificar")
+        return False
+
+    # Freeze gravity before adding the independent lateral verification load.
+    ops.loadConst("-time", 0.0)
+    ops.timeSeries("Linear", 99)
+    ops.pattern("Plain", 99, 99)
+    for diaphragm in diaphragms:
+        ops.load(diaphragm["master_node"], 1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+
+    ops.wipeAnalysis()
+    ops.constraints("Penalty", 1.0e15, 1.0e15)
+    ops.numberer("RCM")
+    ops.system("BandGeneral")
+    ops.test("NormDispIncr", 1.0e-8, 50, 0)
+    ops.algorithm("Linear")
+    ops.integrator("LoadControl", 1.0)
+    ops.analysis("Static")
+    result = ops.analyze(1)
+    if result != 0:
+        print(f"Compatibilidad de diafragmas fallo con codigo {result}")
+        return False
+
+    max_error = 0.0
+    for diaphragm in diaphragms:
+        master = diaphragm["master_node"]
+        master_x = ops.nodeDisp(master, 1)
+        master_y = ops.nodeDisp(master, 2)
+        for node_id in diaphragm["node_ids"]:
+            max_error = max(max_error,
+                            abs(ops.nodeDisp(node_id, 1) - master_x),
+                            abs(ops.nodeDisp(node_id, 2) - master_y))
+    print(f"Error maximo de compatibilidad de diafragmas: {max_error:.3e} m")
+    return max_error < 1.0e-6
+
+
 def apply_rigid_diaphragms(data):
     """Constrain each elevated level as a rigid horizontal diaphragm."""
     by_level = {}
@@ -370,7 +411,9 @@ def apply_rigid_diaphragms(data):
         slaves = [node_id for node_id in node_ids if node_id != master]
         if slaves:
             ops.rigidDiaphragm(3, master, *slaves)
-        diaphragms.append({"z_m": z, "master_node": master, "slave_count": len(slaves)})
+        diaphragms.append({"z_m": z, "master_node": master,
+                           "slave_count": len(slaves),
+                           "node_ids": node_ids})
     return diaphragms
 
 
@@ -401,4 +444,5 @@ if __name__ == "__main__":
     print(f"Muros malla: {wm.get('wall_count', 0)} muros, {wm.get('shell_count', 0)} ShellMITC4, {wm.get('mesh_node_count', 0)} nodos de malla")
     print(f"Fuente de geometria: {model['source']}")
     analyze_gravity(model)
+    verify_diaphragm_compatibility(model)
     print("Las losas se usan solo para calcular areas tributarias; las cargas se aplican a las vigas.")

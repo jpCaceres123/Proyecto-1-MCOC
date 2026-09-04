@@ -31,7 +31,23 @@ public class BuildingVisualizer : MonoBehaviour
 
     private struct Element { public int id, i, j; public string type; }
     private struct Wall { public int id; public Vector3 a, b; public float zMin, zMax, thickness; }
-    private class Slab { public int id; public Vector3[] corners; public float thickness; public float Area { get { return Mathf.Abs((corners[1].x - corners[0].x) * (corners[2].z - corners[1].z)); } } }
+    private struct SlabVoid { public float xMin, xMax, zMin, zMax; }
+    private class Slab
+    {
+        public int id;
+        public Vector3[] corners;
+        public float thickness;
+        public readonly List<SlabVoid> voids = new List<SlabVoid>();
+        public float Area
+        {
+            get
+            {
+                float area = Mathf.Abs((corners[1].x - corners[0].x) * (corners[2].z - corners[1].z));
+                foreach (SlabVoid hole in voids) area -= Mathf.Abs((hole.xMax - hole.xMin) * (hole.zMax - hole.zMin));
+                return Mathf.Max(0.0f, area);
+            }
+        }
+    }
 
     private void Start()
     {
@@ -63,9 +79,14 @@ public class BuildingVisualizer : MonoBehaviour
                     nodes[id] = StructuralToUnity(ParseFloat(p[6]), ParseFloat(p[7]), ParseFloat(p[8]));
                     if (p.Length > 10 && p[10].Trim() == "MANUAL" && Mathf.Abs(nodes[id].y) < 0.001f) restrainedNodes.Add(id);
                 }
-                else if (p[0] == "E") elements.Add(new Element { id = int.Parse(p[1]), type = p[2], i = int.Parse(p[3]), j = int.Parse(p[4]) });
+                else if (p[0] == "E" && p[2] != "WALL") elements.Add(new Element { id = int.Parse(p[1]), type = p[2], i = int.Parse(p[3]), j = int.Parse(p[4]) });
                 else if (p[0] == "W") walls.Add(new Wall { id = int.Parse(p[1]), a = StructuralToUnity(ParseFloat(p[3]), ParseFloat(p[4]), 0), b = StructuralToUnity(ParseFloat(p[6]), ParseFloat(p[7]), 0), zMin = ParseFloat(p[5]), zMax = ParseFloat(p[8]), thickness = ParseFloat(p[9]) });
                 else if (p[0] == "S") slabs.Add(new Slab { id = int.Parse(p[1]), corners = new[] { nodes[int.Parse(p[2])], nodes[int.Parse(p[3])], nodes[int.Parse(p[4])], nodes[int.Parse(p[5])] }, thickness = ParseFloat(p[7]) });
+                else if (p[0] == "V")
+                {
+                    Slab slab = slabs.Find(s => s.id == int.Parse(p[1]));
+                    if (slab != null) slab.voids.Add(new SlabVoid { xMin = ParseFloat(p[2]), xMax = ParseFloat(p[3]), zMin = ParseFloat(p[4]), zMax = ParseFloat(p[5]) });
+                }
             }
             catch (Exception error) { Debug.LogWarning("Fila CSV ignorada: " + error.Message); }
         }
@@ -138,11 +159,31 @@ public class BuildingVisualizer : MonoBehaviour
 
     private void CreateSlab(Slab slab)
     {
-        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube); go.name = "Diafragma_ID_" + slab.id; go.transform.SetParent(diaphragmRoot);
         float minX = slab.corners[0].x, maxX = minX, minZ = slab.corners[0].z, maxZ = minZ, y = slab.corners[0].y;
         foreach (Vector3 c in slab.corners) { minX = Mathf.Min(minX, c.x); maxX = Mathf.Max(maxX, c.x); minZ = Mathf.Min(minZ, c.z); maxZ = Mathf.Max(maxZ, c.z); y = Mathf.Max(y, c.y); }
-        go.transform.position = new Vector3((minX + maxX) / 2, y + .40f - slab.thickness / 2, (minZ + maxZ) / 2); go.transform.localScale = new Vector3(maxX - minX, slab.thickness, maxZ - minZ);
-        SetMaterial(go.GetComponent<Renderer>(), new Color(.10f, .56f, .78f, .34f), true); CreateIdLabel(go, slab.id, go.transform.position + Vector3.up * .1f);
+        List<float> xs = new List<float> { minX, maxX }, zs = new List<float> { minZ, maxZ };
+        foreach (SlabVoid hole in slab.voids)
+        {
+            if (hole.xMin > minX && hole.xMin < maxX) xs.Add(hole.xMin);
+            if (hole.xMax > minX && hole.xMax < maxX) xs.Add(hole.xMax);
+            if (hole.zMin > minZ && hole.zMin < maxZ) zs.Add(hole.zMin);
+            if (hole.zMax > minZ && hole.zMax < maxZ) zs.Add(hole.zMax);
+        }
+        xs.Sort(); zs.Sort();
+        int piece = 0;
+        for (int xi = 0; xi < xs.Count - 1; xi++) for (int zi = 0; zi < zs.Count - 1; zi++)
+        {
+            float x0 = xs[xi], x1 = xs[xi + 1], z0 = zs[zi], z1 = zs[zi + 1];
+            float cx = (x0 + x1) / 2, cz = (z0 + z1) / 2;
+            bool insideVoid = false;
+            foreach (SlabVoid hole in slab.voids) if (cx > hole.xMin && cx < hole.xMax && cz > hole.zMin && cz < hole.zMax) { insideVoid = true; break; }
+            if (insideVoid) continue;
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube); go.name = "Diafragma_ID_" + slab.id + (piece == 0 ? "" : "_Pieza_" + piece); go.transform.SetParent(diaphragmRoot);
+            go.transform.position = new Vector3((x0 + x1) / 2, y + .40f - slab.thickness / 2, (z0 + z1) / 2); go.transform.localScale = new Vector3(x1 - x0, slab.thickness, z1 - z0);
+            SetMaterial(go.GetComponent<Renderer>(), new Color(.10f, .56f, .78f, .34f), true);
+            if (piece == 0) CreateIdLabel(go, slab.id, go.transform.position + Vector3.up * .1f);
+            piece++;
+        }
     }
 
     private void CreateMember(string name, string type, Vector3 a, Vector3 b, Color color, Transform parent)
@@ -248,7 +289,7 @@ public class BuildingVisualizer : MonoBehaviour
                 foreach (RaycastHit hit in Physics.RaycastAll(ray))
                 {
                     int markerIndex = hit.collider.name.IndexOf(marker, StringComparison.Ordinal);
-                    if (markerIndex >= 0) { int id; if (int.TryParse(hit.collider.name.Substring(markerIndex + marker.Length), out id)) { selectedSlab = id; UpdateTributary(); break; } }
+                    if (markerIndex >= 0) { string value = hit.collider.name.Substring(markerIndex + marker.Length); int separator = value.IndexOf('_'); if (separator >= 0) value = value.Substring(0, separator); int id; if (int.TryParse(value, out id)) { selectedSlab = id; UpdateTributary(); break; } }
                 }
             }
         }
@@ -258,7 +299,7 @@ public class BuildingVisualizer : MonoBehaviour
     {
         if (panelStyle == null) { panelStyle = new GUIStyle(GUI.skin.window) { padding = new RectOffset(12, 12, 10, 10) }; titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 16, fontStyle = FontStyle.Bold }; smallStyle = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true }; }
         GUILayout.BeginArea(new Rect(12, 12, 265, Screen.height - 24), panelStyle); scroll = GUILayout.BeginScrollView(scroll);
-        GUILayout.Label("MODELO ESTRUCTURAL", titleStyle); GUILayout.Label(nodes.Count + " nodos | " + elements.Count + " elementos | " + slabs.Count + " losas", smallStyle); GUILayout.Space(8);
+        GUILayout.Label("MODELO ESTRUCTURAL", titleStyle); GUILayout.Label(nodes.Count + " nodos | " + elements.Count + " barras | " + walls.Count + " muros | " + slabs.Count + " losas", smallStyle); GUILayout.Space(8);
         showNodes = GUILayout.Toggle(showNodes, "Nodos"); showBeams = GUILayout.Toggle(showBeams, "Vigas"); showColumns = GUILayout.Toggle(showColumns, "Columnas"); showWalls = GUILayout.Toggle(showWalls, "Muros"); showSupports = GUILayout.Toggle(showSupports, "Apoyos"); showDiaphragms = GUILayout.Toggle(showDiaphragms, "Diafragmas / losas"); showIds = GUILayout.Toggle(showIds, "IDs"); showLocalAxes = GUILayout.Toggle(showLocalAxes, "Ejes locales"); showTributary = GUILayout.Toggle(showTributary, "Area tributaria");
         GUILayout.Space(8); GUILayout.Label("Nivel (-1 = todos)"); string levelText = GUILayout.TextField(level.ToString()); int parsed; if (int.TryParse(levelText, out parsed)) level = parsed;
         GUILayout.Label("Inspector de area tributaria", titleStyle); string[] options = new string[slabs.Count + 1]; options[0] = "Seleccionar losa"; for (int i = 0; i < slabs.Count; i++) options[i + 1] = "Losa ID " + slabs[i].id; int choice = slabs.FindIndex(s => s.id == selectedSlab) + 1; int next = GUILayout.SelectionGrid(choice, options, 1); if (next > 0 && next != choice) { selectedSlab = slabs[next - 1].id; UpdateTributary(); }

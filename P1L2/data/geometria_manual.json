@@ -137,5 +137,16 @@
     {"z_m": 19.8, "direction": "X", "x_i_m": 20.0, "y_i_m": -4.12, "x_j_m": 30.0, "y_j_m": -4.12, "group": "cielo_piso4_antiguo"}
   ],
   "material": {"E_kPa": 30000000.0, "nu": 0.2},
-  "mass_per_node_t": 10.0
+  "mass_per_node_t": 10.0,
+  "cantilever_regions": [
+    {"id": "LT2_E_superior_396", "z_m": 3.96, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
+    {"id": "LT2_E_superior_792", "z_m": 7.92, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
+    {"id": "LT2_E_superior_1188", "z_m": 11.88, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
+    {"id": "LT2_E_superior_1584", "z_m": 15.84, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
+    {"id": "LT2_E_superior_1980", "z_m": 19.80, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT1_superior_792", "z_m": 7.92, "x_min_m": -0.25, "x_max_m": 45.50, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT1_superior_1188", "z_m": 11.88, "x_min_m": -0.25, "x_max_m": 45.50, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT1_superior_1584", "z_m": 15.84, "x_min_m": -0.25, "x_max_m": 51.15, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT1_superior_1980", "z_m": 19.80, "x_min_m": -0.25, "x_max_m": 51.15, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0}
+  ]
 }

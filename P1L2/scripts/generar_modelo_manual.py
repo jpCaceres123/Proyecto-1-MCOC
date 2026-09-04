@@ -432,8 +432,10 @@ def main():
                 for geometry in zone.get("geometries", [])
                 if geometry.get("type") == "void"
             )
+        lt2_geometries = loads.get("lt2", {}).get("geometries", [])
+        active_lt2 = lt2_geometries if abs(slab["z_m"] - 19.8) < 1e-6 else lt2_geometries[:6]
         geometries.extend(
-            geometry for geometry in loads.get("lt2", {}).get("geometries", [])
+            geometry for geometry in active_lt2
             if geometry.get("type") == "void"
         )
         rectangles = []
@@ -562,15 +564,16 @@ def main():
     lt2_geometries = loads.get("lt2", {}).get("geometries", [])
 
     def lt2_zone_for(point, z):
+        active_geometries = lt2_geometries if abs(z - 19.8) < 1e-6 else lt2_geometries[:6]
         if any(
             geometry.get("type") == "void"
             and point_in_polygon(point, geometry["points"])
-            for geometry in lt2_geometries
+            for geometry in active_geometries
         ):
             return None
-        if z == 19.8 and len(lt2_geometries) >= 7:
+        if z == 19.8 and len(active_geometries) >= 7:
             outer = lt2_geometries[6]
-            passed = any(point_in_polygon(point, geometry["points"]) for geometry in lt2_geometries[7:])
+            passed = any(point_in_polygon(point, geometry["points"]) for geometry in active_geometries[7:])
             if outer.get("type") == "polygon" and point_in_polygon(point, outer["points"]) and not passed:
                 return {"id": "LT2 piso 4", "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0}
             return None
@@ -781,11 +784,13 @@ def main():
         y_breaks = {y0, y1}
         level = next((item for item in loads.get("levels", [])
                       if abs(item["z_m"] - slab["z_m"]) < 1e-6), None)
+        active_lt2 = (lt2_geometries if abs(slab["z_m"] - 19.8) < 1e-6
+                      else lt2_geometries[:6])
         geometries = []
         if level:
             geometries.extend(geometry for zone in level.get("zones", [])
                               for geometry in zone.get("geometries", []))
-        geometries.extend(loads.get("lt2", {}).get("geometries", []))
+        geometries.extend(active_lt2)
         for geometry in geometries:
             for point in geometry.get("points", []):
                 if x0 < point[0] < x1:
@@ -802,7 +807,7 @@ def main():
             ) or any(
                 geometry.get("type") == "void"
                 and point_in_polygon(point, geometry.get("points", []))
-                for geometry in lt2_geometries
+                for geometry in active_lt2
             ):
                 return None
             matches = [zone for zone in (level or {}).get("zones", [])
@@ -830,7 +835,7 @@ def main():
             return any(
                 geometry.get("type") == "void"
                 and point_in_polygon(point, geometry.get("points", []))
-                for geometry in lt2_geometries
+                for geometry in active_lt2
             )
 
         def nearest_zone(point):
@@ -841,9 +846,9 @@ def main():
                         candidates.append((zone, geometry["points"]))
             lt2_names = ((0, "LT2 A"), (1, "LT2 B"), (3, "LT2 C"), (4, "LT2 D"), (5, "LT2 E"))
             for index, name in lt2_names:
-                if index >= len(lt2_geometries):
+                if index >= len(active_lt2):
                     continue
-                geometry = lt2_geometries[index]
+                geometry = active_lt2[index]
                 if geometry.get("type") == "polygon":
                     sc = 200.0 if name == "LT2 E" else (300.0 if name == "LT2 D" else 500.0)
                     candidates.append(({"id": name, "pm_adic_kg_m2": 260.0, "sc_kg_m2": sc}, geometry["points"]))
@@ -886,8 +891,6 @@ def main():
                     continue
                 point = ((xa + xb) / 2.0, (ya + yb) / 2.0)
                 zone = zone_at(point)
-                if not zone and not point_is_void(point):
-                    zone = nearest_zone(point)
                 if not zone:
                     continue
                 key = zone["id"]
@@ -968,6 +971,248 @@ def main():
                         "w_SC_end_kN_m": round(tributary["w_end_kN_m"] * edge_share * share * q_sc / slab_self_weight, 6),
                     })
 
+    # Explicit cantilevers are geometry and load-transfer regions, not finite
+    # elements. Their interior edge is supported by the beam line at y=16.15 m.
+    explicit_cantilever_cases = []
+
+    def support_beams_for_region(region):
+        x0, x1 = region["x_min_m"], region["x_max_m"]
+        y = region.get("support_y_m", region["y_min_m"])
+        result = []
+        for element in elements:
+            if not element["type"].startswith("BEAM"):
+                continue
+            a = next(node for node in nodes if node["id"] == element["i"])
+            b = next(node for node in nodes if node["id"] == element["j"])
+            if abs(a["z_m"] - region["z_m"]) > 1e-6 or abs(b["z_m"] - region["z_m"]) > 1e-6:
+                continue
+            if abs(a["y_m"] - b["y_m"]) > 1e-6 or abs(a["y_m"] - y) > 1e-3:
+                continue
+            overlap = max(0.0, min(x1, max(a["x_m"], b["x_m"]))
+                          - max(x0, min(a["x_m"], b["x_m"])))
+            if overlap > 1e-6:
+                result.append((element["id"], overlap, abs(b["x_m"] - a["x_m"])))
+        return result
+
+    for region in config.get("cantilever_regions", []):
+        x0, x1 = region["x_min_m"], region["x_max_m"]
+        y0, y1 = region["y_min_m"], region["y_max_m"]
+        z = region["z_m"]
+        area = (x1 - x0) * (y1 - y0)
+        if area <= 1e-6:
+            continue
+        corners = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+        slab_node_ids = []
+        for x, y in corners:
+            key = (round(x, 3), round(y, 3), round(z, 3))
+            if key not in node_by_xyz:
+                node = {"id": next_slab_node, "level": levels.index(z), "axis": "SLAB",
+                        "x_m": x, "y_m": y, "z_m": z, "restraint": False,
+                        "status": "MANUAL_SLAB_NODE"}
+                next_slab_node += 1
+                nodes.append(node)
+                node_by_xyz[key] = node
+            slab_node_ids.append(node_by_xyz[key]["id"])
+
+        support_beams = support_beams_for_region(region)
+        support_ids = [item[0] for item in support_beams]
+        slab_id = next_slab_element
+        next_slab_element += 1
+        slabs.append({
+            "id": slab_id, "panel_id": slab_id, "node_ids": slab_node_ids,
+            "coordinates": [{"x_m": x, "y_m": y, "z_m": z} for x, y in corners],
+            "edge_beam_ids": {"support": support_ids},
+            "dimensions_m": {"lx": round(x1 - x0, 6), "ly": round(y1 - y0, 6)},
+            "area_m2": round(area, 6), "gross_area_m2": round(area, 6),
+            "thickness_m": slab_thickness, "density_kg_m3": slab_density,
+            "self_weight_kN_m2": round(slab_self_weight, 6),
+            "tributary_loads": [], "voids": [], "area_check_m2": 0.0,
+            "load_regions": [{"zone": region["id"], "area_m2": round(area, 6)}],
+            "boundary_elements": support_ids, "z_m": z,
+            "status": "EXPLICIT_CANTILEVER",
+        })
+
+        if not support_beams:
+            unassigned_slabs.append({"slab_id": slab_id, "z_m": z,
+                                     "centroid_xy_m": [(x0 + x1) / 2.0, (y0 + y1) / 2.0],
+                                     "reason": "cantilever_without_support_beam"})
+            continue
+
+        # Any short gap between the region and the beam-line extents is
+        # assigned to the beam with the largest overlap to conserve the area.
+        region_length = x1 - x0
+        shares = {beam_id: overlap / region_length for beam_id, overlap, _ in support_beams}
+        assigned_share = sum(shares.values())
+        largest_beam = max(support_beams, key=lambda item: item[1])[0]
+        shares[largest_beam] += max(0.0, 1.0 - assigned_share)
+        q_pm = region.get("pm_adic_kg_m2", 0.0) * KG_TO_KN
+        q_sc = region.get("sc_kg_m2", 0.0) * KG_TO_KN
+        q_g = slab_self_weight + q_pm
+        for beam_id, _, beam_length in support_beams:
+            beam_area = area * shares[beam_id]
+            dead_load = beam_area * q_g
+            live_load = beam_area * q_sc
+            w_g = dead_load / beam_length if beam_length else 0.0
+            w_sc = live_load / beam_length if beam_length else 0.0
+            explicit_cantilever_cases.append({
+                "slab_id": slab_id, "beam_id": beam_id, "level_z_m": z,
+                "zone": region["id"], "edge": "support",
+                "distribution": "cantilever_to_support",
+                "tributary_area_m2": round(beam_area, 6),
+                "q_G_kN_m2": round(q_g, 6), "q_SC_kN_m2": round(q_sc, 6),
+                "dead_load_kN": round(dead_load, 6),
+                "live_load_kN": round(live_load, 6),
+                "w_G_start_kN_m": round(w_g, 6), "w_G_max_kN_m": round(w_g, 6),
+                "w_G_end_kN_m": round(w_g, 6), "w_SC_start_kN_m": round(w_sc, 6),
+                "w_SC_max_kN_m": round(w_sc, 6), "w_SC_end_kN_m": round(w_sc, 6),
+            })
+
+    beam_load_cases.extend(explicit_cantilever_cases)
+
+    # Close the remaining loaded source cells that are not covered by a
+    # generated slab. These panels are load-transfer geometry only; they do not
+    # add finite elements. The nearest beam receives the complete cell load.
+    def source_zone_at(point, z):
+        level_zones = zones_by_level.get(z, [])
+        if any(
+            geometry.get("type") == "void"
+            and point_in_polygon(point, geometry.get("points", []))
+            for zone in level_zones
+            for geometry in zone.get("geometries", [])
+        ):
+            return None
+        matches = [zone for zone in level_zones if zone_contains(zone, point)]
+        if len(matches) == 1:
+            return matches[0]
+        inside_level_polygon = any(
+            geometry.get("type") == "polygon"
+            and point_in_polygon(point, geometry.get("points", []))
+            for zone in level_zones
+            for geometry in zone.get("geometries", [])
+        )
+        return None if inside_level_polygon else lt2_zone_for(point, z)
+
+    def slab_covers_point(slab, point):
+        xs = [item["x_m"] for item in slab["coordinates"]]
+        ys = [item["y_m"] for item in slab["coordinates"]]
+        if not min(xs) <= point[0] <= max(xs) or not min(ys) <= point[1] <= max(ys):
+            return False
+        return not any(
+            void["x_min_m"] < point[0] < void["x_max_m"]
+            and void["y_min_m"] < point[1] < void["y_max_m"]
+            for void in slab.get("voids", [])
+        )
+
+    def point_segment_distance(point, a, b):
+        dx, dy = b["x_m"] - a["x_m"], b["y_m"] - a["y_m"]
+        length_squared = dx * dx + dy * dy
+        if length_squared <= 1e-12:
+            return ((point[0] - a["x_m"]) ** 2 + (point[1] - a["y_m"]) ** 2) ** 0.5
+        ratio = ((point[0] - a["x_m"]) * dx + (point[1] - a["y_m"]) * dy) / length_squared
+        ratio = max(0.0, min(1.0, ratio))
+        return ((point[0] - (a["x_m"] + ratio * dx)) ** 2
+                + (point[1] - (a["y_m"] + ratio * dy)) ** 2) ** 0.5
+
+    def nearest_beam(point, z):
+        candidates = []
+        for element in elements:
+            if not element["type"].startswith("BEAM"):
+                continue
+            a = next(node for node in nodes if node["id"] == element["i"])
+            b = next(node for node in nodes if node["id"] == element["j"])
+            if abs(a["z_m"] - z) > 1e-6 or abs(b["z_m"] - z) > 1e-6:
+                continue
+            length = ((a["x_m"] - b["x_m"]) ** 2 + (a["y_m"] - b["y_m"]) ** 2) ** 0.5
+            if length > 1e-6:
+                candidates.append((point_segment_distance(point, a, b), element["id"], length))
+        return min(candidates) if candidates else None
+
+    missing_load_panels = 0
+    missing_load_area = 0.0
+    missing_load_cases = []
+    for z in levels:
+        level_zones = zones_by_level.get(z, [])
+        active_geometries = [geometry for zone in level_zones
+                             for geometry in zone.get("geometries", [])]
+        if z in loads.get("lt2_levels", []) or abs(z - 19.8) < 1e-6:
+            active_geometries.extend(
+                lt2_geometries if abs(z - 19.8) < 1e-6 else lt2_geometries[:6]
+            )
+        x_breaks = {round(point["x_m"], 6) for slab in slabs if abs(slab["z_m"] - z) < 1e-6
+                    for point in slab["coordinates"]}
+        y_breaks = {round(point["y_m"], 6) for slab in slabs if abs(slab["z_m"] - z) < 1e-6
+                    for point in slab["coordinates"]}
+        x_breaks.update(round(point[0], 6) for geometry in active_geometries
+                        for point in geometry.get("points", []))
+        y_breaks.update(round(point[1], 6) for geometry in active_geometries
+                        for point in geometry.get("points", []))
+        for xa, xb in zip(sorted(x_breaks), sorted(x_breaks)[1:]):
+            for ya, yb in zip(sorted(y_breaks), sorted(y_breaks)[1:]):
+                if xb - xa <= 1e-6 or yb - ya <= 1e-6:
+                    continue
+                point = ((xa + xb) / 2.0, (ya + yb) / 2.0)
+                zone = source_zone_at(point, z)
+                if not zone or any(slab_covers_point(slab, point)
+                                   for slab in slabs if abs(slab["z_m"] - z) < 1e-6):
+                    continue
+                area = (xb - xa) * (yb - ya)
+                support = nearest_beam(point, z)
+                if support is None:
+                    unassigned_slabs.append({
+                        "slab_id": None, "z_m": z, "centroid_xy_m": list(point),
+                        "reason": "missing_source_area_without_support_beam",
+                    })
+                    continue
+                beam_id, beam_length = support[1], support[2]
+                node_ids = []
+                for x, y in ((xa, ya), (xb, ya), (xb, yb), (xa, yb)):
+                    key = (round(x, 3), round(y, 3), round(z, 3))
+                    if key not in node_by_xyz:
+                        node = {"id": next_slab_node, "level": levels.index(z), "axis": "SLAB",
+                                "x_m": x, "y_m": y, "z_m": z, "restraint": False,
+                                "status": "MISSING_LOAD_PANEL_NODE"}
+                        next_slab_node += 1
+                        nodes.append(node)
+                        node_by_xyz[key] = node
+                    node_ids.append(node_by_xyz[key]["id"])
+                slab_id = next_slab_element
+                next_slab_element += 1
+                slabs.append({
+                    "id": slab_id, "panel_id": slab_id, "node_ids": node_ids,
+                    "coordinates": [{"x_m": x, "y_m": y, "z_m": z}
+                                    for x, y in ((xa, ya), (xb, ya), (xb, yb), (xa, yb))],
+                    "edge_beam_ids": {"nearest_support": [beam_id]},
+                    "dimensions_m": {"lx": round(xb - xa, 6), "ly": round(yb - ya, 6)},
+                    "area_m2": round(area, 6), "gross_area_m2": round(area, 6),
+                    "thickness_m": slab_thickness, "density_kg_m3": slab_density,
+                    "self_weight_kN_m2": round(slab_self_weight, 6),
+                    "tributary_loads": [], "voids": [], "area_check_m2": 0.0,
+                    "load_regions": [{"zone": zone["id"], "area_m2": round(area, 6)}],
+                    "boundary_elements": [beam_id], "z_m": z,
+                    "status": "EXPLICIT_LOAD_PANEL",
+                })
+                q_g = slab_self_weight + zone.get("pm_adic_kg_m2", 0.0) * KG_TO_KN
+                q_sc = zone.get("sc_kg_m2", 0.0) * KG_TO_KN
+                dead_load = area * q_g
+                live_load = area * q_sc
+                missing_load_cases.append({
+                    "slab_id": slab_id, "beam_id": beam_id, "level_z_m": z,
+                    "zone": zone["id"], "edge": "nearest_support",
+                    "distribution": "missing_area_to_nearest_beam",
+                    "tributary_area_m2": round(area, 6), "q_G_kN_m2": round(q_g, 6),
+                    "q_SC_kN_m2": round(q_sc, 6), "dead_load_kN": round(dead_load, 6),
+                    "live_load_kN": round(live_load, 6),
+                    "w_G_start_kN_m": round(dead_load / beam_length, 6),
+                    "w_G_max_kN_m": round(dead_load / beam_length, 6),
+                    "w_G_end_kN_m": round(dead_load / beam_length, 6),
+                    "w_SC_start_kN_m": round(live_load / beam_length, 6),
+                    "w_SC_max_kN_m": round(live_load / beam_length, 6),
+                    "w_SC_end_kN_m": round(live_load / beam_length, 6),
+                })
+                missing_load_panels += 1
+                missing_load_area += area
+    beam_load_cases.extend(missing_load_cases)
+
     beam_slab_loads = []
     for slab in slabs:
         for load in slab["tributary_loads"]:
@@ -1016,6 +1261,11 @@ def main():
     for slab in slabs:
         n1, n2, n3, n4 = slab["node_ids"]
         lines.append(f'S,{slab["id"]},{n1},{n2},{n3},{n4},{slab["z_m"]},{slab["thickness_m"]},{slab["status"]}')
+        for void in slab.get("voids", []):
+            lines.append(
+                f'V,{slab["id"]},{void["x_min_m"]},{void["x_max_m"]},'
+                f'{void["y_min_m"]},{void["y_max_m"]}'
+            )
     CSV.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     workbook = Workbook()
