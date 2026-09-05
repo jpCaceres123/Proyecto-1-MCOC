@@ -32,7 +32,7 @@ en datos estructurados. Todas las coordenadas estan en metros y se expresan como
 | 11.88 | 3 | 260 | 300 | Vacio central |
 | 11.88 | 4 | 260 | 400 | Zona inferior |
 | 11.88 | 5 | 200 | 200 | Voladizo |
-| 15.84 | 1 | 260 | 250 | Zona inicial |
+| 15.84 | 1 | 260 | 250 | Zona inicial con vacío de escalera |
 | 15.84 | 2 | 260 | 500 | Vacio de escalera en poligono 1 |
 | 15.84 | 3 | 260 | 300 | Vacio central |
 | 15.84 | 4 | 200 | 200 | Zona ampliada |

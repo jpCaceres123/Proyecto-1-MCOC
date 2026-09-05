@@ -27,8 +27,18 @@
   "beam_section_m": [0.6, 0.8],
   "slab_thickness_m": 0.15,
   "slab_density_kg_m3": 2500.0,
+  "subbuildings": {
+    "LT2": {"x_max_m": -0.45},
+    "LT1": {"x_min_m": -0.25},
+    "dilatation_joint": {"x_min_m": -0.45, "x_max_m": -0.35}
+  },
+  "wall_load_supports": {
+    "LT2_edge": {"wall_ids": [5, 6, 7], "edge_x_m": -0.45,
+                 "description": "Borde LT2 apoyado en los muros M.H.A. e=25 alrededor del vacio"}
+  },
   "slab_regions": [
-    {"id": "principal_A_I_prima", "x_min_m": -28.30, "x_max_m": 45.00, "y_min_m": 0.00, "y_max_m": 16.15, "z_min_m": 3.96, "z_max_m": 19.80}
+    {"id": "LT2_principal", "subbuilding": "LT2", "x_min_m": -28.30, "x_max_m": -0.45, "y_min_m": 0.00, "y_max_m": 16.15, "z_min_m": 3.96, "z_max_m": 19.80},
+    {"id": "LT1_principal", "subbuilding": "LT1", "x_min_m": -0.25, "x_max_m": 45.00, "y_min_m": 0.00, "y_max_m": 16.15, "z_min_m": 3.96, "z_max_m": 19.80}
   ],
   "small_beam_section_m": [0.3, 0.45],
   "walls": [
@@ -139,14 +149,14 @@
   "material": {"E_kPa": 30000000.0, "nu": 0.2},
   "mass_per_node_t": 10.0,
   "cantilever_regions": [
-    {"id": "LT2_E_superior_396", "z_m": 3.96, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
-    {"id": "LT2_E_superior_792", "z_m": 7.92, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
-    {"id": "LT2_E_superior_1188", "z_m": 11.88, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
-    {"id": "LT2_E_superior_1584", "z_m": 15.84, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
-    {"id": "LT2_E_superior_1980", "z_m": 19.80, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
-    {"id": "LT1_superior_792", "z_m": 7.92, "x_min_m": -0.25, "x_max_m": 45.50, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
-    {"id": "LT1_superior_1188", "z_m": 11.88, "x_min_m": -0.25, "x_max_m": 45.50, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
-    {"id": "LT1_superior_1584", "z_m": 15.84, "x_min_m": -0.25, "x_max_m": 51.15, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
-    {"id": "LT1_superior_1980", "z_m": 19.80, "x_min_m": -0.25, "x_max_m": 51.15, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0}
+    {"id": "LT2_E_superior_396", "source_zone": "LT2 E", "z_m": 3.96, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
+    {"id": "LT2_E_superior_792", "source_zone": "LT2 E", "z_m": 7.92, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
+    {"id": "LT2_E_superior_1188", "source_zone": "LT2 E", "z_m": 11.88, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 260.0, "sc_kg_m2": 200.0},
+    {"id": "LT2_E_superior_1584", "source_zone": "LT2 E", "z_m": 15.84, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT2_E_superior_1980", "source_zone": "LT2 E", "z_m": 19.80, "x_min_m": -32.45, "x_max_m": -0.45, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT1_superior_792", "source_zone": "Zona 5", "z_m": 7.92, "x_min_m": -0.25, "x_max_m": 45.50, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT1_superior_1188", "source_zone": "Zona 5", "z_m": 11.88, "x_min_m": -0.25, "x_max_m": 45.50, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT1_superior_1584", "source_zone": "Zona 5", "z_m": 15.84, "x_min_m": -0.25, "x_max_m": 51.15, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0},
+    {"id": "LT1_superior_1980", "source_zone": "Zona 5", "z_m": 19.80, "x_min_m": -0.25, "x_max_m": 51.15, "y_min_m": 16.15, "y_max_m": 17.30, "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0}
   ]
 }

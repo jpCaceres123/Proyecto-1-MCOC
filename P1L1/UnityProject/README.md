@@ -9,3 +9,6 @@ El visualizador no reemplaza el análisis OpenSeesPy: usa la geometría y los de
 1. Abrir `UnityProject` en Unity Hub.
 2. Abrir `Assets/Scenes/Frame3D.unity`.
 3. Presionar Play para ver el marco; usar el mouse para navegar en la vista Scene.
+
+Este visualizador pertenece exclusivamente al benchmark de Semana 1. Para el
+modelo completo de Semana 2 se debe abrir `P1L2/UnityVisualization/`.

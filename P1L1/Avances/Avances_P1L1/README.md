@@ -97,6 +97,9 @@ La herramienta de losas bidireccionales está organizada separadamente en
 - Momento y fuerzas del elemento de referencia.
 - Superposición lineal: `GQ = G + Q`.
 
+Este benchmark histórico se conserva para trazabilidad de Semana 1. No comparte
+los archivos generados ni el visualizador con P1L2.
+
 ## Convención de unidades
 
 - Longitud: `m`.

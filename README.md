@@ -9,6 +9,10 @@ Repositorio del proyecto colaborativo de modelación estructural, OpenSeesPy y v
 | Semana 1: benchmark 3D | Completado | [`P1L1/`](P1L1/) |
 | Semana 2: edificio completo y gravedad | En desarrollo | [`P1L2/`](P1L2/) · [`Enunciado`](Enunciados%20e%20Instrucciones/SEMANA_2/) |
 
+El modelo de P1L2 tiene sus fuentes, scripts, resultados y visualizador Unity
+separados de P1L1. Los archivos generados deben reconstruirse desde las fuentes
+de `P1L2/data/` antes de distribuir una actualización.
+
 ## Ejecución de Semana 1
 
 ```powershell

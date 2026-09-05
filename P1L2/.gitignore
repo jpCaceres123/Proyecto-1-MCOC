@@ -7,6 +7,7 @@ UnityVisualization/Obj/
 UnityVisualization/Build/
 UnityVisualization/Build/*_BackUpThisFolder_ButDontShipItWithYourGame/
 UnityVisualization/Build/Il2CppOutputProject/
+UnityVisualization/Assets/_Recovery/
 
 # Python generated files and local environments
 __pycache__/

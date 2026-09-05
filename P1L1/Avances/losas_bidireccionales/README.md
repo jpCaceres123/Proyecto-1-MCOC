@@ -34,3 +34,6 @@ paralelos a Y.
 
 Para un paño más largo en X, los bordes largos reciben una distribución
 trapezoidal y los bordes cortos una distribución triangular.
+
+Esta herramienta es un prototipo de Semana 1. El flujo de cargas del modelo
+global P1L2 utiliza sus propios datos en `P1L2/data/` y sus scripts de generación.

@@ -19,6 +19,17 @@ KG_TO_KN = 9.80665 / 1000.0
 def main():
     config = json.loads((DATA / "geometria_manual.json").read_text(encoding="utf-8"))
     loads = json.loads(LOADS.read_text(encoding="utf-8")) if LOADS.exists() else {"levels": [], "lt2": {}, "lt2_load_cases": []}
+    joint = config.get("subbuildings", {}).get("dilatation_joint")
+
+    def subbuilding_for_x(x):
+        if not joint:
+            raise ValueError("Falta la definicion de la junta de dilatacion")
+        if x <= joint["x_min_m"] + 1e-6:
+            return "LT2"
+        if x >= joint["x_max_m"] - 1e-6:
+            return "LT1"
+        raise ValueError(f"Coordenada x={x:.6f} m dentro de la junta de dilatacion")
+
     slab_thickness = config.get("slab_thickness_m", 0.15)
     slab_density = config.get("slab_density_kg_m3", 2500.0)
     slab_self_weight = slab_thickness * slab_density * 9.80665 / 1000.0
@@ -122,9 +133,10 @@ def main():
             wall_node = next(node for node in nodes if node["id"] == element[endpoint])
             candidates = [node for node in frame_nodes + [candidate for candidate in nodes
                                                           if candidate["status"] == "MANUAL_WALL_NODE"]
-                          if node["id"] != wall_node["id"]
-                          if abs(node["z_m"] - wall_node["z_m"]) < 1e-6
-                          and ((node["x_m"] - wall_node["x_m"]) ** 2
+                           if node["id"] != wall_node["id"]
+                           if abs(node["z_m"] - wall_node["z_m"]) < 1e-6
+                           if subbuilding_for_x(node["x_m"]) == subbuilding_for_x(wall_node["x_m"])
+                           and ((node["x_m"] - wall_node["x_m"]) ** 2
                                + (node["y_m"] - wall_node["y_m"]) ** 2) ** 0.5 <= 0.60]
             if candidates:
                 nearest = min(candidates, key=lambda node: (
@@ -456,6 +468,14 @@ def main():
                 rectangles.append({"x_min_m": ix0, "x_max_m": ix1,
                                    "y_min_m": iy0, "y_max_m": iy1,
                                    "area_m2": (ix1 - ix0) * (iy1 - iy0)})
+        joint = config.get("subbuildings", {}).get("dilatation_joint")
+        if joint and x0 < joint["x_min_m"] - 1e-6 and x1 > joint["x_min_m"] + 1e-6:
+            ix0, ix1 = joint["x_min_m"], x1
+            if ix1 - ix0 > 1e-6:
+                rectangles.append({"x_min_m": ix0, "x_max_m": ix1,
+                                   "y_min_m": y0, "y_max_m": y1,
+                                   "area_m2": (ix1 - ix0) * (y1 - y0),
+                                   "type": "dilatation_joint_boundary"})
         return rectangles
 
     void_slabs = []
@@ -575,7 +595,7 @@ def main():
             outer = lt2_geometries[6]
             passed = any(point_in_polygon(point, geometry["points"]) for geometry in active_geometries[7:])
             if outer.get("type") == "polygon" and point_in_polygon(point, outer["points"]) and not passed:
-                return {"id": "LT2 piso 4", "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0}
+                return {"id": "Piso 4 LT2", "pm_adic_kg_m2": 200.0, "sc_kg_m2": 200.0}
             return None
         if len(lt2_geometries) < 6:
             return None
@@ -995,6 +1015,7 @@ def main():
         return result
 
     for region in config.get("cantilever_regions", []):
+        source_zone = region.get("source_zone", region["id"])
         x0, x1 = region["x_min_m"], region["x_max_m"]
         y0, y1 = region["y_min_m"], region["y_max_m"]
         z = region["z_m"]
@@ -1027,7 +1048,7 @@ def main():
             "thickness_m": slab_thickness, "density_kg_m3": slab_density,
             "self_weight_kN_m2": round(slab_self_weight, 6),
             "tributary_loads": [], "voids": [], "area_check_m2": 0.0,
-            "load_regions": [{"zone": region["id"], "area_m2": round(area, 6)}],
+            "load_regions": [{"zone": source_zone, "area_m2": round(area, 6)}],
             "boundary_elements": support_ids, "z_m": z,
             "status": "EXPLICIT_CANTILEVER",
         })
@@ -1056,7 +1077,7 @@ def main():
             w_sc = live_load / beam_length if beam_length else 0.0
             explicit_cantilever_cases.append({
                 "slab_id": slab_id, "beam_id": beam_id, "level_z_m": z,
-                "zone": region["id"], "edge": "support",
+                "zone": source_zone, "edge": "support",
                 "distribution": "cantilever_to_support",
                 "tributary_area_m2": round(beam_area, 6),
                 "q_G_kN_m2": round(q_g, 6), "q_SC_kN_m2": round(q_sc, 6),
@@ -1213,6 +1234,38 @@ def main():
                 missing_load_area += area
     beam_load_cases.extend(missing_load_cases)
 
+    # El borde de LT2 junto a la junta descarga en los muros M.H.A. e=25,
+    # no en las vigas del subedificio LT1. La seleccion se limita a los
+    # muros declarados en la geometria y al centro del tramo cargado.
+    wall_supports = config.get("wall_load_supports", {}).get("LT2_edge", {})
+    support_wall_ids = set(wall_supports.get("wall_ids", []))
+    elements_by_id = {element["id"]: element for element in elements}
+    wall_by_id = {wall["id"]: wall for wall in config.get("walls", [])}
+    wall_load_cases = []
+    retained_beam_load_cases = []
+    for load in beam_load_cases:
+        beam = elements_by_id.get(load.get("beam_id"))
+        if load.get("beam_id") not in {393, 394} or not beam:
+            retained_beam_load_cases.append(load)
+            continue
+        y_mid = sum(node["y_m"] for node in nodes if node["id"] == beam["i"] or node["id"] == beam["j"]) / 2.0
+        candidates = []
+        for wall_id in support_wall_ids:
+            wall = wall_by_id.get(wall_id)
+            if not wall or not (wall["z_i_m"] - 1e-6 <= load["level_z_m"] <= wall["z_j_m"] + 1e-6):
+                continue
+            y0, y1 = sorted((wall["y_i_m"], wall["y_j_m"]))
+            distance = 0.0 if y0 - 1e-6 <= y_mid <= y1 + 1e-6 else min(abs(y_mid - y0), abs(y_mid - y1))
+            candidates.append((distance, wall_id))
+        if not candidates:
+            retained_beam_load_cases.append(load)
+            continue
+        wall_load = dict(load)
+        wall_load["wall_id"] = min(candidates)[1]
+        wall_load["distribution"] = "tributary_resultant_to_wall_edge_nodes"
+        wall_load_cases.append(wall_load)
+    beam_load_cases = retained_beam_load_cases
+
     beam_slab_loads = []
     for slab in slabs:
         for load in slab["tributary_loads"]:
@@ -1230,14 +1283,17 @@ def main():
 
     data = {"source": "geometria_manual.json", "load_source": "cargas_losas.json", "status": "MANUAL_REVIEW",
              "units": "kN-m-s", "nodes": nodes, "elements": elements,
+             "subbuildings": config.get("subbuildings", {}),
              "walls": config.get("walls", []),
              "slabs": slabs,
              "beam_slab_loads": beam_slab_loads,
              "load_zones": loads.get("levels", []),
              "lt2_load_zones": loads.get("lt2", {}),
-             "lt2_load_cases": loads.get("lt2_load_cases", []),
-             "load_zone_totals": load_zone_totals,
-              "beam_load_cases": beam_load_cases,
+              "lt2_load_cases": loads.get("lt2_load_cases", []),
+              "load_zone_totals": load_zone_totals,
+               "beam_load_cases": beam_load_cases,
+              "wall_load_cases": wall_load_cases,
+              "wall_load_supports": config.get("wall_load_supports", {}),
               "unassigned_load_slabs": unassigned_slabs,
               "void_slabs": [{"slab_id": slab["id"], "z_m": slab["z_m"],
                               "coordinates": slab["coordinates"]} for slab in void_slabs],

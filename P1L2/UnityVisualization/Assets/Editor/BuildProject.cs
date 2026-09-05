@@ -35,7 +35,9 @@ public static class BuildProject
             scenes = new[] { "Assets/Main.unity" },
             locationPathName = outputPath,
             target = BuildTarget.StandaloneWindows64,
-            options = BuildOptions.CleanBuildCache
+            // Reuse Unity's incremental build cache. Cleaning it on every build
+            // forces script serialization and compilation from scratch.
+            options = BuildOptions.None
         });
         if (report.summary.result == BuildResult.Succeeded)
         {

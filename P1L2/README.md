@@ -21,6 +21,7 @@ Los muros se modelan analiticamente en OpenSeesPy con elementos `ShellMITC4`.
 ### Codigo
 
 - `scripts/generar_modelo_manual.py`: genera el modelo, las losas, el CSV y los Excel.
+- `scripts/convertir_cargas_losas.py`: convierte el archivo textual de cargas a JSON.
 - `scripts/modelo_opensees_3d.py`: construye y analiza el modelo en OpenSeesPy.
 - `UnityVisualization/Assets/Scripts/BuildingVisualizer.cs`: visor 3D de Unity.
 
@@ -35,6 +36,10 @@ Los muros se modelan analiticamente en OpenSeesPy con elementos `ShellMITC4`.
 
 No se deben editar directamente los archivos generados. Se regeneran a partir
 de los archivos de `data/`.
+
+`convertir_cargas_losas.py` es una herramienta independiente de importacion; no
+forma parte de la generacion del modelo y no debe ejecutarse sobre un JSON que
+ya haya sido corregido manualmente.
 
 ## Instalacion
 
@@ -66,18 +71,19 @@ El script construye:
 - Una `ElasticMembranePlateSection` por espesor de muro.
 - Conexiones de borde mediante `equalDOF`.
 - Diafragmas rigidos por nivel.
-- Cargas de losas sobre vigas.
+- Cargas de losas sobre vigas y bordes de muro definidos para LT2.
 - Peso propio de los muros como carga vertical nodal.
 
 La salida actual de referencia es:
 
 ```text
-746 nodos en OpenSees
+1551 nodos en OpenSees
 677 elementos de barras en el contrato
 24 muros
 169 elementos ShellMITC4
-176 paneles de losa
+659 paneles de losa
 Residual de equilibrio gravitacional: 0.000 kN
+Compatibilidad de diafragmas: OK (error maximo 2.618e-4 m)
 ```
 
 ## Unity
@@ -99,6 +105,10 @@ El visor lee `Assets/Resources/model_3d.csv`. Permite activar o desactivar:
 - IDs.
 - Ejes locales.
 - Areas tributarias.
+
+Para construir el ejecutable, usar el menu `Build > Edificio Viewer > Construir
+EXE`. El script reutiliza la cache incremental de Unity; la primera compilacion
+puede tardar mas que las siguientes.
 
 Los colores son:
 
@@ -136,13 +146,22 @@ El repositorio debe acompanarse en Canvas con el enlace y el hash exacto del
 commit evaluado. La demostracion se realiza en vivo y se debe poder explicar la
 geometria, las cargas, los apoyos, los ejes locales y la transferencia de cargas.
 
-## Pendientes de validacion
+## Verificacion actual
 
-El modelo corre y conserva el equilibrio gravitacional, pero antes de
-considerarlo definitivo se deben cotejar con los planos:
+La verificacion independiente se ejecuta con:
 
-- Geometria exacta de vigas, muros, losas y voladizos.
-- Bordes de las zonas no rectangulares.
-- Dimensiones de los vacios.
-- Conectividad de los muros ShellMITC4 con la estructura.
-- Secciones, apoyos y comportamiento bajo cargas laterales.
+```powershell
+python .\P1L2\scripts\verificar_modelo.py
+```
+
+El resultado actual es `OK`. Las comprobaciones incluyen:
+
+- Carga total de losa por nivel.
+- Particion y suma de areas tributarias.
+- Conservacion de cargas permanentes y sobrecargas.
+- Losas sin zona de carga.
+- Equilibrio gravitacional global.
+- Compatibilidad de diafragmas rigidos independientes para LT1 y LT2.
+
+El error maximo de particion cargada es `0.006512 m2`, dentro de la tolerancia
+adoptada de `0.01 m2`.

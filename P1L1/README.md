@@ -39,6 +39,9 @@ Cada nodo tiene `[ux, uy, uz, rx, ry, rz]`. `geomTransf` define los ejes locales
 
 El proyecto Unity se encuentra en `UnityProject/`. Abrir esa carpeta desde Unity Hub y cargar `Assets/Scenes/Frame3D.unity`. La guía paso a paso está en [`UnityProject/GUIA_INICIO.md`](UnityProject/GUIA_INICIO.md).
 
+P1L1 es independiente del modelo global de P1L2; sus resultados y su proyecto
+Unity se regeneran usando exclusivamente los scripts y datos de `P1L1/`.
+
 ## Comparación SAP2000
 
 Los archivos para reproducir la geometría en SAP2000 están en `sap2000/`:

@@ -34,3 +34,6 @@ mueve el proyecto Unity, copie el JSON a
 
 La conversion de coordenadas ya viene realizada en el JSON siguiendo el
 tutorial: `(X,Y,Z)_OpenSees -> (X,Z,Y)_Unity`.
+
+Este proyecto Unity corresponde al visor experimental de Semana 1. El visor
+actual del edificio completo se encuentra en `P1L2/UnityVisualization/`.

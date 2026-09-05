@@ -6,7 +6,7 @@ import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "Cargas_losas.txt"
+SOURCE = ROOT / "data" / "Cargas_losas.txt"
 OUTPUT = ROOT / "data" / "cargas_losas.json"
 COORDINATE = re.compile(r"\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?:\s*,\s*(-?\d+(?:\.\d+)?))?\s*\)")
 LOAD = re.compile(r"PM\.?\s*ADIC\.?\s*=\s*(-?\d+(?:\.\d+)?)\s*Kg/m\^2.*SC\s*=\s*(-?\d+(?:\.\d+)?)\s*Kg/m\^2", re.I)
