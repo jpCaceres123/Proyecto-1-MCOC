@@ -1,0 +1,38 @@
+{
+  "workbook": "../modelo_estructural_completo.xlsx",
+  "E_kN_m2": 30000000.0,
+  "nu": 0.2,
+  "density_kN_m3": 24.516625,
+  "seismic_coefficient": 0.10,
+  "seismic_live_fraction": 0.25,
+  "rigid_arm_factor": 1000.0,
+  "wall_connection_tolerance_m": 0.40,
+  "gap_m": 0.10,
+  "split_x_m": -0.40,
+  "lt2_wall_axis_x_m": -0.575,
+  "reference_elevation_m": -7.97,
+  "stiffness_multiplier": 1.0,
+  "beam_section_multiplier": 1.0,
+  "column_section_multiplier": 1.0,
+  "wall_stiffness_multiplier": 1.0,
+  "G_scale": 1.0,
+  "Q_scale": 1.0,
+  "fix_all_column_bases": true,
+  "column_base_corrections": [
+    {"axis": "I", "x_m": 40.0, "y_m": 0.0, "start_z_m": 3.96, "fixed": true},
+    {"axis": "I", "x_m": 40.0, "y_m": 7.25, "start_z_m": 3.96, "fixed": true},
+    {"axis": "I", "x_m": 40.0, "y_m": 16.15, "start_z_m": 3.96, "fixed": true}
+  ],
+  "capacity": {
+    "fc_MPa": 35.0,
+    "fy_MPa": 420.0,
+    "Es_MPa": 200000.0,
+    "cover_m": 0.05,
+    "column_bar_count": 12,
+    "column_bar_diameter_m": 0.022,
+    "wall_reinforcement_ratio": 0.01,
+    "epsilon_c_limit": 0.003,
+    "epsilon_s_limit": 0.02,
+    "assumption": "ARMADURAS DIDACTICAS: pendientes de reemplazar por detalles reales; capacidades nominales uniaxiales"
+  }
+}

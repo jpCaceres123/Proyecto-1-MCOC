@@ -1,0 +1,37 @@
+# Unity: conservar Assets, Packages, ProjectSettings y sus .meta
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Ll]ogs/
+**/UserSettings/
+**/MemoryCaptures/
+**/Recordings/
+*.csproj
+*.sln
+*.suo
+*.user
+
+# Entregas y archivos regenerables
+**/Aplicacion/
+**/resultados/
+**/Capturas/
+**/work/
+**/StreamingAssets/proyecto.json
+**/StreamingAssets/proyecto.json.meta
+**/overrides_unity.json
+*.zip
+*.log
+*.tmp
+
+# Python y configuración local
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,7 @@
+Unity/Library/
+Unity/Temp/
+Unity/Logs/
+Unity/obj/
+Unity/UserSettings/
+python/__pycache__/
+work/
