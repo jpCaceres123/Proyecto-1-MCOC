@@ -1,0 +1,17 @@
+# Unity generated files
+UnityVisualization/Library/
+UnityVisualization/Logs/
+UnityVisualization/UserSettings/
+UnityVisualization/Temp/
+UnityVisualization/Obj/
+UnityVisualization/Build/
+UnityVisualization/Build/*_BackUpThisFolder_ButDontShipItWithYourGame/
+UnityVisualization/Build/Il2CppOutputProject/
+
+# Python generated files and local environments
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.log

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plantas XY - Cargas de losas</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: #0f172a; color: #e5e7eb; font: 14px Arial, sans-serif; }
+    header { height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; background: #111827; border-bottom: 1px solid #334155; }
+    h1 { margin: 0; font-size: 16px; }
+    main { display: grid; grid-template-columns: 300px 1fr; height: calc(100vh - 49px); }
+    aside { box-sizing: border-box; height: 100%; overflow-y: auto; padding: 14px; background: #111827; border-right: 1px solid #334155; }
+    canvas { display: block; width: 100%; height: 100%; background: #f8fafc; cursor: grab; }
+    canvas:active { cursor: grabbing; }
+    .card { margin-bottom: 14px; padding: 11px; border: 1px solid #334155; border-radius: 8px; background: #1e293b; line-height: 1.4; }
+    .legend { margin: 7px 0; font-size: 12px; } .legend span { display: inline-block; width: 12px; height: 12px; margin-right: 7px; vertical-align: -1px; border-radius: 2px; }
+    .hint { color: #cbd5e1; font-size: 12px; }
+    select, button { width: 100%; box-sizing: border-box; padding: 8px; margin-top: 7px; border: 0; border-radius: 5px; cursor: pointer; }
+    select { background: #f8fafc; color: #111827; }
+    button { background: #2563eb; color: white; }
+    @media (max-width: 750px) { main { grid-template-columns: 1fr; } aside { height: auto; max-height: 40vh; } canvas { height: 60vh; } }
+  </style>
+</head>
+<body>
+  <header><h1>Plantas XY - Cargas de losas</h1><span id="levelTitle"></span></header>
+  <main>
+    <aside>
+      <div class="card">
+        <b>Planta visible</b>
+        <select id="level">
+          <option value="3.96">Cielo 1 subterraneo - z=3.96</option>
+          <option value="7.92">Cielo piso 1 - z=7.92</option>
+          <option value="11.88">Cielo piso 2 - z=11.88</option>
+          <option value="15.84">Cielo piso 3 - z=15.84</option>
+          <option value="19.8">Cielo piso 4 - z=19.80</option>
+        </select>
+        <button id="fit">Ajustar planta</button>
+      </div>
+      <div class="card"><b>Controles</b><p class="hint">Arrastra para desplazar. Usa la rueda para acercar o alejar. El norte del plano corresponde a Y creciente.</p></div>
+      <div class="card">
+        <b>Leyenda por SC</b>
+        <div class="legend"><span style="background:#2563eb"></span>SC 250 kg/m2</div>
+        <div class="legend"><span style="background:#dc2626"></span>SC 500 kg/m2</div>
+        <div class="legend"><span style="background:#f59e0b"></span>SC 300 kg/m2</div>
+        <div class="legend"><span style="background:#0891b2"></span>SC 400 kg/m2</div>
+        <div class="legend"><span style="background:#7c3aed"></span>SC 200 kg/m2</div>
+        <div class="legend"><span style="background:#be123c"></span>SC 100 kg/m2</div>
+        <div class="legend"><span style="background:#9333ea"></span>SC 800 kg/m2</div>
+      </div>
+      <div class="card">
+        <b>LT1 - edificio principal</b>
+        <p class="hint">Subterraneo: SC 250, 500 y 300 kg/m2. Piso 1: SC 250, 500, 300, 400 y 200 kg/m2. Piso 2: SC 250, 500, 300, 400 y 200 kg/m2. Piso 3: SC 250, 500, 300 y 200 kg/m2. Piso 4: SC 100, 500, 800 y 200 kg/m2.</p>
+      </div>
+      <div class="card">
+        <b>LT2 - edificio ampliado</b>
+        <p class="hint">Cielos del subterráneo al piso 3: SC 500, 300 y 200 kg/m2. Cielo del piso 4: SC 200 kg/m2; las seis pasadas son vacíos dentro de esta zona.</p>
+      </div>
+      <div class="card">
+        <b>Hoyo / vacio</b>
+        <div class="legend"><span style="background:#f8fafc;border:1px dashed #7f1d1d"></span>No recibe carga de losa</div>
+      </div>
+    </aside>
+    <canvas id="view"></canvas>
+  </main>
+  <script>
+    const canvas = document.getElementById('view'), ctx = canvas.getContext('2d');
+    const polygons = [
+      {z:3.96,c:'#2563eb',n:'Subterraneo Z1',p:[[-.25,-.25],[10.25,-.25],[10.25,7.25],[-.25,7.25]],h:[[[3.4,2.405],[6.7,2.405],[6.7,6.95],[3.4,6.95]]]},
+      {z:3.96,c:'#dc2626',n:'Subterraneo Z2',p:[[-.25,7.25],[10.25,7.25],[10.25,10],[6.3,10],[6.3,10.15],[3.6,10.15],[3.6,12.15],[-.25,12.15]]},
+      {z:3.96,c:'#f59e0b',n:'Subterraneo Z3',p:[[-.25,12.15],[6.3,12.15],[6.3,10],[10.25,10],[10.25,16.5],[-.25,16.5]]},
+      {z:7.92,c:'#2563eb',n:'Piso 1 Z1',p:[[-.25,-.25],[10.25,-.25],[10.25,7.25],[-.25,7.25]],h:[[[3.4,2.405],[6.7,2.405],[6.7,6.95],[3.4,6.95]]]},
+      {z:7.92,c:'#dc2626',n:'Piso 1 Z2',p:[[-.25,7.25],[39.7,7.25],[39.7,-.25],[45.3,-.25],[45.3,10.15],[3.6,10.15],[3.6,12.15],[-.25,12.15]]},
+      {z:7.92,c:'#f59e0b',n:'Piso 1 Z3',p:[[-.25,12.15],[6.3,12.15],[6.3,10.15],[45.3,10.15],[45.3,16.5],[-.25,16.5]]},
+      {z:7.92,c:'#0891b2',n:'Piso 1 Z4',p:[[10.25,7.25],[10.25,-.25],[9.7,-.25],[9.7,-4.42],[17.79,-4.42],[17.79,-.25],[39.7,-.25],[39.7,7.25]]},
+      {z:7.92,c:'#7c3aed',n:'Piso 1 Z5',p:[[-.25,16.5],[45.5,16.5],[45.5,17.3],[-.25,17.3]]},
+      {z:11.88,c:'#2563eb',n:'Piso 2 Z1',p:[[-.25,-.25],[10.25,-.25],[10.25,7.25],[-.25,7.25]],h:[[[3.4,2.405],[6.7,2.405],[6.7,6.95],[3.4,6.95]]]},
+      {z:11.88,c:'#dc2626',n:'Piso 2 Z2',p:[[-.25,7.25],[45.3,7.25],[45.3,10.15],[3.6,10.15],[3.6,12.15],[-.25,12.15]]},
+      {z:11.88,c:'#dc2626',n:'Piso 2 Z2B',p:[[10.25,-.25],[9.7,-.25],[9.7,-4.42],[17.79,-4.42],[17.79,-.25]]},
+      {z:11.88,c:'#dc2626',n:'Piso 2 Z2C',p:[[19.7,-.25],[19.7,-2.5],[30.3,-2.5],[30.3,-.25]]},
+      {z:11.88,c:'#f59e0b',n:'Piso 2 Z3',p:[[-.25,12.15],[6.3,12.15],[6.3,10.15],[45.3,10.15],[45.3,16.5],[-.25,16.5]]},
+      {z:11.88,c:'#0891b2',n:'Piso 2 Z4',p:[[10.25,7.25],[10.25,-.25],[45.3,-.25],[45.3,7.25]]},
+      {z:11.88,c:'#7c3aed',n:'Piso 2 Z5',p:[[-.25,16.5],[45.5,16.5],[45.5,17.3],[-.25,17.3]]},
+      {z:15.84,c:'#2563eb',n:'Piso 3 Z1',p:[[-.25,-.25],[10.25,-.25],[10.25,7.25],[-.25,7.25]]},
+      {z:15.84,c:'#dc2626',n:'Piso 3 Z2A',p:[[-.25,7.25],[10.25,7.25],[10.25,10],[6.3,10],[6.3,10.15],[3.6,10.15],[3.6,12.15],[-.25,12.15]],h:[[[3.4,2.405],[6.7,2.405],[6.7,6.95],[3.4,6.95]]]},
+      {z:15.84,c:'#dc2626',n:'Piso 3 Z2B',p:[[9.7,-2.76],[12.5,-2.76],[12.5,-.25],[9.7,-.25]]},
+      {z:15.84,c:'#f59e0b',n:'Piso 3 Z3',p:[[-.25,12.15],[6.3,12.15],[6.3,10.15],[10.25,10.15],[10.25,-.25],[19.7,-.25],[19.7,-4.42],[30.3,-4.42],[30.3,-.25],[50.3,-.25],[50.3,16.5],[-.25,16.5]]},
+      {z:15.84,c:'#0891b2',n:'Piso 3 Z4',p:[[-.25,16.5],[50.3,16.5],[50.3,-.25],[44.65,-.25],[44.65,-1.15],[51.15,-1.15],[51.15,17.3],[-.25,17.3]]},
+      {z:19.8,c:'#2563eb',n:'Piso 4 Z1',p:[[10.3,.25],[19.7,.25],[19.7,6.95],[10.3,6.95]]},
+      {z:19.8,c:'#dc2626',n:'Piso 4 Z2A',p:[[-.25,-.25],[9.7,-.25],[9.7,.25],[10.3,.25],[10.3,6.95],[19.7,6.95],[19.7,.25],[44.7,.25],[44.7,-1.15],[51.15,-1.15],[51.15,17.3],[-.25,17.3]]},
+      {z:19.8,c:'#dc2626',n:'Piso 4 Z2B',p:[[19.7,-.25],[19.7,-4.42],[30.3,-4.42],[30.3,-.25]]},
+      {z:19.8,c:'#f59e0b',n:'Piso 4 Z3',p:[[9.7,-.25],[44.7,-.25],[44.7,.25],[9.7,.25]]},
+      {z:19.8,c:'#65a30d',n:'Piso 4 LT2 cargada',p:[[-.45,-.25],[-.45,17.3],[-32.45,17.3],[-32.45,-1.09],[-31.6501,-1.09],[-31.6501,-.25]]}
+    ];
+    const passadas = [
+      [[-5.5,4.975],[-3.723,4.975],[-3.723,6.95],[-5.5,6.95]],
+      [[-5.5,9.05],[-3.723,9.05],[-3.723,11.11],[-5.5,11.11]],
+      [[-20.5,4.975],[-18.723,4.975],[-18.723,6.95],[-20.5,6.95]],
+      [[-22.877,4.975],[-21.1,4.975],[-21.1,6.95],[-22.877,6.95]],
+      [[-20.5,9.05],[-18.723,9.05],[-18.723,11.11],[-20.5,11.11]],
+      [[-22.877,9.05],[-21.1,9.05],[-21.1,11.11],[-22.877,11.11]]
+    ];
+    const lt2Levels = [3.96,7.92,11.88,15.84];
+    const lt2Shapes = [
+      {c:'#64748b',n:'LT2 A',p:[[-.45,-.25],[-.45,7.55],[-28,7.55],[-28,-.25]]},
+      {c:'#64748b',n:'LT2 B',p:[[-.45,10.15],[-.45,15.85],[-28,15.85],[-28,10.15]],h:[[[-.80,10.15],[-3.22,10.15],[-3.22,12.82],[-.80,12.82]]]},
+      {c:'#64748b',n:'LT2 C',p:[[-28,-.25],[-31.6501,-.25],[-31.6501,4.415],[-30.15,4.415],[-30.15,11.865],[-31.6501,11.865],[-31.6501,15.85],[-28,15.85],[-28,10.15],[-.45,10.15],[-.45,7.55],[-28,7.55]]},
+      {c:'#be123c',n:'LT2 D',p:[[-31.6501,4.415],[-30.15,4.415],[-30.15,11.865],[-31.6501,11.865]]},
+      {c:'#65a30d',n:'LT2 E',p:[[-31.6501,-1.09],[-32.45,-1.09],[-32.45,17.3],[-.4717,17.3],[-.4717,15.86],[-31.6501,15.85]]}
+    ];
+    lt2Levels.forEach(z=>lt2Shapes.forEach(s=>polygons.push({z,c:s.c,n:`${s.n} z=${z}`,p:s.p,h:s.h})));
+    let level=3.96, scale=1, ox=0, oy=0, drag=false, last=[0,0];
+    function resize(){const d=devicePixelRatio||1;canvas.width=canvas.clientWidth*d;canvas.height=canvas.clientHeight*d;ctx.setTransform(d,0,0,d,0,0);fit();}
+    function allPoints(){return polygons.filter(p=>p.z===level).flatMap(p=>p.p).concat(level===19.8?passadas.flat():[]);}
+    function fit(){const pts=allPoints();if(!pts.length)return;const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);const w=Math.max(...xs)-Math.min(...xs),h=Math.max(...ys)-Math.min(...ys);scale=Math.min((canvas.clientWidth-80)/w,(canvas.clientHeight-80)/h);ox=(canvas.clientWidth-(Math.min(...xs)+Math.max(...xs))*scale)/2;oy=(canvas.clientHeight+(Math.min(...ys)+Math.max(...ys))*scale)/2;draw();}
+    function point(p){return [ox+p[0]*scale,oy-p[1]*scale];}
+    function path(points){ctx.beginPath();points.forEach((p,i)=>{const q=point(p);i?ctx.lineTo(...q):ctx.moveTo(...q);});ctx.closePath();}
+    function scFor(p){if(p.n.includes('LT2')){if(p.n.includes('LT2 D'))return 300;if(p.n.includes('LT2 E')||p.n.includes('Piso 4'))return 200;return 500;}if(p.z===19.8&&p.n.includes('Z1'))return 100;if(p.z===19.8&&p.n.includes('Z3'))return 800;if(p.n.includes('Z4'))return p.z===15.84?200:400;if(p.n.includes('Z5'))return 200;if(p.n.includes('Z3'))return 300;if(p.n.includes('Z2'))return 500;return 250;}
+    function scColor(sc){return {100:'#be123c',200:'#7c3aed',250:'#2563eb',300:'#f59e0b',400:'#0891b2',500:'#dc2626',800:'#9333ea'}[sc]||'#64748b';}
+    function draw(){ctx.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);ctx.strokeStyle='#dbe3ee';ctx.lineWidth=1;const xmin=-40,xmax=55,ymin=-10,ymax=20;for(let x=-35;x<=55;x+=5){const a=point([x,ymin]),b=point([x,ymax]);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();}for(let y=-10;y<=20;y+=5){const a=point([xmin,y]),b=point([xmax,y]);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();}ctx.strokeStyle='#dc2626';ctx.lineWidth=2;let a=point([-40,0]),b=point([55,0]);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();ctx.strokeStyle='#16a34a';a=point([0,-10]);b=point([0,20]);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();polygons.filter(p=>p.z===level).forEach(p=>{const color=scColor(scFor(p));path(p.p);ctx.fillStyle=color+'b8';ctx.fill();ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();(p.h||[]).forEach(h=>{path(h);ctx.fillStyle='#f8fafc';ctx.fill();ctx.strokeStyle='#7f1d1d';ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);});});if(level===19.8)passadas.forEach((p,i)=>{path(p);ctx.fillStyle='#f8fafc';ctx.fill();ctx.strokeStyle='#7f1d1d';ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);const q=point(p[0]);ctx.fillStyle='#7f1d1d';ctx.font='11px Arial';ctx.fillText('Pasada '+(i+1),q[0]+4,q[1]-4);});document.getElementById('levelTitle').textContent='z = '+level.toFixed(2)+' m';}
+    document.getElementById('level').onchange=e=>{level=Number(e.target.value);fit();};document.getElementById('fit').onclick=fit;canvas.addEventListener('pointerdown',e=>{drag=true;last=[e.clientX,e.clientY];canvas.setPointerCapture(e.pointerId);});canvas.addEventListener('pointermove',e=>{if(!drag)return;ox+=e.clientX-last[0];oy+=e.clientY-last[1];last=[e.clientX,e.clientY];draw();});canvas.addEventListener('pointerup',()=>drag=false);canvas.addEventListener('wheel',e=>{e.preventDefault();const old=scale, factor=e.deltaY<0?1.12:.89;const mx=e.offsetX,my=e.offsetY;scale*=factor;ox=mx+(ox-mx)*scale/old;oy=my+(oy-my)*scale/old;draw();},{passive:false});addEventListener('resize',resize);resize();
+  </script>
+</body>
+</html>

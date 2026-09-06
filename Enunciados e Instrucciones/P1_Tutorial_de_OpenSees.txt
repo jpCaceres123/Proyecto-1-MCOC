@@ -1,0 +1,1280 @@
+P1 - Tutorial de OpenSees
+Tutorial mínimo de OpenSeesPy para análisis estructural 3D
+Recurso para el proyecto Laboratorio estructural digital interactivo Enfoque: modelos 3D lineales con vigas/columnas, verificación, cargas, diafragmas y extracción de resultados.
+
+1. ¿Qué es OpenSeesPy?
+OpenSees es un framework de análisis estructural y geotécnico. OpenSeesPy permite construir y ejecutar modelos OpenSees desde Python.
+
+En este proyecto se utilizará principalmente para resolver modelos estructurales 3D del tipo:
+
+ 
+
+y recuperar después:
+
+desplazamientos;
+
+reacciones;
+
+esfuerzos internos;
+
+deformaciones;
+
+respuestas de sección.
+
+El modelo global del edificio será lineal elástico. Más adelante se usarán modelos no lineales de sección de manera separada para construir curvas de capacidad.
+
+2. Instalación
+Crear idealmente un entorno virtual:
+
+python -m venv .venv
+source .venv/bin/activate
+En Windows:
+
+.venv\Scripts\activate
+Instalar OpenSeesPy:
+
+python -m pip install openseespy
+Comprobar:
+
+import openseespy.opensees as ops
+​
+print(ops.version())
+La importación recomendada para este curso será:
+
+import openseespy.opensees as ops
+Esto permite reconocer fácilmente qué instrucciones pertenecen a OpenSees:
+
+ops.node(...)
+ops.element(...)
+ops.analyze(...)
+3. Regla fundamental: OpenSees no tiene unidades propias
+OpenSees trabaja solamente con números.
+
+Por lo tanto, el usuario debe mantener un sistema de unidades consistente.
+
+Para este proyecto se recomienda:
+
+Magnitud	Unidad
+longitud	m
+fuerza	kN
+tensión / módulo	kN/m²
+momento	kN·m
+área	m²
+inercia	m⁴
+Por ejemplo:
+
+E = 25.0e6  # kN/m² = 25 GPa
+Una causa extremadamente común de resultados absurdos es mezclar:
+
+m con mm;
+
+kN con N;
+
+MPa con kN/m².
+
+Regla de trabajo
+Definir las unidades antes de programar el modelo.
+
+4. Anatomía de un script OpenSees
+Un análisis típico sigue esta estructura:
+
+1. limpiar modelo anterior
+2. crear ModelBuilder
+3. crear nodos
+4. definir restricciones
+5. definir materiales/secciones
+6. definir transformaciones geométricas
+7. crear elementos
+8. definir cargas
+9. configurar análisis
+10. ejecutar
+11. extraer resultados
+12. verificar
+En código:
+
+import openseespy.opensees as ops
+
+ops.wipe()
+
+ops.model(...)
+
+ops.node(...)
+ops.fix(...)
+
+ops.geomTransf(...)
+ops.element(...)
+
+ops.timeSeries(...)
+ops.pattern(...)
+ops.load(...)
+# u ops.eleLoad(...)
+
+ops.constraints(...)
+ops.numberer(...)
+ops.system(...)
+ops.algorithm(...)
+ops.integrator(...)
+ops.analysis(...)
+
+ok = ops.analyze(1)
+
+# resultados
+5. Primer modelo 3D: viga en voladizo
+Construiremos una viga horizontal de longitud L, empotrada en un extremo y cargada verticalmente en el otro.
+
+La viga se encuentra sobre el eje global X.
+
+5.1. Crear el modelo 3D
+import openseespy.opensees as ops
+
+ops.wipe()
+
+ops.model(
+    "basic",
+    "-ndm", 3,
+    "-ndf", 6,
+)
+Significa:
+
+ndm = 3: tres dimensiones espaciales;
+
+ndf = 6: seis grados de libertad por nodo.
+
+Para este tipo de nodo:
+
+DOF	Variable
+1	u_X
+2	u_Y
+3	u_Z
+4	\theta_X
+5	\theta_Y
+6	\theta_Z
+6. Crear nodos
+L = 3.0
+
+ops.node(1, 0.0, 0.0, 0.0)
+ops.node(2, L,   0.0, 0.0)
+La sintaxis conceptual es:
+
+ops.node(nodeTag, X, Y, Z)
+El nodeTag debe ser único.
+
+Una buena práctica es separar el identificador del nodo de sus coordenadas:
+
+nodes = {
+    1: (0.0, 0.0, 0.0),
+    2: (3.0, 0.0, 0.0),
+}
+
+for tag, xyz in nodes.items():
+    ops.node(tag, *xyz)
+Este patrón será mucho más útil cuando el edificio tenga cientos o miles de nodos.
+
+7. Apoyos y restricciones
+Empotramos el nodo 1:
+
+ops.fix(1, 1, 1, 1, 1, 1, 1)
+Cada número indica si un GDL está restringido:
+
+1: restringido;
+
+0: libre.
+
+Por ejemplo:
+
+ops.fix(10, 1, 1, 1, 0, 0, 0)
+restringe las tres traslaciones pero deja libres las tres rotaciones.
+
+Importante
+Nunca interpretar un apoyo solamente por cómo “se ve”.
+
+Un apoyo en OpenSees es una lista explícita de restricciones de GDL.
+
+8. Propiedades de la sección
+Usaremos una sección rectangular:
+
+b = 0.30
+h = 0.50
+
+A = b * h
+
+Iy = b * h**3 / 12.0
+Iz = h * b**3 / 12.0
+En este ejemplo queremos que:
+
+local y sea paralelo a global Y;
+
+local z sea paralelo a global Z.
+
+Por eso:
+
+ 
+
+representa la inercia asociada a flexión por desplazamiento en dirección local z.
+
+Definimos propiedades elásticas:
+
+E = 25.0e6       # kN/m²
+nu = 0.20
+G = E / (2.0 * (1.0 + nu))
+Para la torsión necesitamos J:
+
+J = 0.002
+En un modelo real, J debe calcularse de manera consistente con la geometría de la sección.
+
+9. Ejes locales: la parte que más errores produce
+Para elementos de viga-columna 3D no basta con conocer los nodos I y J.
+
+El eje local x queda definido por:
+
+
+pero todavía falta definir cómo se orientan y y z.
+
+Para ello OpenSees utiliza un vector vecxz.
+
+transf_tag = 1
+
+ops.geomTransf(
+    "Linear",
+    transf_tag,
+    0.0, 0.0, 1.0,
+)
+En este caso:
+
+vecxz = (0, 0, 1)
+Para nuestra viga paralela al eje global X:
+
+local x = global X
+local y = global Y
+local z = global Z
+Regla crítica
+El vector vecxz no puede ser paralelo al eje local x del elemento.
+
+Por ejemplo, para una columna vertical cuyo eje local x es aproximadamente global Z, no se debe usar:
+
+vecxz = (0, 0, 1)  # incorrecto para una columna vertical
+Una alternativa podría ser:
+
+vecxz = (1, 0, 0)
+En el proyecto
+Los ejes locales deben visualizarse, no suponerse.
+
+10. Crear un elasticBeamColumn 3D
+ops.element(
+    "elasticBeamColumn",
+    1,          # elementTag
+    1, 2,       # node I, node J
+    A,
+    E,
+    G,
+    J,
+    Iy,
+    Iz,
+    transf_tag,
+)
+Para un elemento 3D el orden es conceptualmente:
+
+A, E, G, J, Iy, Iz, transfTag
+No intercambiar Iy e Iz.
+
+11. Aplicar una carga nodal
+Aplicaremos una fuerza de 10 kN hacia abajo:
+
+P = 10.0
+
+ops.timeSeries("Linear", 1)
+ops.pattern("Plain", 1, 1)
+
+ops.load(
+    2,
+    0.0,   # FX
+    0.0,   # FY
+    -P,    # FZ
+    0.0,   # MX
+    0.0,   # MY
+    0.0,   # MZ
+)
+La carga nodal tiene seis componentes porque el nodo tiene seis GDL.
+
+12. Configurar un análisis estático
+ops.constraints("Plain")
+ops.numberer("RCM")
+ops.system("BandGeneral")
+ops.algorithm("Linear")
+ops.integrator("LoadControl", 1.0)
+ops.analysis("Static")
+Luego:
+
+ok = ops.analyze(1)
+
+if ok != 0:
+    raise RuntimeError("El análisis OpenSees falló")
+analyze() retorna 0 si el análisis termina correctamente.
+
+Importante
+Que analyze() retorne 0 significa:
+
+el algoritmo logró resolver el problema numérico definido.
+
+No significa:
+
+el modelo representa correctamente la estructura real.
+
+13. Recuperar desplazamientos
+u2 = ops.nodeDisp(2)
+
+print(u2)
+O un solo GDL:
+
+uz = ops.nodeDisp(2, 3)
+
+print("uz =", uz)
+14. Primera verificación analítica
+Para un voladizo Euler-Bernoulli con carga P en la punta:
+
+
+Usamos magnitud positiva para comparar:
+
+delta_ref = P * L**3 / (3.0 * E * Iy)
+
+print("OpenSees :", abs(uz))
+print("Analítico:", delta_ref)
+
+error_rel = abs(abs(uz) - delta_ref) / delta_ref
+
+print("error relativo =", error_rel)
+Una prueba automática:
+
+assert error_rel < 1.0e-10
+Este assert vale mucho más que simplemente mirar una deformada y decidir que “parece correcta”.
+
+15. Reacciones
+Antes de consultar reacciones hay que pedir a OpenSees que las calcule:
+
+ops.reactions()
+Luego:
+
+R1 = ops.nodeReaction(1)
+
+print(R1)
+O una componente:
+
+Rz = ops.nodeReaction(1, 3)
+
+print("Rz =", Rz)
+Para este ejemplo esperamos aproximadamente:
+
+
+y un momento de empotramiento de magnitud:
+
+
+
+
+ 
+
+Verificación de equilibrio vertical
+assert abs(Rz - P) < 1.0e-10
+16. Fuerzas de elemento
+Una forma de consultar la respuesta de un elemento es:
+
+global_forces = ops.eleResponse(1, "globalForce")
+local_forces  = ops.eleResponse(1, "localForce")
+
+print("global =", global_forces)
+print("local  =", local_forces)
+Advertencia importante
+La interpretación del vector retornado depende del elemento y del tipo de respuesta solicitada.
+
+No escribir código como:
+
+M = ops.eleResponse(1, "localForce")[5]
+sin haber validado antes:
+
+qué componente es;
+
+en qué extremo;
+
+con qué signo;
+
+en qué sistema de coordenadas.
+
+En el proyecto se deberá documentar explícitamente el contrato utilizado para convertir la respuesta de OpenSees a diagramas.
+
+17. Script completo del primer ejemplo
+import openseespy.opensees as ops
+
+# ------------------------------------------------------------
+# 1. Modelo
+# ------------------------------------------------------------
+
+ops.wipe()
+ops.model("basic", "-ndm", 3, "-ndf", 6)
+
+# ------------------------------------------------------------
+# 2. Geometría
+# ------------------------------------------------------------
+
+L = 3.0
+
+ops.node(1, 0.0, 0.0, 0.0)
+ops.node(2, L,   0.0, 0.0)
+
+ops.fix(1, 1, 1, 1, 1, 1, 1)
+
+# ------------------------------------------------------------
+# 3. Material / sección
+# ------------------------------------------------------------
+
+b = 0.30
+h = 0.50
+
+A = b * h
+Iy = b * h**3 / 12.0
+Iz = h * b**3 / 12.0
+
+E = 25.0e6
+nu = 0.20
+G = E / (2.0 * (1.0 + nu))
+
+J = 0.002
+
+# ------------------------------------------------------------
+# 4. Transformación
+# ------------------------------------------------------------
+
+ops.geomTransf("Linear", 1, 0.0, 0.0, 1.0)
+
+# ------------------------------------------------------------
+# 5. Elemento
+# ------------------------------------------------------------
+
+ops.element(
+    "elasticBeamColumn",
+    1,
+    1, 2,
+    A,
+    E,
+    G,
+    J,
+    Iy,
+    Iz,
+    1,
+)
+
+# ------------------------------------------------------------
+# 6. Carga
+# ------------------------------------------------------------
+
+P = 10.0
+
+ops.timeSeries("Linear", 1)
+ops.pattern("Plain", 1, 1)
+
+ops.load(
+    2,
+    0.0, 0.0, -P,
+    0.0, 0.0, 0.0,
+)
+
+# ------------------------------------------------------------
+# 7. Análisis
+# ------------------------------------------------------------
+
+ops.constraints("Plain")
+ops.numberer("RCM")
+ops.system("BandGeneral")
+ops.algorithm("Linear")
+ops.integrator("LoadControl", 1.0)
+ops.analysis("Static")
+
+ok = ops.analyze(1)
+
+if ok != 0:
+    raise RuntimeError("Falló el análisis")
+
+# ------------------------------------------------------------
+# 8. Resultados
+# ------------------------------------------------------------
+
+uz = ops.nodeDisp(2, 3)
+
+ops.reactions()
+Rz = ops.nodeReaction(1, 3)
+
+local_force = ops.eleResponse(1, "localForce")
+
+# ------------------------------------------------------------
+# 9. Verificación
+# ------------------------------------------------------------
+
+delta_ref = P * L**3 / (3.0 * E * Iy)
+
+error_rel = abs(abs(uz) - delta_ref) / delta_ref
+
+print(f"uz OpenSees       = {uz:.8e} m")
+print(f"|uz| analítico    = {delta_ref:.8e} m")
+print(f"error relativo    = {error_rel:.3e}")
+print(f"Rz                = {Rz:.6f} kN")
+print(f"localForce        = {local_force}")
+
+assert error_rel < 1.0e-10
+assert abs(Rz - P) < 1.0e-10
+18. Cargas distribuidas sobre vigas
+Para el proyecto será necesario transformar áreas tributarias en cargas lineales.
+
+Por ejemplo:
+
+$$
+w = \frac{qA_t}{L}
+$$
+ 
+
+donde:
+
+q: carga superficial;
+
+A_t: área tributaria;
+
+L: longitud de la viga.
+
+En OpenSees una carga distribuida sobre un beam-column se aplica con eleLoad.
+
+En 3D:
+
+ops.eleLoad(
+    "-ele", ele_tag,
+    "-type", "-beamUniform",
+    Wy, Wz, Wx,
+)
+donde:
+
+Wy: carga por unidad de longitud en eje local y;
+
+Wz: carga por unidad de longitud en eje local z;
+
+Wx: carga por unidad de longitud en eje local x.
+
+Por ejemplo, si la orientación del elemento fue definida de manera que:
+
+local z = global Z
+una carga gravitacional hacia abajo puede ser:
+
+ops.eleLoad(
+    "-ele", 101,
+    "-type", "-beamUniform",
+    0.0,
+    -18.5,
+    0.0,
+)
+Error típico
+Suponer que Wz significa siempre global Z.
+
+No.
+
+beamUniform trabaja en los ejes locales del elemento.
+
+Por eso la visualización de ejes locales es una funcionalidad obligatoria del proyecto.
+
+19. De área tributaria a eleLoad
+Supongamos:
+
+q = 6.0       # kN/m²
+Atrib = 12.0  # m²
+L = 4.0       # m
+Entonces:
+
+W_total = q * Atrib
+w = W_total / L
+
+print(w)
+Resultado:
+
+18 kN/m
+La verificación fundamental es:
+
+assert abs(w * L - q * Atrib) < 1.0e-12
+En el proyecto debe conservarse:
+
+$$
+\boxed{ \text{carga sobre la losa} = \text{carga transferida a vigas} }
+$$
+ 
+
+dentro de la tolerancia numérica adoptada.
+
+20. Organizar modelos grandes con datos
+No conviene escribir:
+
+ops.node(1, ...)
+ops.node(2, ...)
+ops.node(3, ...)
+...
+a mano para todo el edificio.
+
+Es mejor separar datos de construcción del modelo.
+
+Ejemplo:
+
+nodes = {
+    1: [0.0, 0.0, 0.0],
+    2: [4.0, 0.0, 0.0],
+    3: [4.0, 3.0, 0.0],
+    4: [0.0, 3.0, 0.0],
+}
+
+for node_tag, xyz in nodes.items():
+    ops.node(node_tag, *xyz)
+Elementos:
+
+elements = {
+    101: {
+        "i": 1,
+        "j": 2,
+        "section": "B30x50",
+        "transf": 1,
+    },
+}
+Secciones:
+
+sections = {
+    "B30x50": {
+        "A": 0.30 * 0.50,
+        "Iy": 0.30 * 0.50**3 / 12,
+        "Iz": 0.50 * 0.30**3 / 12,
+        "J": 0.002,
+        "E": 25.0e6,
+        "nu": 0.20,
+    }
+}
+La idea central es:
+
+datos
+  ↓
+funciones de construcción
+  ↓
+OpenSees
+Esto permitirá usar los mismos datos en Unity.
+
+21. Función para construir un elemento
+def add_elastic_beam_column(
+    ele_tag,
+    node_i,
+    node_j,
+    section,
+    transf_tag,
+):
+    E = section["E"]
+    nu = section["nu"]
+
+    G = E / (2.0 * (1.0 + nu))
+
+    ops.element(
+        "elasticBeamColumn",
+        ele_tag,
+        node_i,
+        node_j,
+        section["A"],
+        E,
+        G,
+        section["J"],
+        section["Iy"],
+        section["Iz"],
+        transf_tag,
+    )
+Después:
+
+sec = sections["B30x50"]
+
+add_elastic_beam_column(
+    101,
+    1,
+    2,
+    sec,
+    1,
+)
+Este tipo de abstracción es ideal para trabajar con agentes de IA porque permite definir contratos claros.
+
+22. Transformaciones diferentes para vigas y columnas
+En un edificio 3D probablemente no todos los elementos usarán el mismo vecxz.
+
+Por ejemplo:
+
+# Vigas horizontales:
+ops.geomTransf("Linear", 1, 0.0, 0.0, 1.0)
+
+# Columnas verticales:
+ops.geomTransf("Linear", 2, 1.0, 0.0, 0.0)
+Pero esto no debe copiarse ciegamente.
+
+La orientación final depende de:
+
+dirección I → J;
+
+vecxz;
+
+convención geométrica adoptada.
+
+Recomendación
+Crear una función que calcule y exporte explícitamente los tres ejes locales de cada elemento para visualizarlos en Unity.
+
+23. Diafragmas rígidos
+Un diafragma rígido introduce relaciones cinemáticas entre nodos.
+
+Para un piso horizontal en el plano global X-Y, la dirección perpendicular es global Z:
+
+ops.rigidDiaphragm(
+    3,
+    retained_node,
+    *constrained_nodes,
+)
+3 indica la dirección perpendicular al plano rígido.
+
+La documentación de OpenSees recomienda utilizar el manejador:
+
+ops.constraints("Transformation")
+cuando se utilizan estas restricciones multipunto.
+
+Interpretación
+Un diafragma rígido horizontal no significa que todos los nodos tengan idéntico desplazamiento X,Y.
+
+Si existe rotación alrededor de Z, un punto distante del centro puede moverse diferente.
+
+La relación rígida incluye:
+
+traslación del nodo retenido;
+
+rotación del diafragma;
+
+posición relativa de cada nodo.
+
+24. Verificar un diafragma
+No basta con agregar:
+
+ops.rigidDiaphragm(...)
+y confiar.
+
+Una prueba útil es:
+
+aplicar una carga lateral;
+
+obtener desplazamientos de varios nodos del piso;
+
+verificar que sean compatibles con un movimiento de cuerpo rígido en el plano.
+
+También es útil visualizar:
+
+nodo retenido;
+
+nodos restringidos;
+
+plano del diafragma;
+
+desplazamientos;
+
+rotación.
+
+25. Casos de carga independientes
+Para el proyecto tendremos al menos:
+
+G
+Q
+EX
+EY
+Una estrategia muy robusta para estudiantes es:
+
+reconstruir el modelo desde cero para cada caso.
+
+Por ejemplo:
+
+def build_model(data):
+    ops.wipe()
+    ops.model("basic", "-ndm", 3, "-ndf", 6)
+
+    # nodes
+    # supports
+    # transforms
+    # elements
+    # diaphragms
+Luego:
+
+def run_case(data, load_case):
+    build_model(data)
+
+    apply_load_case(load_case)
+
+    configure_static_analysis()
+
+    ok = ops.analyze(1)
+
+    if ok != 0:
+        raise RuntimeError(load_case)
+
+    return extract_results()
+Esto evita que un caso de carga anterior quede accidentalmente activo.
+
+26. Principio de superposición
+Si el modelo es lineal:
+
+
+
+
+ 
+
+entonces:
+
+
+ 
+
+Lo mismo vale para una respuesta lineal de elemento:
+
+
+ 
+
+27. Implementar superposición fuera de OpenSees
+Supongamos:
+
+results = {
+    "G": {
+        "node_disp": ...,
+        "element_force": ...,
+    },
+    "Q": {
+        "node_disp": ...,
+        "element_force": ...,
+    },
+}
+Una combinación puede hacerse con NumPy:
+
+import numpy as np
+
+u = (
+    1.0 * np.asarray(results["G"]["node_disp"])
+    + 0.5 * np.asarray(results["Q"]["node_disp"])
+)
+Esto será exactamente lo que hará Unity posteriormente al mover sliders.
+
+28. Verificación obligatoria de superposición
+No basta con demostrar matemáticamente que debería funcionar.
+
+Hay que comprobarlo con el modelo.
+
+Por ejemplo:
+
+A = G
+B = 0.4 Q
+C = 0.8 EX - 0.2 EY
+Primero:
+
+respuesta_superpuesta
+=
+G + 0.4Q + 0.8EX - 0.2EY
+Después ejecutar una corrida OpenSees donde todas esas cargas estén aplicadas simultáneamente.
+
+Comparar:
+
+un desplazamiento;
+
+una reacción;
+
+una fuerza de elemento.
+
+Idealmente:
+
+
+
+
+ 
+
+29. Extraer resultados para Unity
+Una estrategia útil es convertir los resultados inmediatamente a estructuras Python simples.
+
+Ejemplo:
+
+def extract_node_displacements(node_tags):
+    out = {}
+
+    for tag in node_tags:
+        out[str(tag)] = list(ops.nodeDisp(tag))
+
+    return out
+Reacciones:
+
+def extract_reactions(node_tags):
+    ops.reactions()
+
+    out = {}
+
+    for tag in node_tags:
+        out[str(tag)] = list(ops.nodeReaction(tag))
+
+    return out
+Respuesta de elementos:
+
+def extract_element_local_forces(element_tags):
+    out = {}
+
+    for tag in element_tags:
+        out[str(tag)] = list(
+            ops.eleResponse(tag, "localForce")
+        )
+
+    return out
+30. Guardar resultados en JSON
+import json
+
+results = {
+    "case": "G",
+    "node_disp": extract_node_displacements(
+        ops.getNodeTags()
+    ),
+    "element_local_force": extract_element_local_forces(
+        ops.getEleTags()
+    ),
+}
+Guardar:
+
+with open("results_G.json", "w") as f:
+    json.dump(results, f, indent=2)
+Unity podrá leer este archivo sin ejecutar OpenSees.
+
+31. Contrato de datos: mejor que pasar vectores anónimos
+Evitar esto:
+
+{
+  "101": [12.3, -4.5, 7.8, 0.0, 16.4, -2.1]
+}
+si nadie sabe qué significa cada posición.
+
+Es preferible construir un contrato explícito validado por el grupo, por ejemplo:
+
+{
+  "elementTag": 101,
+  "system": "local",
+  "units": {
+    "force": "kN",
+    "moment": "kN m"
+  },
+  "response": {
+    "...": "..."
+  }
+}
+Los nombres concretos deben corresponder exactamente al vector de respuesta que el grupo haya validado.
+
+Regla
+No nombrar una componente hasta haber confirmado físicamente qué representa.
+
+32. Verificaciones mínimas de cualquier modelo
+32.1. Equilibrio
+
+ 
+
+y, cuando corresponda:
+
+
+
+
+ 
+
+32.2. Orden de magnitud
+Preguntar:
+
+¿mm o metros de desplazamiento?;
+
+¿kN o miles de kN?;
+
+¿la columna más cargada tiene sentido?;
+
+¿el edificio se deforma hacia la carga?;
+
+¿el signo del momento es consistente?
+
+32.3. Simetría
+Si modelo + carga son simétricos, la respuesta debe reflejar esa simetría.
+
+32.4. Límites simples
+Comparar partes del modelo con:
+
+voladizos;
+
+vigas simplemente apoyadas;
+
+marcos simples;
+
+suma de cargas;
+
+rigideces conocidas.
+
+33. Errores que un viewer 3D debería permitir detectar
+El viewer no es decoración.
+
+Debe ayudar a encontrar:
+
+nodos duplicados;
+
+elementos desconectados;
+
+elemento con I/J invertidos;
+
+eje local incorrecto;
+
+Iy/Iz intercambiados;
+
+apoyo equivocado;
+
+diafragma asociado al piso incorrecto;
+
+viga sin carga;
+
+área tributaria asignada a la viga incorrecta;
+
+muro mal orientado.
+
+34. Modificar el modelo
+Es importante distinguir entre dos situaciones.
+
+34.1. Cambiar solamente una combinación lineal
+Por ejemplo:
+
+G       1.00
+Q       0.50
+EX      0.80
+EY     -0.20
+No requiere una corrida nueva.
+
+Unity puede calcular:
+
+
+
+
+ 
+
+directamente.
+
+34.2. Cambiar el sistema estructural
+Por ejemplo:
+
+cambiar apoyo;
+
+cambiar E;
+
+cambiar sección;
+
+eliminar columna;
+
+cambiar conectividad;
+
+modificar distribución de carga base.
+
+Esto cambia 
+ o 
+ y requiere volver a ejecutar OpenSees.
+
+35. wipe() vs reconstrucción del análisis
+Para principiantes, la estrategia más segura entre casos independientes es:
+
+ops.wipe()
+y reconstruir el modelo.
+
+wipe() elimina el dominio completo.
+
+Existe también:
+
+ops.wipeAnalysis()
+que elimina solamente los componentes del objeto de análisis, pero mantiene el dominio/modelo.
+
+No confundir ambos.
+
+36. Patrón recomendado de archivos
+project/
+├── data/
+│   ├── nodes.json
+│   ├── elements.json
+│   ├── sections.json
+│   ├── supports.json
+│   ├── diaphragms.json
+│   ├── tributary_areas.json
+│   └── reinforcement.json
+│
+├── src/
+│   ├── model.py
+│   ├── loads.py
+│   ├── analysis.py
+│   ├── results.py
+│   └── verify.py
+│
+├── results/
+│   ├── G.json
+│   ├── Q.json
+│   ├── EX.json
+│   └── EY.json
+│
+└── tests/
+    ├── test_equilibrium.py
+    ├── test_superposition.py
+    ├── test_units.py
+    └── test_ids.py
+37. Ejemplo de una prueba de equilibrio
+def relative_error(a, b, eps=1.0e-12):
+    return abs(a - b) / max(abs(b), eps)
+
+
+applied_vertical = -850.0
+reaction_vertical = 850.0
+
+residual = applied_vertical + reaction_vertical
+
+assert abs(residual) < 1.0e-8
+38. Ejemplo de prueba de superposición
+import numpy as np
+
+u_sup = (
+    1.0 * u_G
+    + 0.5 * u_Q
+    + 0.8 * u_EX
+    - 0.2 * u_EY
+)
+
+np.testing.assert_allclose(
+    u_sup,
+    u_combined_opensees,
+    rtol=1.0e-9,
+    atol=1.0e-12,
+)
+39. ¿Qué debe hacer la IA y qué debe hacer el estudiante?
+Un agente puede ayudar a:
+
+convertir datos a OpenSees;
+
+generar funciones;
+
+escribir tests;
+
+exportar JSON;
+
+crear visualizadores;
+
+refactorizar;
+
+detectar inconsistencias de software.
+
+Pero el estudiante debe determinar:
+
+qué representa el modelo;
+
+qué ejes son correctos;
+
+qué apoyo corresponde;
+
+cómo se transfiere una carga;
+
+si un signo tiene sentido;
+
+qué resultado verificar;
+
+si la respuesta es físicamente plausible.
+
+40. Una buena tarea para OpenCode
+Objetivo:
+Implementar la construcción de elementos elasticBeamColumn 3D
+a partir de elements.json y sections.json.
+
+Restricciones:
+- no cambiar el esquema JSON;
+- unidades SI;
+- no generar automáticamente vecxz;
+- validar que todos los nodeTags existan;
+- validar que cada sectionTag exista;
+- fallar si Iy <= 0 o Iz <= 0.
+
+Criterios de aceptación:
+1. reproduce el benchmark de Semana 1;
+2. el equilibrio global pasa;
+3. nodeTags inválidos producen un error legible;
+4. el test de desplazamiento de referencia pasa.
+Esto es mucho mejor que:
+
+Haz el modelo OpenSees del edificio.
+41. Lista de chequeo antes de confiar en un resultado
+¿Las unidades son consistentes?
+¿Todos los nodos están donde deberían?
+¿Los elementTag son únicos?
+¿Los elementos conectan los nodos correctos?
+¿Los apoyos representan la idealización?
+¿Los ejes locales están visualizados?
+¿Iy e Iz corresponden a esos ejes?
+¿Las cargas distribuidas están expresadas en ejes locales?
+¿Se conserva la carga tributaria?
+¿El diafragma está en el plano correcto?
+¿analyze() retornó 0?
+¿Se calcularon las reacciones con ops.reactions()?
+¿Se verifica equilibrio?
+¿Los desplazamientos tienen orden de magnitud razonable?
+¿Se verificó al menos un resultado independiente?
+¿Se conoce exactamente el significado de cada componente exportada?
+¿Los resultados superpuestos coinciden con una corrida combinada?
+42. Recursos oficiales
+OpenSees
+https://opensees.berkeley.edu/Links to an external site.
+
+Documentación general
+https://opensees.github.io/OpenSeesDocumentation/Links to an external site.
+
+OpenSeesPy
+https://openseespydoc.readthedocs.io/Links to an external site.
+
+Instalación
+https://pypi.org/project/openseespy/Links to an external site.
+
+model
+https://openseespydoc.readthedocs.io/en/latest/src/model.htmlLinks to an external site.
+
+node
+https://openseespydoc.readthedocs.io/en/latest/src/node.htmlLinks to an external site.
+
+elasticBeamColumn
+https://openseespydoc.readthedocs.io/en/latest/src/elasticBeamColumn.htmlLinks to an external site.
+
+Transformaciones geométricas
+https://openseespydoc.readthedocs.io/en/latest/src/geomTransf.htmlLinks to an external site.
+
+Transformación lineal
+https://openseespydoc.readthedocs.io/en/latest/src/LinearTransf.htmlLinks to an external site.
+
+Cargas distribuidas eleLoad
+https://openseespydoc.readthedocs.io/en/latest/src/eleload.htmlLinks to an external site.
+
+Diafragma rígido
+https://openseespydoc.readthedocs.io/en/latest/src/rigidDiaphragm.htmlLinks to an external site.
+
+Comandos de análisis
+https://openseespydoc.readthedocs.io/en/latest/src/analysiscmds.htmlLinks to an external site.
+
+Comandos de salida
+https://openseespydoc.readthedocs.io/en/latest/src/outputcmds.htmlLinks to an external site.
+
+eleResponse
+https://openseespydoc.readthedocs.io/en/latest/src/eleResponse.htmlLinks to an external site.
+
+nodeReaction
+https://openseespydoc.readthedocs.io/en/latest/src/nodeReaction.htmlLinks to an external site.
+
+Ejemplos estructurales
+https://openseespydoc.readthedocs.io/en/latest/src/structure.htmlLinks to an external site.
+
+43. Para continuar
+Una vez dominado este tutorial, el siguiente paso del proyecto es construir:
+
+benchmark 3D verificado
+        ↓
+modelo completo del edificio
+        ↓
+G, Q, EX, EY
+        ↓
+superposición
+        ↓
+resultados JSON
+        ↓
+Unity
+La regla que debe mantenerse durante todo el proyecto es:
+
+primero verificar la mecánica; después visualizarla.n

@@ -1,0 +1,45 @@
+{
+  "units": {
+    "force": "kN",
+    "length": "m",
+    "moment": "kN*m"
+  },
+  "exact_resultant_references": {
+    "G_total_vertical_kN": -8236.5,
+    "Q_total_vertical_kN": -3230.0,
+    "EX_base_shear_kN": 100.0,
+    "EY_base_shear_kN": 100.0
+  },
+  "expected_support_reactions": {
+    "G_vertical_kN": 8236.5,
+    "Q_vertical_kN": 3230.0,
+    "EX_horizontal_kN": -100.0,
+    "EY_horizontal_kN": -100.0
+  },
+  "simplified_screening_references": {
+    "top_node_EX_displacement_m": 1.9335394185495804,
+    "reference_beam_simple_support_end_moment_kN_m": 189.125,
+    "reference_beam_simple_support_end_shear_kN": 113.475
+  },
+  "compared_open_sees_values": {
+    "G_total_vertical_kN": 8236.499999999975,
+    "Q_total_vertical_kN": 3229.99999999999,
+    "EX_base_shear_kN": -99.9999999999967,
+    "EY_base_shear_kN": -99.9999999999944,
+    "EX_top_node_displacement_m": 0.05676508060810565,
+    "G_reference_beam_local_force": [
+      0.0,
+      -3.2372797852698326e-20,
+      55.87449503314704,
+      5.58200229524556,
+      -87.47716551480832,
+      -1.6186398926349162e-19,
+      0.0,
+      3.2372797852698326e-20,
+      57.60050496685295,
+      -5.58200229524556,
+      96.10721518333787,
+      -1.6186398926349162e-19
+    ]
+  }
+}

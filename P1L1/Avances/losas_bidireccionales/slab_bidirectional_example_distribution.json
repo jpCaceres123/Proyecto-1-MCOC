@@ -1,0 +1,236 @@
+{
+  "units": {
+    "length": "m",
+    "surface_load": "kN/m2",
+    "line_load": "kN/m"
+  },
+  "method": "Distribucion bidireccional por lineas a 45 grados",
+  "panels": [
+    {
+      "panel_id": "LT1_panel_01_G",
+      "units": {
+        "length": "m",
+        "surface_load": "kN/m2",
+        "line_load": "kN/m"
+      },
+      "dimensions_m": {
+        "x": 10.0,
+        "y": 8.9
+      },
+      "q_kN_m2": 5.1,
+      "edges": {
+        "y_min_beam_x": [
+          {
+            "position_m": 0.0,
+            "load_kN_m": 0.0
+          },
+          {
+            "position_m": 4.45,
+            "load_kN_m": 22.695
+          },
+          {
+            "position_m": 5.0,
+            "load_kN_m": 22.695
+          },
+          {
+            "position_m": 5.55,
+            "load_kN_m": 22.695
+          },
+          {
+            "position_m": 10.0,
+            "load_kN_m": 0.0
+          }
+        ],
+        "y_max_beam_x": [
+          {
+            "position_m": 0.0,
+            "load_kN_m": 0.0
+          },
+          {
+            "position_m": 4.45,
+            "load_kN_m": 22.695
+          },
+          {
+            "position_m": 5.0,
+            "load_kN_m": 22.695
+          },
+          {
+            "position_m": 5.55,
+            "load_kN_m": 22.695
+          },
+          {
+            "position_m": 10.0,
+            "load_kN_m": 0.0
+          }
+        ],
+        "x_min_beam_y": [
+          {
+            "position_m": 0.0,
+            "load_kN_m": 0.0
+          },
+          {
+            "position_m": 3.9000000000000004,
+            "load_kN_m": 19.89
+          },
+          {
+            "position_m": 4.45,
+            "load_kN_m": 22.695
+          },
+          {
+            "position_m": 5.0,
+            "load_kN_m": 19.89
+          },
+          {
+            "position_m": 8.9,
+            "load_kN_m": 0.0
+          }
+        ],
+        "x_max_beam_y": [
+          {
+            "position_m": 0.0,
+            "load_kN_m": 0.0
+          },
+          {
+            "position_m": 3.9000000000000004,
+            "load_kN_m": 19.89
+          },
+          {
+            "position_m": 4.45,
+            "load_kN_m": 22.695
+          },
+          {
+            "position_m": 5.0,
+            "load_kN_m": 19.89
+          },
+          {
+            "position_m": 8.9,
+            "load_kN_m": 0.0
+          }
+        ]
+      },
+      "edge_loads_kN": {
+        "y_min_beam_x": 125.95724999999999,
+        "y_max_beam_x": 125.95724999999999,
+        "x_min_beam_y": 100.99275,
+        "x_max_beam_y": 100.99275
+      },
+      "total_panel_load_kN": 453.90000000000003,
+      "total_distributed_load_kN": 453.9,
+      "conservation_residual_kN": -5.684341886080802e-14,
+      "method": "45-degree tributary lines to the four panel edges"
+    },
+    {
+      "panel_id": "LT1_panel_01_Q",
+      "units": {
+        "length": "m",
+        "surface_load": "kN/m2",
+        "line_load": "kN/m"
+      },
+      "dimensions_m": {
+        "x": 10.0,
+        "y": 8.9
+      },
+      "q_kN_m2": 2.0,
+      "edges": {
+        "y_min_beam_x": [
+          {
+            "position_m": 0.0,
+            "load_kN_m": 0.0
+          },
+          {
+            "position_m": 4.45,
+            "load_kN_m": 8.9
+          },
+          {
+            "position_m": 5.0,
+            "load_kN_m": 8.9
+          },
+          {
+            "position_m": 5.55,
+            "load_kN_m": 8.9
+          },
+          {
+            "position_m": 10.0,
+            "load_kN_m": 0.0
+          }
+        ],
+        "y_max_beam_x": [
+          {
+            "position_m": 0.0,
+            "load_kN_m": 0.0
+          },
+          {
+            "position_m": 4.45,
+            "load_kN_m": 8.9
+          },
+          {
+            "position_m": 5.0,
+            "load_kN_m": 8.9
+          },
+          {
+            "position_m": 5.55,
+            "load_kN_m": 8.9
+          },
+          {
+            "position_m": 10.0,
+            "load_kN_m": 0.0
+          }
+        ],
+        "x_min_beam_y": [
+          {
+            "position_m": 0.0,
+            "load_kN_m": 0.0
+          },
+          {
+            "position_m": 3.9000000000000004,
+            "load_kN_m": 7.800000000000001
+          },
+          {
+            "position_m": 4.45,
+            "load_kN_m": 8.9
+          },
+          {
+            "position_m": 5.0,
+            "load_kN_m": 7.800000000000001
+          },
+          {
+            "position_m": 8.9,
+            "load_kN_m": 0.0
+          }
+        ],
+        "x_max_beam_y": [
+          {
+            "position_m": 0.0,
+            "load_kN_m": 0.0
+          },
+          {
+            "position_m": 3.9000000000000004,
+            "load_kN_m": 7.800000000000001
+          },
+          {
+            "position_m": 4.45,
+            "load_kN_m": 8.9
+          },
+          {
+            "position_m": 5.0,
+            "load_kN_m": 7.800000000000001
+          },
+          {
+            "position_m": 8.9,
+            "load_kN_m": 0.0
+          }
+        ]
+      },
+      "edge_loads_kN": {
+        "y_min_beam_x": 49.395,
+        "y_max_beam_x": 49.395,
+        "x_min_beam_y": 39.605000000000004,
+        "x_max_beam_y": 39.605000000000004
+      },
+      "total_panel_load_kN": 178.0,
+      "total_distributed_load_kN": 178.0,
+      "conservation_residual_kN": 0.0,
+      "method": "45-degree tributary lines to the four panel edges"
+    }
+  ]
+}
