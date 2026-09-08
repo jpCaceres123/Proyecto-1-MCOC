@@ -1,0 +1,2266 @@
+P1 - Tutorial de Unity
+Tutorial de Unity para el laboratorio estructural digital
+Recurso para el proyecto OpenSees + Unity + AR Objetivo: usar Unity como preprocesador, herramienta de QA y postprocesador estructural, no como un videojuego aislado.
+
+ 
+
+Ver video del profe trabajando con OpenCode y Unity: https://youtu.be/DbRhcIgEac0Links to an external site.
+
+ 
+
+1. ¿Para qué usaremos Unity?
+En este proyecto Unity tendrá cuatro roles progresivos:
+
+Visualización del modelo
+
+nodos;
+
+vigas;
+
+columnas;
+
+muros;
+
+pisos.
+
+Preproceso y control de calidad
+
+IDs;
+
+ejes locales;
+
+apoyos;
+
+diafragmas;
+
+áreas tributarias;
+
+cargas;
+
+modificaciones del modelo.
+
+Postproceso
+
+deformada;
+
+reacciones;
+
+esfuerzos;
+
+diagramas;
+
+superposición;
+
+demanda-capacidad.
+
+Interacción espacial
+
+navegación;
+
+carga móvil asociada al usuario;
+
+teléfono;
+
+realidad aumentada.
+
+La idea central es:
+
+datos estructurales
+       ↓
+   OpenSeesPy
+       ↓
+ resultados JSON
+       ↓
+      Unity
+pero Unity también puede ayudar a crear o editar algunos datos:
+
+Unity
+  ↓
+datos estructurales
+  ↓
+OpenSeesPy
+2. Qué NO debe hacer Unity
+Unity no es la fuente única de verdad del modelo.
+
+No queremos:
+
+escena Unity
+    ↓
+"ahí está el modelo"
+Queremos:
+
+data/
+├── nodes.json
+├── elements.json
+├── supports.json
+├── sections.json
+├── diaphragms.json
+├── tributary_areas.json
+└── reinforcement.json
+y que tanto OpenSees como Unity consuman esos datos.
+
+Regla
+Si se pierde la escena Unity, el modelo estructural todavía debe poder reconstruirse desde los datos.
+
+3. Versión de Unity
+Usar Unity 6 y fijar una versión exacta del Editor para todo el grupo.
+
+No actualizar de versión durante el proyecto simplemente porque Unity lo sugiere.
+
+Registrar la versión en:
+
+README.md
+AGENTS.md
+y mantener versionado:
+
+ProjectSettings/ProjectVersion.txt
+4. Crear el proyecto
+En Unity Hub:
+
+New project
+→ 3D
+→ nombre del proyecto
+→ Create
+Para este proyecto no necesitamos comenzar con:
+
+HDRP;
+
+efectos visuales complejos;
+
+físicas realistas;
+
+assets de videojuegos.
+
+La prioridad es una escena simple, legible y rápida.
+
+5. Qué carpetas versionar con Git
+Una estructura razonable:
+
+unity/
+├── Assets/
+├── Packages/
+├── ProjectSettings/
+└── .gitignore
+Se deben versionar:
+
+Assets/
+Packages/
+ProjectSettings/
+*.meta
+No se deben versionar carpetas regenerables como:
+
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+Un .gitignore mínimo puede incluir:
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+Importante
+No borrar ni ignorar arbitrariamente los archivos:
+
+*.meta
+Forman parte de la identidad de los assets dentro del proyecto Unity.
+
+6. Organización recomendada dentro de Assets
+Assets/
+├── Scenes/
+│   └── Main.unity
+│
+├── Scripts/
+│   ├── Data/
+│   ├── Model/
+│   ├── View/
+│   ├── Interaction/
+│   ├── Results/
+│   └── UI/
+│
+├── Materials/
+├── Prefabs/
+├── UI/
+├── Tests/
+└── DataSamples/
+Mantener separadas:
+
+estructuras de datos;
+
+construcción del modelo;
+
+visualización;
+
+interacción;
+
+resultados.
+
+7. Conceptos mínimos de Unity
+GameObject
+Un GameObject es un objeto en una escena.
+
+Puede representar:
+
+una viga;
+
+una columna;
+
+un nodo;
+
+un apoyo;
+
+un piso;
+
+una cámara;
+
+un controlador.
+
+Component
+El comportamiento se agrega mediante componentes.
+
+Por ejemplo:
+
+GameObject "Element_101"
+├── Transform
+├── MeshRenderer
+├── Collider
+└── ElementView
+Transform
+Todo GameObject tiene un Transform.
+
+Contiene:
+
+position;
+
+rotation;
+
+scale;
+
+relación padre-hijo.
+
+8. Coordenadas: decisión crítica del proyecto
+En OpenSees usaremos normalmente:
+
+X, Y → planta
+Z    → vertical
+Unity usa:
+
+X → derecha
+Y → arriba
+Z → adelante
+Para este proyecto adoptaremos inicialmente:
+
+$$
+X_U = X_{OS}
+$$
+ 
+
+$$
+Y_U = Z_{OS}
+$$
+ 
+
+$$
+Z_U = Y_{OS}
+$$
+ 
+
+Es decir:
+
+OpenSees (X, Y, Z)
+        ↓
+Unity   (X, Z, Y)
+Función única de conversión
+Crear:
+
+using UnityEngine;
+
+public static class CoordinateMap
+{
+    public static Vector3 OsToUnity(float x, float y, float z)
+    {
+        return new Vector3(x, z, y);
+    }
+
+    public static Vector3 OsToUnity(Vector3 p)
+    {
+        return new Vector3(p.x, p.z, p.y);
+    }
+
+    public static Vector3 UnityToOs(Vector3 p)
+    {
+        return new Vector3(p.x, p.z, p.y);
+    }
+}
+No repetir conversiones manuales dispersas como:
+
+new Vector3(node.x, node.z, node.y)
+en veinte scripts distintos.
+
+Todo debe pasar por CoordinateMap.
+
+9. Primera prueba de coordenadas
+Antes de cargar el edificio completo, crear tres puntos de prueba:
+
+O  = (0,0,0)
+PX = (2,0,0)
+PY = (0,2,0)
+PZ = (0,0,2)
+En Unity debe observarse:
+
+PX: derecha;
+
+PY: hacia adelante;
+
+PZ: hacia arriba.
+
+Si esto no ocurre, detenerse y corregir la convención.
+
+10. Crear un script C#
+Dentro de:
+
+Assets/Scripts/
+crear:
+
+HelloStructuralModel.cs
+Contenido:
+
+using UnityEngine;
+
+public class HelloStructuralModel : MonoBehaviour
+{
+    private void Start()
+    {
+        Debug.Log("Laboratorio estructural iniciado.");
+    }
+}
+Crear un GameObject vacío:
+
+Hierarchy
+→ Create Empty
+→ App
+Arrastrar el script sobre App.
+
+Presionar:
+
+Play
+y revisar la Console.
+
+11. Primer objetivo real: construir una barra entre dos puntos
+Dados:
+
+node I
+node J
+queremos visualizar un elemento estructural.
+
+Primero construiremos centrelines con cilindros.
+
+Esto evita mezclar inmediatamente:
+
+orientación de sección;
+
+geometría arquitectónica;
+
+ejes locales OpenSees.
+
+12. ElementView.cs
+Crear:
+
+Assets/Scripts/View/ElementView.cs
+using UnityEngine;
+
+public class ElementView : MonoBehaviour
+{
+    public int ElementTag { get; private set; }
+    public int NodeI { get; private set; }
+    public int NodeJ { get; private set; }
+    public string Kind { get; private set; }
+
+    private float radius;
+
+    public void Initialize(
+        int elementTag,
+        int nodeI,
+        int nodeJ,
+        string kind,
+        float radius
+    )
+    {
+        ElementTag = elementTag;
+        NodeI = nodeI;
+        NodeJ = nodeJ;
+        Kind = kind;
+        this.radius = radius;
+    }
+
+    public void SetEndpoints(Vector3 a, Vector3 b)
+    {
+        Vector3 d = b - a;
+        float length = d.magnitude;
+
+        if (length <= 1.0e-8f)
+        {
+            Debug.LogError(
+                $"Element {ElementTag} has zero or near-zero length."
+            );
+            return;
+        }
+
+        transform.position = 0.5f * (a + b);
+
+        transform.rotation =
+            Quaternion.FromToRotation(
+                Vector3.up,
+                d.normalized
+            );
+
+        // Unity Cylinder primitive has height = 2
+        transform.localScale =
+            new Vector3(
+                radius,
+                0.5f * length,
+                radius
+            );
+    }
+}
+13. Probar una viga manualmente
+Crear:
+
+Assets/Scripts/Model/ManualBeamExample.cs
+using UnityEngine;
+
+public class ManualBeamExample : MonoBehaviour
+{
+    private void Start()
+    {
+        Vector3 a =
+            CoordinateMap.OsToUnity(
+                0.0f,
+                0.0f,
+                0.0f
+            );
+
+        Vector3 b =
+            CoordinateMap.OsToUnity(
+                4.0f,
+                0.0f,
+                0.0f
+            );
+
+        GameObject go =
+            GameObject.CreatePrimitive(
+                PrimitiveType.Cylinder
+            );
+
+        go.name = "Element_101";
+
+        ElementView view =
+            go.AddComponent<ElementView>();
+
+        view.Initialize(
+            101,
+            1,
+            2,
+            "beam",
+            0.05f
+        );
+
+        view.SetEndpoints(a, b);
+    }
+}
+Debe aparecer una barra de 4 m.
+
+14. ¿Por qué usar un cilindro al comienzo?
+Porque para QA necesitamos primero verificar:
+
+$$
+\text{conectividad}
+$$
+ 
+
+no la representación exacta de la sección.
+
+Un cilindro:
+
+muestra claramente el eje del elemento;
+
+no depende de la rotación de la sección;
+
+tiene un Collider automáticamente;
+
+es fácil de seleccionar.
+
+Más adelante se puede reemplazar por:
+
+prisma rectangular;
+
+sección real;
+
+mesh arquitectónico.
+
+15. Modelo de datos JSON
+Usaremos un formato simple.
+
+Ejemplo:
+
+{
+  "nodes": [
+    {
+      "tag": 1,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    {
+      "tag": 2,
+      "x": 4.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  ],
+  "elements": [
+    {
+      "tag": 101,
+      "i": 1,
+      "j": 2,
+      "kind": "beam"
+    }
+  ]
+}
+16. Clases C# para deserializar
+Crear:
+
+Assets/Scripts/Data/StructuralData.cs
+using System;
+
+[Serializable]
+public class NodeData
+{
+    public int tag;
+    public float x;
+    public float y;
+    public float z;
+}
+
+[Serializable]
+public class ElementData
+{
+    public int tag;
+    public int i;
+    public int j;
+    public string kind;
+}
+
+[Serializable]
+public class SupportData
+{
+    public int node;
+
+    // [UX, UY, UZ, RX, RY, RZ]
+    public int[] fixity;
+}
+
+[Serializable]
+public class ModelData
+{
+    public NodeData[] nodes;
+    public ElementData[] elements;
+    public SupportData[] supports;
+}
+17. JsonUtility
+Unity incluye JsonUtility para convertir JSON a clases C# simples.
+
+Por eso es conveniente usar un objeto raíz:
+
+{
+  "nodes": [...],
+  "elements": [...]
+}
+en vez de un array suelto.
+
+Importante
+Para el contrato de intercambio conviene usar:
+
+arrays;
+
+números;
+
+strings;
+
+clases simples.
+
+Después de leerlos, se pueden construir Dictionary en memoria para acceso rápido.
+
+18. Cargar un TextAsset
+Guardar temporalmente:
+
+Assets/DataSamples/model.json
+Unity lo importa como un TextAsset.
+
+Crear:
+
+Assets/Scripts/Model/ModelLoader.cs
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ModelLoader : MonoBehaviour
+{
+    [SerializeField]
+    private TextAsset modelJson;
+
+    [SerializeField]
+    private Transform modelRoot;
+
+    [SerializeField]
+    private float elementRadius = 0.05f;
+
+    private readonly Dictionary<int, NodeData>
+        nodes = new();
+
+    private readonly Dictionary<int, ElementView>
+        elements = new();
+
+    private void Start()
+    {
+        LoadModel();
+    }
+
+    public void LoadModel()
+    {
+        if (modelJson == null)
+        {
+            Debug.LogError("modelJson is not assigned.");
+            return;
+        }
+
+        ModelData data =
+            JsonUtility.FromJson<ModelData>(
+                modelJson.text
+            );
+
+        BuildNodeIndex(data);
+        BuildElements(data);
+    }
+
+    private void BuildNodeIndex(ModelData data)
+    {
+        nodes.Clear();
+
+        foreach (NodeData node in data.nodes)
+        {
+            if (!nodes.TryAdd(node.tag, node))
+            {
+                Debug.LogError(
+                    $"Duplicated nodeTag: {node.tag}"
+                );
+            }
+        }
+    }
+
+    private void BuildElements(ModelData data)
+    {
+        elements.Clear();
+
+        foreach (ElementData element in data.elements)
+        {
+            if (!nodes.TryGetValue(
+                element.i,
+                out NodeData nodeI
+            ))
+            {
+                Debug.LogError(
+                    $"Element {element.tag}: " +
+                    $"node I={element.i} does not exist."
+                );
+
+                continue;
+            }
+
+            if (!nodes.TryGetValue(
+                element.j,
+                out NodeData nodeJ
+            ))
+            {
+                Debug.LogError(
+                    $"Element {element.tag}: " +
+                    $"node J={element.j} does not exist."
+                );
+
+                continue;
+            }
+
+            Vector3 a =
+                CoordinateMap.OsToUnity(
+                    nodeI.x,
+                    nodeI.y,
+                    nodeI.z
+                );
+
+            Vector3 b =
+                CoordinateMap.OsToUnity(
+                    nodeJ.x,
+                    nodeJ.y,
+                    nodeJ.z
+                );
+
+            GameObject go =
+                GameObject.CreatePrimitive(
+                    PrimitiveType.Cylinder
+                );
+
+            go.name =
+                $"Element_{element.tag}";
+
+            if (modelRoot != null)
+            {
+                go.transform.SetParent(modelRoot);
+            }
+
+            ElementView view =
+                go.AddComponent<ElementView>();
+
+            view.Initialize(
+                element.tag,
+                element.i,
+                element.j,
+                element.kind,
+                elementRadius
+            );
+
+            view.SetEndpoints(a, b);
+
+            if (!elements.TryAdd(
+                element.tag,
+                view
+            ))
+            {
+                Debug.LogError(
+                    $"Duplicated elementTag: " +
+                    $"{element.tag}"
+                );
+            }
+        }
+    }
+}
+19. Configurar el loader en el Inspector
+Crear un GameObject:
+
+App
+Agregar:
+
+ModelLoader
+Crear:
+
+ModelRoot
+como GameObject vacío.
+
+En el Inspector:
+
+Model Json → arrastrar model.json
+Model Root → arrastrar ModelRoot
+Ejecutar.
+
+20. Primera prueba estructural del viewer
+Antes de cargar el edificio completo, preparar un JSON pequeño con:
+
+4 nodos;
+
+3 elementos;
+
+un elemento vertical;
+
+un elemento en X;
+
+un elemento en Y.
+
+Verificar visualmente que las orientaciones son correctas.
+
+21. La jerarquía de la escena importa
+Recomendación:
+
+Scene
+├── App
+├── CameraRig
+├── Model
+│   ├── Nodes
+│   ├── Elements
+│   ├── Supports
+│   ├── Diaphragms
+│   ├── TributaryAreas
+│   ├── Loads
+│   ├── Axes
+│   ├── Results
+│   └── Architecture
+└── UI
+Esto permite apagar capas completas fácilmente.
+
+22. Activar y desactivar capas
+Un controlador mínimo:
+
+using UnityEngine;
+
+public class LayerVisibility : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject supportsRoot;
+
+    [SerializeField]
+    private GameObject loadsRoot;
+
+    [SerializeField]
+    private GameObject tributaryAreasRoot;
+
+    public void ShowSupports(bool visible)
+    {
+        supportsRoot.SetActive(visible);
+    }
+
+    public void ShowLoads(bool visible)
+    {
+        loadsRoot.SetActive(visible);
+    }
+
+    public void ShowTributaryAreas(bool visible)
+    {
+        tributaryAreasRoot.SetActive(visible);
+    }
+}
+Más adelante estos métodos se conectan a controles de UI.
+
+23. Dibujar nodos
+Para QA puede ser útil crear esferas pequeñas:
+
+private GameObject CreateNode(
+    NodeData node,
+    float radius = 0.06f
+)
+{
+    GameObject go =
+        GameObject.CreatePrimitive(
+            PrimitiveType.Sphere
+        );
+
+    go.name = $"Node_{node.tag}";
+
+    go.transform.position =
+        CoordinateMap.OsToUnity(
+            node.x,
+            node.y,
+            node.z
+        );
+
+    go.transform.localScale =
+        Vector3.one * (2.0f * radius);
+
+    return go;
+}
+No tienen que permanecer visibles siempre.
+
+24. Selección de elementos
+Queremos:
+
+click
+  ↓
+ray desde cámara
+  ↓
+Collider
+  ↓
+ElementView
+  ↓
+elementTag
+Para proyectos nuevos Unity recomienda usar el Input System Package.
+
+Instalarlo desde:
+
+Window
+→ Package Manager
+→ Input System
+25. StructuralSelector.cs
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class StructuralSelector : MonoBehaviour
+{
+    [SerializeField]
+    private Camera sceneCamera;
+
+    [SerializeField]
+    private LayerMask selectableLayers = ~0;
+
+    public ElementView Selected { get; private set; }
+
+    private void Update()
+    {
+        Mouse mouse = Mouse.current;
+
+        if (mouse == null)
+            return;
+
+        if (!mouse.leftButton.wasPressedThisFrame)
+            return;
+
+        Vector2 mousePosition =
+            mouse.position.ReadValue();
+
+        Ray ray =
+            sceneCamera.ScreenPointToRay(
+                mousePosition
+            );
+
+        if (
+            Physics.Raycast(
+                ray,
+                out RaycastHit hit,
+                10000.0f,
+                selectableLayers
+            )
+        )
+        {
+            ElementView view =
+                hit.collider
+                    .GetComponentInParent<ElementView>();
+
+            if (view != null)
+            {
+                Select(view);
+            }
+        }
+    }
+
+    private void Select(ElementView view)
+    {
+        Selected = view;
+
+        Debug.Log(
+            $"Selected element: " +
+            $"{view.ElementTag}, " +
+            $"nodes {view.NodeI}-{view.NodeJ}"
+        );
+    }
+}
+26. ¿Por qué funciona la selección?
+Physics.Raycast lanza conceptualmente un rayo desde la cámara.
+
+Para que un objeto sea seleccionable necesita un:
+
+Collider
+Los primitivos creados por Unity incluyen Collider.
+
+Después podemos recuperar:
+
+ElementView
+y por lo tanto:
+
+elementTag
+27. Usar Layers para selección
+Crear una Layer:
+
+StructuralElement
+y asignarla a las vigas/columnas.
+
+Así el Raycast no necesita colisionar con:
+
+arquitectura;
+
+pisos;
+
+ayudas visuales;
+
+UI.
+
+Esto es especialmente útil cuando la escena crece.
+
+28. Cámara orbital simple
+Crear:
+
+Assets/Scripts/Interaction/OrbitCamera.cs
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class OrbitCamera : MonoBehaviour
+{
+    [SerializeField]
+    private Transform target;
+
+    [SerializeField]
+    private float distance = 20.0f;
+
+    [SerializeField]
+    private float rotateSpeed = 0.15f;
+
+    [SerializeField]
+    private float zoomSpeed = 0.01f;
+
+    private float yaw = 45.0f;
+    private float pitch = 30.0f;
+
+    private void LateUpdate()
+    {
+        Mouse mouse = Mouse.current;
+
+        if (mouse != null)
+        {
+            if (mouse.rightButton.isPressed)
+            {
+                Vector2 delta =
+                    mouse.delta.ReadValue();
+
+                yaw +=
+                    delta.x * rotateSpeed;
+
+                pitch -=
+                    delta.y * rotateSpeed;
+
+                pitch =
+                    Mathf.Clamp(
+                        pitch,
+                        -85.0f,
+                        85.0f
+                    );
+            }
+
+            float scroll =
+                mouse.scroll.ReadValue().y;
+
+            distance *=
+                Mathf.Exp(
+                    -scroll * zoomSpeed
+                );
+
+            distance =
+                Mathf.Clamp(
+                    distance,
+                    0.5f,
+                    500.0f
+                );
+        }
+
+        Quaternion rotation =
+            Quaternion.Euler(
+                pitch,
+                yaw,
+                0.0f
+            );
+
+        Vector3 offset =
+            rotation *
+            new Vector3(
+                0.0f,
+                0.0f,
+                -distance
+            );
+
+        transform.position =
+            target.position + offset;
+
+        transform.LookAt(target);
+    }
+}
+Crear un GameObject vacío:
+
+CameraTarget
+aproximadamente en el centro del edificio y asignarlo.
+
+29. No confundir navegación con coordenadas del modelo
+Mover la cámara no cambia:
+
+nodos;
+
+elementos;
+
+cargas;
+
+resultados.
+
+La cámara es solamente una vista.
+
+30. Visualizar apoyos
+Los apoyos deben provenir de datos.
+
+Ejemplo:
+
+{
+  "node": 1,
+  "fixity": [1, 1, 1, 1, 1, 1]
+}
+Podemos usar inicialmente un cubo o símbolo simple.
+
+public static GameObject CreateSupportMarker(
+    Vector3 position,
+    float size = 0.20f
+)
+{
+    GameObject go =
+        GameObject.CreatePrimitive(
+            PrimitiveType.Cube
+        );
+
+    go.name = "Support";
+
+    go.transform.position = position;
+
+    go.transform.localScale =
+        Vector3.one * size;
+
+    return go;
+}
+La representación gráfica no sustituye la información numérica.
+
+Al seleccionar el apoyo se debe poder consultar:
+
+UX UY UZ RX RY RZ
+ 1  1  1  1  1  1
+31. Mostrar ejes locales
+No intentar adivinar en Unity los ejes locales que usó OpenSees.
+
+La opción más robusta es que Python/OpenSees exporte para cada elemento:
+
+{
+  "elementTag": 101,
+  "localX": [1.0, 0.0, 0.0],
+  "localY": [0.0, 1.0, 0.0],
+  "localZ": [0.0, 0.0, 1.0]
+}
+Unity los transforma y dibuja.
+
+32. Helper mínimo para una línea
+Crear:
+
+Assets/Scripts/View/LineFactory.cs
+using UnityEngine;
+
+public static class LineFactory
+{
+    public static LineRenderer CreateLine(
+        Transform parent,
+        Vector3[] points,
+        float width,
+        Material material
+    )
+    {
+        GameObject go =
+            new GameObject("Line");
+
+        go.transform.SetParent(parent);
+
+        LineRenderer lr =
+            go.AddComponent<LineRenderer>();
+
+        lr.positionCount =
+            points.Length;
+
+        lr.widthMultiplier =
+            width;
+
+        lr.useWorldSpace =
+            true;
+
+        lr.material =
+            material;
+
+        lr.SetPositions(points);
+
+        return lr;
+    }
+}
+Para varios puntos es preferible usar:
+
+SetPositions(...)
+en vez de llamar SetPosition(...) repetidamente.
+
+33. Dibujar un eje local
+Si tenemos:
+
+Vector3 origin;
+Vector3 xAxis;
+podemos dibujar:
+
+Vector3[] points =
+{
+    origin,
+    origin + 0.5f * xAxis
+};
+
+LineFactory.CreateLine(
+    axesRoot,
+    points,
+    0.015f,
+    axisMaterial
+);
+Repetir para:
+
+local X;
+
+local Y;
+
+local Z.
+
+34. Áreas tributarias: formato de datos
+Ejemplo:
+
+{
+  "id": 12,
+  "floor": 2,
+  "elementTag": 315,
+  "qG": 6.25,
+  "qQ": 2.00,
+  "vertices": [
+    {"x": 0.0, "y": 0.0},
+    {"x": 4.0, "y": 0.0},
+    {"x": 4.0, "y": 3.0},
+    {"x": 0.0, "y": 3.0}
+  ]
+}
+Cada polígono debe tener asociación explícita con:
+
+elementTag
+o con un conjunto de vigas receptoras.
+
+35. Calcular área tributaria
+Para un polígono en planta puede usarse la fórmula del cordón:
+
+$$
+A = \frac{1}{2} \left| \sum_i x_i y_{i+1} - x_{i+1} y_i \right|
+$$
+ 
+
+En C#:
+
+using UnityEngine;
+
+public static class PolygonMath
+{
+    public static float Area(
+        Vector2[] vertices
+    )
+    {
+        if (
+            vertices == null ||
+            vertices.Length < 3
+        )
+        {
+            return 0.0f;
+        }
+
+        double sum = 0.0;
+
+        for (
+            int i = 0;
+            i < vertices.Length;
+            ++i
+        )
+        {
+            int j =
+                (i + 1) %
+                vertices.Length;
+
+            sum +=
+                vertices[i].x *
+                vertices[j].y;
+
+            sum -=
+                vertices[j].x *
+                vertices[i].y;
+        }
+
+        return
+            0.5f *
+            Mathf.Abs((float)sum);
+    }
+}
+36. Verificación de carga tributaria
+Si:
+
+q = kN/m²
+A = m²
+L = m
+entonces:
+
+$$
+W = qA
+$$
+ 
+
+y, para una distribución uniforme idealizada:
+
+$$
+w = \frac{qA}{L}
+$$
+ 
+
+Unity puede calcularlo para mostrarlo, pero el mismo cálculo debe verificarse en Python/OpenSees.
+
+37. Visualizar un polígono tributario
+Convertir cada vértice:
+
+(x, y) planta OpenSees
+a:
+
+new Vector3(
+    x,
+    floorElevation,
+    y
+)
+y cerrar la línea:
+
+v0 → v1 → ... → vn → v0
+con LineRenderer.
+
+38. El viewer como herramienta de QA
+El alumno debería poder seleccionar una viga y responder inmediatamente:
+
+Element: 315
+Type: Beam
+Nodes: 82 → 83
+
+Atributary: 14.2 m²
+qG: 6.25 kN/m²
+
+Total slab load:
+88.75 kN
+
+Equivalent beam load:
+22.19 kN/m
+Esto es mucho más importante que una textura bonita.
+
+39. Visualizar cargas
+Una carga distribuida puede representarse con varias flechas.
+
+Conceptualmente:
+
+↓   ↓   ↓   ↓   ↓
+────────────────── viga
+El número de flechas es visual.
+
+La magnitud real debe aparecer también numéricamente.
+
+40. Resultados de OpenSees
+Un archivo de resultados puede tener:
+
+{
+  "case": "G",
+  "nodes": [
+    {
+      "tag": 1,
+      "ux": 0.0,
+      "uy": 0.0,
+      "uz": 0.0,
+      "rx": 0.0,
+      "ry": 0.0,
+      "rz": 0.0
+    }
+  ]
+}
+Recordar:
+
+ux,uy,uz
+están expresados en coordenadas OpenSees.
+
+También deben pasar por:
+
+CoordinateMap.OsToUnity(...)
+antes de aplicarse gráficamente.
+
+41. Deformada
+La posición gráfica deformada es:
+
+$$
+\mathbf{x}_{vis} = \mathbf{x}_0 + s\mathbf{u}
+$$
+ 
+
+donde:
+
+\mathbf{x}_0: posición original;
+
+\mathbf{u}: desplazamiento;
+
+s: factor gráfico de amplificación.
+
+Importante
+El factor s no modifica el análisis.
+
+Solo modifica la visualización.
+
+42. Aplicar deformada a un elemento
+Si conocemos:
+
+Vector3 pI0;
+Vector3 pJ0;
+
+Vector3 uI;
+Vector3 uJ;
+
+float scale;
+entonces:
+
+Vector3 pI =
+    pI0 +
+    scale * uI;
+
+Vector3 pJ =
+    pJ0 +
+    scale * uJ;
+
+elementView.SetEndpoints(
+    pI,
+    pJ
+);
+43. Mantener geometría original separada de la deformada
+No sobrescribir datos originales con desplazamientos.
+
+Guardar:
+
+positionOriginal
+y calcular la deformada cada vez.
+
+Esto permite:
+
+deformed scale = 0
+para volver inmediatamente al modelo original.
+
+44. Casos base
+La aplicación final recibirá resultados independientes:
+
+G
+Q
+EX
+EY
+Unity no necesita llamar a OpenSees cuando solo se modifican factores:
+
+lambda_G
+lambda_Q
+lambda_EX
+lambda_EY
+45. Superposición en Unity
+Para cada nodo:
+
+$$
+\mathbf{u} = \lambda_G \mathbf{u}_G + \lambda_Q \mathbf{u}_Q + \lambda_X \mathbf{u}_{EX} + \lambda_Y \mathbf{u}_{EY}
+$$
+ 
+
+Ejemplo C#:
+
+Vector3 Combine(
+    Vector3 uG,
+    Vector3 uQ,
+    Vector3 uEX,
+    Vector3 uEY,
+    float lambdaG,
+    float lambdaQ,
+    float lambdaEX,
+    float lambdaEY
+)
+{
+    return
+        lambdaG * uG +
+        lambdaQ * uQ +
+        lambdaEX * uEX +
+        lambdaEY * uEY;
+}
+46. Regla de verificación de superposición
+Antes de confiar en los sliders:
+
+elegir una combinación arbitraria;
+
+calcularla en Unity;
+
+correrla explícitamente en OpenSees;
+
+comparar.
+
+Por ejemplo:
+
+1.0 G
++ 0.5 Q
++ 0.8 EX
+- 0.2 EY
+Comparar:
+
+desplazamiento;
+
+reacción;
+
+esfuerzo de un elemento.
+
+47. Diagramas de esfuerzos
+Para el viewer final tendremos:
+
+axial;
+
+corte;
+
+momento;
+
+torsión.
+
+Una estrategia segura es que Python/OpenSees exporte puntos ya interpretados del diagrama.
+
+Ejemplo:
+
+{
+  "elementTag": 315,
+  "diagram": "Mz",
+  "samples": [
+    {"s": 0.0, "value": -12.0},
+    {"s": 0.25, "value": -4.0},
+    {"s": 0.50, "value": 3.0},
+    {"s": 0.75, "value": 8.0},
+    {"s": 1.0, "value": 15.0}
+  ]
+}
+donde:
+
+s = 0 → nodo I
+s = 1 → nodo J
+48. ¿Por qué exportar el diagrama desde Python?
+Porque así la interpretación de:
+
+fuerzas de extremo;
+
+signos;
+
+cargas distribuidas;
+
+ejes locales;
+
+se verifica una sola vez.
+
+Unity queda responsable de:
+
+representar correctamente una respuesta ya validada.
+
+No de reinterpretar silenciosamente OpenSees.
+
+49. Dibujar un diagrama
+Para cada muestra:
+
+$$
+\mathbf{p}(s) = (1-s)\mathbf{p}_I + s\mathbf{p}_J
+$$
+ 
+
+y luego:
+
+$$
+\mathbf{p}_{diag} = \mathbf{p}(s) + c\,M(s)\,\mathbf{d}
+$$
+ 
+
+donde:
+
+c: escala gráfica;
+
+\mathbf{d}: dirección visual asociada al diagrama.
+
+Los puntos resultantes se dibujan con LineRenderer.
+
+50. Curvas P-M
+El viewer no debe recalcular inicialmente una Fiber Section.
+
+Debe consumir una curva exportada:
+
+{
+  "section": "C40x60",
+  "points": [
+    {"P": -3000, "M": 0},
+    {"P": -2500, "M": 120},
+    {"P": -1500, "M": 280},
+    {"P": 0, "M": 350}
+  ]
+}
+y una demanda:
+
+{
+  "elementTag": 504,
+  "P": -1420,
+  "M": 183
+}
+51. Responsabilidad de Unity en P-M
+Unity debe:
+
+mostrar la curva;
+
+mostrar el punto;
+
+actualizar el punto al cambiar combinación.
+
+No debe alterar la definición de capacidad.
+
+52. UI: qué controles necesitamos realmente
+La primera interfaz útil puede ser pequeña.
+
+Capas
+[ ] Nodes
+[x] Elements
+[x] Supports
+[ ] Local axes
+[x] Tributary areas
+[x] Loads
+[ ] Deformed
+[x] Diagrams
+Casos
+G   [----|-----] 1.00
+Q   [--|-------] 0.50
+EX  [------|---] 0.80
+EY  [---|------] -0.20
+Elemento seleccionado
+Element 315
+Beam
+Nodes 82-83
+Section B30x50
+
+N  = ...
+Vy = ...
+Vz = ...
+My = ...
+Mz = ...
+53. UI Toolkit
+Unity dispone de UI Toolkit para interfaces de Editor y runtime.
+
+Para este proyecto es una buena opción para:
+
+panel de selección;
+
+toggles;
+
+sliders;
+
+botones;
+
+texto.
+
+No es necesario construir un diseño sofisticado al comienzo.
+
+Primero hacer que los datos sean correctos.
+
+54. Patrón recomendado de UI
+Separar:
+
+UI
+↓ llama métodos
+Controller
+↓ cambia estado
+Model/View
+Evitar que un botón contenga lógica estructural importante.
+
+Por ejemplo:
+
+public void SetGravityFactor(float value)
+{
+    loadState.lambdaG = value;
+
+    RecomputeCombinedResponse();
+}
+El slider solo llama a ese método.
+
+55. Cambiar el modelo
+La aplicación debe distinguir:
+
+Cambio visual
+mostrar ejes
+No requiere OpenSees.
+
+Cambio de combinación
+lambda_EX = 0.8
+No requiere OpenSees.
+
+Cambio estructural
+column C31:
+section C40x40 → C50x50
+Sí requiere reanálisis.
+
+56. Flujo de modificación estructural
+Para el proyecto base:
+
+Unity
+  ↓
+modificación de datos
+  ↓
+export JSON
+  ↓
+OpenSeesPy
+  ↓
+nuevo análisis
+  ↓
+nuevo results.json
+  ↓
+Unity recarga
+No es necesario automatizar toda la cadena al principio.
+
+57. Fuente de verdad
+Una práctica segura:
+
+data/
+  ↓
+OpenSees
+  ↓
+results/
+Unity puede editar:
+
+data/
+pero debe dejar un archivo reproducible.
+
+No permitir cambios invisibles que existan solo en memoria.
+
+58. Sidequest: carga móvil asociada al usuario
+Esta funcionalidad puede aprovechar la posición del usuario.
+
+La idea:
+
+posición
+  ↓
+panel tributario
+  ↓
+vigas cercanas
+  ↓
+reparto de P_user
+  ↓
+visualización
+59. Detectar en qué polígono está el usuario
+Convertir posición Unity a coordenadas de planta OpenSees:
+
+Vector3 pOs =
+    CoordinateMap.UnityToOs(
+        userTransform.position
+    );
+
+Vector2 p =
+    new Vector2(
+        pOs.x,
+        pOs.y
+    );
+Después usar un test punto-en-polígono.
+
+60. Punto dentro de polígono
+using UnityEngine;
+
+public static class PointInPolygon
+{
+    public static bool Contains(
+        Vector2 p,
+        Vector2[] polygon
+    )
+    {
+        bool inside = false;
+
+        int j =
+            polygon.Length - 1;
+
+        for (
+            int i = 0;
+            i < polygon.Length;
+            ++i
+        )
+        {
+            Vector2 pi = polygon[i];
+            Vector2 pj = polygon[j];
+
+            bool intersects =
+                (
+                    (pi.y > p.y) !=
+                    (pj.y > p.y)
+                )
+                &&
+                (
+                    p.x <
+                    (pj.x - pi.x) *
+                    (p.y - pi.y) /
+                    (pj.y - pi.y) +
+                    pi.x
+                );
+
+            if (intersects)
+                inside = !inside;
+
+            j = i;
+        }
+
+        return inside;
+    }
+}
+61. Una regla continua para repartir la carga
+Supongamos que el panel tiene cuatro vigas receptoras.
+
+Podemos definir una regla didáctica:
+
+$$
+w_i = \frac{1}{\max(d_i,\epsilon)}
+$$
+ 
+
+$$
+\alpha_i = \frac{w_i}{\sum_j w_j}
+$$
+ 
+
+$$
+P_i = \alpha_i P_{user}
+$$
+ 
+
+donde:
+
+d_i: distancia del usuario a la viga i;
+
+P_i: carga asignada.
+
+Así, al acercarse a una viga:
+
+su fracción aumenta
+y siempre:
+
+$$
+\sum_i P_i = P_{user}
+$$
+ 
+
+62. Limitación del sidequest
+Esta regla no representa el análisis real de una losa.
+
+Es deliberadamente una herramienta para visualizar:
+
+regiones tributarias;
+
+proximidad;
+
+conservación;
+
+camino de carga idealizado.
+
+Debe etiquetarse como tal.
+
+63. Verificación de la carga móvil
+En cada posición:
+
+float sum = 0.0f;
+
+foreach (float Pi in assignedLoads)
+{
+    sum += Pi;
+}
+
+Debug.Assert(
+    Mathf.Abs(
+        sum - userLoad
+    ) < 1.0e-5f
+);
+La conservación debe mantenerse mientras el usuario se mueve.
+
+64. Arquitectura recomendada de scripts
+Scripts/
+│
+├── Data/
+│   ├── StructuralData.cs
+│   ├── ResultData.cs
+│   └── CoordinateMap.cs
+│
+├── Model/
+│   ├── ModelLoader.cs
+│   ├── ModelIndex.cs
+│   └── ModelExporter.cs
+│
+├── View/
+│   ├── ElementView.cs
+│   ├── NodeView.cs
+│   ├── SupportView.cs
+│   ├── LineFactory.cs
+│   ├── DiagramView.cs
+│   └── TributaryAreaView.cs
+│
+├── Results/
+│   ├── ResultLoader.cs
+│   ├── CombinationController.cs
+│   └── DeformedShapeController.cs
+│
+├── Interaction/
+│   ├── StructuralSelector.cs
+│   ├── OrbitCamera.cs
+│   └── UserLoadController.cs
+│
+└── UI/
+    ├── SelectionPanel.cs
+    ├── LayerPanel.cs
+    └── LoadCasePanel.cs
+65. Qué NO hacer
+Evitar:
+
+GodController.cs
+con 3000 líneas que:
+
+lee JSON;
+
+crea geometría;
+
+mueve cámara;
+
+calcula áreas;
+
+combina cargas;
+
+dibuja diagramas;
+
+exporta;
+
+maneja UI.
+
+Eso será extremadamente difícil de verificar y modificar.
+
+66. IDs estables
+El elementTag debe sobrevivir todo el flujo:
+
+planos
+  ↓
+data
+  ↓
+OpenSees
+  ↓
+JSON
+  ↓
+Unity
+  ↓
+AR
+Nunca usar como identificador principal:
+
+GameObject.GetInstanceID()
+porque pertenece a Unity, no al modelo estructural.
+
+67. Prueba de integridad de IDs
+Al cargar el modelo:
+
+if (!elements.TryAdd(
+    element.tag,
+    view
+))
+{
+    throw new System.Exception(
+        $"Duplicated elementTag: {element.tag}"
+    );
+}
+También verificar que todo resultado recibido tenga un elemento existente.
+
+68. Error grave: reconstruir el edificio a mano en Unity
+No hacer:
+
+planos
+↓
+arrastrar cubos manualmente
+↓
+"viewer"
+Eso crea dos modelos independientes:
+
+OpenSees model
+Unity model
+que inevitablemente divergen.
+
+Unity debe reconstruir geometría desde los mismos datos.
+
+69. Uso de Transform
+Unity permite transformar entre espacio local y global.
+
+Por ejemplo:
+
+Vector3 worldPoint =
+    transform.TransformPoint(
+        localPoint
+    );
+y existe:
+
+transform.localToWorldMatrix
+Esto será particularmente importante al llegar a AR.
+
+70. Arquitectura y modelo estructural
+La arquitectura del edificio puede importarse como:
+
+GLB / glTF
+pero debe ser una capa separada:
+
+Architecture
+No debe determinar:
+
+IDs estructurales;
+
+conectividad;
+
+secciones;
+
+resultados.
+
+71. Escala
+Trabajar idealmente con:
+
+1 Unity unit = 1 m
+Esto es conveniente porque el modelo OpenSees también usa metros.
+
+Así:
+
+4.2 m OpenSees
+→
+4.2 unidades Unity
+72. Escalas gráficas que SÍ se pueden modificar
+Es válido exagerar:
+
+diámetro visual de una viga;
+
+tamaño de nodo;
+
+espesor de flecha;
+
+deformada;
+
+altura de un diagrama.
+
+Pero esas escalas deben estar claramente separadas de las coordenadas reales.
+
+73. Tests en Unity
+No todos los tests necesitan una escena.
+
+Muchas funciones pueden probarse como lógica pura:
+
+conversión de coordenadas;
+
+área de polígono;
+
+punto en polígono;
+
+conservación de carga;
+
+combinación lineal;
+
+lectura de IDs.
+
+Esto facilita muchísimo el uso seguro de agentes.
+
+74. Ejemplo: test conceptual de coordenadas
+Dado:
+
+OpenSees:
+(1,2,3)
+esperamos:
+
+Unity:
+(1,3,2)
+Esto debería convertirse en un test automatizado.
+
+75. Ejemplo: test de área
+Para:
+
+(0,0)
+(4,0)
+(4,3)
+(0,3)
+esperamos:
+
+$$
+A = 12
+$$
+ 
+
+No aceptar un TributaryAreaInspector si no pasa primero este caso.
+
+76. Ejemplo: test de superposición
+Si:
+
+uG  = (1,0,0)
+uQ  = (0,2,0)
+uEX = (0,0,3)
+y:
+
+lambdaG  = 2
+lambdaQ  = 0.5
+lambdaEX = -1
+el resultado debe ser determinista.
+
+Un agente de IA puede escribir el test antes de implementar la interfaz.
+
+77. Cómo usar OpenCode para Unity
+Mala tarea
+Hazme el viewer del edificio en Unity.
+Mejor tarea
+Objetivo:
+Leer ModelData desde un TextAsset JSON y construir
+un cilindro por cada ElementData.
+
+Restricciones:
+- CoordinateMap es la única conversión OS→Unity.
+- no modificar el esquema JSON;
+- no crear nodos faltantes;
+- fallar explícitamente con IDs duplicados;
+- cada elemento debe conservar elementTag.
+
+Criterios de aceptación:
+1. el modelo de prueba con 4 nodos y 3 elementos aparece correctamente;
+2. un nodeTag inexistente genera error;
+3. un elementTag duplicado genera error;
+4. seleccionar Element_101 entrega tag=101;
+5. las pruebas de CoordinateMap pasan.
+78. Otra buena tarea para el agente
+Implementa SupportView.
+
+Entrada:
+nodeTag + fixity[6]
+
+Salida:
+marcador visible en la posición del nodo.
+
+No debe inferir ni modificar restricciones.
+Debe mostrar los seis valores en el panel al seleccionar.
+79. Agente revisor de Unity
+Una buena revisión puede pedir:
+
+Revisa el código buscando:
+
+- conversiones de coordenadas fuera de CoordinateMap;
+- pérdida de elementTag;
+- geometría creada manualmente;
+- uso incorrecto de escalas;
+- resultados sin unidades;
+- mezclas entre lógica estructural y UI;
+- falta de validación de IDs;
+- componentes demasiado grandes;
+- cambios que deberían provocar reanálisis.
+
+No edites todavía.
+80. Checklist de Semana 2
+Antes de decir que el viewer funciona:
+
+Unity abre sin errores.
+La versión está fijada.
+El modelo proviene de datos.
+La convención OS→Unity está documentada.
+X, Y y Z fueron probados.
+Todos los nodos tienen tags únicos.
+Todos los elementos tienen tags únicos.
+Todos los nodos de cada elemento existen.
+Se puede orbitar.
+Se puede seleccionar un elemento.
+Se muestra elementTag.
+Se pueden visualizar apoyos.
+Se pueden visualizar ejes.
+Se pueden visualizar áreas tributarias.
+Se conserva qA.
+No existe una segunda geometría manual independiente.
+81. Checklist de Semana 4
+G, Q, EX y EY se cargan.
+Se visualiza deformada.
+El factor de deformada es gráfico.
+Se muestran diagramas.
+Signos fueron validados.
+Un resultado se puede rastrear a elementTag.
+Curvas P-M se cargan.
+El punto de demanda corresponde al elemento seleccionado.
+Las unidades se muestran.
+La superposición se verificó contra OpenSees.
+82. Checklist de Semana 5
+Sliders actualizan resultados.
+Apoyos/cargas/ejes pueden activarse.
+Se pueden modificar al menos dos familias de parámetros.
+El grupo distingue cambios visuales de cambios estructurales.
+Se sabe qué cambios requieren reanálisis.
+Existe un flujo reproducible para exportar cambios.
+El sidequest de carga móvil conserva la carga si está implementado.
+Se prepara build móvil.
+83. Recursos oficiales
+Unity Manual
+https://docs.unity3d.com/6000.5/Documentation/Manual/UnityManual.htmlLinks to an external site.
+
+Transform
+https://docs.unity3d.com/6000.5/Documentation/Manual/class-Transform.htmlLinks to an external site.
+
+Sistema de coordenadas y Quaternion
+https://docs.unity3d.com/6000.5/Documentation/Manual/class-Quaternion.htmlLinks to an external site.
+
+Transform API
+https://docs.unity3d.com/6000.5/Documentation/ScriptReference/Transform.htmlLinks to an external site.
+
+localToWorldMatrix
+https://docs.unity3d.com/6000.5/Documentation/ScriptReference/Transform-localToWorldMatrix.htmlLinks to an external site.
+
+JsonUtility
+https://docs.unity3d.com/6000.5/Documentation/ScriptReference/JsonUtility.htmlLinks to an external site.
+
+JsonUtility.FromJson
+https://docs.unity3d.com/6000.5/Documentation/ScriptReference/JsonUtility.FromJson.htmlLinks to an external site.
+
+Physics.Raycast
+https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics.Raycast.htmlLinks to an external site.
+
+LayerMask
+https://docs.unity3d.com/6000.5/Documentation/ScriptReference/LayerMask.htmlLinks to an external site.
+
+Input System
+https://docs.unity3d.com/Packages/com.unity.inputsystem@latest/Links to an external site.
+
+LineRenderer
+https://docs.unity3d.com/6000.5/Documentation/ScriptReference/LineRenderer.htmlLinks to an external site.
+
+LineRenderer.SetPositions
+https://docs.unity3d.com/6000.5/Documentation/ScriptReference/LineRenderer.SetPositions.htmlLinks to an external site.
+
+UI Toolkit
+https://docs.unity3d.com/6000.5/Documentation/Manual/ui-systems/introduction-ui-toolkit.htmlLinks to an external site.
+
+Ejemplos runtime UI Toolkit
+https://docs.unity3d.com/6000.5/Documentation/Manual/UIE-runtime-examples.htmlLinks to an external site.
+
+84. Próximos pasos
+Después de completar esta guía, el grupo debería poder construir:
+
+model.json
+    ↓
+ModelLoader
+    ↓
+modelo 3D seleccionable
+    ↓
+apoyos + ejes + áreas tributarias
+    ↓
+results_G/Q/EX/EY.json
+    ↓
+deformada + diagramas
+    ↓
+superposición
+    ↓
+P-M
+El paso siguiente será agregar:
+
+teléfono
+   ↓
+AR Foundation
+   ↓
+marker + pose + anchor
+   ↓
+modelo estructural sobre el edificio real
+85. Regla final
+Unity debe hacer visible la estructura del modelo, no esconderla detrás de una interfaz bonita.
+
+Un buen viewer permite contestar rápidamente:
+
+¿qué elemento estoy mirando?;
+
+¿qué nodos lo definen?;
+
+¿cómo está orientado?;
+
+¿cómo está apoyado el sistema?;
+
+¿qué lo carga?;
+
+¿qué área tributaria le corresponde?;
+
+¿cómo se deforma?;
+
+¿qué esfuerzos tiene?;
+
+¿qué capacidad tiene?;
+
+¿qué cambió cuando modifiqué el modelo?
+
+Si la aplicación no ayuda a responder esas preguntas, todavía no es un buen visualizador estructural.
