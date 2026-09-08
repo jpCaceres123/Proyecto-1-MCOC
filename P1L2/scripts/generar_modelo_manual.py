@@ -43,7 +43,8 @@ def main():
                 tag = 100000 * k + 1000 * y_index + int(axis["x_m"] * 10) + 1
                 node = {"id": tag, "level": k, "axis": axis["eje"],
                         "x_m": axis["x_m"], "y_m": y, "z_m": z,
-                        "restraint": k == 0, "status": "MANUAL"}
+                        "restraint": abs(z - axis["z_inicio_m"]) < 1e-6,
+                        "status": "MANUAL"}
                 nodes.append(node)
                 by_level[z].append(node)
 
@@ -55,7 +56,8 @@ def main():
             tag = 700000 + 1000 * k + point_index + 1
             node = {"id": tag, "level": k, "axis": point["id"],
                     "x_m": point["x_m"], "y_m": point["y_m"], "z_m": z,
-                    "restraint": k == 0, "status": "MANUAL"}
+                    "restraint": abs(z - point.get("z_inicio_m", 0.0)) < 1e-6,
+                    "status": "MANUAL"}
             nodes.append(node)
             by_level[z].append(node)
 

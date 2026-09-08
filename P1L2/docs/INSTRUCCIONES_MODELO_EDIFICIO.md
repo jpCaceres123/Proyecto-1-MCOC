@@ -130,6 +130,11 @@ Las posiciones son:
 
 Estas columnas van desde `Z = 0.00 m` hasta `Z = 15.84 m`, conectando los niveles intermedios. La sección adoptada provisionalmente es `0.70 x 0.70 m`.
 
+En los ejes principales, las tres columnas del eje G parten en `Z = 0.00 m`,
+mientras las tres de los ejes H e I parten en `Z = 3.96 m`; los nodos iniciales
+de las columnas se consideran empotrados en el modelo. El eje I prima mantiene
+su inicio en `Z = 3.96 m`.
+
 ## 6. Vigas de la zona A'-E'
 
 Las vigas principales se ingresaron usando coordenadas directas cuando no pertenecían a un eje completo.

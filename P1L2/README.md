@@ -77,14 +77,18 @@ El script construye:
 La salida actual de referencia es:
 
 ```text
-1551 nodos en OpenSees
-677 elementos de barras en el contrato
+1548 nodos en OpenSees
+674 elementos de barras en el contrato
 24 muros
 169 elementos ShellMITC4
 659 paneles de losa
 Residual de equilibrio gravitacional: 0.000 kN
-Compatibilidad de diafragmas: OK (error maximo 2.618e-4 m)
+Compatibilidad de diafragmas: OK (error maximo 1.099e-4 m)
 ```
+
+Las columnas de los ejes G, H e I parten respectivamente en `Z = 0.00 m`,
+`Z = 3.96 m` y `Z = 3.96 m`. Los primeros nodos de cada columna se modelan
+como empotrados.
 
 ## Unity
 
