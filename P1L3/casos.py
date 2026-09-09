@@ -128,6 +128,8 @@ def solve(coeff, cfg):
         for dof in ops.getFixedDOFs(n):
             support_r[i,dof-1] = -cfg['penalty']*ops.nodeDisp(n,dof)
     forces = {str(e): ops.eleForce(e) for e in element_tags}
+    local_forces = {str(e['id']): ops.eleResponse(e['id'], 'localForce')
+                    for e in data['elements'] if e['type'] != 'WALL'}
     support_sum = support_r[:, :3].sum(axis=0)
     applied_sum = sum((v[:3] for v in total.values()), np.zeros(3))
     floor_response = []
@@ -147,7 +149,7 @@ def solve(coeff, cfg):
             compatibility = max(compatibility, err)
     # Reacciones de todos los nodos no son equivalentes a reacciones de apoyo:
     # los nodos MPC contienen fuerzas internas de restriccion.
-    return dict(node_tags=tags, element_tags=element_tags, u=u, r=r, forces=forces,
+    return dict(node_tags=tags, element_tags=element_tags, u=u, r=r, forces=forces, local_forces=local_forces,
                 support_sum=support_sum, applied_sum=applied_sum,
                 floor_response=floor_response, compatibility=compatibility,
                 floors=floors, transfers=transfers, base_weight=base_weight,
@@ -174,6 +176,7 @@ def run(cfg, out):
                             u=result['u'], nodal_residual=result['r'],
                             support_tags=result['support_tags'], reaction=result['support_r'])
         (out/f'{case}_fuerzas.json').write_text(json.dumps(result['forces']), encoding='utf-8')
+        (out/f'{case}_fuerzas_locales.json').write_text(json.dumps(result['local_forces']), encoding='utf-8')
         dump_csv(out/f'{case}_pisos.csv', result['floor_response'])
         scale = max(1, np.linalg.norm(result['applied_sum']))
         check(f'{case}: equilibrio apoyos / carga', np.linalg.norm(result['support_sum']+result['applied_sum'])/scale, 1e-4)

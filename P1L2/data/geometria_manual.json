@@ -11,7 +11,7 @@
     {"eje": "H", "x_m": 30.0, "z_inicio_m": 3.96},
     {"eje": "I", "x_m": 40.0, "z_inicio_m": 3.96},
     {"eje": "I_prima", "x_m": 45.0, "z_inicio_m": 3.96},
-    {"eje": "J", "x_m": 50.0, "z_inicio_m": 15.84}
+    {"eje": "J", "x_m": 50.0, "z_inicio_m": 15.84, "base_empotrada": false}
   ],
   "column_points": [
     {"id": "1B", "x_m": -20.8, "y_m": 16.15, "z_inicio_m": 0.0},

@@ -14,6 +14,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import casos
 import capacidad
+from exportar_reparto_losas import export_repartition
+from exportar_aceleraciones import export_accelerations
 
 ROOT=Path(__file__).resolve().parent
 
@@ -37,7 +39,15 @@ def export_unity(cfg, global_results, capacity_results, out):
     visible_nodes={int(n['id']) for n in model['nodes']}
     displacement_rows=[]
     floor_rows=[]
+    member_rows=[]
     for case in ('G','Q','EX','EY','R'):
+        local=json.loads((out/f'{case}_fuerzas_locales.json').read_text(encoding='utf-8'))
+        for tag, values in local.items():
+            if len(values) != 12:
+                raise ValueError(f'Barra {tag}: se esperaban 12 fuerzas locales')
+            member_rows.append(dict(caso=case,elemento=int(tag),**dict(zip(
+                ('Ni_kN','Vyi_kN','Vzi_kN','Ti_kNm','Myi_kNm','Mzi_kNm',
+                 'Nj_kN','Vyj_kN','Vzj_kN','Tj_kNm','Myj_kNm','Mzj_kNm'),values))))
         result=np.load(out/f'{case}.npz')
         for tag,disp in zip(result['node_tags'],result['u']):
             if int(tag) in visible_nodes:
@@ -53,6 +63,51 @@ def export_unity(cfg, global_results, capacity_results, out):
                 ux_cm_m=r['ux_CM_m'],uy_cm_m=r['uy_CM_m'],rz_rad=r['giro_z_rad']))
     casos.dump_csv(resources/'semana3_desplazamientos.csv',displacement_rows)
     casos.dump_csv(resources/'semana3_pisos.csv',floor_rows)
+    export_accelerations(out/'masas_y_sismo.csv',resources/'semana3_aceleraciones.csv',cfg['g_m_s2'])
+    casos.dump_csv(resources/'semana3_esfuerzos_locales.csv',member_rows)
+    # Peso propio geométrico por losa; G/Q coinciden con los receptores del análisis.
+    # Incluir vigas y muros evita omitir las cargas transferidas a bordes de muro.
+    transfers={s['id']:[] for s in model['slabs']}
+    for kind in ('beam','wall'):
+        for row in model[f'{kind}_load_cases']:
+            transfers[row['slab_id']].append(row)
+    slab_rows=[]
+    for slab in model['slabs']:
+        area=slab['area_m2']  # Área neta: los vacíos ya están descontados.
+        mass=area*slab['thickness_m']*slab['density_kg_m3']
+        weight=mass*9.80665/1000  # Misma gravedad usada por el generador de losas.
+        loads=transfers[slab['id']]
+        dead=sum(row['dead_load_kN'] for row in loads)
+        live=sum(row['tributary_area_m2']*(row['q_SC_kN_m2'] if cfg['q_Q_kN_m2'] is None
+                 else cfg['q_Q_kN_m2']) for row in loads)
+        slab_rows.append(dict(losa_id=slab['id'],area_neta_m2=area,espesor_m=slab['thickness_m'],
+            densidad_kg_m3=slab['density_kg_m3'],masa_propia_kg=mass,peso_propio_kN=weight,
+            G_losa_kN=dead,adicional_G_kN=dead-weight,Q_losa_kN=live))
+    casos.dump_csv(resources/'semana3_pesos_losas.csv',slab_rows)
+    export_repartition(model,cfg,resources/'semana3_reparto_losas.csv')
+    # Curvas constitutivas monotónicas de los materiales de la sección Fiber.
+    # No representan una historia de fibras del edificio global elástico.
+    cc=cfg['columna']
+    concrete_eps=np.linspace(-cc['eps_cu'],0,181)
+    concrete_eps=np.unique(np.append(concrete_eps,-cc['eps_c0']))
+    yield_eps=cc['fy_MPa']/cc['Es_MPa']
+    steel_eps=np.unique(np.concatenate((np.linspace(-2*yield_eps,2*yield_eps,181),[-yield_eps,0,yield_eps])))
+    def constitutive(eps,mat):
+        return [dict(strain=float(e),stress_MPa=float(s/1000))
+                for e,s in zip(eps,capacidad.stress(eps,mat,cc))]
+    # Asignar la referencia por las dimensiones declaradas, no por las inercias
+    # aproximadas del análisis global. My/Mz comparten esta sección cuadrada simétrica.
+    geometry=json.loads(casos.verification.GEOMETRY.read_text(encoding='utf-8'))
+    dimensions=geometry['column_section_m']
+    section_matches=(abs(cc['b_m']-cc['h_m'])<1e-9
+        and abs(dimensions[0]-cc['b_m'])<1e-9 and abs(dimensions[1]-cc['h_m'])<1e-9
+        and abs(model['section_columns']['A_m2']-cc['b_m']*cc['h_m'])<1e-9)
+    graphs=dict(b_m=cc['b_m'],h_m=cc['h_m'],fc_MPa=cc['fc_MPa'],fy_MPa=cc['fy_MPa'],
+        members=[dict(id=e['id'],type=e['type'],has_capacity=e['type']=='COLUMN' and section_matches)
+                 for e in model['elements'] if e['type']!='WALL'],
+        pm=[dict(p=float(p['P_kN']),m=float(p['M_kNm'])) for p in capacity_results['puntos']],
+        concrete=constitutive(concrete_eps,1),steel=constitutive(steel_eps,2))
+    (resources/'semana3_graficos_seccion.json').write_text(json.dumps(graphs,indent=2),encoding='utf-8')
     for source,target in ((out/'fibras.csv','semana3_fibras.csv'),
                           (out/'momento_curvatura.csv','semana3_momento_curvatura.csv'),
                           (out/'PM_puntos.csv','semana3_pm.csv')):
@@ -170,6 +225,11 @@ El corte se define como la suma de reacciones externas de todos los apoyos,
 incluidos los situados sobre Z=0. No es un corte exclusivo de la sección Z=0.
 
 ![Desplazamientos y giros](results/respuesta_sismica.png)
+
+**Cambio solicitado en el voladizo del eje J:** se liberaron sus tres nodos
+inferiores en X=50,00 m, Z=15,84 m (Y=0,00; 7,25; 16,15 m).
+Se mantienen las columnas y conexiones del voladizo; se retiran las seis
+restricciones externas de cada nodo. Las respuestas se recalculan con estos apoyos.
 
 **Condición heredada que requiere contraste con planos:** hay empotramientos en
 las cotas {g['support_heights_m']} m. Los diafragmas incluyen nodos apoyados:

@@ -1021,7 +1021,7 @@
       "x_m": 50.0,
       "y_m": 0.0,
       "z_m": 15.84,
-      "restraint": true,
+      "restraint": false,
       "status": "MANUAL"
     },
     {
@@ -1091,7 +1091,7 @@
       "x_m": 50.0,
       "y_m": 7.25,
       "z_m": 15.84,
-      "restraint": true,
+      "restraint": false,
       "status": "MANUAL"
     },
     {
@@ -1161,7 +1161,7 @@
       "x_m": 50.0,
       "y_m": 16.15,
       "z_m": 15.84,
-      "restraint": true,
+      "restraint": false,
       "status": "MANUAL"
     },
     {
@@ -18467,7 +18467,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         207,
         211,
@@ -20433,7 +20433,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         209,
         210,
@@ -21343,7 +21343,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         213,
         216,
@@ -23420,7 +23420,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         372,
         378,
@@ -24274,7 +24274,7 @@
           }
         ],
         "area_m2": 27.1875,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -35697,7 +35697,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         276,
         280,
@@ -37664,7 +37664,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         278,
         279,
@@ -38689,7 +38689,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         282,
         285,
@@ -40766,7 +40766,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         483,
         489,
@@ -41712,7 +41712,7 @@
           }
         ],
         "area_m2": 27.1875,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -51623,7 +51623,7 @@
           "total_load_kN": 87.487576
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         228,
         229,
@@ -65897,7 +65897,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         289,
         293,
@@ -67864,7 +67864,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         291,
         292,
@@ -68889,7 +68889,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         295,
         298,
@@ -70966,7 +70966,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         520,
         526,
@@ -71912,7 +71912,7 @@
           }
         ],
         "area_m2": 27.1875,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -81823,7 +81823,7 @@
           "total_load_kN": 87.487576
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         329,
         330,
@@ -89057,7 +89057,7 @@
           }
         ],
         "area_m2": 12.3,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -97661,7 +97661,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         302,
         306,
@@ -99626,7 +99626,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         304,
         305,
@@ -100535,7 +100535,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         308,
         311,
@@ -102612,7 +102612,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         557,
         564,
@@ -103466,7 +103466,7 @@
           }
         ],
         "area_m2": 27.1875,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -128669,7 +128669,7 @@
           }
         ],
         "area_m2": 18.4875,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -130040,7 +130040,7 @@
           }
         ],
         "area_m2": 17.7625,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -131323,7 +131323,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         315,
         319,
@@ -133414,7 +133414,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         317,
         318,
@@ -134204,7 +134204,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         321,
         324,
@@ -136472,7 +136472,7 @@
           "total_load_kN": 16.479769
         }
       ],
-      "area_check_m2": 0.0,
+      "area_check_m2": -0.0,
       "boundary_elements": [
         594,
         600,
@@ -137234,7 +137234,7 @@
           }
         ],
         "area_m2": 27.1875,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -137523,7 +137523,7 @@
           {
             "edge": "left",
             "zone": "Piso 4 LT2",
-            "area_m2": 5.955581,
+            "area_m2": 5.95558,
             "polygon": [
               {
                 "x_m": -24.55,
@@ -137684,7 +137684,7 @@
           {
             "edge": "bottom",
             "zone": "Piso 4 LT2",
-            "area_m2": 1.62691,
+            "area_m2": 1.626911,
             "polygon": [
               {
                 "x_m": -22.877,
@@ -146213,7 +146213,7 @@
           {
             "edge": "top",
             "zone": "Piso 4 LT2",
-            "area_m2": 3.291687,
+            "area_m2": 3.291688,
             "polygon": [
               {
                 "x_m": -0.8,
@@ -146648,8 +146648,8 @@
             ]
           }
         ],
-        "loaded_area_m2": 35.277926,
-        "loaded_area_check_m2": 1e-06
+        "loaded_area_m2": 35.277927,
+        "loaded_area_check_m2": 2e-06
       },
       "tributary_geometry": {
         "bottom": {
@@ -163725,7 +163725,7 @@
           }
         ],
         "area_m2": 18.4875,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -165165,7 +165165,7 @@
           }
         ],
         "area_m2": 17.7625,
-        "area_check_m2": 0.0,
+        "area_check_m2": -0.0,
         "overlap_m2": 0.0,
         "construction_lines_45": [
           {
@@ -229145,7 +229145,7 @@
       "q_G_kN_m2": 78.208034,
       "q_SC_kN_m2": 7.84532,
       "dead_load_kN": 92.87204,
-      "live_load_kN": 9.316318,
+      "live_load_kN": 9.316317,
       "w_G_start_kN_m": 0.0,
       "w_G_max_kN_m": 37.148815,
       "w_G_end_kN_m": 0.0,
@@ -229449,7 +229449,7 @@
       "q_G_kN_m2": 78.208034,
       "q_SC_kN_m2": 7.84532,
       "dead_load_kN": 92.87204,
-      "live_load_kN": 9.316318,
+      "live_load_kN": 9.316317,
       "w_G_start_kN_m": 0.0,
       "w_G_max_kN_m": 37.148815,
       "w_G_end_kN_m": 0.0,

@@ -1,20 +1,20 @@
 {
-  "python": "3.12.10",
+  "python": "3.11.9",
   "versions": {
-    "openseespy": "3.8.0.0",
-    "numpy": "2.5.2",
+    "openseespy": "3.7.0.1",
+    "numpy": "2.4.6",
     "matplotlib": "3.11.1"
   },
   "inputs": {
-    "P1L3\\parametros.json": "f68bc6ab63de7913c03b1f23008e38cbb787c6c79a73becbababd0494aa728d9",
-    "P1L2\\outputs\\modelo_3d_manual.json": "98a55cf09b14546b09990162022923e7668833545331963c238664ba44db509b",
-    "P1L2\\data\\cargas_losas.json": "2d611fbebb9bf3282f815a079070ae94f1d8b4efb925c455a221a1e866b78f80",
-    "P1L2\\data\\geometria_manual.json": "c9ecf36fe7d96ce6bf6a0c884e22e74908e6feeb8d02e4b717c2606cfc3c7205",
-    "P1L2\\scripts\\modelo_opensees_3d.py": "a72b8d9c65af8c1914d08673922765080fbe32722a21f1956a9fd0961f590e43",
-    "P1L2\\scripts\\verificar_modelo.py": "5d3fb94a6e8b4b321d323b4fa59900642c5470e8b8576956c0c046ce5b919cbe",
-    "P1L3\\casos.py": "cdfaa0356cdfec219c84a5bb8614a8448ec746bcf1dca263d387ad145beaf9cd",
-    "P1L3\\capacidad.py": "3230e2d878f8abbf3ac11c29106e3a4d6c1bc20b966d8c0101fdae55f51430dc",
-    "P1L3\\ejecutar.py": "28d5d8bb432cd8c2cd84b06f769393fa5881d406e747fcb6f44a794eca9ea92d"
+    "P1L3\\parametros.json": "f38b4753a51839029531e184ecd23bcd4e03dcca94307d3382e8fcef4c6e5f3a",
+    "P1L2\\outputs\\modelo_3d_manual.json": "c70dabaf2e90e8c18e518a27815dcd12b2319e5906249e32cecd64108fdd984d",
+    "P1L2\\data\\cargas_losas.json": "f198c165da4357d5a8979d1fc4dff2a980a041ff4adf25883ea548cf21157545",
+    "P1L2\\data\\geometria_manual.json": "21b7a88b5c3bcbbc402fd4a5c1802b69066d157a06e031a9769777decba7d3ec",
+    "P1L2\\scripts\\modelo_opensees_3d.py": "1506929a4b7f22f41d521e6a58172a0b1f5439e312dd74a4cae55f5673a0b40f",
+    "P1L2\\scripts\\verificar_modelo.py": "00fa352fe220ed3ab562c3225875074a630d75005d4fc909348ebe5cbe8eb104",
+    "P1L3\\casos.py": "9afafde0218d6c39b472d37af1b2f44f1941b072fc723be13efdc9600b4b475b",
+    "P1L3\\capacidad.py": "cedb353131c2d2e747f083e6e69b015725ca7ce47d8d539122e064d2ce2b4e34",
+    "P1L3\\ejecutar.py": "3d37d455db828a95fe8deed06cb98b2763390ce996896e8fe7f71d2baf5eeb72"
   },
   "parametros": {
     "q_Q_kN_m2": null,
@@ -36,7 +36,7 @@
       "recubrimiento_al_centro_barra_m": 0.06,
       "barras_por_cara": 4,
       "diametro_m": 0.025,
-      "fc_MPa": 30.0,
+      "fc_MPa": 25.0,
       "fy_MPa": 420.0,
       "Es_MPa": 200000.0,
       "eps_c0": 0.002,

@@ -12,6 +12,7 @@ public class Semana3Visualizer : MonoBehaviour
     {
         public string block;
         public float z, cmX, cmY, force, ux, uy, rz;
+        public float mass, acceleration, accelerationG;
     }
     private class CurvePoint { public float p, phi, moment; }
     private class PMPoint { public float p, moment; }
@@ -35,6 +36,64 @@ public class Semana3Visualizer : MonoBehaviour
     private Texture2D sectionPlot, mPhiPlot, pmPlot;
     private float maxDisplacement, maxRotation;
     private bool ready;
+    public readonly double[] Combination = new double[4];
+    public static readonly string[] BaseCases = { "G", "Q", "EX", "EY" };
+    private readonly string[] coefficientText = new string[4];
+    private string combinationError;
+
+    private void ResetCombination()
+    {
+        for (int k=0;k<4;k++) coefficientText[k] = metadata["combinacion_"+BaseCases[k]];
+        ApplyCombination();
+    }
+
+    private void ApplyCombination()
+    {
+        double[] next = new double[4];
+        for (int k=0;k<4;k++)
+            if (!double.TryParse(coefficientText[k].Trim().Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out next[k])
+                || double.IsNaN(next[k]) || double.IsInfinity(next[k]) || Math.Abs(next[k]) > 1000)
+            { combinationError = "Introduce cuatro números finitos entre −1000 y 1000 (coma o punto decimal)."; return; }
+        Dictionary<int, Vector3> combined = new Dictionary<int, Vector3>();
+        foreach (int id in displacements["G"].Keys)
+        {
+            Vector3 value = Vector3.zero;
+            for (int k=0;k<4;k++) value += displacements[BaseCases[k]][id] * (float)next[k];
+            combined[id] = value;
+        }
+        List<Floor> combinedFloors = new List<Floor>();
+        foreach (Floor reference in floors["G"])
+        {
+            Floor value = new Floor { block=reference.block, z=reference.z, cmX=reference.cmX, cmY=reference.cmY };
+            for (int k=0;k<4;k++)
+            {
+                Floor source = floors[BaseCases[k]].Find(f => f.block==reference.block && Mathf.Abs(f.z-reference.z)<1e-4f);
+                if (source == null) throw new Exception("Falta un piso para combinar " + BaseCases[k]);
+                value.ux += source.ux*(float)next[k]; value.uy += source.uy*(float)next[k]; value.rz += source.rz*(float)next[k];
+            }
+            combinedFloors.Add(value);
+        }
+        Array.Copy(next,Combination,4); displacements["R"]=combined; floors["R"]=combinedFloors;
+        combinationError=null;
+        if (ready && selectedCase=="R") RebuildResponse();
+    }
+
+    private void DrawCombination()
+    {
+        GUILayout.Label("R = λG·G + λQ·Q + λEX·EX + λEY·EY",noteStyle);
+        for(int k=0;k<4;k++)
+        {
+            GUILayout.BeginHorizontal(); GUILayout.Label("λ"+BaseCases[k],GUILayout.Width(55));
+            coefficientText[k]=GUILayout.TextField(coefficientText[k]); GUILayout.EndHorizontal();
+        }
+        GUILayout.BeginHorizontal();
+        if(GUILayout.Button("Aplicar λ")) ApplyCombination();
+        if(GUILayout.Button("Restablecer")) ResetCombination();
+        GUILayout.EndHorizontal();
+        if(combinationError!=null) GUILayout.Label(combinationError,noteStyle);
+        GUILayout.Label("Aplicados: "+Combination[0]+" G; "+Combination[1]+" Q; "+Combination[2]+" EX; "+Combination[3]+" EY",noteStyle);
+        GUILayout.Label("Superposición elástica. Cambios solo en esta sesión de Play; EX/EY y sus masas permanecen definidos por el análisis base.",noteStyle);
+    }
 
     private static float F(string value) { return float.Parse(value, CultureInfo.InvariantCulture); }
     private static Vector3 StructuralToUnity(float x, float y, float z) { return new Vector3(x, z, y); }
@@ -46,10 +105,12 @@ public class Semana3Visualizer : MonoBehaviour
             ReadModel(Load("model_3d"));
             ReadDisplacements(Load("semana3_desplazamientos"));
             ReadFloors(Load("semana3_pisos"));
+            ReadAccelerations(Load("semana3_aceleraciones"));
             ReadFibers(Load("semana3_fibras"));
             ReadCurves(Load("semana3_momento_curvatura"));
             ReadPM(Load("semana3_pm"));
             ReadMetadata(Load("semana3_resumen"));
+            ResetCombination();
             responseRoot = new GameObject("Semana3_Deformada").transform;
             forceRoot = new GameObject("Semana3_Fuerzas_CM").transform;
             BuildPlots();
@@ -109,6 +170,47 @@ public class Semana3Visualizer : MonoBehaviour
             if (!floors.ContainsKey(p[0])) floors[p[0]] = new List<Floor>();
             floors[p[0]].Add(new Floor { block = p[1], z = F(p[2]), cmX = F(p[3]), cmY = F(p[4]),
                 force = F(p[5]), ux = F(p[6]), uy = F(p[7]), rz = F(p[8]) });
+        }
+    }
+
+    private void ReadAccelerations(string text)
+    {
+        HashSet<string> seen = new HashSet<string>();
+        foreach(string[] p in Csv(text))
+        {
+            if(p[0]=="bloque") continue;
+            if(p.Length!=6 || !seen.Add(p[0]+":"+p[1])) throw new Exception("Aceleraciones de piso incompletas o duplicadas");
+            float z=F(p[1]), mass=F(p[2]), acceleration=F(p[4]), fraction=F(p[5]);
+            if(mass<=0 || float.IsNaN(acceleration) || float.IsInfinity(acceleration)) throw new Exception("Aceleración de piso inválida");
+            foreach(string caseName in new[]{"EX","EY"})
+            {
+                Floor floor=floors[caseName].Find(f => f.block==p[0] && Mathf.Abs(f.z-z)<1e-4f);
+                if(floor==null) throw new Exception("Piso inexistente en " + caseName);
+                if(Mathf.Abs(floor.force/mass-acceleration)>1e-4f) throw new Exception("Aceleración inconsistente con F/m en " + caseName);
+                floor.mass=mass; floor.acceleration=acceleration; floor.accelerationG=fraction;
+            }
+        }
+        foreach(string caseName in new[]{"EX","EY"})
+            foreach(Floor floor in floors[caseName]) if(floor.mass<=0) throw new Exception("Falta aceleración de un piso en " + caseName);
+    }
+
+    private void DrawFloorAccelerations()
+    {
+        GUILayout.Space(6);
+        GUILayout.Label("ACELERACIÓN EQUIVALENTE POR PISO",titleStyle);
+        string direction=selectedCase=="EX"?"X":"Y";
+        GUILayout.Label("Caso "+selectedCase+" · dirección global "+direction+"\na = F/m; carga estática equivalente, no respuesta dinámica.",noteStyle);
+        List<float> levels=new List<float>();
+        foreach(Floor floor in floors[selectedCase])
+            if(!levels.Exists(z => Mathf.Abs(z-floor.z)<1e-4f)) levels.Add(floor.z);
+        levels.Sort();
+        for(int i=0;i<levels.Count;i++)
+        {
+            List<Floor> levelFloors=floors[selectedCase].FindAll(f => Mathf.Abs(f.z-levels[i])<1e-4f);
+            float force=0,mass=0;
+            foreach(Floor floor in levelFloors) { force+=floor.force; mass+=floor.mass; }
+            float acceleration=force/mass;
+            GUILayout.Label("Piso "+(i+1)+": a"+direction+" = "+acceleration.ToString("F5")+" m/s² = "+(acceleration/9.80665f).ToString("F3")+" g",noteStyle);
         }
     }
 
@@ -200,7 +302,7 @@ public class Semana3Visualizer : MonoBehaviour
             marker.name = "CM_" + floor.block + "_Z_" + floor.z; marker.transform.SetParent(forceRoot);
             marker.transform.position = cm; marker.transform.localScale = Vector3.one * .45f; SetMaterial(marker.GetComponent<Renderer>(), Color.cyan);
             GameObject label = new GameObject("Etiqueta_CM"); label.transform.SetParent(marker.transform); label.transform.position = cm + Vector3.up * .5f;
-            TextMesh mesh = label.AddComponent<TextMesh>(); mesh.text = floor.block + " CM\nF=" + floor.force.ToString("F0") + " kN";
+            TextMesh mesh = label.AddComponent<TextMesh>(); mesh.text = floor.block + " CM\nF=" + floor.force.ToString("F0") + " kN\na" + (selectedCase=="EX"?"X":"Y") + "=" + floor.acceleration.ToString("F3") + " m/s² (" + floor.accelerationG.ToString("F2") + " g)";
             mesh.characterSize = .12f; mesh.anchor = TextAnchor.MiddleCenter; mesh.alignment = TextAlignment.Center;
         }
     }
@@ -226,7 +328,7 @@ public class Semana3Visualizer : MonoBehaviour
                 Vector2? previous=null;
                 foreach(CurvePoint p in curves) if(Mathf.Abs(p.p-ps[k])<.1f)
                 {
-                    Vector2 current=new Vector2(Map(p.phi,0,maxX,area.xMin,area.xMax),Map(p.moment,0,maxY,area.yMax,area.yMin));
+                    Vector2 current=new Vector2(Map(p.phi,0,maxX,area.xMin,area.xMax),Map(p.moment,0,maxY,area.yMin,area.yMax));
                     if(previous.HasValue) PixelLine(tex,previous.Value,current,colors[k%colors.Length]); previous=current;
                 }
             }
@@ -236,7 +338,7 @@ public class Semana3Visualizer : MonoBehaviour
             float maxX=0,maxY=0; foreach(PMPoint p in pm){maxX=Mathf.Max(maxX,p.moment);maxY=Mathf.Max(maxY,p.p);}
             Vector2? previous=null; foreach(PMPoint p in pm)
             {
-                Vector2 current=new Vector2(Map(p.moment,0,maxX,area.xMin,area.xMax),Map(p.p,0,maxY,area.yMax,area.yMin));
+                Vector2 current=new Vector2(Map(p.moment,0,maxX,area.xMin,area.xMax),Map(p.p,0,maxY,area.yMin,area.yMax));
                 if(previous.HasValue) PixelLine(tex,previous.Value,current,new Color(.15f,.35f,.65f)); Dot(tex,(int)current.x,(int)current.y,4,new Color(.1f,.25f,.55f)); previous=current;
             }
         });
@@ -287,13 +389,16 @@ public class Semana3Visualizer : MonoBehaviour
         GUILayout.BeginArea(new Rect(Screen.width-400,12,388,Screen.height-24),panelStyle);scroll=GUILayout.BeginScrollView(scroll);
         GUILayout.Label("SEMANA 3",titleStyle);GUILayout.Label("Carga viva · sismo · superposición · capacidad HA",noteStyle);GUILayout.Space(6);
         GUILayout.BeginHorizontal();foreach(string c in new[]{"G","Q","EX","EY","R"})CaseButton(c);GUILayout.EndHorizontal();
-        if(selectedCase=="R")GUILayout.Label("R = "+Meta("combinacion_G")+"G + "+Meta("combinacion_Q")+"Q + "+Meta("combinacion_EX")+"EX + "+Meta("combinacion_EY")+"EY",noteStyle);
+        if(selectedCase=="R") DrawCombination();
         bool nextDeformed=GUILayout.Toggle(showDeformed,"Deformada amplificada");bool nextForces=GUILayout.Toggle(showForces,"Fuerzas sísmicas y centros de masa");
         GUILayout.Label("Escala deformada: "+deformationScale.ToString("F0")+"×");float nextScale=GUILayout.HorizontalSlider(deformationScale,1,5000);
         if(nextDeformed!=showDeformed||nextForces!=showForces||Mathf.Abs(nextScale-deformationScale)>1f){showDeformed=nextDeformed;showForces=nextForces;deformationScale=nextScale;RebuildResponse();}
         GUILayout.Label("|u| máximo: "+(maxDisplacement*1000).ToString("G4")+" mm\n|giro Z| máximo: "+(maxRotation*1000).ToString("G4")+" mrad",noteStyle);
         if(selectedCase=="EX"||selectedCase=="EY")GUILayout.Label("a = "+Meta("aceleracion_fraccion_g")+" · masa = (G + "+Meta("fraccion_Q_masa")+" Q)/g\nCarga lateral total: "+Meta("corte_total_kN"),noteStyle);
+        if(selectedCase=="EX"||selectedCase=="EY") DrawFloorAccelerations();
         GUILayout.Space(8);showCapacity=GUILayout.Toggle(showCapacity,"Mostrar capacidad HA");
+        ElementInspector inspector = GetComponent<ElementInspector>();
+        if (inspector != null) inspector.Draw(selectedCase);
         if(showCapacity)
         {
             GUILayout.Label("Fiber Section 0,70 × 0,70 m",titleStyle);GUILayout.Label("Hormigón azul · acero rojo\nf'c="+Meta("fc_MPa")+" · fy="+Meta("fy_MPa")+" · As="+Meta("As_mm2"),noteStyle);

@@ -30,6 +30,7 @@ public class BuildingVisualizer : MonoBehaviour
     private Vector2 scroll;
     private int steelColumnCount;
     private static bool shaderWarningLogged;
+    private ElementInspector inspector;
 
     private struct Element { public int id, i, j; public string type; }
     private struct Wall { public int id; public Vector3 a, b; public float zMin, zMax, thickness; }
@@ -65,6 +66,7 @@ public class BuildingVisualizer : MonoBehaviour
         Debug.Log("Elementos cargados: " + elements.Count);
         Debug.Log("Muros cargados: " + walls.Count);
         Debug.Log("Losas cargadas: " + slabs.Count);
+        inspector = gameObject.AddComponent<ElementInspector>();
         BuildScene();
         if (GetComponent<Semana3Visualizer>() == null) gameObject.AddComponent<Semana3Visualizer>();
     }
@@ -193,6 +195,7 @@ public class BuildingVisualizer : MonoBehaviour
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube); go.name = "Diafragma_ID_" + slab.id + (piece == 0 ? "" : "_Pieza_" + piece); go.transform.SetParent(diaphragmRoot);
             go.transform.position = new Vector3((x0 + x1) / 2, y + .40f - slab.thickness / 2, (z0 + z1) / 2); go.transform.localScale = new Vector3(x1 - x0, slab.thickness, z1 - z0);
             SetMaterial(go.GetComponent<Renderer>(), new Color(.10f, .56f, .78f, .34f), true);
+            inspector.Register(go, slab.id, "Losa", "Área geométrica: " + slab.Area.ToString("F2") + " m²\nEspesor: " + slab.thickness.ToString("F2") + " m");
             if (piece == 0) CreateIdLabel(go, slab.id, go.transform.position + Vector3.up * .1f);
             piece++;
         }
@@ -206,6 +209,7 @@ public class BuildingVisualizer : MonoBehaviour
         float width = steelColumn ? .30f : (type == "COLUMN" ? .70f : (type == "BEAM_SMALL" ? .30f : (type == "BEAM_40x60" ? .40f : .60f)));
         float depth = steelColumn ? .30f : (type == "COLUMN" ? .70f : (type == "BEAM_SMALL" ? .45f : (type == "BEAM_40x60" ? .60f : (type == "BEAM_VARIABLE" ? .35f : .80f))));
         go.transform.localScale = new Vector3(width, d.magnitude, depth); SetMaterial(go.GetComponent<Renderer>(), color); CreateIdLabel(go, idFromName(name), go.transform.position);
+        inspector.Register(go, idFromName(name), type.Contains("COLUMN") ? "Columna" : "Viga", "Tipo: " + type + "\nLongitud: " + d.magnitude.ToString("F2") + " m");
     }
 
     private void CreateNode(int id, Vector3 position)
@@ -292,22 +296,10 @@ public class BuildingVisualizer : MonoBehaviour
         LineRenderer outline = zone.AddComponent<LineRenderer>(); outline.positionCount = points.Length; outline.SetPositions(points); outline.loop = true; outline.startWidth = .045f; outline.endWidth = .045f; SetMaterial(outline, new Color(colors[colorIndex % colors.Length].r, colors[colorIndex % colors.Length].g, colors[colorIndex % colors.Length].b, 1f)); outline.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; outline.receiveShadows = false;
     }
 
-    private void Update()
+    public void SelectSlab(int id)
     {
-        if (Input.GetMouseButtonDown(0) && Input.mousePosition.x > 285.0f)
-        {
-            Camera viewerCamera = FindAnyObjectByType<Camera>();
-            Ray ray = viewerCamera != null ? viewerCamera.ScreenPointToRay(Input.mousePosition) : new Ray();
-            if (viewerCamera != null)
-            {
-                string marker = "Diafragma_ID_";
-                foreach (RaycastHit hit in Physics.RaycastAll(ray))
-                {
-                    int markerIndex = hit.collider.name.IndexOf(marker, StringComparison.Ordinal);
-                    if (markerIndex >= 0) { string value = hit.collider.name.Substring(markerIndex + marker.Length); int separator = value.IndexOf('_'); if (separator >= 0) value = value.Substring(0, separator); int id; if (int.TryParse(value, out id)) { selectedSlab = id; UpdateTributary(); break; } }
-                }
-            }
-        }
+        selectedSlab = id;
+        UpdateTributary();
     }
 
     private void OnGUI()
@@ -317,9 +309,9 @@ public class BuildingVisualizer : MonoBehaviour
         GUILayout.Label("MODELO ESTRUCTURAL", titleStyle); GUILayout.Label(nodes.Count + " nodos | " + elements.Count + " barras | " + walls.Count + " muros | " + slabs.Count + " losas\n" + steelColumnCount + " columnas acero SHS 300x300x20 (turquesa)", smallStyle); GUILayout.Space(8);
         showNodes = GUILayout.Toggle(showNodes, "Nodos"); showBeams = GUILayout.Toggle(showBeams, "Vigas"); showColumns = GUILayout.Toggle(showColumns, "Columnas"); showWalls = GUILayout.Toggle(showWalls, "Muros"); showSupports = GUILayout.Toggle(showSupports, "Apoyos"); showDiaphragms = GUILayout.Toggle(showDiaphragms, "Diafragmas / losas"); showIds = GUILayout.Toggle(showIds, "IDs"); showLocalAxes = GUILayout.Toggle(showLocalAxes, "Ejes locales"); showTributary = GUILayout.Toggle(showTributary, "Area tributaria");
         GUILayout.Space(8); GUILayout.Label("Nivel (-1 = todos)"); string levelText = GUILayout.TextField(level.ToString()); int parsed; if (int.TryParse(levelText, out parsed)) level = parsed;
-        GUILayout.Label("Inspector de area tributaria", titleStyle); string[] options = new string[slabs.Count + 1]; options[0] = "Seleccionar losa"; for (int i = 0; i < slabs.Count; i++) options[i + 1] = "Losa ID " + slabs[i].id; int choice = slabs.FindIndex(s => s.id == selectedSlab) + 1; int next = GUILayout.SelectionGrid(choice, options, 1); if (next > 0 && next != choice) { selectedSlab = slabs[next - 1].id; UpdateTributary(); }
+        GUILayout.Label("Inspector de area tributaria", titleStyle); string[] options = new string[slabs.Count + 1]; options[0] = "Seleccionar losa"; for (int i = 0; i < slabs.Count; i++) options[i + 1] = "Losa ID " + slabs[i].id; int choice = slabs.FindIndex(s => s.id == selectedSlab) + 1; int next = GUILayout.SelectionGrid(choice, options, 1); if (next != choice) { inspector.SelectSlabById(next > 0 ? slabs[next - 1].id : -1); }
         if (selectedSlab >= 0) { Slab slab = slabs.Find(s => s.id == selectedSlab); if (slab != null) GUILayout.Label("ID: " + slab.id + "\nArea: " + slab.Area.ToString("F2") + " m2\nMetodo: reparto por cuatro bordes\nZona resaltada: centro hacia cada borde", smallStyle); }
-        if (GUILayout.Button("Reiniciar seleccion")) { selectedSlab = -1; UpdateTributary(); }
+        if (GUILayout.Button("Reiniciar seleccion")) { inspector.SelectSlabById(-1); }
         GUILayout.Label("Haz clic directamente sobre una losa para seleccionarla.\nLMB orbitar | MMB desplazar | rueda zoom\nLas zonas coloreadas muestran el reparto tributario hacia cada borde.", smallStyle); GUILayout.EndScrollView(); GUILayout.EndArea(); ApplyVisibility();
     }
 }

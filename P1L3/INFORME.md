@@ -79,15 +79,20 @@ No se añade excentricidad accidental. Los giros calculados se exportan por piso
 | LT2 | 19.800 | 655.760 | -18.232 | 8.262 | 1286.162 |
 
 Carga lateral total en EX y en EY: **19401.916 kN**.
-Corte de apoyos en EX: **19401.915 kN**;
-en EY: **19401.917 kN**.
+Corte de apoyos en EX: **19401.917 kN**;
+en EY: **19401.925 kN**.
 El corte se define como la suma de reacciones externas de todos los apoyos,
 incluidos los situados sobre Z=0. No es un corte exclusivo de la sección Z=0.
 
 ![Desplazamientos y giros](results/respuesta_sismica.png)
 
+**Cambio solicitado en el voladizo del eje J:** se liberaron sus tres nodos
+inferiores en X=50,00 m, Z=15,84 m (Y=0,00; 7,25; 16,15 m).
+Se mantienen las columnas y conexiones del voladizo; se retiran las seis
+restricciones externas de cada nodo. Las respuestas se recalculan con estos apoyos.
+
 **Condición heredada que requiere contraste con planos:** hay empotramientos en
-las cotas [0.0, 3.96, 15.84] m. Los diafragmas incluyen nodos apoyados:
+las cotas [0.0, 3.96] m. Los diafragmas incluyen nodos apoyados:
 esto explica desplazamientos muy pequeños de algunos pisos y puede inhibir
 la torsión. Los vínculos `equalDOF` de muros conectan nodos incluso con separación
 geométrica; no equivalen a un brazo rígido con todas sus relaciones de giro.
@@ -110,9 +115,9 @@ de cargas; no se obtiene del resultado superpuesto para efectuar la comparación
 
 | Respuesta | Muestra | Superpuesta | Explícita | Error relativo máximo |
 | --- | --- | --- | --- | --- |
-| desplazamientos | nodo 900116, DOF 3 | -0.0340711279 | -0.0340711279 | 2.36557281e-09 |
-| reacciones de apoyo | nodo 400501, DOF 1 | -12606.3075 | -12606.3056 | 1.5013127e-07 |
-| fuerzas internas | elemento 15, componente global 3 | 7389.43308 | 7389.43308 | 1.52823703e-08 |
+| desplazamientos | nodo 900116, DOF 3 | -0.0349795331 | -0.0349795326 | 6.04709687e-08 |
+| reacciones de apoyo | nodo 700006, DOF 3 | 7407.39803 | 7407.39804 | 1.70530036e-07 |
+| fuerzas internas | elemento 15, componente global 3 | 7378.8548 | 7378.85481 | 2.11684112e-07 |
 
 La comparación abarca todos los DOF, todos los apoyos y todas las componentes
 de fuerzas nodales resistentes de barras y shells, con tags ordenados.
@@ -125,7 +130,7 @@ reconstruir cualquier combinación posterior, dentro de la hipótesis lineal.
 ## D. Columna de hormigón armado
 
 Sección 0.70 × 0.70 m, compatible con A=0,49 m² del modelo.
-**Supuestos, no datos verificados de planos:** f'c=30.0 MPa,
+**Supuestos, no datos verificados de planos:** f'c=25.0 MPa,
 fy=420.0 MPa, Es=200000.0 MPa;
 12 barras Ø25 mm;
 distancia cara–centro de barra 60 mm
@@ -149,10 +154,10 @@ se excluye al elegir la capacidad. Se controla equilibrio axial en cada paso.
 
 | P [kN] (+ compresión) | M máximo [kN·m] | φ al máximo [1/m] |
 | --- | --- | --- |
-| 0.000000 | 750.602549 | 0.023250 |
-| 3375.895981 | 1412.778909 | 0.009250 |
-| 6751.791961 | 1500.813897 | 0.005500 |
-| 16879.479903 | 0.000000 | 0.000000 |
+| 0.000000 | 742.017957 | 0.020000 |
+| 2891.786467 | 1273.770266 | 0.009500 |
+| 5783.572934 | 1312.348793 | 0.005500 |
+| 14458.932335 | 0.000000 | 0.000000 |
 
 Los tres puntos de flexocompresión son los máximos M de las curvas OpenSees
 antes de alcanzar el límite de deformación. El punto M=0 es el pico de
@@ -172,42 +177,42 @@ compatibilidad de deformaciones (`PM_compatibilidad_envolvente_material.csv`).
 Sus valores al límite de deformación no deben confundirse con los picos de
 M–φ: Concrete01 considera descarga/recarga en la historia de precarga y flexión.
 Al duplicar las divisiones de la malla, el cambio máximo de ese cálculo es
-0.101%. Al refinar malla y paso de curvatura, el cambio
-máximo de los picos OpenSees es 0.087%.
-Error axial máximo: 9.341e-08 kN. Estado HA: **OK**.
+0.081%. Al refinar malla y paso de curvatura, el cambio
+máximo de los picos OpenSees es 0.046%.
+Error axial máximo: 5.481e-08 kN. Estado HA: **OK**.
 
 ## Controles automáticos
 
 | Control | Error | Tolerancia | Estado |
 | --- | --- | --- | --- |
-| G: equilibrio apoyos / carga | 1.702e-09 | 1.000e-04 | OK |
-| G: compatibilidad diafragmas [m] | 6.103e-10 | 1.000e-05 | OK |
-| Q: equilibrio apoyos / carga | 2.186e-09 | 1.000e-04 | OK |
-| Q: compatibilidad diafragmas [m] | 1.949e-10 | 1.000e-05 | OK |
-| EX: equilibrio apoyos / carga | 4.854e-08 | 1.000e-04 | OK |
-| EX: compatibilidad diafragmas [m] | 2.254e-10 | 1.000e-05 | OK |
+| G: equilibrio apoyos / carga | 8.618e-09 | 1.000e-04 | OK |
+| G: compatibilidad diafragmas [m] | 5.340e-10 | 1.000e-05 | OK |
+| Q: equilibrio apoyos / carga | 5.864e-09 | 1.000e-04 | OK |
+| Q: compatibilidad diafragmas [m] | 1.705e-10 | 1.000e-05 | OK |
+| EX: equilibrio apoyos / carga | 3.225e-08 | 1.000e-04 | OK |
+| EX: compatibilidad diafragmas [m] | 1.010e-09 | 1.000e-05 | OK |
 | EX: carga lateral total [kN] | 0.000e+00 | 1.000e-07 | OK |
-| EX: corte basal relativo | 4.854e-08 | 1.000e-04 | OK |
+| EX: corte basal relativo | 3.220e-08 | 1.000e-04 | OK |
 | EX: pisos con desplazamiento contrario | 0.000e+00 | 0.000e+00 | OK |
 | EX: momento aplicado respecto al CM [kNm] | 0.000e+00 | 1.000e-07 | OK |
-| EY: equilibrio apoyos / carga | 5.301e-08 | 1.000e-04 | OK |
-| EY: compatibilidad diafragmas [m] | 1.989e-09 | 1.000e-05 | OK |
+| EY: equilibrio apoyos / carga | 4.497e-07 | 1.000e-04 | OK |
+| EY: compatibilidad diafragmas [m] | 1.782e-09 | 1.000e-05 | OK |
 | EY: carga lateral total [kN] | 0.000e+00 | 1.000e-07 | OK |
-| EY: corte basal relativo | 5.285e-08 | 1.000e-04 | OK |
+| EY: corte basal relativo | 4.497e-07 | 1.000e-04 | OK |
 | EY: pisos con desplazamiento contrario | 0.000e+00 | 0.000e+00 | OK |
 | EY: momento aplicado respecto al CM [kNm] | 0.000e+00 | 1.000e-07 | OK |
-| R: equilibrio apoyos / carga | 2.406e-09 | 1.000e-04 | OK |
-| R: compatibilidad diafragmas [m] | 1.493e-09 | 1.000e-05 | OK |
+| R: equilibrio apoyos / carga | 4.843e-08 | 1.000e-04 | OK |
+| R: compatibilidad diafragmas [m] | 1.316e-09 | 1.000e-05 | OK |
 | Q: conservacion piso 3.96 [kN] | 4.364e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 7.92 [kN] | 4.168e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 11.88 [kN] | 4.855e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 15.84 [kN] | 3.678e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 19.8 [kN] | 1.961e-06 | 2.000e-03 | OK |
-| Superposicion: desplazamientos, error relativo maximo | 2.366e-09 | 1.000e-05 | OK |
-| Superposicion: reacciones de apoyo, error relativo maximo | 1.501e-07 | 1.000e-05 | OK |
-| Superposicion: fuerzas internas, error relativo maximo | 1.528e-08 | 1.000e-05 | OK |
-| EX: sensibilidad penalty x10 | 2.284e-04 | 1.000e-02 | OK |
-| EY: sensibilidad penalty x10 | 1.577e-03 | 1.000e-02 | OK |
+| Superposicion: desplazamientos, error relativo maximo | 6.047e-08 | 1.000e-05 | OK |
+| Superposicion: reacciones de apoyo, error relativo maximo | 1.705e-07 | 1.000e-05 | OK |
+| Superposicion: fuerzas internas, error relativo maximo | 2.117e-07 | 1.000e-05 | OK |
+| EX: sensibilidad penalty x10 | 5.117e-05 | 1.000e-02 | OK |
+| EY: sensibilidad penalty x10 | 2.639e-04 | 1.000e-02 | OK |
 
 El comando termina con código distinto de cero si cualquier control resulta
 REVISAR. Los supuestos físicos pendientes se mantienen visibles aunque los

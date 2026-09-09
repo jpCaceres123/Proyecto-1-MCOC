@@ -171,8 +171,12 @@ def main():
         lower_nodes = [node for node in axis_nodes if abs(node["z_m"] - z_min) < 1e-6]
         fixed = sum(bool(node.get("restraint")) for node in lower_nodes)
         print(f"  Eje {axis}: {fixed}/{len(lower_nodes)} nodos inferiores empotrados en Z={z_min:.2f} m")
-        if fixed != len(lower_nodes):
+        # J fue liberado por solicitud del usuario: es el extremo del voladizo.
+        expected_fixed = 0 if axis == "J" else len(lower_nodes)
+        if fixed != expected_fixed:
             failures.append(f"empotramientos del eje {axis}")
+        if axis == "J" and any(node.get("restraint") for node in axis_nodes):
+            failures.append("eje J debe permanecer sin apoyos externos")
 
     print("Columnas tubulares de acero en puntas de voladizo:")
     node_by_id = {node["id"]: node for node in model["nodes"]}

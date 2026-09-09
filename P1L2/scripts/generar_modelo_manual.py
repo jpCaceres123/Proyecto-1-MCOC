@@ -43,7 +43,8 @@ def main():
                 tag = 100000 * k + 1000 * y_index + int(axis["x_m"] * 10) + 1
                 node = {"id": tag, "level": k, "axis": axis["eje"],
                         "x_m": axis["x_m"], "y_m": y, "z_m": z,
-                        "restraint": abs(z - axis["z_inicio_m"]) < 1e-6,
+                        # El eje J nace en el voladizo: no es una fundacion.
+                        "restraint": axis.get("base_empotrada", True) and abs(z - axis["z_inicio_m"]) < 1e-6,
                         "status": "MANUAL"}
                 nodes.append(node)
                 by_level[z].append(node)
