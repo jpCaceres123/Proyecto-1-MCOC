@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT.parent / 'P1L2' / 'scripts'))
 import modelo_opensees_3d as base
 import verificar_modelo as verification
+from sismo import calcular_pisos
 
 
 def dump_csv(path, rows):
@@ -59,35 +60,19 @@ def vectors(data, cfg):
         weight = area * length * unit_weight
         for n in (e['i'], e['j']):
             loads['G'][n][2] -= weight / 2
-    floors = []
-    assigned = set()
-    for d in data['diaphragms']:
-        ids = d['node_ids']
-        weights = np.array([-loads['G'][n][2] - cfg['fraccion_Q_masa'] * loads['Q'][n][2] for n in ids])
-        W = float(weights.sum())
-        if W <= 0:
-            raise ValueError('Piso sin peso sismico positivo')
-        xy = np.array([ops.nodeCoord(n)[:2] for n in ids])
-        cm = weights @ xy / W
-        master = d['master_node']
-        xm, ym, _ = ops.nodeCoord(master)
-        F = cfg['aceleracion_fraccion_g'] * W
-        loads['EX'][master] += [F, 0, 0, 0, 0, -F * (cm[1] - ym)]
-        loads['EY'][master] += [0, F, 0, 0, 0, F * (cm[0] - xm)]
-        floors.append(dict(bloque=d['subbuilding'], z_m=d['z_m'], master=master,
-                           G_kN=float(sum(-loads['G'][n][2] for n in ids)),
-                           Q_kN=float(sum(-loads['Q'][n][2] for n in ids)),
-                           peso_sismico_kN=W, masa_t=W/cfg['g_m_s2'],
-                           CM_x_m=float(cm[0]), CM_y_m=float(cm[1]), F_kN=F,
-                           Mz_EX_master_kNm=-F*(cm[1]-ym),
-                           Mz_EY_master_kNm=F*(cm[0]-xm)))
-        assigned.update(ids)
+    coordinates={n:ops.nodeCoord(n) for n in ops.getNodeTags()}
+    gravity={n:float(-loads['G'][n][2]) for n in coordinates}
+    live={n:float(-loads['Q'][n][2]) for n in coordinates}
+    floors, mass_audit, base_weight=calcular_pisos(data['diaphragms'],coordinates,gravity,live,cfg)
+    for floor in floors:
+        master= floor['master']; F=floor['F_kN']
+        loads['EX'][master] += [F,0,0,0,0,floor['Mz_EX_master_kNm']]
+        loads['EY'][master] += [0,F,0,0,0,floor['Mz_EY_master_kNm']]
+    data['mass_audit']=mass_audit
     # Masas consistentes (1 t = 1 kN s2/m); reemplaza las masas heredadas.
     for n in ops.getNodeTags():
-        m = (-loads['G'][n][2] - cfg['fraccion_Q_masa'] * loads['Q'][n][2]) / cfg['g_m_s2']
+        m = (-cfg.get('ponderador_G_masa',1.)*loads['G'][n][2] - cfg['fraccion_Q_masa'] * loads['Q'][n][2]) / cfg['g_m_s2']
         ops.mass(n, m, m, m, 0, 0, 0)
-    base_weight = sum(-loads['G'][n][2] - cfg['fraccion_Q_masa']*loads['Q'][n][2]
-                      for n in ops.getNodeTags() if n not in assigned)
     return loads, floors, transfers, base_weight
 
 
@@ -132,6 +117,7 @@ def solve(coeff, cfg):
                     for e in data['elements'] if e['type'] != 'WALL'}
     support_sum = support_r[:, :3].sum(axis=0)
     applied_sum = sum((v[:3] for v in total.values()), np.zeros(3))
+    applied_moment = sum((v[3:]+np.cross(ops.nodeCoord(n),v[:3]) for n,v in total.items()),np.zeros(3))
     floor_response = []
     compatibility = 0.0
     for d, floor in zip(data['diaphragms'], floors):
@@ -141,6 +127,7 @@ def solve(coeff, cfg):
         ux = um[0] - um[5]*(floor['CM_y_m']-ym)
         uy = um[1] + um[5]*(floor['CM_x_m']-xm)
         floor_response.append(dict(bloque=floor['bloque'], z_m=floor['z_m'],
+                                   ux_master_m=um[0],uy_master_m=um[1],master_x_m=xm,master_y_m=ym,
                                    ux_CM_m=ux, uy_CM_m=uy, giro_z_rad=um[5]))
         for n in d['node_ids']:
             x,y,_ = ops.nodeCoord(n)
@@ -151,8 +138,10 @@ def solve(coeff, cfg):
     # los nodos MPC contienen fuerzas internas de restriccion.
     return dict(node_tags=tags, element_tags=element_tags, u=u, r=r, forces=forces, local_forces=local_forces,
                 support_sum=support_sum, applied_sum=applied_sum,
+                applied_moment=applied_moment,
                 floor_response=floor_response, compatibility=compatibility,
                 floors=floors, transfers=transfers, base_weight=base_weight,
+                mass_audit=data['mass_audit'],
                 support_r=support_r, support_tags=sorted(supports),
                 support_coordinates=[ops.nodeCoord(n) for n in sorted(supports)],
                 support_heights=sorted({ops.nodeCoord(n,3) for n in supports}))
@@ -185,9 +174,22 @@ def run(cfg, out):
             direction = 0 if case == 'EX' else 1
             force = sum(f['F_kN'] for f in result['floors'])
             check(f'{case}: carga lateral total [kN]', abs(result['applied_sum'][direction]-force), 1e-7)
-            check(f'{case}: corte basal relativo', abs(-result['support_sum'][direction]-force)/force, 1e-4)
+            target_moment=sum((np.cross([f['CM_x_m'],f['CM_y_m'],f['z_m']],
+                [f['F_kN'],0,0] if case=='EX' else [0,f['F_kN'],0])
+                for f in result['floors']),np.zeros(3))
+            check(f'{case}: resultante aplicada equivalente a fuerzas en CM [kNm]',
+                  np.linalg.norm(result['applied_moment']-target_moment),1e-6)
+            check(f'{case}: corte basal relativo', abs(-result['support_sum'][direction]-force)/max(1,abs(force)), 1e-4)
             component = 'ux_CM_m' if case == 'EX' else 'uy_CM_m'
-            check(f'{case}: pisos con desplazamiento contrario', sum(f[component] <= 0 for f in result['floor_response']), 0)
+            # En un patrón uniforme de signo único se verifica el sentido global.
+            # Con cargas de signos mixtos un desplazamiento local opuesto no es un error.
+            accelerations=[f['a_g'] for f in result['floors']]
+            if all(a>0 for a in accelerations) or all(a<0 for a in accelerations):
+                sign=1 if accelerations[0]>0 else -1
+                check(f'{case}: pisos con desplazamiento contrario', sum(sign*f[component] < -1e-10 for f in result['floor_response']), 0)
+            for floor in result['floors']:
+                check(f"{case}: F=m*a piso {floor['piso']} {floor['bloque']}",
+                      abs(floor['F_kN']-floor['masa_t']*floor['a_m_s2']),1e-7)
             # No hay excentricidad accidental: fuerza + par en master debe
             # ser estaticamente equivalente a fuerza aplicada en el CM.
             torsion_error=0.0
@@ -197,10 +199,44 @@ def run(cfg, out):
                 torsion_error=max(torsion_error,abs(f[f'Mz_{case}_master_kNm']+f['F_kN']*arm))
             check(f'{case}: momento aplicado respecto al CM [kNm]',torsion_error,1e-7)
     ref = results['G']
+    # Bases de respuesta para cambiar los ponderadores de masa en Unity.
+    # La rigidez no depende de la masa en este análisis estático lineal.
+    seismic_bases={}
+    for direction in ('EX','EY'):
+        for suffix,ag,aq in (('G',1.,0.),('Q',0.,1.)):
+            name=direction+suffix
+            print(f'Analizando base de masa {name}...',flush=True)
+            result=solve({direction:1.},{**cfg,'ponderador_G_masa':ag,'fraccion_Q_masa':aq,'_permitir_masa_nula_base':True})
+            seismic_bases[name]=result
+            np.savez_compressed(out/f'{name}.npz',node_tags=result['node_tags'],u=result['u'])
+            (out/f'{name}_fuerzas_locales.json').write_text(json.dumps(result['local_forces']),encoding='utf-8')
+            dump_csv(out/f'{name}_pisos.csv',result['floor_response'])
+            check(f'{name}: equilibrio apoyos / carga',np.linalg.norm(result['support_sum']+result['applied_sum'])/max(1,np.linalg.norm(result['applied_sum'])),1e-4)
+        for field in ('u','support_r'):
+            combined=cfg.get('ponderador_G_masa',1.)*seismic_bases[direction+'G'][field]+cfg['fraccion_Q_masa']*seismic_bases[direction+'Q'][field]
+            check(f'{direction}: bases de masa reproducen {field}',np.max(np.abs(combined-results[direction][field]))/max(1e-12,np.max(np.abs(results[direction][field]))),1e-5)
+    # Contrastar ponderadores distintos con una nueva corrida explícita, también esfuerzos locales.
+    for direction in ('EX','EY'):
+        explicit=solve({direction:1.},{**cfg,'ponderador_G_masa':.8,'fraccion_Q_masa':.3})
+        for field in ('u','support_r','local_forces'):
+            def flatten(r):
+                return np.array([v for key in sorted(r[field],key=int) for v in r[field][key]]) if field=='local_forces' else r[field]
+            expected=flatten(explicit)
+            combined=.8*flatten(seismic_bases[direction+'G'])+.3*flatten(seismic_bases[direction+'Q'])
+            check(f'{direction}: masa 0.8G+0.3Q explícita {field}',np.max(np.abs(combined-expected))/max(1e-12,np.max(np.abs(expected))),1e-5)
     dump_csv(out/'apoyos_heredados.csv',[
         dict(nodo=n,x_m=xyz[0],y_m=xyz[1],z_m=xyz[2])
         for n,xyz in zip(ref['support_tags'],ref['support_coordinates'])])
     dump_csv(out/'masas_y_sismo.csv', ref['floors'])
+    dump_csv(out/'auditoria_masas_piso.csv', ref['mass_audit'])
+    floor_totals=[]
+    for number in sorted({f['piso'] for f in ref['floors']}):
+        group=[f for f in ref['floors'] if f['piso']==number]
+        floor_totals.append(dict(piso=number,z_m=group[0]['z_m'],
+            G_kN=sum(f['G_kN'] for f in group),Q_kN=sum(f['Q_kN'] for f in group),
+            masa_t=sum(f['masa_t'] for f in group),a_g=group[0]['a_g'],a_m_s2=group[0]['a_m_s2'],
+            Fx_EX_kN=sum(f['F_kN'] for f in group),Fy_EY_kN=sum(f['F_kN'] for f in group)))
+    dump_csv(out/'sismo_por_piso.csv',floor_totals)
     dump_csv(out/'transferencia_Q.csv', ref['transfers'])
     # Control independiente: areas de zonas originales, no suma de receptores.
     model = json.loads(base.MODEL.read_text(encoding='utf-8'))

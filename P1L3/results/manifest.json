@@ -6,23 +6,28 @@
     "matplotlib": "3.11.1"
   },
   "inputs": {
-    "P1L3\\parametros.json": "f38b4753a51839029531e184ecd23bcd4e03dcca94307d3382e8fcef4c6e5f3a",
+    "P1L3\\parametros.json": "5271100a8b428570d838ad8fed831b158cf71c9ef55c0b3f6c533b2f711ff59f",
     "P1L2\\outputs\\modelo_3d_manual.json": "c70dabaf2e90e8c18e518a27815dcd12b2319e5906249e32cecd64108fdd984d",
     "P1L2\\data\\cargas_losas.json": "f198c165da4357d5a8979d1fc4dff2a980a041ff4adf25883ea548cf21157545",
     "P1L2\\data\\geometria_manual.json": "21b7a88b5c3bcbbc402fd4a5c1802b69066d157a06e031a9769777decba7d3ec",
     "P1L2\\scripts\\modelo_opensees_3d.py": "1506929a4b7f22f41d521e6a58172a0b1f5439e312dd74a4cae55f5673a0b40f",
     "P1L2\\scripts\\verificar_modelo.py": "00fa352fe220ed3ab562c3225875074a630d75005d4fc909348ebe5cbe8eb104",
-    "P1L3\\casos.py": "9afafde0218d6c39b472d37af1b2f44f1941b072fc723be13efdc9600b4b475b",
+    "P1L3\\casos.py": "935b17700abdeb267a77fe2c4c89623ecdf9a4118421b832a28a761af693a55c",
+    "P1L3\\sismo.py": "f8332299630f417a70c8f3891fc2db33c612c88a69bb36d2466e2829876243e3",
     "P1L3\\capacidad.py": "cedb353131c2d2e747f083e6e69b015725ca7ce47d8d539122e064d2ce2b4e34",
-    "P1L3\\ejecutar.py": "3d37d455db828a95fe8deed06cb98b2763390ce996896e8fe7f71d2baf5eeb72"
+    "P1L3\\exportar_aceleraciones.py": "21ad9dfc3ead49aeeeb1c4499b17eb19a41082f96bfc373665add1311ece0609",
+    "P1L3\\exportar_reparto_losas.py": "6a49ae5bfb107de6dd1213039794c87f16cea1b1e88079a1d5872e5466940b56",
+    "P1L3\\ejecutar.py": "f6b38938d161c85ba5b2d9c18cb78263169435354710c629e9121e287f2a9a04"
   },
   "parametros": {
     "q_Q_kN_m2": null,
     "aceleracion_fraccion_g": 0.2,
     "fraccion_Q_masa": 0.5,
+    "ponderador_G_masa": 1.0,
     "g_m_s2": 9.80665,
     "peso_especifico_HA_kN_m3": 24.516625,
     "patron_sismico": "uniforme_aceleracion",
+    "aceleracion_por_piso_g": {},
     "combinacion": {
       "G": 1.2,
       "Q": 1.4,

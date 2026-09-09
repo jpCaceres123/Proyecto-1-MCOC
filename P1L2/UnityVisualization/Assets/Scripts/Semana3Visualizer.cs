@@ -13,6 +13,7 @@ public class Semana3Visualizer : MonoBehaviour
         public string block;
         public float z, cmX, cmY, force, ux, uy, rz;
         public float mass, acceleration, accelerationG;
+        public float masterUx, masterUy, masterX, masterY;
     }
     private class CurvePoint { public float p, phi, moment; }
     private class PMPoint { public float p, moment; }
@@ -40,6 +41,93 @@ public class Semana3Visualizer : MonoBehaviour
     public static readonly string[] BaseCases = { "G", "Q", "EX", "EY" };
     private readonly string[] coefficientText = new string[4];
     private string combinationError;
+    public double MassG { get; private set; }
+    public double MassQ { get; private set; }
+    private string massGText, massQText, massError;
+    private double gravity;
+    private class MassParts { public string block; public float z; public double g,q,gx,gy,qx,qy,alpha; }
+    private readonly List<MassParts> massParts=new List<MassParts>();
+
+    private void ReadMassParts(string text)
+    {
+        foreach(string[] p in Csv(text))
+        {
+            if(p[0]=="bloque") continue;
+            if(p.Length!=9) throw new Exception("Componentes de masa incompletos");
+            double[] v=new double[7];
+            for(int i=0;i<7;i++) v[i]=double.Parse(p[i+2],CultureInfo.InvariantCulture);
+            massParts.Add(new MassParts { block=p[0],z=F(p[1]),g=v[0],q=v[1],gx=v[2],gy=v[3],qx=v[4],qy=v[5],alpha=v[6] });
+        }
+    }
+
+    private void ResetMass()
+    {
+        massGText=metadata["ponderador_G_masa"]; massQText=metadata["fraccion_Q_masa"];
+        ApplyMass();
+    }
+
+    private void ApplyMass()
+    {
+        double ag,aq;
+        if(!TryMassFactor(massGText,out ag) || !TryMassFactor(massQText,out aq))
+        { massError="Usa ponderadores entre 0 y 1000, con coma o punto decimal."; return; }
+        foreach(MassParts part in massParts)
+            if(ag*part.g+aq*part.q<=1e-9) { massError="Cada piso debe conservar una masa positiva. No se aplicaron los cambios."; return; }
+        // Reconstruct the response from independent G-mass and Q-mass seismic cases.
+        foreach(string direction in new[]{"EX","EY"})
+        {
+            Dictionary<int,Vector3> values=new Dictionary<int,Vector3>();
+            foreach(int id in displacements[direction+"G"].Keys)
+                values[id]=displacements[direction+"G"][id]*(float)ag+displacements[direction+"Q"][id]*(float)aq;
+            displacements[direction]=values;
+        }
+        foreach(MassParts part in massParts)
+        {
+            double weight=ag*part.g+aq*part.q;
+            float x=(float)((ag*part.gx+aq*part.qx)/weight), y=(float)((ag*part.gy+aq*part.qy)/weight);
+            foreach(string caseName in BaseCases)
+            {
+                Floor f=floors[caseName].Find(v=>v.block==part.block && Mathf.Abs(v.z-part.z)<1e-4f);
+                if(f==null) throw new Exception("Falta piso para ponderar masa");
+                if(caseName=="EX" || caseName=="EY")
+                {
+                    Floor g=floors[caseName+"G"].Find(v=>v.block==part.block && Mathf.Abs(v.z-part.z)<1e-4f);
+                    Floor q=floors[caseName+"Q"].Find(v=>v.block==part.block && Mathf.Abs(v.z-part.z)<1e-4f);
+                    if(g==null || q==null) throw new Exception("Falta respuesta de base sísmica");
+                    f.masterUx=(float)(ag*g.masterUx+aq*q.masterUx);
+                    f.masterUy=(float)(ag*g.masterUy+aq*q.masterUy);
+                    f.rz=(float)(ag*g.rz+aq*q.rz);
+                    f.force=(float)(part.alpha*weight);
+                }
+                f.cmX=x; f.cmY=y; f.mass=(float)(weight/gravity);
+                f.accelerationG=(float)part.alpha; f.acceleration=(float)(part.alpha*gravity);
+                f.ux=f.masterUx-f.rz*(y-f.masterY); f.uy=f.masterUy+f.rz*(x-f.masterX);
+            }
+        }
+        MassG=ag; MassQ=aq; massError=null;
+        if(ready) { RebuildCombination(Combination); RebuildResponse(); }
+    }
+
+    private static bool TryMassFactor(string text,out double value)
+    {
+        return double.TryParse(text.Trim().Replace(',','.'),NumberStyles.Float,CultureInfo.InvariantCulture,out value)
+            && !double.IsNaN(value) && !double.IsInfinity(value) && value>=0 && value<=1000;
+    }
+
+    private void DrawMassControls()
+    {
+        GUILayout.Space(6); GUILayout.Label("PONDERADORES DE MASA SÍSMICA",titleStyle);
+        GUILayout.Label("mᵢ = (αG·Gᵢ + αQ·Qᵢ) / g",noteStyle);
+        GUILayout.BeginHorizontal(); GUILayout.Label("αG",GUILayout.Width(50)); massGText=GUILayout.TextField(massGText); GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal(); GUILayout.Label("αQ",GUILayout.Width(50)); massQText=GUILayout.TextField(massQText); GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if(GUILayout.Button("Aplicar masa")) ApplyMass();
+        if(GUILayout.Button("Restablecer masa")) ResetMass();
+        GUILayout.EndHorizontal();
+        if(massError!=null) GUILayout.Label(massError,noteStyle);
+        GUILayout.Label("Aplicados: αG = "+MassG+"; αQ = "+MassQ,noteStyle);
+        GUILayout.Label("Actualiza masa, CM, EX/EY y R. G y Q gravitacionales conservan sus cargas. Cambios durante esta sesión de Play.",noteStyle);
+    }
 
     private void ResetCombination()
     {
@@ -54,6 +142,13 @@ public class Semana3Visualizer : MonoBehaviour
             if (!double.TryParse(coefficientText[k].Trim().Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out next[k])
                 || double.IsNaN(next[k]) || double.IsInfinity(next[k]) || Math.Abs(next[k]) > 1000)
             { combinationError = "Introduce cuatro números finitos entre −1000 y 1000 (coma o punto decimal)."; return; }
+        RebuildCombination(next);
+        combinationError=null;
+        if (ready && selectedCase=="R") RebuildResponse();
+    }
+
+    private void RebuildCombination(double[] next)
+    {
         Dictionary<int, Vector3> combined = new Dictionary<int, Vector3>();
         foreach (int id in displacements["G"].Keys)
         {
@@ -74,8 +169,6 @@ public class Semana3Visualizer : MonoBehaviour
             combinedFloors.Add(value);
         }
         Array.Copy(next,Combination,4); displacements["R"]=combined; floors["R"]=combinedFloors;
-        combinationError=null;
-        if (ready && selectedCase=="R") RebuildResponse();
     }
 
     private void DrawCombination()
@@ -92,7 +185,7 @@ public class Semana3Visualizer : MonoBehaviour
         GUILayout.EndHorizontal();
         if(combinationError!=null) GUILayout.Label(combinationError,noteStyle);
         GUILayout.Label("Aplicados: "+Combination[0]+" G; "+Combination[1]+" Q; "+Combination[2]+" EX; "+Combination[3]+" EY",noteStyle);
-        GUILayout.Label("Superposición elástica. Cambios solo en esta sesión de Play; EX/EY y sus masas permanecen definidos por el análisis base.",noteStyle);
+        GUILayout.Label("Superposición elástica con los EX/EY actuales. Los λ combinan respuestas; los α determinan la masa sísmica.",noteStyle);
     }
 
     private static float F(string value) { return float.Parse(value, CultureInfo.InvariantCulture); }
@@ -110,6 +203,9 @@ public class Semana3Visualizer : MonoBehaviour
             ReadCurves(Load("semana3_momento_curvatura"));
             ReadPM(Load("semana3_pm"));
             ReadMetadata(Load("semana3_resumen"));
+            gravity=double.Parse(metadata["g_m_s2"],CultureInfo.InvariantCulture);
+            ReadMassParts(Load("semana3_masa_componentes"));
+            ResetMass();
             ResetCombination();
             responseRoot = new GameObject("Semana3_Deformada").transform;
             forceRoot = new GameObject("Semana3_Fuerzas_CM").transform;
@@ -169,7 +265,8 @@ public class Semana3Visualizer : MonoBehaviour
             if (p[0] == "caso") continue;
             if (!floors.ContainsKey(p[0])) floors[p[0]] = new List<Floor>();
             floors[p[0]].Add(new Floor { block = p[1], z = F(p[2]), cmX = F(p[3]), cmY = F(p[4]),
-                force = F(p[5]), ux = F(p[6]), uy = F(p[7]), rz = F(p[8]) });
+                force = F(p[5]), ux = F(p[6]), uy = F(p[7]), rz = F(p[8]),
+                masterUx=F(p[9]),masterUy=F(p[10]),masterX=F(p[11]),masterY=F(p[12]) });
         }
     }
 
@@ -207,10 +304,11 @@ public class Semana3Visualizer : MonoBehaviour
         for(int i=0;i<levels.Count;i++)
         {
             List<Floor> levelFloors=floors[selectedCase].FindAll(f => Mathf.Abs(f.z-levels[i])<1e-4f);
-            float force=0,mass=0;
-            foreach(Floor floor in levelFloors) { force+=floor.force; mass+=floor.mass; }
+            float force=0,mass=0,weightedFraction=0;
+            foreach(Floor floor in levelFloors) { force+=floor.force; mass+=floor.mass; weightedFraction+=floor.mass*floor.accelerationG; }
             float acceleration=force/mass;
-            GUILayout.Label("Piso "+(i+1)+": a"+direction+" = "+acceleration.ToString("F5")+" m/s² = "+(acceleration/9.80665f).ToString("F3")+" g",noteStyle);
+            GUILayout.Label("Piso "+(i+1)+": a = "+acceleration.ToString("F5")+" m/s² = "+(weightedFraction/mass).ToString("F3")+" g",noteStyle);
+            GUILayout.Label("m = "+mass.ToString("F2")+" t · F"+direction+" = "+force.ToString("F2")+" kN",noteStyle);
         }
     }
 
@@ -295,8 +393,9 @@ public class Semana3Visualizer : MonoBehaviour
             maxRotation = Mathf.Max(maxRotation, Mathf.Abs(floor.rz));
             if (!showForces || (selectedCase != "EX" && selectedCase != "EY")) continue;
             Vector3 cm = StructuralToUnity(floor.cmX, floor.cmY, floor.z);
-            Vector3 direction = selectedCase == "EX" ? Vector3.right : Vector3.forward;
-            float length = 2.5f + 4f * floor.force / Mathf.Max(1f, MaxFloorForce(caseFloors));
+            if(Mathf.Abs(floor.force)<1e-8f) continue;
+            Vector3 direction = (selectedCase == "EX" ? Vector3.right : Vector3.forward)*Mathf.Sign(floor.force);
+            float length = 2.5f + 4f * Mathf.Abs(floor.force) / Mathf.Max(1f, MaxFloorForce(caseFloors));
             Line(forceRoot, "F_" + selectedCase + "_" + floor.block + "_Z_" + floor.z, cm, cm + direction * length, caseColor, .13f);
             GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             marker.name = "CM_" + floor.block + "_Z_" + floor.z; marker.transform.SetParent(forceRoot);
@@ -309,7 +408,7 @@ public class Semana3Visualizer : MonoBehaviour
 
     private static float MaxFloorForce(List<Floor> values)
     {
-        float result = 0; foreach (Floor f in values) result = Mathf.Max(result, f.force); return result;
+        float result = 0; foreach (Floor f in values) result = Mathf.Max(result, Mathf.Abs(f.force)); return result;
     }
 
     private void BuildPlots()
@@ -389,12 +488,17 @@ public class Semana3Visualizer : MonoBehaviour
         GUILayout.BeginArea(new Rect(Screen.width-400,12,388,Screen.height-24),panelStyle);scroll=GUILayout.BeginScrollView(scroll);
         GUILayout.Label("SEMANA 3",titleStyle);GUILayout.Label("Carga viva · sismo · superposición · capacidad HA",noteStyle);GUILayout.Space(6);
         GUILayout.BeginHorizontal();foreach(string c in new[]{"G","Q","EX","EY","R"})CaseButton(c);GUILayout.EndHorizontal();
+        DrawMassControls();
         if(selectedCase=="R") DrawCombination();
         bool nextDeformed=GUILayout.Toggle(showDeformed,"Deformada amplificada");bool nextForces=GUILayout.Toggle(showForces,"Fuerzas sísmicas y centros de masa");
         GUILayout.Label("Escala deformada: "+deformationScale.ToString("F0")+"×");float nextScale=GUILayout.HorizontalSlider(deformationScale,1,5000);
         if(nextDeformed!=showDeformed||nextForces!=showForces||Mathf.Abs(nextScale-deformationScale)>1f){showDeformed=nextDeformed;showForces=nextForces;deformationScale=nextScale;RebuildResponse();}
         GUILayout.Label("|u| máximo: "+(maxDisplacement*1000).ToString("G4")+" mm\n|giro Z| máximo: "+(maxRotation*1000).ToString("G4")+" mrad",noteStyle);
-        if(selectedCase=="EX"||selectedCase=="EY")GUILayout.Label("a = "+Meta("aceleracion_fraccion_g")+" · masa = (G + "+Meta("fraccion_Q_masa")+" Q)/g\nCarga lateral total: "+Meta("corte_total_kN"),noteStyle);
+        if(selectedCase=="EX"||selectedCase=="EY")
+        {
+            double total=0; foreach(Floor f in floors[selectedCase]) total+=f.force;
+            GUILayout.Label("Masa = ("+MassG+" G + "+MassQ+" Q)/g\nCarga lateral total: "+total.ToString("F2")+" kN",noteStyle);
+        }
         if(selectedCase=="EX"||selectedCase=="EY") DrawFloorAccelerations();
         GUILayout.Space(8);showCapacity=GUILayout.Toggle(showCapacity,"Mostrar capacidad HA");
         ElementInspector inspector = GetComponent<ElementInspector>();

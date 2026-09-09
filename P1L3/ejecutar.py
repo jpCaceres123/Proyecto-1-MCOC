@@ -40,7 +40,7 @@ def export_unity(cfg, global_results, capacity_results, out):
     displacement_rows=[]
     floor_rows=[]
     member_rows=[]
-    for case in ('G','Q','EX','EY','R'):
+    for case in ('G','Q','EX','EY','R','EXG','EXQ','EYG','EYQ'):
         local=json.loads((out/f'{case}_fuerzas_locales.json').read_text(encoding='utf-8'))
         for tag, values in local.items():
             if len(values) != 12:
@@ -60,9 +60,14 @@ def export_unity(cfg, global_results, capacity_results, out):
             force=f['F_kN'] if case in ('EX','EY') else 0.0
             floor_rows.append(dict(caso=case,bloque=r['bloque'],z_m=r['z_m'],
                 cm_x_m=f['CM_x_m'],cm_y_m=f['CM_y_m'],fuerza_kN=force,
-                ux_cm_m=r['ux_CM_m'],uy_cm_m=r['uy_CM_m'],rz_rad=r['giro_z_rad']))
+                ux_cm_m=r['ux_CM_m'],uy_cm_m=r['uy_CM_m'],rz_rad=r['giro_z_rad'],
+                ux_master_m=r['ux_master_m'],uy_master_m=r['uy_master_m'],
+                master_x_m=r['master_x_m'],master_y_m=r['master_y_m']))
     casos.dump_csv(resources/'semana3_desplazamientos.csv',displacement_rows)
     casos.dump_csv(resources/'semana3_pisos.csv',floor_rows)
+    casos.dump_csv(resources/'semana3_masa_componentes.csv',[
+        {k:f[k] for k in ('bloque','z_m','G_kN','Q_kN','Gx_kNm','Gy_kNm','Qx_kNm','Qy_kNm','a_g')}
+        for f in global_results['floors']])
     export_accelerations(out/'masas_y_sismo.csv',resources/'semana3_aceleraciones.csv',cfg['g_m_s2'])
     casos.dump_csv(resources/'semana3_esfuerzos_locales.csv',member_rows)
     # Peso propio geométrico por losa; G/Q coinciden con los receptores del análisis.
@@ -114,6 +119,8 @@ def export_unity(cfg, global_results, capacity_results, out):
         shutil.copy2(source,resources/target)
     meta=[dict(clave='aceleracion_fraccion_g',valor=cfg['aceleracion_fraccion_g'],unidad='g'),
           dict(clave='fraccion_Q_masa',valor=cfg['fraccion_Q_masa'],unidad=''),
+          dict(clave='ponderador_G_masa',valor=cfg.get('ponderador_G_masa',1.),unidad=''),
+          dict(clave='g_m_s2',valor=cfg['g_m_s2'],unidad=''),
           dict(clave='corte_total_kN',valor=sum(f['F_kN'] for f in global_results['floors']),unidad='kN'),
           dict(clave='combinacion_G',valor=cfg['combinacion']['G'],unidad=''),
           dict(clave='combinacion_Q',valor=cfg['combinacion']['Q'],unidad=''),
@@ -177,7 +184,11 @@ los nodos de punta; no se comprueba aquí pandeo local, global ni conexiones.
 
 La aceleración adoptada es {cfg['aceleracion_fraccion_g']:.0%} de g y la fracción de Q en
 la masa es {cfg['fraccion_Q_masa']:.0%}, según la indicación recibida para este laboratorio.
-Se adopta aceleración uniforme por piso. Es un patrón académico editable;
+Se adopta aceleración uniforme por defecto. `aceleracion_por_piso_g` permite
+sobrescribirla por número de piso (por ejemplo, `{{"2": 0.15}}` aplica 0,15 g
+al segundo nivel elevado). Se usa el mismo perfil en EX y EY como casos independientes.
+El enunciado no prescribe una distribución triangular con la altura.
+Es un patrón académico editable;
 este cálculo no constituye una aplicación completa de NCh433 ni incluye R,
 espectro, suelo, importancia o combinaciones normativas.
 
@@ -200,7 +211,13 @@ gravitacionales deben interpretarse dentro de esta idealización.
 
 ## B. Casos EX y EY
 
-Para cada bloque y piso: W_i=G_i+0,5Q_i, m_i=W_i/g y F_i=0,20W_i.
+Para cada bloque y piso: W_i={cfg.get('ponderador_G_masa',1.)}G_i+{cfg['fraccion_Q_masa']}Q_i, m_i=W_i/g,
+a_i=α_i g y F_i=m_i a_i. El valor por defecto es α={cfg['aceleracion_fraccion_g']}.
+La rutina `sismo.py` recalcula masa, centro de masa y fuerza para cada piso.
+`sismo_por_piso.csv` presenta los totales por nivel; `masas_y_sismo.csv`
+los separa por bloque. `auditoria_masas_piso.csv` permite reconstruir el peso
+y los primeros momentos a partir de cada aporte nodal. Se rechazan nodos
+contados en dos pisos o pesos elevados que no pertenecen a ningún piso.
 G contiene la carga permanente de losa/terminaciones, peso propio de muros y,
 como adición documentada respecto de Semana 2, peso propio de vigas y columnas.
 Para HA se usa γ={cfg['peso_especifico_HA_kN_m3']:.6f} kN/m³; las cuatro columnas
@@ -330,6 +347,17 @@ derecho permite seleccionar G, Q, EX, EY o R, ajustar la escala de la deformada,
 mostrar fuerzas laterales y centros de masa y consultar dentro de Unity la
 discretización Fiber, las curvas M–φ y los primeros puntos P–M.
 
+En `Ponderadores de masa sísmica` se editan αG y αQ (valores iniciales
+`ponderador_G_masa` y `fraccion_Q_masa`). `Aplicar masa` actualiza masas,
+centros de masa, fuerzas, deformadas y esfuerzos EX/EY; también reconstruye R
+con sus λ ya aplicados. No modifica las cargas gravitacionales G/Q.
+Las bases EXG/EXQ/EYG/EYQ son corridas OpenSees independientes; sus respuestas
+se suman gracias a la rigidez estática lineal. Se contrastan desplazamientos,
+reacciones y fuerzas internas con corridas explícitas de ponderadores distintos.
+Se conserva la aceleración especificada: cambia F, no a. Los valores de Unity
+duran la sesión de Play; para cambiar los valores iniciales, editar parámetros
+y regenerar. No se admiten ponderadores negativos ni pisos de masa nula.
+
 `P1L3/ejecutar.py` exporta cada corrida a
 `P1L2/UnityVisualization/Assets/Resources/semana3_*.csv`. Las líneas coloreadas
 son la estructura deformada y se superponen a la geometría original. Los
@@ -382,7 +410,8 @@ def main():
     export_unity(cfg,g,c,out)
     sources=[args.parametros,casos.base.MODEL,casos.verification.LOADS,
              casos.verification.GEOMETRY,Path(casos.base.__file__),Path(casos.verification.__file__),
-             ROOT/'casos.py',ROOT/'capacidad.py',Path(__file__)]
+             ROOT/'casos.py',ROOT/'sismo.py',ROOT/'capacidad.py',
+             ROOT/'exportar_aceleraciones.py',ROOT/'exportar_reparto_losas.py',Path(__file__)]
     manifest=dict(python=platform.python_version(),
                   versions={p:importlib.metadata.version(p) for p in ('openseespy','numpy','matplotlib')},
                   inputs={str(p.relative_to(ROOT.parent)) if p.is_relative_to(ROOT.parent) else str(p):

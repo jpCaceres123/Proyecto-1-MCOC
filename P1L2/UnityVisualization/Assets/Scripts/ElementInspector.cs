@@ -207,14 +207,21 @@ public class ElementInspector : MonoBehaviour
 
     private bool TryForces(string loadCase,int id,out double[] values)
     {
-        if(loadCase!="R") return forces.TryGetValue(loadCase+":"+id,out values);
+        if(loadCase!="R" && loadCase!="EX" && loadCase!="EY") return forces.TryGetValue(loadCase+":"+id,out values);
         values=new double[12];
         Semana3Visualizer viewer=GetComponent<Semana3Visualizer>();
         if(viewer==null) return false;
+        if(loadCase=="EX" || loadCase=="EY")
+        {
+            double[] g,q;
+            if(!forces.TryGetValue(loadCase+"G:"+id,out g) || !forces.TryGetValue(loadCase+"Q:"+id,out q)) return false;
+            for(int i=0;i<12;i++) values[i]=viewer.MassG*g[i]+viewer.MassQ*q[i];
+            return true;
+        }
         for(int k=0;k<4;k++)
         {
             double[] source;
-            if(!forces.TryGetValue(Semana3Visualizer.BaseCases[k]+":"+id,out source)) return false;
+            if(!TryForces(Semana3Visualizer.BaseCases[k],id,out source)) return false;
             for(int i=0;i<12;i++) values[i]+=viewer.Combination[k]*source[i];
         }
         return true;

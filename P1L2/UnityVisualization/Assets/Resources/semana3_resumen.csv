@@ -1,6 +1,8 @@
 ﻿clave,valor,unidad
 aceleracion_fraccion_g,0.2,g
 fraccion_Q_masa,0.5,
+ponderador_G_masa,1.0,
+g_m_s2,9.80665,
 corte_total_kN,19401.91640985277,kN
 combinacion_G,1.2,
 combinacion_Q,1.4,

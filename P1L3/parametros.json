@@ -2,9 +2,11 @@
   "q_Q_kN_m2": null,
   "aceleracion_fraccion_g": 0.20,
   "fraccion_Q_masa": 0.50,
+  "ponderador_G_masa": 1.0,
   "g_m_s2": 9.80665,
   "peso_especifico_HA_kN_m3": 24.516625,
   "patron_sismico": "uniforme_aceleracion",
+  "aceleracion_por_piso_g": {},
   "combinacion": {"G": 1.2, "Q": 1.4, "EX": 0.8, "EY": -0.3},
   "penalty": 100000000000000.0,
   "columna": {

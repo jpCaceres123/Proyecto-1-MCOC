@@ -20,7 +20,11 @@ los nodos de punta; no se comprueba aquí pandeo local, global ni conexiones.
 
 La aceleración adoptada es 20% de g y la fracción de Q en
 la masa es 50%, según la indicación recibida para este laboratorio.
-Se adopta aceleración uniforme por piso. Es un patrón académico editable;
+Se adopta aceleración uniforme por defecto. `aceleracion_por_piso_g` permite
+sobrescribirla por número de piso (por ejemplo, `{"2": 0.15}` aplica 0,15 g
+al segundo nivel elevado). Se usa el mismo perfil en EX y EY como casos independientes.
+El enunciado no prescribe una distribución triangular con la altura.
+Es un patrón académico editable;
 este cálculo no constituye una aplicación completa de NCh433 ni incluye R,
 espectro, suelo, importancia o combinaciones normativas.
 
@@ -49,7 +53,13 @@ gravitacionales deben interpretarse dentro de esta idealización.
 
 ## B. Casos EX y EY
 
-Para cada bloque y piso: W_i=G_i+0,5Q_i, m_i=W_i/g y F_i=0,20W_i.
+Para cada bloque y piso: W_i=1.0G_i+0.5Q_i, m_i=W_i/g,
+a_i=α_i g y F_i=m_i a_i. El valor por defecto es α=0.2.
+La rutina `sismo.py` recalcula masa, centro de masa y fuerza para cada piso.
+`sismo_por_piso.csv` presenta los totales por nivel; `masas_y_sismo.csv`
+los separa por bloque. `auditoria_masas_piso.csv` permite reconstruir el peso
+y los primeros momentos a partir de cada aporte nodal. Se rechazan nodos
+contados en dos pisos o pesos elevados que no pertenecen a ningún piso.
 G contiene la carga permanente de losa/terminaciones, peso propio de muros y,
 como adición documentada respecto de Semana 2, peso propio de vigas y columnas.
 Para HA se usa γ=24.516625 kN/m³; las cuatro columnas
@@ -79,8 +89,8 @@ No se añade excentricidad accidental. Los giros calculados se exportan por piso
 | LT2 | 19.800 | 655.760 | -18.232 | 8.262 | 1286.162 |
 
 Carga lateral total en EX y en EY: **19401.916 kN**.
-Corte de apoyos en EX: **19401.917 kN**;
-en EY: **19401.925 kN**.
+Corte de apoyos en EX: **19401.923 kN**;
+en EY: **19401.929 kN**.
 El corte se define como la suma de reacciones externas de todos los apoyos,
 incluidos los situados sobre Z=0. No es un corte exclusivo de la sección Z=0.
 
@@ -115,9 +125,9 @@ de cargas; no se obtiene del resultado superpuesto para efectuar la comparación
 
 | Respuesta | Muestra | Superpuesta | Explícita | Error relativo máximo |
 | --- | --- | --- | --- | --- |
-| desplazamientos | nodo 900116, DOF 3 | -0.0349795331 | -0.0349795326 | 6.04709687e-08 |
-| reacciones de apoyo | nodo 700006, DOF 3 | 7407.39803 | 7407.39804 | 1.70530036e-07 |
-| fuerzas internas | elemento 15, componente global 3 | 7378.8548 | 7378.85481 | 2.11684112e-07 |
+| desplazamientos | nodo 900116, DOF 3 | -0.0349795333 | -0.0349795324 | 1.88334568e-07 |
+| reacciones de apoyo | nodo 700006, DOF 3 | 7407.39804 | 7407.39804 | 3.42832365e-07 |
+| fuerzas internas | elemento 15, componente global 3 | 7378.8548 | 7378.8548 | 5.38329435e-07 |
 
 La comparación abarca todos los DOF, todos los apoyos y todas las componentes
 de fuerzas nodales resistentes de barras y shells, con tags ordenados.
@@ -189,30 +199,66 @@ Error axial máximo: 5.481e-08 kN. Estado HA: **OK**.
 | G: compatibilidad diafragmas [m] | 5.340e-10 | 1.000e-05 | OK |
 | Q: equilibrio apoyos / carga | 5.864e-09 | 1.000e-04 | OK |
 | Q: compatibilidad diafragmas [m] | 1.705e-10 | 1.000e-05 | OK |
-| EX: equilibrio apoyos / carga | 3.225e-08 | 1.000e-04 | OK |
+| EX: equilibrio apoyos / carga | 3.272e-07 | 1.000e-04 | OK |
 | EX: compatibilidad diafragmas [m] | 1.010e-09 | 1.000e-05 | OK |
 | EX: carga lateral total [kN] | 0.000e+00 | 1.000e-07 | OK |
-| EX: corte basal relativo | 3.220e-08 | 1.000e-04 | OK |
+| EX: resultante aplicada equivalente a fuerzas en CM [kNm] | 0.000e+00 | 1.000e-06 | OK |
+| EX: corte basal relativo | 3.272e-07 | 1.000e-04 | OK |
 | EX: pisos con desplazamiento contrario | 0.000e+00 | 0.000e+00 | OK |
+| EX: F=m*a piso 1 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 1 LT2 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 2 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 2 LT2 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 3 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 3 LT2 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 4 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 4 LT2 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 5 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EX: F=m*a piso 5 LT2 | 0.000e+00 | 1.000e-07 | OK |
 | EX: momento aplicado respecto al CM [kNm] | 0.000e+00 | 1.000e-07 | OK |
-| EY: equilibrio apoyos / carga | 4.497e-07 | 1.000e-04 | OK |
+| EY: equilibrio apoyos / carga | 6.537e-07 | 1.000e-04 | OK |
 | EY: compatibilidad diafragmas [m] | 1.782e-09 | 1.000e-05 | OK |
 | EY: carga lateral total [kN] | 0.000e+00 | 1.000e-07 | OK |
-| EY: corte basal relativo | 4.497e-07 | 1.000e-04 | OK |
+| EY: resultante aplicada equivalente a fuerzas en CM [kNm] | 0.000e+00 | 1.000e-06 | OK |
+| EY: corte basal relativo | 6.537e-07 | 1.000e-04 | OK |
 | EY: pisos con desplazamiento contrario | 0.000e+00 | 0.000e+00 | OK |
+| EY: F=m*a piso 1 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 1 LT2 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 2 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 2 LT2 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 3 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 3 LT2 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 4 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 4 LT2 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 5 LT1 | 0.000e+00 | 1.000e-07 | OK |
+| EY: F=m*a piso 5 LT2 | 0.000e+00 | 1.000e-07 | OK |
 | EY: momento aplicado respecto al CM [kNm] | 0.000e+00 | 1.000e-07 | OK |
-| R: equilibrio apoyos / carga | 4.843e-08 | 1.000e-04 | OK |
+| R: equilibrio apoyos / carga | 5.245e-08 | 1.000e-04 | OK |
 | R: compatibilidad diafragmas [m] | 1.316e-09 | 1.000e-05 | OK |
+| EXG: equilibrio apoyos / carga | 3.922e-07 | 1.000e-04 | OK |
+| EXQ: equilibrio apoyos / carga | 3.099e-07 | 1.000e-04 | OK |
+| EX: bases de masa reproducen u | 8.263e-07 | 1.000e-05 | OK |
+| EX: bases de masa reproducen support_r | 6.796e-07 | 1.000e-05 | OK |
+| EYG: equilibrio apoyos / carga | 5.781e-07 | 1.000e-04 | OK |
+| EYQ: equilibrio apoyos / carga | 3.997e-07 | 1.000e-04 | OK |
+| EY: bases de masa reproducen u | 7.812e-07 | 1.000e-05 | OK |
+| EY: bases de masa reproducen support_r | 3.771e-07 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita u | 3.184e-07 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita support_r | 3.546e-07 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita local_forces | 3.859e-07 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita u | 1.713e-06 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita support_r | 1.109e-06 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita local_forces | 1.918e-06 | 1.000e-05 | OK |
 | Q: conservacion piso 3.96 [kN] | 4.364e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 7.92 [kN] | 4.168e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 11.88 [kN] | 4.855e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 15.84 [kN] | 3.678e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 19.8 [kN] | 1.961e-06 | 2.000e-03 | OK |
-| Superposicion: desplazamientos, error relativo maximo | 6.047e-08 | 1.000e-05 | OK |
-| Superposicion: reacciones de apoyo, error relativo maximo | 1.705e-07 | 1.000e-05 | OK |
-| Superposicion: fuerzas internas, error relativo maximo | 2.117e-07 | 1.000e-05 | OK |
-| EX: sensibilidad penalty x10 | 5.117e-05 | 1.000e-02 | OK |
-| EY: sensibilidad penalty x10 | 2.639e-04 | 1.000e-02 | OK |
+| Superposicion: desplazamientos, error relativo maximo | 1.883e-07 | 1.000e-05 | OK |
+| Superposicion: reacciones de apoyo, error relativo maximo | 3.428e-07 | 1.000e-05 | OK |
+| Superposicion: fuerzas internas, error relativo maximo | 5.383e-07 | 1.000e-05 | OK |
+| EX: sensibilidad penalty x10 | 5.114e-05 | 1.000e-02 | OK |
+| EY: sensibilidad penalty x10 | 2.657e-04 | 1.000e-02 | OK |
 
 El comando termina con código distinto de cero si cualquier control resulta
 REVISAR. Los supuestos físicos pendientes se mantienen visibles aunque los
@@ -227,6 +273,17 @@ mantiene la inspección de geometría y áreas tributarias de Semana 2. El panel
 derecho permite seleccionar G, Q, EX, EY o R, ajustar la escala de la deformada,
 mostrar fuerzas laterales y centros de masa y consultar dentro de Unity la
 discretización Fiber, las curvas M–φ y los primeros puntos P–M.
+
+En `Ponderadores de masa sísmica` se editan αG y αQ (valores iniciales
+`ponderador_G_masa` y `fraccion_Q_masa`). `Aplicar masa` actualiza masas,
+centros de masa, fuerzas, deformadas y esfuerzos EX/EY; también reconstruye R
+con sus λ ya aplicados. No modifica las cargas gravitacionales G/Q.
+Las bases EXG/EXQ/EYG/EYQ son corridas OpenSees independientes; sus respuestas
+se suman gracias a la rigidez estática lineal. Se contrastan desplazamientos,
+reacciones y fuerzas internas con corridas explícitas de ponderadores distintos.
+Se conserva la aceleración especificada: cambia F, no a. Los valores de Unity
+duran la sesión de Play; para cambiar los valores iniciales, editar parámetros
+y regenerar. No se admiten ponderadores negativos ni pisos de masa nula.
 
 `P1L3/ejecutar.py` exporta cada corrida a
 `P1L2/UnityVisualization/Assets/Resources/semana3_*.csv`. Las líneas coloreadas

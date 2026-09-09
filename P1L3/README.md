@@ -10,6 +10,13 @@ El visor está integrado en el proyecto Unity existente de P1L2. Abrir
 `P1L2/UnityVisualization/Assets/Main.unity`. Cada ejecución actualiza sus
 recursos `Assets/Resources/semana3_*.csv`.
 
+En Unity, `Ponderadores de masa sísmica` permite editar αG y αQ y pulsar
+`Aplicar masa`: m=(αG G+αQ Q)/g. Actualiza EX/EY, el centro de masa y la
+combinación R durante la sesión; los λ de R se editan por separado.
+`Restablecer masa` recupera los valores de la corrida. Los valores iniciales
+se configuran con `ponderador_G_masa` (1.0) y `fraccion_Q_masa` (0.5).
+La intensidad de sobrecarga q_Q no cambia al modificar su participación αQ.
+
 Se reutilizan sin cambios las fuentes numéricas de geometría y cargas de P1L2;
 su visor Unity sí fue ampliado para Semana 3. G incorpora adicionalmente peso
 propio de barras. Los apoyos heredados y las hipótesis de armadura se
