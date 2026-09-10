@@ -87,11 +87,11 @@ public sealed class SectionGraphs : IDisposable
             + " kN; |M| = " + m.ToString("G6") + " kN·m");
         GUILayout.Label("La línea solo une puntos calculados. Comparación uniaxial; no verifica flexión biaxial, esbeltez ni capacidad normativa.");
         GUILayout.Space(6);
-        GUILayout.Label("Tensión–deformación σ–ε");
+        GUILayout.Label("Tensión–deformación σc–εc (compresión positiva)");
         material = GUILayout.Toolbar(material, new[] { "Hormigón", "Acero de armadura" });
-        DrawChart(material == 0 ? concrete : steel, "ε [m/m]", "σ [MPa]");
+        DrawChart(material == 0 ? concrete : steel, material == 0 ? "εc [m/m]" : "ε [m/m]", "|σ| [MPa]");
         GUILayout.Label(material == 0
-            ? "Concrete01: compresión negativa, sin resistencia a tracción. f’c = " + data.fc_MPa.ToString("G4") + " MPa."
+            ? "Hormigón: parábola–meseta para compresión; εc0 = 0.002 y εcu = 0.0035. f’c = " + data.fc_MPa.ToString("G4") + " MPa."
             : "Steel01: elastoplástico perfecto; fy = " + data.fy_MPa.ToString("G4") + " MPa. Se muestra el entorno de fluencia.");
         GUILayout.Label("Envolvente monotónica del material; no es la historia de fibras del elemento seleccionado.");
     }

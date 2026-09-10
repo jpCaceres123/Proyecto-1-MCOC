@@ -93,11 +93,24 @@ def export_unity(cfg, global_results, capacity_results, out):
     # Curvas constitutivas monotónicas de los materiales de la sección Fiber.
     # No representan una historia de fibras del edificio global elástico.
     cc=cfg['columna']
-    concrete_eps=np.linspace(-cc['eps_cu'],0,181)
-    concrete_eps=np.unique(np.append(concrete_eps,-cc['eps_c0']))
+    # Para la visualización se usa la convención habitual positiva:
+    # deformación de compresión εc >= 0 y tensión |σc| >= 0. La ley
+    # mostrada es parábola–meseta, con máximo en εc0 y límite en εcu.
+    concrete_eps=np.linspace(0,cc['eps_cu'],181)
     yield_eps=cc['fy_MPa']/cc['Es_MPa']
     steel_eps=np.unique(np.concatenate((np.linspace(-2*yield_eps,2*yield_eps,181),[-yield_eps,0,yield_eps])))
     def constitutive(eps,mat):
+        if mat == 1:
+            rows=[]
+            fc=cc['fc_MPa']
+            for e in eps:
+                if e <= cc['eps_c0']:
+                    x=e/cc['eps_c0']
+                    stress=fc*(2*x-x*x)
+                else:
+                    stress=fc
+                rows.append(dict(strain=float(e),stress_MPa=float(stress)))
+            return rows
         return [dict(strain=float(e),stress_MPa=float(s/1000))
                 for e,s in zip(eps,capacidad.stress(eps,mat,cc))]
     # Asignar la referencia por las dimensiones declaradas, no por las inercias
