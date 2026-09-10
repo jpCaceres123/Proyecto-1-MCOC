@@ -335,8 +335,11 @@ public class Semana3Visualizer : MonoBehaviour
     {
         foreach (string[] p in Csv(text))
         {
-            if (p[0] == "P_kN") continue;
-            pm.Add(new PMPoint { p = F(p[0]), moment = F(p[1]) });
+            if (p[0] == "P_kN" || p[0] == "punto") continue;
+            // PM_puntos.csv incorpora la etiqueta A-G en la primera columna.
+            // Se mantiene compatibilidad con el contrato anterior de dos columnas.
+            int offset = p.Length >= 3 ? 1 : 0;
+            pm.Add(new PMPoint { p = F(p[offset]), moment = F(p[offset + 1]) });
         }
     }
 

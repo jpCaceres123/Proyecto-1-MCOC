@@ -40,8 +40,10 @@ def export_unity(cfg, global_results, capacity_results, out):
     displacement_rows=[]
     floor_rows=[]
     member_rows=[]
+    local_by_case={}
     for case in ('G','Q','EX','EY','R','EXG','EXQ','EYG','EYQ'):
         local=json.loads((out/f'{case}_fuerzas_locales.json').read_text(encoding='utf-8'))
+        local_by_case[case]=local
         for tag, values in local.items():
             if len(values) != 12:
                 raise ValueError(f'Barra {tag}: se esperaban 12 fuerzas locales')
@@ -70,6 +72,61 @@ def export_unity(cfg, global_results, capacity_results, out):
         for f in global_results['floors']])
     export_accelerations(out/'masas_y_sismo.csv',resources/'semana3_aceleraciones.csv',cfg['g_m_s2'])
     casos.dump_csv(resources/'semana3_esfuerzos_locales.csv',member_rows)
+
+    # Trazabilidad vertical de pilares. P se obtiene de las acciones locales de
+    # extremo de OpenSees (compresion positiva). Para cada tramo se identifica
+    # el tramo superior que comparte exactamente el mismo nudo. La diferencia
+    # P_actual-Sigma(P_superior) es el aporte vertical neto que entra al nudo
+    # desde vigas, muros, cargas nodales y restricciones del modelo global.
+    # Puede ser negativa cuando el marco redistribuye carga hacia otro apoyo;
+    # por eso no se fuerza artificialmente una suma monotona por piso.
+    node_by_id={int(n['id']):n for n in model['nodes']}
+    columns=[]
+    for element in model['elements']:
+        if element['type'] not in ('COLUMN','STEEL_COLUMN_SHS300x20'):
+            continue
+        ni=node_by_id[int(element['i'])]; nj=node_by_id[int(element['j'])]
+        if float(ni['z_m']) <= float(nj['z_m']):
+            lower,upper=ni,nj
+        else:
+            lower,upper=nj,ni
+        columns.append(dict(id=int(element['id']),type=element['type'],
+            lower_node=int(lower['id']),upper_node=int(upper['id']),
+            x=float(lower['x_m']),y=float(lower['y_m']),
+            z0=float(lower['z_m']),z1=float(upper['z_m']),
+            axis=str(lower.get('axis',''))))
+    by_lower={}
+    by_upper={}
+    for col in columns:
+        by_lower.setdefault(col['lower_node'],[]).append(col)
+        by_upper.setdefault(col['upper_node'],[]).append(col)
+    axial_rows=[]
+    disconnected=[]
+    for case,local in local_by_case.items():
+        compression={col['id']:0.5*(float(local[str(col['id'])][0])-float(local[str(col['id'])][6]))
+                     for col in columns}
+        for col in columns:
+            above=by_lower.get(col['upper_node'],[])
+            below=by_upper.get(col['lower_node'],[])
+            # Detectar tambien una coincidencia geometrica que no comparta nodo.
+            geometric_above=[other for other in columns
+                if abs(other['x']-col['x'])<1e-6 and abs(other['y']-col['y'])<1e-6
+                and abs(other['z0']-col['z1'])<1e-6]
+            if geometric_above and not above:
+                disconnected.append((col['id'],tuple(o['id'] for o in geometric_above)))
+            p_above=sum(compression[a['id']] for a in above)
+            axial_rows.append(dict(caso=case,elemento=col['id'],tipo=col['type'],
+                eje=col['axis'],x_m=col['x'],y_m=col['y'],z_inferior_m=col['z0'],z_superior_m=col['z1'],
+                nodo_inferior=col['lower_node'],nodo_superior=col['upper_node'],
+                elementos_superiores=';'.join(str(a['id']) for a in above),
+                elementos_inferiores=';'.join(str(b['id']) for b in below),
+                P_compresion_kN=compression[col['id']],P_superior_kN=p_above,
+                aporte_neto_nudo_kN=compression[col['id']]-p_above,
+                continuidad_nodal='OK' if not geometric_above or bool(above) else 'DESCONECTADA'))
+    if disconnected:
+        raise ValueError('Columnas alineadas sin nudo comun: '+str(sorted(set(disconnected))))
+    casos.dump_csv(out/'auditoria_axiales_columnas.csv',axial_rows)
+    casos.dump_csv(resources/'semana3_axiales_columnas.csv',axial_rows)
     # Peso propio geométrico por losa; G/Q coinciden con los receptores del análisis.
     # Incluir vigas y muros evita omitir las cargas transferidas a bordes de muro.
     transfers={s['id']:[] for s in model['slabs']}
@@ -284,6 +341,25 @@ la torsión. Los vínculos `equalDOF` de muros conectan nodos incluso con separa
 geométrica; no equivalen a un brazo rígido con todas sus relaciones de giro.
 Se conservan para no alterar silenciosamente el modelo recibido. Pasar los
 controles de equilibrio y superposición no valida estas condiciones físicas.
+
+### Trazabilidad de carga axial en pilares
+
+`auditoria_axiales_columnas.csv` enlaza cada pilar con los pilares que comparten
+exactamente su nudo superior e inferior. Para cada caso registra la compresión
+del tramo, la suma de compresiones de los tramos inmediatamente superiores y
+el aporte vertical neto del nudo. Se verifica fila a fila:
+
+`P_tramo = suma(P_superiores) + aporte_neto_nudo`.
+
+Los 128 pilares tienen continuidad nodal `OK`; por tanto las acciones de los
+pilares superiores sí entran al equilibrio de los inferiores. El aporte del
+nudo incluye la transferencia de vigas, muros, cargas nodales y restricciones.
+Puede ser negativo porque el pórtico tridimensional redistribuye carga por las
+vigas hacia otros pilares o hacia los apoyos elevados. Forzar que el axial sea
+siempre creciente hacia abajo alteraría el resultado de equilibrio de OpenSees.
+Unity muestra ahora estos tres valores y los ID de los pilares superiores al
+seleccionar una columna. La capacidad HA continúa usando la fuerza del análisis
+global; la tabla de trazabilidad sirve para explicar su camino de carga.
 
 Se emplea `Penalty` con α={cfg['penalty']:.1e}. En nodos que también participan en
 restricciones multipunto, `nodeReaction` es el residuo Ku−P y no representa

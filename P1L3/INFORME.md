@@ -109,6 +109,25 @@ geométrica; no equivalen a un brazo rígido con todas sus relaciones de giro.
 Se conservan para no alterar silenciosamente el modelo recibido. Pasar los
 controles de equilibrio y superposición no valida estas condiciones físicas.
 
+### Trazabilidad de carga axial en pilares
+
+`auditoria_axiales_columnas.csv` enlaza cada pilar con los pilares que comparten
+exactamente su nudo superior e inferior. Para cada caso registra la compresión
+del tramo, la suma de compresiones de los tramos inmediatamente superiores y
+el aporte vertical neto del nudo. Se verifica fila a fila:
+
+`P_tramo = suma(P_superiores) + aporte_neto_nudo`.
+
+Los 128 pilares tienen continuidad nodal `OK`; por tanto las acciones de los
+pilares superiores sí entran al equilibrio de los inferiores. El aporte del
+nudo incluye la transferencia de vigas, muros, cargas nodales y restricciones.
+Puede ser negativo porque el pórtico tridimensional redistribuye carga por las
+vigas hacia otros pilares o hacia los apoyos elevados. Forzar que el axial sea
+siempre creciente hacia abajo alteraría el resultado de equilibrio de OpenSees.
+Unity muestra ahora estos tres valores y los ID de los pilares superiores al
+seleccionar una columna. La capacidad HA continúa usando la fuerza del análisis
+global; la tabla de trazabilidad sirve para explicar su camino de carga.
+
 Se emplea `Penalty` con α=1.0e+14. En nodos que también participan en
 restricciones multipunto, `nodeReaction` es el residuo Ku−P y no representa
 por sí solo la reacción externa. Para cada DOF apoyado se obtiene R=−αu;

@@ -15,6 +15,13 @@ En Unity, `Ponderadores de masa sísmica` permite editar αG y αQ y pulsar
 combinación R durante la sesión; los λ de R se editan por separado.
 `Restablecer masa` recupera los valores de la corrida. Los valores iniciales
 se configuran con `ponderador_G_masa` (1.0) y `fraccion_Q_masa` (0.5).
+
+Al seleccionar una columna, el inspector presenta la trazabilidad axial:
+compresión del tramo, suma de los pilares conectados inmediatamente encima y
+aporte vertical neto del nudo. El archivo completo se exporta a
+`results/auditoria_axiales_columnas.csv` y a Resources para Unity. Una
+redistribución negativa se informa como tal; no se reemplazan las fuerzas de
+equilibrio de OpenSees por una suma artificial de pisos.
 La intensidad de sobrecarga q_Q no cambia al modificar su participación αQ.
 
 Se reutilizan sin cambios las fuentes numéricas de geometría y cargas de P1L2;

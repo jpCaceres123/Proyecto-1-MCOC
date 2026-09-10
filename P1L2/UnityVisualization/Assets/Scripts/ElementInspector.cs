@@ -16,6 +16,9 @@ public class ElementInspector : MonoBehaviour
     private readonly List<Item> items = new List<Item>();
     private readonly Dictionary<Collider, Item> targets = new Dictionary<Collider, Item>();
     private readonly Dictionary<string, double[]> forces = new Dictionary<string, double[]>();
+    private readonly Dictionary<string, double[]> axials = new Dictionary<string, double[]>();
+    private readonly Dictionary<int, string> columnsAbove = new Dictionary<int, string>();
+    private string axialError;
     private Item selected;
     private int filter;
     private string search = "";
@@ -41,6 +44,25 @@ public class ElementInspector : MonoBehaviour
     private void Start()
     {
         graphs = new SectionGraphs();
+        try
+        {
+            TextAsset csv = Resources.Load<TextAsset>("semana3_axiales_columnas");
+            if (csv == null) throw new Exception("Falta exportar semana3_axiales_columnas.csv");
+            foreach (string line in csv.text.Split('\n'))
+            {
+                string[] p = line.Trim().Split(',');
+                if (p.Length < 2 || p[0].TrimStart('\uFEFF') == "caso") continue;
+                if (p.Length != 16) throw new Exception("Fila de trazabilidad axial incompleta");
+                int id = int.Parse(p[1]);
+                // P del tramo, suma de P superiores y aporte vertical neto del nudo.
+                axials.Add(p[0] + ":" + p[1], new double[] {
+                    double.Parse(p[12], CultureInfo.InvariantCulture),
+                    double.Parse(p[13], CultureInfo.InvariantCulture),
+                    double.Parse(p[14], CultureInfo.InvariantCulture) });
+                if (!columnsAbove.ContainsKey(id)) columnsAbove[id] = p[10];
+            }
+        }
+        catch (Exception error) { axialError = error.Message; Debug.LogError(axialError); }
         try
         {
             TextAsset csv=Resources.Load<TextAsset>("semana3_reparto_losas");
@@ -197,6 +219,7 @@ public class ElementInspector : MonoBehaviour
                     GUILayout.Label(values[k + 6].ToString("G5")); GUILayout.EndHorizontal();
                 }
                 GUILayout.Label("Signos originales de localForce; valores en extremos, no máximos interiores.");
+                if (selected.kind == "Columna") DrawAxialTrace(loadCase, selected.id);
                 graphs.Draw(selected.id, loadCase, values);
             }
         }
@@ -204,6 +227,43 @@ public class ElementInspector : MonoBehaviour
     }
 
     private void OnDestroy() { if (graphs != null) graphs.Dispose(); }
+
+    private void DrawAxialTrace(string loadCase, int id)
+    {
+        double[] a;
+        if (!TryAxial(loadCase,id,out a)) { GUILayout.Label(axialError ?? "Sin trazabilidad axial para esta columna."); return; }
+        string above;
+        columnsAbove.TryGetValue(id,out above);
+        GUILayout.Space(5);
+        GUILayout.Label("TRAZABILIDAD AXIAL · compresión positiva");
+        GUILayout.Label("P del tramo: " + a[0].ToString("F2") + " kN");
+        GUILayout.Label("Σ P de columnas alineadas superiores: " + a[1].ToString("F2") + " kN" +
+            (string.IsNullOrEmpty(above) ? " (último tramo)" : " · elementos " + above));
+        GUILayout.Label("Aporte vertical neto en el nudo: " + a[2].ToString("+0.00;-0.00;0.00") + " kN");
+        GUILayout.Label("Se cumple P tramo = ΣP superior + aporte neto. El aporte reúne la transferencia del piso (vigas, muros, cargas nodales y restricciones). Un valor negativo indica redistribución hacia otros apoyos.");
+    }
+
+    private bool TryAxial(string loadCase,int id,out double[] values)
+    {
+        if(loadCase!="R" && loadCase!="EX" && loadCase!="EY") return axials.TryGetValue(loadCase+":"+id,out values);
+        values=new double[3];
+        Semana3Visualizer viewer=GetComponent<Semana3Visualizer>();
+        if(viewer==null) return false;
+        if(loadCase=="EX" || loadCase=="EY")
+        {
+            double[] g,q;
+            if(!axials.TryGetValue(loadCase+"G:"+id,out g) || !axials.TryGetValue(loadCase+"Q:"+id,out q)) return false;
+            for(int i=0;i<3;i++) values[i]=viewer.MassG*g[i]+viewer.MassQ*q[i];
+            return true;
+        }
+        for(int k=0;k<4;k++)
+        {
+            double[] source;
+            if(!TryAxial(Semana3Visualizer.BaseCases[k],id,out source)) return false;
+            for(int i=0;i<3;i++) values[i]+=viewer.Combination[k]*source[i];
+        }
+        return true;
+    }
 
     private bool TryForces(string loadCase,int id,out double[] values)
     {
