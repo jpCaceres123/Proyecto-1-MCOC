@@ -19,6 +19,6 @@ La intensidad de sobrecarga q_Q no cambia al modificar su participación αQ.
 
 Se reutilizan sin cambios las fuentes numéricas de geometría y cargas de P1L2;
 su visor Unity sí fue ampliado para Semana 3. G incorpora adicionalmente peso
-propio de barras. Los apoyos heredados y las hipótesis de armadura se
-documentan en el informe; los controles numéricos no validan su correspondencia
-con el edificio real. Un resultado REVISAR produce código de salida 1.
+propio de barras. Para los pilares se usa el detalle recibido: sección 70×70 cm,
+16 barras longitudinales Ø22 y estribos Ø12 cada 10 cm; `f'c=35 MPa` y
+`fy=420 MPa`. Un resultado REVISAR produce código de salida 1.

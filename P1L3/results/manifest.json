@@ -1,23 +1,23 @@
 {
-  "python": "3.11.9",
+  "python": "3.12.10",
   "versions": {
-    "openseespy": "3.7.0.1",
-    "numpy": "2.4.6",
+    "openseespy": "3.8.0.0",
+    "numpy": "2.5.2",
     "matplotlib": "3.11.1"
   },
   "inputs": {
-    "P1L3\\parametros.json": "5271100a8b428570d838ad8fed831b158cf71c9ef55c0b3f6c533b2f711ff59f",
-    "P1L2\\outputs\\modelo_3d_manual.json": "c70dabaf2e90e8c18e518a27815dcd12b2319e5906249e32cecd64108fdd984d",
-    "P1L2\\data\\cargas_losas.json": "f198c165da4357d5a8979d1fc4dff2a980a041ff4adf25883ea548cf21157545",
-    "P1L2\\data\\geometria_manual.json": "21b7a88b5c3bcbbc402fd4a5c1802b69066d157a06e031a9769777decba7d3ec",
-    "P1L2\\scripts\\modelo_opensees_3d.py": "1506929a4b7f22f41d521e6a58172a0b1f5439e312dd74a4cae55f5673a0b40f",
-    "P1L2\\scripts\\verificar_modelo.py": "00fa352fe220ed3ab562c3225875074a630d75005d4fc909348ebe5cbe8eb104",
-    "P1L3\\casos.py": "935b17700abdeb267a77fe2c4c89623ecdf9a4118421b832a28a761af693a55c",
+    "P1L3\\parametros.json": "0e90b317edd407efe8d759c519187b28bed0dacc24284298f5b3cb4aeddfa512",
+    "P1L2\\outputs\\modelo_3d_manual.json": "a57f90795ca8a6026d6ed3cda6fa840838ea5dba8e2aab812ac60c7519b576de",
+    "P1L2\\data\\cargas_losas.json": "2d611fbebb9bf3282f815a079070ae94f1d8b4efb925c455a221a1e866b78f80",
+    "P1L2\\data\\geometria_manual.json": "6b40b65be244591a6bc229484ee9dd2975d1d671fae6b0325917b39e8fc8ab44",
+    "P1L2\\scripts\\modelo_opensees_3d.py": "a72b8d9c65af8c1914d08673922765080fbe32722a21f1956a9fd0961f590e43",
+    "P1L2\\scripts\\verificar_modelo.py": "a5c5153fe8927c2d18b6a1138dfebfb19f4aeb7eb2b12301ef16d310d9fd556e",
+    "P1L3\\casos.py": "1fdfd99945035afe9be3ed02a26b99c00552b71ed29b5aec5496722c6c7f81c8",
     "P1L3\\sismo.py": "f8332299630f417a70c8f3891fc2db33c612c88a69bb36d2466e2829876243e3",
-    "P1L3\\capacidad.py": "cedb353131c2d2e747f083e6e69b015725ca7ce47d8d539122e064d2ce2b4e34",
+    "P1L3\\capacidad.py": "e933572c9280148afab9ec2d5913342b10933225e2a2792237195dfae2ea9798",
     "P1L3\\exportar_aceleraciones.py": "21ad9dfc3ead49aeeeb1c4499b17eb19a41082f96bfc373665add1311ece0609",
     "P1L3\\exportar_reparto_losas.py": "6a49ae5bfb107de6dd1213039794c87f16cea1b1e88079a1d5872e5466940b56",
-    "P1L3\\ejecutar.py": "f6b38938d161c85ba5b2d9c18cb78263169435354710c629e9121e287f2a9a04"
+    "P1L3\\ejecutar.py": "a2e5106ec4e7de2330b840729848ccf420273095a565964ab3431feefa8150b3"
   },
   "parametros": {
     "q_Q_kN_m2": null,
@@ -38,12 +38,23 @@
     "columna": {
       "b_m": 0.7,
       "h_m": 0.7,
-      "recubrimiento_al_centro_barra_m": 0.06,
-      "barras_por_cara": 4,
-      "diametro_m": 0.025,
-      "fc_MPa": 25.0,
+      "recubrimiento_al_centro_barra_m": 0.073,
+      "recubrimiento_hasta_estribo_m": 0.05,
+      "barras_por_cara": 5,
+      "diametro_m": 0.022,
+      "diametros_por_cara_m": [
+        0.022,
+        0.022,
+        0.022,
+        0.022,
+        0.022
+      ],
+      "estribo_diametro_m": 0.012,
+      "estribo_spacing_m": 0.1,
+      "fc_MPa": 35.0,
       "fy_MPa": 420.0,
       "Es_MPa": 200000.0,
+      "fuente_armadura": "Detalle de pilar P.70x70 adaptado: 16 barras \u00d822 y estribos \u00d812@10 cm",
       "eps_c0": 0.002,
       "eps_cu": 0.0035,
       "eps_s_lim": 0.05,

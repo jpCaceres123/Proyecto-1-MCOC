@@ -78,8 +78,13 @@ public sealed class SectionGraphs : IDisposable
             Destroy(interaction); interaction = InteractionChart(p, m); cacheKey = key;
         }
         DrawChart(interaction, "|M| [kN·m]", "P [kN], compresión +");
-        GUILayout.Label("Azul: 4 puntos nominales · rojo: demanda " + loadCase);
-        GUILayout.Label("P = " + p.ToString("G5") + " kN; |M| = " + m.ToString("G5") + " kN·m");
+        GUILayout.Label("Azul: puntos nominales · rojo: demanda " + loadCase);
+        GUILayout.Label("VALORES P–M · sección seleccionada");
+        for (int i = 0; i < data.pm.Length; i++)
+            GUILayout.Label("Nominal " + (i + 1) + ": P = " + data.pm[i].p.ToString("G6")
+                + " kN; |M| = " + data.pm[i].m.ToString("G6") + " kN·m");
+        GUILayout.Label("Demanda " + loadCase + ": P = " + p.ToString("G6")
+            + " kN; |M| = " + m.ToString("G6") + " kN·m");
         GUILayout.Label("La línea solo une puntos calculados. Comparación uniaxial; no verifica flexión biaxial, esbeltez ni capacidad normativa.");
         GUILayout.Space(6);
         GUILayout.Label("Tensión–deformación σ–ε");

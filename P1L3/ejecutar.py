@@ -161,12 +161,21 @@ def report(cfg,g,c,out):
              [[r['control'],f'{r["error"]:.3e}',f'{r["tolerancia"]:.3e}',r['estado']] for r in g['checks']])
     total=sum(f['F_kN'] for f in g['floors'])
     cc=cfg['columna']
+    face_diameters=cc.get('diametros_por_cara_m',[cc['diametro_m']]*cc['barras_por_cara'])
+    diameter_counts={}
+    for diameter in face_diameters:
+        diameter_counts[diameter]=diameter_counts.get(diameter,0)+2
+    for diameter in face_diameters[1:-1]:
+        diameter_counts[diameter]=diameter_counts.get(diameter,0)+2
+    reinforcement_description=' + '.join(
+        f'{count} barras Ø{diameter*1000:.0f} mm'
+        for diameter,count in sorted(diameter_counts.items()))
     state='OK' if c['estado']=='OK' and all(r['estado']=='OK' for r in g['checks']) else 'REVISAR'
     text=f'''# Semana 3 — carga viva, sismo, superposición y capacidad HA
 
 **Estado de controles numéricos: {state}.** El modelo conserva la geometría y las
-restricciones de Semana 2. Los resultados de capacidad corresponden a una
-armadura académica supuesta, pendiente de reemplazar por la de los planos.
+restricciones de Semana 2. La armadura de los pilares se tomó del detalle de
+pilar 2 P.70x70 entregado: {reinforcement_description} y estribos Ø12@10 cm.
 
 ## Alcance y parámetros
 
@@ -283,15 +292,17 @@ reconstruir cualquier combinación posterior, dentro de la hipótesis lineal.
 ## D. Columna de hormigón armado
 
 Sección {cc['b_m']:.2f} × {cc['h_m']:.2f} m, compatible con A=0,49 m² del modelo.
-**Supuestos, no datos verificados de planos:** f'c={cc['fc_MPa']} MPa,
+**Datos tomados del detalle de pilares:** f'c={cc['fc_MPa']} MPa,
 fy={cc['fy_MPa']} MPa, Es={cc['Es_MPa']} MPa;
-{4*cc['barras_por_cara']-4} barras Ø{cc['diametro_m']*1000:.0f} mm;
-distancia cara–centro de barra {cc['recubrimiento_al_centro_barra_m']*1000:.0f} mm
-(no es recubrimiento libre). As={c['As_m2']*1e6:.1f} mm²; cuantía={c['rho']:.3%}.
+{4*cc['barras_por_cara']-4} barras longitudinales ({reinforcement_description});
+distancia cara–centro de barra {cc['recubrimiento_al_centro_barra_m']*1000:.0f} mm;
+estribos Ø{cc['estribo_diametro_m']*1000:.0f} @ {cc['estribo_spacing_m']*100:.0f} cm.
+As={c['As_m2']*1e6:.1f} mm²; cuantía={c['rho']:.3%}.
 
 `Concrete01`: compresión negativa, pico −f'c a −{cc['eps_c0']}, resistencia
-residual nula a −{cc['eps_cu']}, sin tracción. Se asume hormigón no confinado
-en toda la sección, porque no se conoce el detalle de estribos.
+residual nula a −{cc['eps_cu']}, sin tracción. Para mantener la hipótesis
+académica de esta curva, los estribos conocidos se reportan pero no se modela
+confinamiento constitutivo adicional.
 `Steel01`: elastoplástico perfecto, b=0. La discretización parte de una malla
 {cc['fibras_por_lado']} × {cc['fibras_por_lado']}; descuenta el área ocupada por
 las barras de las celdas vecinas e incorpora fibras de acero separadas.

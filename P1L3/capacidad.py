@@ -18,20 +18,24 @@ def fibers(c, n=None):
     b,h = c['b_m'],c['h_m']
     a = c['recubrimiento_al_centro_barra_m']
     nb = c['barras_por_cara']
+    face_diameters = c.get('diametros_por_cara_m', [c['diametro_m']] * nb)
+    if len(face_diameters) != nb:
+        raise ValueError('La lista de diametros no coincide con barras_por_cara')
     if n < 8 or nb < 2 or not 0 < a < min(b,h)/2:
         raise ValueError('Discretizacion o refuerzo invalido')
     bars = []
-    for y in np.linspace(-h/2+a,h/2-a,nb):
-        bars.extend([(y,-b/2+a),(y,b/2-a)])
-    for z in np.linspace(-b/2+a,b/2-a,nb)[1:-1]:
-        bars.extend([(-h/2+a,z),(h/2-a,z)])
-    As = math.pi*c['diametro_m']**2/4
+    face_positions = np.linspace(-h/2+a,h/2-a,nb)
+    for y, diameter in zip(face_positions, face_diameters):
+        bars.extend([(y,-b/2+a,diameter),(y,b/2-a,diameter)])
+    for z, diameter in zip(face_positions[1:-1], face_diameters[1:-1]):
+        bars.extend([(-h/2+a,z,diameter),(h/2-a,z,diameter)])
     cells = [[-h/2+(iy+0.5)*h/n, -b/2+(iz+0.5)*b/n, b*h/n**2, 1]
              for iy in range(n) for iz in range(n)]
     # Descontar acero del hormigon evita contar dos veces el area ocupada.
     # Si la barra supera el area de una celda, repartir la sustraccion entre
     # las celdas mas cercanas; conserva exactamente Ac + As = Ag.
-    for y,z in bars:
+    for y,z,diameter in bars:
+        As = math.pi*diameter**2/4
         remaining = As
         for i in sorted(range(len(cells)),key=lambda i:(cells[i][0]-y)**2+(cells[i][1]-z)**2):
             take = min(remaining, cells[i][2])
@@ -39,7 +43,8 @@ def fibers(c, n=None):
             remaining -= take
             if remaining < 1e-14:
                 break
-    return np.array([cell for cell in cells if cell[2]>1e-14]+[[y,z,As,2] for y,z in bars])
+    return np.array([cell for cell in cells if cell[2]>1e-14]
+                    + [[y,z,math.pi*diameter**2/4,2] for y,z,diameter in bars])
 
 
 def stress(eps, mat, c):

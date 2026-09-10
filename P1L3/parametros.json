@@ -11,9 +11,13 @@
   "penalty": 100000000000000.0,
   "columna": {
     "b_m": 0.70, "h_m": 0.70,
-    "recubrimiento_al_centro_barra_m": 0.06,
-    "barras_por_cara": 4, "diametro_m": 0.025,
-    "fc_MPa": 25.0, "fy_MPa": 420.0, "Es_MPa": 200000.0,
+    "recubrimiento_al_centro_barra_m": 0.073,
+    "recubrimiento_hasta_estribo_m": 0.050,
+    "barras_por_cara": 5, "diametro_m": 0.022,
+    "diametros_por_cara_m": [0.022, 0.022, 0.022, 0.022, 0.022],
+    "estribo_diametro_m": 0.012, "estribo_spacing_m": 0.10,
+    "fc_MPa": 35.0, "fy_MPa": 420.0, "Es_MPa": 200000.0,
+    "fuente_armadura": "Detalle de pilar P.70x70 adaptado: 16 barras Ø22 y estribos Ø12@10 cm",
     "eps_c0": 0.002, "eps_cu": 0.0035, "eps_s_lim": 0.05,
     "fibras_por_lado": 40, "pasos_curvatura": 600,
     "phi_max_1_m": 0.15

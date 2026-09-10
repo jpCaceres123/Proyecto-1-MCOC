@@ -1,8 +1,8 @@
 # Semana 3 — carga viva, sismo, superposición y capacidad HA
 
 **Estado de controles numéricos: OK.** El modelo conserva la geometría y las
-restricciones de Semana 2. Los resultados de capacidad corresponden a una
-armadura académica supuesta, pendiente de reemplazar por la de los planos.
+restricciones de Semana 2. La armadura de los pilares se tomó del detalle de
+pilar 2 P.70x70 entregado: 16 barras Ø22 mm y estribos Ø12@10 cm.
 
 ## Alcance y parámetros
 
@@ -89,8 +89,8 @@ No se añade excentricidad accidental. Los giros calculados se exportan por piso
 | LT2 | 19.800 | 655.760 | -18.232 | 8.262 | 1286.162 |
 
 Carga lateral total en EX y en EY: **19401.916 kN**.
-Corte de apoyos en EX: **19401.923 kN**;
-en EY: **19401.929 kN**.
+Corte de apoyos en EX: **19401.909 kN**;
+en EY: **19401.913 kN**.
 El corte se define como la suma de reacciones externas de todos los apoyos,
 incluidos los situados sobre Z=0. No es un corte exclusivo de la sección Z=0.
 
@@ -125,9 +125,9 @@ de cargas; no se obtiene del resultado superpuesto para efectuar la comparación
 
 | Respuesta | Muestra | Superpuesta | Explícita | Error relativo máximo |
 | --- | --- | --- | --- | --- |
-| desplazamientos | nodo 900116, DOF 3 | -0.0349795333 | -0.0349795324 | 1.88334568e-07 |
-| reacciones de apoyo | nodo 700006, DOF 3 | 7407.39804 | 7407.39804 | 3.42832365e-07 |
-| fuerzas internas | elemento 15, componente global 3 | 7378.8548 | 7378.8548 | 5.38329435e-07 |
+| desplazamientos | nodo 900116, DOF 3 | -0.0349795325 | -0.0349795326 | 2.39966832e-08 |
+| reacciones de apoyo | nodo 700006, DOF 3 | 7407.39805 | 7407.39804 | 4.31030096e-08 |
+| fuerzas internas | elemento 15, componente global 3 | 7378.85481 | 7378.85481 | 1.76531244e-07 |
 
 La comparación abarca todos los DOF, todos los apoyos y todas las componentes
 de fuerzas nodales resistentes de barras y shells, con tags ordenados.
@@ -140,15 +140,17 @@ reconstruir cualquier combinación posterior, dentro de la hipótesis lineal.
 ## D. Columna de hormigón armado
 
 Sección 0.70 × 0.70 m, compatible con A=0,49 m² del modelo.
-**Supuestos, no datos verificados de planos:** f'c=25.0 MPa,
+**Datos tomados del detalle de pilares:** f'c=35.0 MPa,
 fy=420.0 MPa, Es=200000.0 MPa;
-12 barras Ø25 mm;
-distancia cara–centro de barra 60 mm
-(no es recubrimiento libre). As=5890.5 mm²; cuantía=1.202%.
+16 barras longitudinales (16 barras Ø22 mm);
+distancia cara–centro de barra 73 mm;
+estribos Ø12 @ 10 cm.
+As=6082.1 mm²; cuantía=1.241%.
 
 `Concrete01`: compresión negativa, pico −f'c a −0.002, resistencia
-residual nula a −0.0035, sin tracción. Se asume hormigón no confinado
-en toda la sección, porque no se conoce el detalle de estribos.
+residual nula a −0.0035, sin tracción. Para mantener la hipótesis
+académica de esta curva, los estribos conocidos se reportan pero no se modela
+confinamiento constitutivo adicional.
 `Steel01`: elastoplástico perfecto, b=0. La discretización parte de una malla
 40 × 40; descuenta el área ocupada por
 las barras de las celdas vecinas e incorpora fibras de acero separadas.
@@ -164,10 +166,10 @@ se excluye al elegir la capacidad. Se controla equilibrio axial en cada paso.
 
 | P [kN] (+ compresión) | M máximo [kN·m] | φ al máximo [1/m] |
 | --- | --- | --- |
-| 0.000000 | 742.017957 | 0.020000 |
-| 2891.786467 | 1273.770266 | 0.009500 |
-| 5783.572934 | 1312.348793 | 0.005500 |
-| 14458.932335 | 0.000000 | 0.000000 |
+| 0.000000 | 767.181805 | 0.023500 |
+| 3873.995007 | 1538.235155 | 0.009250 |
+| 7747.990013 | 1659.067339 | 0.005500 |
+| 19369.975033 | 0.000000 | 0.000000 |
 
 Los tres puntos de flexocompresión son los máximos M de las curvas OpenSees
 antes de alcanzar el límite de deformación. El punto M=0 es el pico de
@@ -187,9 +189,9 @@ compatibilidad de deformaciones (`PM_compatibilidad_envolvente_material.csv`).
 Sus valores al límite de deformación no deben confundirse con los picos de
 M–φ: Concrete01 considera descarga/recarga en la historia de precarga y flexión.
 Al duplicar las divisiones de la malla, el cambio máximo de ese cálculo es
-0.081%. Al refinar malla y paso de curvatura, el cambio
-máximo de los picos OpenSees es 0.046%.
-Error axial máximo: 5.481e-08 kN. Estado HA: **OK**.
+0.168%. Al refinar malla y paso de curvatura, el cambio
+máximo de los picos OpenSees es 0.098%.
+Error axial máximo: 6.725e-08 kN. Estado HA: **OK**.
 
 ## Controles automáticos
 
@@ -199,11 +201,11 @@ Error axial máximo: 5.481e-08 kN. Estado HA: **OK**.
 | G: compatibilidad diafragmas [m] | 5.340e-10 | 1.000e-05 | OK |
 | Q: equilibrio apoyos / carga | 5.864e-09 | 1.000e-04 | OK |
 | Q: compatibilidad diafragmas [m] | 1.705e-10 | 1.000e-05 | OK |
-| EX: equilibrio apoyos / carga | 3.272e-07 | 1.000e-04 | OK |
+| EX: equilibrio apoyos / carga | 3.963e-07 | 1.000e-04 | OK |
 | EX: compatibilidad diafragmas [m] | 1.010e-09 | 1.000e-05 | OK |
 | EX: carga lateral total [kN] | 0.000e+00 | 1.000e-07 | OK |
 | EX: resultante aplicada equivalente a fuerzas en CM [kNm] | 0.000e+00 | 1.000e-06 | OK |
-| EX: corte basal relativo | 3.272e-07 | 1.000e-04 | OK |
+| EX: corte basal relativo | 3.963e-07 | 1.000e-04 | OK |
 | EX: pisos con desplazamiento contrario | 0.000e+00 | 0.000e+00 | OK |
 | EX: F=m*a piso 1 LT1 | 0.000e+00 | 1.000e-07 | OK |
 | EX: F=m*a piso 1 LT2 | 0.000e+00 | 1.000e-07 | OK |
@@ -216,11 +218,11 @@ Error axial máximo: 5.481e-08 kN. Estado HA: **OK**.
 | EX: F=m*a piso 5 LT1 | 0.000e+00 | 1.000e-07 | OK |
 | EX: F=m*a piso 5 LT2 | 0.000e+00 | 1.000e-07 | OK |
 | EX: momento aplicado respecto al CM [kNm] | 0.000e+00 | 1.000e-07 | OK |
-| EY: equilibrio apoyos / carga | 6.537e-07 | 1.000e-04 | OK |
+| EY: equilibrio apoyos / carga | 1.874e-07 | 1.000e-04 | OK |
 | EY: compatibilidad diafragmas [m] | 1.782e-09 | 1.000e-05 | OK |
 | EY: carga lateral total [kN] | 0.000e+00 | 1.000e-07 | OK |
 | EY: resultante aplicada equivalente a fuerzas en CM [kNm] | 0.000e+00 | 1.000e-06 | OK |
-| EY: corte basal relativo | 6.537e-07 | 1.000e-04 | OK |
+| EY: corte basal relativo | 1.874e-07 | 1.000e-04 | OK |
 | EY: pisos con desplazamiento contrario | 0.000e+00 | 0.000e+00 | OK |
 | EY: F=m*a piso 1 LT1 | 0.000e+00 | 1.000e-07 | OK |
 | EY: F=m*a piso 1 LT2 | 0.000e+00 | 1.000e-07 | OK |
@@ -233,32 +235,32 @@ Error axial máximo: 5.481e-08 kN. Estado HA: **OK**.
 | EY: F=m*a piso 5 LT1 | 0.000e+00 | 1.000e-07 | OK |
 | EY: F=m*a piso 5 LT2 | 0.000e+00 | 1.000e-07 | OK |
 | EY: momento aplicado respecto al CM [kNm] | 0.000e+00 | 1.000e-07 | OK |
-| R: equilibrio apoyos / carga | 5.245e-08 | 1.000e-04 | OK |
+| R: equilibrio apoyos / carga | 4.843e-08 | 1.000e-04 | OK |
 | R: compatibilidad diafragmas [m] | 1.316e-09 | 1.000e-05 | OK |
-| EXG: equilibrio apoyos / carga | 3.922e-07 | 1.000e-04 | OK |
-| EXQ: equilibrio apoyos / carga | 3.099e-07 | 1.000e-04 | OK |
-| EX: bases de masa reproducen u | 8.263e-07 | 1.000e-05 | OK |
-| EX: bases de masa reproducen support_r | 6.796e-07 | 1.000e-05 | OK |
-| EYG: equilibrio apoyos / carga | 5.781e-07 | 1.000e-04 | OK |
-| EYQ: equilibrio apoyos / carga | 3.997e-07 | 1.000e-04 | OK |
-| EY: bases de masa reproducen u | 7.812e-07 | 1.000e-05 | OK |
-| EY: bases de masa reproducen support_r | 3.771e-07 | 1.000e-05 | OK |
-| EX: masa 0.8G+0.3Q explícita u | 3.184e-07 | 1.000e-05 | OK |
-| EX: masa 0.8G+0.3Q explícita support_r | 3.546e-07 | 1.000e-05 | OK |
-| EX: masa 0.8G+0.3Q explícita local_forces | 3.859e-07 | 1.000e-05 | OK |
-| EY: masa 0.8G+0.3Q explícita u | 1.713e-06 | 1.000e-05 | OK |
-| EY: masa 0.8G+0.3Q explícita support_r | 1.109e-06 | 1.000e-05 | OK |
-| EY: masa 0.8G+0.3Q explícita local_forces | 1.918e-06 | 1.000e-05 | OK |
+| EXG: equilibrio apoyos / carga | 9.037e-07 | 1.000e-04 | OK |
+| EXQ: equilibrio apoyos / carga | 2.044e-07 | 1.000e-04 | OK |
+| EX: bases de masa reproducen u | 6.627e-07 | 1.000e-05 | OK |
+| EX: bases de masa reproducen support_r | 4.825e-07 | 1.000e-05 | OK |
+| EYG: equilibrio apoyos / carga | 7.050e-08 | 1.000e-04 | OK |
+| EYQ: equilibrio apoyos / carga | 2.980e-07 | 1.000e-04 | OK |
+| EY: bases de masa reproducen u | 1.482e-07 | 1.000e-05 | OK |
+| EY: bases de masa reproducen support_r | 3.276e-07 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita u | 2.386e-07 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita support_r | 3.484e-07 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita local_forces | 3.004e-07 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita u | 1.070e-06 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita support_r | 9.761e-07 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita local_forces | 1.097e-06 | 1.000e-05 | OK |
 | Q: conservacion piso 3.96 [kN] | 4.364e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 7.92 [kN] | 4.168e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 11.88 [kN] | 4.855e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 15.84 [kN] | 3.678e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 19.8 [kN] | 1.961e-06 | 2.000e-03 | OK |
-| Superposicion: desplazamientos, error relativo maximo | 1.883e-07 | 1.000e-05 | OK |
-| Superposicion: reacciones de apoyo, error relativo maximo | 3.428e-07 | 1.000e-05 | OK |
-| Superposicion: fuerzas internas, error relativo maximo | 5.383e-07 | 1.000e-05 | OK |
-| EX: sensibilidad penalty x10 | 5.114e-05 | 1.000e-02 | OK |
-| EY: sensibilidad penalty x10 | 2.657e-04 | 1.000e-02 | OK |
+| Superposicion: desplazamientos, error relativo maximo | 2.400e-08 | 1.000e-05 | OK |
+| Superposicion: reacciones de apoyo, error relativo maximo | 4.310e-08 | 1.000e-05 | OK |
+| Superposicion: fuerzas internas, error relativo maximo | 1.765e-07 | 1.000e-05 | OK |
+| EX: sensibilidad penalty x10 | 5.118e-05 | 1.000e-02 | OK |
+| EY: sensibilidad penalty x10 | 2.631e-04 | 1.000e-02 | OK |
 
 El comando termina con código distinto de cero si cualquier control resulta
 REVISAR. Los supuestos físicos pendientes se mantienen visibles aunque los
