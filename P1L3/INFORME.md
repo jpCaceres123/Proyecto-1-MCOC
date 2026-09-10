@@ -166,10 +166,13 @@ se excluye al elegir la capacidad. Se controla equilibrio axial en cada paso.
 
 | P [kN] (+ compresión) | M máximo [kN·m] | φ al máximo [1/m] |
 | --- | --- | --- |
-| 0.000000 | 767.181805 | 0.023500 |
-| 3873.995007 | 1538.235155 | 0.009250 |
-| 7747.990013 | 1659.067339 | 0.005500 |
-| 19369.975033 | 0.000000 | 0.000000 |
+| 13560.838918 | 0.000000 | 0.000000 |
+| 13213.739740 | 1047.808605 | 0.000000 |
+| 6367.563300 | 1741.580998 | 0.000000 |
+| 5690.418670 | 1680.061933 | 0.000000 |
+| 3411.987946 | 1495.739333 | 0.000000 |
+| 0.000000 | 763.082336 | 0.000000 |
+| -2554.491818 | 0.000000 | 0.000000 |
 
 Los tres puntos de flexocompresión son los máximos M de las curvas OpenSees
 antes de alcanzar el límite de deformación. El punto M=0 es el pico de

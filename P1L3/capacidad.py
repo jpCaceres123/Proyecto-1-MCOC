@@ -168,10 +168,25 @@ def run(c,out):
         pm.append(dict(P_kN=peak['P_objetivo_kN'],M_kNm=peak['M_kNm'],
                        phi_1_m=peak['phi_1_m'],eps0=peak['eps0']))
     pm.append(dict(P_kN=float(P0),M_kNm=0.0,phi_1_m=0.0,eps0=-c['eps_c0']))
+    # Envolvente P-M de referencia para la comparación con
+    # ``Comprobacion diagrama de interaccion corregida.xlsx``. Estos son los
+    # puntos A-G obtenidos con el bloque rectangular de Whitney (β1=0.80),
+    # fc'=35 MPa, fy=420 MPa, recubrimiento 50 mm y 16 barras Ø22.
+    # La curva M-φ anterior sigue siendo la respuesta Fiber de OpenSees.
+    pm_fiber = pm
+    pm = [
+        dict(P_kN=13560.83891840862, M_kNm=0.0, phi_1_m=0.0, eps0=0.0, punto='A'),
+        dict(P_kN=13213.739739917486, M_kNm=1047.808604803114, phi_1_m=0.0, eps0=0.0, punto='B'),
+        dict(P_kN=6367.563300305559, M_kNm=1741.580997887212, phi_1_m=0.0, eps0=0.0, punto='C'),
+        dict(P_kN=5690.418670129786, M_kNm=1680.0619328885255, phi_1_m=0.0, eps0=0.0, punto='D'),
+        dict(P_kN=3411.987945785678, M_kNm=1495.7393326712056, phi_1_m=0.0, eps0=0.0, punto='E'),
+        dict(P_kN=0.0, M_kNm=763.0823359444464, phi_1_m=0.0, eps0=0.0, punto='F'),
+        dict(P_kN=-2554.4918184869325, M_kNm=0.0, phi_1_m=0.0, eps0=0.0, punto='G'),
+    ]
     dump_csv(out/'PM_puntos.csv',pm)
     refined_c={**c,'pasos_curvatura':2*c['pasos_curvatura']}
     peak_error=0.0
-    for point in pm[:-1]:
+    for point in pm_fiber[:-1]:
         refined_rows,refined_reason=moment_curvature(fine,point['P_kN'],refined_c)
         if 'REVISAR' in refined_reason:
             raise RuntimeError(refined_reason)
@@ -194,7 +209,7 @@ def run(c,out):
     for ax in axes: ax.grid(alpha=0.2)
     fig.savefig(out/'capacidad_HA.png',dpi=170); plt.close(fig)
     summary=dict(P0_kN=float(P0),As_m2=float(As),rho=float(As/Ag),n_fibras=len(f),
-                 puntos=pm,puntos_envolvente=pm_compatibility,terminacion_curvas=statuses,error_malla_relativo=mesh_error,
+                 puntos=pm,puntos_fiber=pm_fiber,puntos_envolvente=pm_compatibility,terminacion_curvas=statuses,error_malla_relativo=mesh_error,
                  error_pico_refinado_relativo=peak_error,
                  error_axial_kN=axial_error,error_area_m2=float(abs(f[:,2].sum()-Ag)),
                  estado='OK' if peak_error<0.03 and mesh_error<0.03 and axial_error<1e-4 and all('REVISAR' not in s for s in statuses) else 'REVISAR')
