@@ -338,11 +338,11 @@ se excluye al elegir la capacidad. Se controla equilibrio axial en cada paso.
 
 {pt}
 
-Los tres puntos de flexocompresión son los máximos M de las curvas OpenSees
-antes de alcanzar el límite de deformación. El punto M=0 es el pico de
-compresión uniforme de las mismas fibras, a ε=−{cc['eps_c0']}; por ello no es
-la fórmula normativa 0,85f'cAc+fyAs. La línea discontinua solo conecta cuatro
-muestras, no define una envolvente completa ni permite diseñar por interpolación.
+Los siete puntos A–G del diagrama P–M se calculan con compatibilidad lineal de
+deformaciones, equilibrio de fuerzas, bloque rectangular de Whitney y acero
+elastoplástico. La compresión pura considera el límite axial definido en los
+parámetros. La línea discontinua conecta los estados calculados y no constituye
+por sí sola una verificación normativa completa.
 
 Interpretación: la compresión moderada aumenta el momento máximo respecto de
 P=0, pero reduce la curvatura que puede alcanzarse. Las ramas descendentes
@@ -416,7 +416,7 @@ abrir Unity; para visualizar cambios hay que volver a abrir o reconstruir el vis
 
 Para la demostración: mostrar primero conservación de Q; luego masas, CM,
 fuerzas y giros; comparar R con la suma de casos; por último explicar la malla
-de fibras, los materiales y los cuatro puntos P–M. Antes de presentar como
+de fibras, los materiales y los siete puntos A–G del diagrama P–M. Antes de presentar como
 modelo validado del edificio, contrastar apoyos y armadura con los planos.
 
 ## Referencia de implementación

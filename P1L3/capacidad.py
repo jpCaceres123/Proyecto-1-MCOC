@@ -93,6 +93,78 @@ def root_p(f, target, c):
     return ultimate(f,(lo+hi)/2,c)
 
 
+def interaction_points(c):
+    """Calcula los puntos nominales A-G por compatibilidad y equilibrio.
+
+    Unidades internas de esta rutina: mm, MPa y kN. La compresión es positiva.
+    La armadura perimetral se agrupa en cinco capas: 5-2-2-2-5 barras.
+    """
+    b = c['b_m'] * 1000.0
+    h = c['h_m'] * 1000.0
+    cover = c['recubrimiento_al_centro_barra_m'] * 1000.0
+    fc, fy, Es = c['fc_MPa'], c['fy_MPa'], c['Es_MPa']
+    eps_cu = c.get('eps_cu_interaccion', 0.003)
+    beta1 = c.get('beta1_interaccion', 0.80)
+    diameters = c.get('diametros_por_cara_m', [c['diametro_m']] * c['barras_por_cara'])
+    if len(diameters) != 5:
+        raise ValueError('La interacción A-G requiere cinco posiciones de barras por cara')
+    bar_areas = [math.pi * (diameter * 1000.0) ** 2 / 4.0 for diameter in diameters]
+    layer_areas = [5.0 * bar_areas[0], 2.0 * bar_areas[1], 2.0 * bar_areas[2],
+                   2.0 * bar_areas[3], 5.0 * bar_areas[4]]
+    depths = np.linspace(cover, h-cover, 5).tolist()
+    Ag, Ast = b*h, sum(layer_areas)
+
+    def section_point(name, neutral_axis, steel_depths=None, steel_areas=None):
+        steel_depths = steel_depths or depths
+        steel_areas = steel_areas or layer_areas
+        a = beta1 * neutral_axis
+        concrete_force = 0.85 * fc * b * a / 1000.0
+        axial = concrete_force
+        moment = concrete_force * (h/2.0-a/2.0) / 1000.0
+        for area, depth in zip(steel_areas, steel_depths):
+            strain = eps_cu * (neutral_axis-depth) / neutral_axis
+            stress_steel = max(-fy, min(fy, Es*strain))
+            force = area * stress_steel / 1000.0
+            axial += force
+            moment += force * (h/2.0-depth) / 1000.0
+        return dict(punto=name, P_kN=float(axial), M_kNm=float(moment),
+                    phi_1_m=float(eps_cu/(neutral_axis/1000.0)),
+                    eps0=float(eps_cu*(neutral_axis-h/2.0)/neutral_axis))
+
+    # A: límite de compresión axial de la sección.
+    point_a = dict(punto='A',
+        P_kN=float(c.get('factor_compresion_max', 0.80)
+                   * (0.85*fc*(Ag-Ast)+fy*Ast)/1000.0),
+        M_kNm=0.0, phi_1_m=0.0, eps0=float(eps_cu))
+    # B: deformación nula en la fibra inferior de hormigón.
+    areas_b = [layer_areas[0], layer_areas[1], layer_areas[2],
+               layer_areas[3], layer_areas[1]]
+    point_b = section_point('B', h, steel_areas=areas_b)
+    # C, D y E: deformación de tracción inferior prescrita.
+    tension_states = [('C', fy/Es), ('D', 0.003), ('E', 0.005)]
+    middle_depth = depths[1]
+    points_cde = []
+    for name, eps_t in tension_states:
+        neutral_axis = depths[-1] * eps_cu / (eps_cu+eps_t)
+        steel_depths = depths if name != 'D' else [depths[0], middle_depth,
+                                                   middle_depth, middle_depth, depths[-1]]
+        points_cde.append(section_point(name, neutral_axis, steel_depths=steel_depths))
+    # F: flexión pura, resolviendo Pn=0 para el estado supuesto de fluencia.
+    A1 = layer_areas[0]
+    qa = 0.85 * fc * b * beta1
+    qb = A1*Es*eps_cu - (Ast-A1)*fy
+    qc = -A1*Es*eps_cu*depths[0]
+    discriminant = qb*qb - 4.0*qa*qc
+    neutral_axis_f = (-qb + math.sqrt(discriminant)) / (2.0*qa)
+    point_f = section_point('F', neutral_axis_f)
+    if abs(point_f['P_kN']) < 1e-9:
+        point_f['P_kN'] = 0.0
+    # G: tracción pura del acero longitudinal.
+    point_g = dict(punto='G', P_kN=float(-Ast*fy/1000.0), M_kNm=0.0,
+                   phi_1_m=0.0, eps0=float(-fy/Es))
+    return [point_a, point_b, *points_cde, point_f, point_g]
+
+
 def moment_curvature(f, P, c):
     ops.wipe()
     ops.model('basic','-ndm',2,'-ndf',3)
@@ -168,21 +240,10 @@ def run(c,out):
         pm.append(dict(P_kN=peak['P_objetivo_kN'],M_kNm=peak['M_kNm'],
                        phi_1_m=peak['phi_1_m'],eps0=peak['eps0']))
     pm.append(dict(P_kN=float(P0),M_kNm=0.0,phi_1_m=0.0,eps0=-c['eps_c0']))
-    # Envolvente P-M de referencia para la comparación con
-    # ``Comprobacion diagrama de interaccion corregida.xlsx``. Estos son los
-    # puntos A-G obtenidos con el bloque rectangular de Whitney (β1=0.80),
-    # fc'=35 MPa, fy=420 MPa, recubrimiento 50 mm y 16 barras Ø22.
-    # La curva M-φ anterior sigue siendo la respuesta Fiber de OpenSees.
+    # La envolvente de diseño A-G se calcula de forma independiente. La curva
+    # M-φ anterior sigue siendo la respuesta Fiber de OpenSees.
     pm_fiber = pm
-    pm = [
-        dict(P_kN=13560.83891840862, M_kNm=0.0, phi_1_m=0.0, eps0=0.0, punto='A'),
-        dict(P_kN=13213.739739917486, M_kNm=1047.808604803114, phi_1_m=0.0, eps0=0.0, punto='B'),
-        dict(P_kN=6367.563300305559, M_kNm=1741.580997887212, phi_1_m=0.0, eps0=0.0, punto='C'),
-        dict(P_kN=5690.418670129786, M_kNm=1680.0619328885255, phi_1_m=0.0, eps0=0.0, punto='D'),
-        dict(P_kN=3411.987945785678, M_kNm=1495.7393326712056, phi_1_m=0.0, eps0=0.0, punto='E'),
-        dict(P_kN=0.0, M_kNm=763.0823359444464, phi_1_m=0.0, eps0=0.0, punto='F'),
-        dict(P_kN=-2554.4918184869325, M_kNm=0.0, phi_1_m=0.0, eps0=0.0, punto='G'),
-    ]
+    pm = interaction_points(c)
     dump_csv(out/'PM_puntos.csv',pm)
     refined_c={**c,'pasos_curvatura':2*c['pasos_curvatura']}
     peak_error=0.0

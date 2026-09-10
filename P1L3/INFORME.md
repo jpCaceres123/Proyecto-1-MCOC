@@ -141,7 +141,7 @@ reconstruir cualquier combinación posterior, dentro de la hipótesis lineal.
 
 Sección 0.70 × 0.70 m, compatible con A=0,49 m² del modelo.
 **Datos tomados del detalle de pilares:** f'c=35.0 MPa,
-fy=420.0 MPa, Es=200000.0 MPa;
+fy=420.0 MPa, Es=210000.0 MPa;
 16 barras longitudinales (16 barras Ø22 mm);
 distancia cara–centro de barra 73 mm;
 estribos Ø12 @ 10 cm.
@@ -167,18 +167,18 @@ se excluye al elegir la capacidad. Se controla equilibrio axial en cada paso.
 | P [kN] (+ compresión) | M máximo [kN·m] | φ al máximo [1/m] |
 | --- | --- | --- |
 | 13560.838918 | 0.000000 | 0.000000 |
-| 13213.739740 | 1047.808605 | 0.000000 |
-| 6367.563300 | 1741.580998 | 0.000000 |
-| 5690.418670 | 1680.061933 | 0.000000 |
-| 3411.987946 | 1495.739333 | 0.000000 |
-| 0.000000 | 763.082336 | 0.000000 |
+| 13213.739740 | 1047.808605 | 0.004286 |
+| 6367.563300 | 1741.580998 | 0.007974 |
+| 5690.418670 | 1680.061933 | 0.009569 |
+| 3411.987946 | 1495.739333 | 0.012759 |
+| 0.000000 | 763.082336 | 0.032923 |
 | -2554.491818 | 0.000000 | 0.000000 |
 
-Los tres puntos de flexocompresión son los máximos M de las curvas OpenSees
-antes de alcanzar el límite de deformación. El punto M=0 es el pico de
-compresión uniforme de las mismas fibras, a ε=−0.002; por ello no es
-la fórmula normativa 0,85f'cAc+fyAs. La línea discontinua solo conecta cuatro
-muestras, no define una envolvente completa ni permite diseñar por interpolación.
+Los siete puntos A–G del diagrama P–M se calculan con compatibilidad lineal de
+deformaciones, equilibrio de fuerzas, bloque rectangular de Whitney y acero
+elastoplástico. La compresión pura considera el límite axial definido en los
+parámetros. La línea discontinua conecta los estados calculados y no constituye
+por sí sola una verificación normativa completa.
 
 Interpretación: la compresión moderada aumenta el momento máximo respecto de
 P=0, pero reduce la curvatura que puede alcanzarse. Las ramas descendentes
@@ -192,9 +192,9 @@ compatibilidad de deformaciones (`PM_compatibilidad_envolvente_material.csv`).
 Sus valores al límite de deformación no deben confundirse con los picos de
 M–φ: Concrete01 considera descarga/recarga en la historia de precarga y flexión.
 Al duplicar las divisiones de la malla, el cambio máximo de ese cálculo es
-0.168%. Al refinar malla y paso de curvatura, el cambio
-máximo de los picos OpenSees es 0.098%.
-Error axial máximo: 6.725e-08 kN. Estado HA: **OK**.
+0.165%. Al refinar malla y paso de curvatura, el cambio
+máximo de los picos OpenSees es 0.088%.
+Error axial máximo: 5.369e-08 kN. Estado HA: **OK**.
 
 ## Controles automáticos
 
@@ -317,7 +317,7 @@ abrir Unity; para visualizar cambios hay que volver a abrir o reconstruir el vis
 
 Para la demostración: mostrar primero conservación de Q; luego masas, CM,
 fuerzas y giros; comparar R con la suma de casos; por último explicar la malla
-de fibras, los materiales y los cuatro puntos P–M. Antes de presentar como
+de fibras, los materiales y los siete puntos A–G del diagrama P–M. Antes de presentar como
 modelo validado del edificio, contrastar apoyos y armadura con los planos.
 
 ## Referencia de implementación
