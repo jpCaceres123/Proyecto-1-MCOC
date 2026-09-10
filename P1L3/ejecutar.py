@@ -120,7 +120,14 @@ def export_unity(cfg, global_results, capacity_results, out):
     section_matches=(abs(cc['b_m']-cc['h_m'])<1e-9
         and abs(dimensions[0]-cc['b_m'])<1e-9 and abs(dimensions[1]-cc['h_m'])<1e-9
         and abs(model['section_columns']['A_m2']-cc['b_m']*cc['h_m'])<1e-9)
+    concrete_key_points=[
+        dict(name='Origen',strain=0.0,stress_MPa=0.0),
+        dict(name='Fase 1: inicio no lineal',strain=0.001,stress_MPa=cc['fc_MPa']*(2*0.001/cc['eps_c0']-(0.001/cc['eps_c0'])**2)),
+        dict(name='Fase 2: resistencia máxima',strain=cc['eps_c0'],stress_MPa=cc['fc_MPa']),
+        dict(name='Fase 3: límite último',strain=cc['eps_cu'],stress_MPa=cc['fc_MPa'])
+    ]
     graphs=dict(b_m=cc['b_m'],h_m=cc['h_m'],fc_MPa=cc['fc_MPa'],fy_MPa=cc['fy_MPa'],
+        concrete_key_points=concrete_key_points,
         members=[dict(id=e['id'],type=e['type'],has_capacity=e['type']=='COLUMN' and section_matches)
                  for e in model['elements'] if e['type']!='WALL'],
         pm=[dict(p=float(p['P_kN']),m=float(p['M_kNm'])) for p in capacity_results['puntos']],

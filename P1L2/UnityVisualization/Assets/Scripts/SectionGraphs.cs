@@ -11,12 +11,14 @@ public sealed class SectionGraphs : IDisposable
     [Serializable] private class Member { public int id; public string type; public bool has_capacity; }
     [Serializable] private class PM { public float p, m; }
     [Serializable] private class Stress { public float strain, stress_MPa; }
+    [Serializable] private class KeyPoint { public string name; public float strain, stress_MPa; }
     [Serializable] private class Data
     {
         public float b_m, h_m, fc_MPa, fy_MPa;
         public Member[] members;
         public PM[] pm;
         public Stress[] concrete, steel;
+        public KeyPoint[] concrete_key_points;
     }
 #pragma warning restore 0649
     private class Chart
@@ -93,6 +95,13 @@ public sealed class SectionGraphs : IDisposable
         GUILayout.Label(material == 0
             ? "Hormigón: parábola–meseta para compresión; εc0 = 0.002 y εcu = 0.0035. f’c = " + data.fc_MPa.ToString("G4") + " MPa."
             : "Steel01: elastoplástico perfecto; fy = " + data.fy_MPa.ToString("G4") + " MPa. Se muestra el entorno de fluencia.");
+        if (material == 0 && data.concrete_key_points != null)
+        {
+            GUILayout.Label("PUNTOS CARACTERÍSTICOS DEL HORMIGÓN");
+            foreach (KeyPoint point in data.concrete_key_points)
+                GUILayout.Label(point.name + ": ε = " + point.strain.ToString("G4")
+                    + "; σ = " + point.stress_MPa.ToString("G4") + " MPa");
+        }
         GUILayout.Label("Envolvente monotónica del material; no es la historia de fibras del elemento seleccionado.");
     }
 

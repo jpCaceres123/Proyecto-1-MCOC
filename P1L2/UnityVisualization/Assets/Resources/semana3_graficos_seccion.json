@@ -3,6 +3,28 @@
   "h_m": 0.7,
   "fc_MPa": 35.0,
   "fy_MPa": 420.0,
+  "concrete_key_points": [
+    {
+      "name": "Origen",
+      "strain": 0.0,
+      "stress_MPa": 0.0
+    },
+    {
+      "name": "Fase 1: inicio no lineal",
+      "strain": 0.001,
+      "stress_MPa": 26.25
+    },
+    {
+      "name": "Fase 2: resistencia m\u00e1xima",
+      "strain": 0.002,
+      "stress_MPa": 35.0
+    },
+    {
+      "name": "Fase 3: l\u00edmite \u00faltimo",
+      "strain": 0.0035,
+      "stress_MPa": 35.0
+    }
+  ],
   "members": [
     {
       "id": 1,
