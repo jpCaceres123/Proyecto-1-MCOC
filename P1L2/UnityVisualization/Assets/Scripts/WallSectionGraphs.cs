@@ -72,6 +72,9 @@ public sealed class WallSectionGraphs : IDisposable
     {
         List<Vector2> values=new List<Vector2>();
         foreach(Point p in curve){values.Add(new Vector2(p.m,p.p));values.Add(new Vector2(-p.m,p.p));}
+        // Los límites deben incluir siempre los puntos críticos, incluso si un
+        // archivo antiguo no los incorporó todavía al muestreo de la curva.
+        foreach(Point p in keys){values.Add(new Vector2(p.m,p.p));values.Add(new Vector2(-p.m,p.p));}
         Chart c=Create(values);
         for(int branch=-1;branch<=1;branch+=2)
             for(int i=1;i<curve.Length;i++) Line(c,new Vector2(branch*curve[i-1].m,curve[i-1].p),new Vector2(branch*curve[i].m,curve[i].p),Blue);

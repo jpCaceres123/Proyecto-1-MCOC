@@ -35,6 +35,15 @@ class WallInteractionTests(unittest.TestCase):
         for item in self.sections:
             self.assertTrue(all(abs(p['P_kN'])<1e9 and abs(p['M_kNm'])<1e9 for p in item['curve']))
 
+    def test_critical_points_are_on_or_inside_envelope(self):
+        for item in self.sections:
+            curve=item['curve']
+            for key in item['points']:
+                nearby=[p['M_kNm'] for p in curve
+                        if abs(p['P_kN']-key['P_kN']) < 1e-6*max(1.0,abs(key['P_kN']))]
+                self.assertTrue(nearby,f"Muro {item['wall_id']} punto {key['punto']} sin curva al mismo P")
+                self.assertGreaterEqual(max(nearby)+1e-6*max(1.0,key['M_kNm']),key['M_kNm'])
+
 
 if __name__=='__main__':
     unittest.main()

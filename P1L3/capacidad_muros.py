@@ -123,6 +123,11 @@ def dense_envelope(length, thickness, layers, material, count=260):
         p_value, moment = response_at_c(length, thickness, layers, c, material)
         if p_value <= pmax*(1+1e-9):
             candidates.append(dict(P_kN=p_value, M_kNm=abs(moment), c_m=float(c)))
+    # Los puntos A-G usan profundidades exactas del eje neutro. Incorporarlos a
+    # la polilínea evita que una cuerda del muestreo discreto pase visualmente
+    # por dentro de un punto crítico, especialmente en muros largos.
+    candidates.extend(dict(P_kN=item['P_kN'],M_kNm=item['M_kNm'],c_m=item['c_m'])
+                      for item in points[1:-1])
     candidates.append(dict(P_kN=pmax, M_kNm=0.0, c_m=None))
     candidates.sort(key=lambda item:item['P_kN'])
     # Quitar puntos casi duplicados en P y mantener el de mayor M.
