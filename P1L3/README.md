@@ -22,6 +22,12 @@ aporte vertical neto del nudo. El archivo completo se exporta a
 `results/auditoria_axiales_columnas.csv` y a Resources para Unity. Una
 redistribución negativa se informa como tal; no se reemplazan las fuerzas de
 equilibrio de OpenSees por una suma artificial de pisos.
+
+La opción `Muro` del inspector permite seleccionar cualquiera de los 24 muros
+y visualizar su envolvente P–M nominal en la dirección principal. Los datos
+recibidos se conservan en `datos/enfierradura_muros.md`; la correspondencia
+revisable con los ID del modelo está en `datos/asignacion_armadura_muros.json`
+y el método se explica en `METODO_PM_MUROS.md`.
 La intensidad de sobrecarga q_Q no cambia al modificar su participación αQ.
 
 Se reutilizan sin cambios las fuentes numéricas de geometría y cargas de P1L2;

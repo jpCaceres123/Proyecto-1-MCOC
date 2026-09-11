@@ -169,6 +169,7 @@ public class BuildingVisualizer : MonoBehaviour
         Vector3 d = wall.b - wall.a; go.transform.position = new Vector3((wall.a.x + wall.b.x) / 2, (wall.zMin + wall.zMax) / 2, (wall.a.z + wall.b.z) / 2);
         go.transform.rotation = Quaternion.LookRotation(d.normalized, Vector3.up); go.transform.localScale = new Vector3(wall.thickness, wall.zMax - wall.zMin, d.magnitude);
         SetMaterial(go.GetComponent<Renderer>(), new Color(.27f, .33f, .40f)); CreateIdLabel(go, wall.id, go.transform.position);
+        inspector.Register(go, wall.id, "Muro", "Longitud: " + d.magnitude.ToString("F3") + " m\nEspesor: " + wall.thickness.ToString("F2") + " m\nAltura modelada: " + (wall.zMax-wall.zMin).ToString("F2") + " m");
     }
 
     private void CreateSlab(Slab slab)

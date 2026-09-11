@@ -284,6 +284,28 @@ Error axial máximo: 5.369e-08 kN. Estado HA: **OK**.
 | EX: sensibilidad penalty x10 | 5.118e-05 | 1.000e-02 | OK |
 | EY: sensibilidad penalty x10 | 2.631e-04 | 1.000e-02 | OK |
 
+## 7. Curvas P–M de muros
+
+Se calcularon envolventes nominales para **24 muros** y
+**45 secciones por cambios de armadura en altura**, en la dirección
+principal de cada muro. La sección resistente usa su longitud en planta por el
+espesor del modelo. Se considera la armadura vertical de ambas mallas y los
+refuerzos de borde registrados; la armadura horizontal se informa, pero no se
+suma como acero longitudinal.
+
+![Envolventes P–M de muros](results/capacidad_PM_muros.png)
+
+El cálculo aplica compatibilidad lineal de deformaciones, εcu=0.003, bloque
+rectangular de Whitney con β1=0.8, hormigón f'c=35 MPa y acero fy=420 MPa.
+Se exportan la curva densa y los puntos A–G para ambos signos de momento en
+`PM_muros_envolvente.csv` y `PM_muros_puntos_clave.csv`.
+
+El registro recibido no contiene ID ni coordenadas del modelo. La relación
+explícita está en `datos/asignacion_armadura_muros.json`: 11
+asignaciones son de confianza alta, 10 media y
+3 baja. Las asignaciones media/baja son supuestos
+trazables y deben contrastarse con los planos antes de diseño final.
+
 El comando termina con código distinto de cero si cualquier control resulta
 REVISAR. Los supuestos físicos pendientes se mantienen visibles aunque los
 controles numéricos estén OK. `manifest.json` registra hashes de entradas y

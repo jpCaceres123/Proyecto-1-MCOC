@@ -1,0 +1,15 @@
+{
+  "estado": "OK",
+  "muros": 24,
+  "secciones": 45,
+  "puntos_envolvente": 18716,
+  "puntos_clave": 630,
+  "confianza": {
+    "alta": 11,
+    "media": 10,
+    "baja": 3
+  },
+  "direccion_principal": "flexion en el plano alrededor del centroide, deformacion variable a lo largo del muro",
+  "doble_malla": true,
+  "advertencia": "Las asignaciones de confianza media/baja son supuestos trazables porque el registro fuente no contiene IDs ni coordenadas del modelo. Revisar contra planos antes de diseño final."
+}

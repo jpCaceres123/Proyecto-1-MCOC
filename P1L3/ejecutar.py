@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import casos
 import capacidad
+import capacidad_muros
 from exportar_reparto_losas import export_repartition
 from exportar_aceleraciones import export_accelerations
 
@@ -209,7 +210,7 @@ def export_unity(cfg, global_results, capacity_results, out):
     casos.dump_csv(resources/'semana3_resumen.csv',meta)
 
 
-def report(cfg,g,c,out):
+def report(cfg,g,c,w,out):
     fig,axes=plt.subplots(1,3,figsize=(14,5),layout='constrained')
     for case,ax,dof in (('EX',axes[0],'ux_CM_m'),('EY',axes[1],'uy_CM_m')):
         data=rows(out/f'{case}_pisos.csv')
@@ -247,7 +248,7 @@ def report(cfg,g,c,out):
     reinforcement_description=' + '.join(
         f'{count} barras Ø{diameter*1000:.0f} mm'
         for diameter,count in sorted(diameter_counts.items()))
-    state='OK' if c['estado']=='OK' and all(r['estado']=='OK' for r in g['checks']) else 'REVISAR'
+    state='OK' if c['estado']=='OK' and w['estado']=='OK' and all(r['estado']=='OK' for r in g['checks']) else 'REVISAR'
     text=f'''# Semana 3 — carga viva, sismo, superposición y capacidad HA
 
 **Estado de controles numéricos: {state}.** El modelo conserva la geometría y las
@@ -440,6 +441,28 @@ Error axial máximo: {c['error_axial_kN']:.3e} kN. Estado HA: **{c['estado']}**.
 
 {vt}
 
+## 7. Curvas P–M de muros
+
+Se calcularon envolventes nominales para **{w['muros']} muros** y
+**{w['secciones']} secciones por cambios de armadura en altura**, en la dirección
+principal de cada muro. La sección resistente usa su longitud en planta por el
+espesor del modelo. Se considera la armadura vertical de ambas mallas y los
+refuerzos de borde registrados; la armadura horizontal se informa, pero no se
+suma como acero longitudinal.
+
+![Envolventes P–M de muros](results/capacidad_PM_muros.png)
+
+El cálculo aplica compatibilidad lineal de deformaciones, εcu={0.003}, bloque
+rectangular de Whitney con β1={0.80}, hormigón f'c={35} MPa y acero fy={420} MPa.
+Se exportan la curva densa y los puntos A–G para ambos signos de momento en
+`PM_muros_envolvente.csv` y `PM_muros_puntos_clave.csv`.
+
+El registro recibido no contiene ID ni coordenadas del modelo. La relación
+explícita está en `datos/asignacion_armadura_muros.json`: {w['confianza']['alta']}
+asignaciones son de confianza alta, {w['confianza']['media']} media y
+{w['confianza']['baja']} baja. Las asignaciones media/baja son supuestos
+trazables y deben contrastarse con los planos antes de diseño final.
+
 El comando termina con código distinto de cero si cualquier control resulta
 REVISAR. Los supuestos físicos pendientes se mantienen visibles aunque los
 controles numéricos estén OK. `manifest.json` registra hashes de entradas y
@@ -514,17 +537,22 @@ def main():
     out=ROOT/'results'; out.mkdir(exist_ok=True)
     g=casos.run(cfg,out)
     c=capacidad.run(cfg['columna'],out)
+    w=capacidad_muros.run(out)
     export_unity(cfg,g,c,out)
+    shutil.copy2(out/'PM_muros_unity.json',
+                 ROOT.parent/'P1L2'/'UnityVisualization'/'Assets'/'Resources'/'semana3_pm_muros.json')
     sources=[args.parametros,casos.base.MODEL,casos.verification.LOADS,
              casos.verification.GEOMETRY,Path(casos.base.__file__),Path(casos.verification.__file__),
              ROOT/'casos.py',ROOT/'sismo.py',ROOT/'capacidad.py',
+             ROOT/'capacidad_muros.py',ROOT/'datos'/'enfierradura_muros.md',
+             ROOT/'datos'/'asignacion_armadura_muros.json',
              ROOT/'exportar_aceleraciones.py',ROOT/'exportar_reparto_losas.py',Path(__file__)]
     manifest=dict(python=platform.python_version(),
                   versions={p:importlib.metadata.version(p) for p in ('openseespy','numpy','matplotlib')},
                   inputs={str(p.relative_to(ROOT.parent)) if p.is_relative_to(ROOT.parent) else str(p):
                           hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},parametros=cfg)
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
-    state=report(cfg,g,c,out)
+    state=report(cfg,g,c,w,out)
     print(f'Semana 3: {state}. Informe: {ROOT / "INFORME.md"}')
     return 0 if state=='OK' else 1
 

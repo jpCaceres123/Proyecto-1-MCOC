@@ -25,8 +25,9 @@ public class ElementInspector : MonoBehaviour
     private string dataError;
     private Vector2 listScroll, mouseDown;
     private bool tracking;
-    private readonly string[] filters = { "Todos", "Viga", "Columna", "Losa" };
+    private readonly string[] filters = { "Todos", "Viga", "Columna", "Muro", "Losa" };
     private SectionGraphs graphs;
+    private WallSectionGraphs wallGraphs;
     private readonly Dictionary<int, double[]> slabWeights = new Dictionary<int, double[]>();
     private string slabError;
     private readonly Dictionary<int,List<string[]>> slabReceivers = new Dictionary<int,List<string[]>>();
@@ -44,6 +45,7 @@ public class ElementInspector : MonoBehaviour
     private void Start()
     {
         graphs = new SectionGraphs();
+        wallGraphs = new WallSectionGraphs();
         try
         {
             TextAsset csv = Resources.Load<TextAsset>("semana3_axiales_columnas");
@@ -202,6 +204,10 @@ public class ElementInspector : MonoBehaviour
             DrawSlabWeight(selected.id);
             GUILayout.Label("Losa tributaria: el modelo no calcula esfuerzos internos de placa.");
         }
+        else if (selected.kind == "Muro")
+        {
+            wallGraphs.Draw(selected.id);
+        }
         else
         {
             double[] values;
@@ -226,7 +232,7 @@ public class ElementInspector : MonoBehaviour
         if (GUILayout.Button("Limpiar selección")) Select(null);
     }
 
-    private void OnDestroy() { if (graphs != null) graphs.Dispose(); }
+    private void OnDestroy() { if (graphs != null) graphs.Dispose(); if (wallGraphs != null) wallGraphs.Dispose(); }
 
     private void DrawAxialTrace(string loadCase, int id)
     {
