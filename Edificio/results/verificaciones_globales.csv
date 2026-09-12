@@ -1,0 +1,65 @@
+﻿control,error,tolerancia,estado
+G: equilibrio apoyos / carga,7.871886435995912e-09,0.0001,OK
+G: compatibilidad diafragmas [m],5.340047369681473e-10,1e-05,OK
+Q: equilibrio apoyos / carga,9.00436165517291e-09,0.0001,OK
+Q: compatibilidad diafragmas [m],1.70480949114051e-10,1e-05,OK
+EX: equilibrio apoyos / carga,7.637888996747969e-07,0.0001,OK
+EX: compatibilidad diafragmas [m],1.0103919723461474e-09,1e-05,OK
+EX: carga lateral total [kN],0.0,1e-07,OK
+EX: resultante aplicada equivalente a fuerzas en CM [kNm],0.0,1e-06,OK
+EX: corte basal relativo,7.637531179005012e-07,0.0001,OK
+EX: pisos con desplazamiento contrario,0.0,0.0,OK
+EX: F=m*a piso 1 LT1,0.0,1e-07,OK
+EX: F=m*a piso 1 LT2,0.0,1e-07,OK
+EX: F=m*a piso 2 LT1,0.0,1e-07,OK
+EX: F=m*a piso 2 LT2,0.0,1e-07,OK
+EX: F=m*a piso 3 LT1,0.0,1e-07,OK
+EX: F=m*a piso 3 LT2,0.0,1e-07,OK
+EX: F=m*a piso 4 LT1,0.0,1e-07,OK
+EX: F=m*a piso 4 LT2,0.0,1e-07,OK
+EX: F=m*a piso 5 LT1,0.0,1e-07,OK
+EX: F=m*a piso 5 LT2,0.0,1e-07,OK
+EX: momento aplicado respecto al CM [kNm],0.0,1e-07,OK
+EY: equilibrio apoyos / carga,3.2867118143683447e-07,0.0001,OK
+EY: compatibilidad diafragmas [m],1.7823756750037778e-09,1e-05,OK
+EY: carga lateral total [kN],0.0,1e-07,OK
+EY: resultante aplicada equivalente a fuerzas en CM [kNm],2.9103830456733704e-11,1e-06,OK
+EY: corte basal relativo,3.286707776622453e-07,0.0001,OK
+EY: pisos con desplazamiento contrario,0.0,0.0,OK
+EY: F=m*a piso 1 LT1,0.0,1e-07,OK
+EY: F=m*a piso 1 LT2,0.0,1e-07,OK
+EY: F=m*a piso 2 LT1,0.0,1e-07,OK
+EY: F=m*a piso 2 LT2,0.0,1e-07,OK
+EY: F=m*a piso 3 LT1,0.0,1e-07,OK
+EY: F=m*a piso 3 LT2,0.0,1e-07,OK
+EY: F=m*a piso 4 LT1,0.0,1e-07,OK
+EY: F=m*a piso 4 LT2,0.0,1e-07,OK
+EY: F=m*a piso 5 LT1,0.0,1e-07,OK
+EY: F=m*a piso 5 LT2,0.0,1e-07,OK
+EY: momento aplicado respecto al CM [kNm],0.0,1e-07,OK
+R: equilibrio apoyos / carga,3.4469131908924276e-08,0.0001,OK
+R: compatibilidad diafragmas [m],1.315974577356313e-09,1e-05,OK
+EXG: equilibrio apoyos / carga,2.555506715154796e-07,0.0001,OK
+EXQ: equilibrio apoyos / carga,4.775906001325394e-07,0.0001,OK
+EX: bases de masa reproducen u,7.577240192075195e-07,1e-05,OK
+EX: bases de masa reproducen support_r,9.468746000717612e-07,1e-05,OK
+EYG: equilibrio apoyos / carga,4.779447539676935e-07,0.0001,OK
+EYQ: equilibrio apoyos / carga,2.2381548081379457e-07,0.0001,OK
+EY: bases de masa reproducen u,8.503336947932677e-07,1e-05,OK
+EY: bases de masa reproducen support_r,8.121620856548254e-07,1e-05,OK
+EX: masa 0.8G+0.3Q explícita u,8.134288320740506e-07,1e-05,OK
+EX: masa 0.8G+0.3Q explícita support_r,5.710399633544145e-07,1e-05,OK
+EX: masa 0.8G+0.3Q explícita local_forces,1.1473327237423412e-06,1e-05,OK
+EY: masa 0.8G+0.3Q explícita u,1.3997672263764403e-06,1e-05,OK
+EY: masa 0.8G+0.3Q explícita support_r,1.1077044062617415e-06,1e-05,OK
+EY: masa 0.8G+0.3Q explícita local_forces,1.3959515026418895e-06,1e-05,OK
+Q: conservacion piso 3.96 [kN],3.874040567097836e-05,0.002,OK
+Q: conservacion piso 7.92 [kN],4.168240229773801e-05,0.002,OK
+Q: conservacion piso 11.88 [kN],4.854705639445456e-05,0.002,OK
+Q: conservacion piso 15.84 [kN],3.187574930052506e-05,0.002,OK
+Q: conservacion piso 19.8 [kN],1.961337147804443e-06,0.002,OK
+"Superposicion: desplazamientos, error relativo maximo",2.1302387767918385e-08,1e-05,OK
+"Superposicion: reacciones de apoyo, error relativo maximo",1.2824749942200728e-07,1e-05,OK
+"Superposicion: fuerzas internas, error relativo maximo",1.459189500040783e-07,1e-05,OK
+EX: sensibilidad penalty x10,5.118997090005075e-05,0.01,OK
+EY: sensibilidad penalty x10,0.00025487275455410546,0.01,OK

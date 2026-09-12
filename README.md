@@ -7,11 +7,15 @@ Repositorio del proyecto colaborativo de modelación estructural, OpenSeesPy y v
 | Laboratorio | Estado | Documentación |
 |---|---|---|
 | Semana 1: benchmark 3D | Completado | [`P1L1/`](P1L1/) |
-| Semana 2: edificio completo y gravedad | En desarrollo | [`P1L2/`](P1L2/) · [`Enunciado`](Enunciados%20e%20Instrucciones/SEMANA_2/) |
+| Semana 2-3: edificio completo, gravedad, sismo y capacidad | En desarrollo | [`Edificio/`](Edificio/) · [`Enunciados`](Enunciados%20e%20Instrucciones/) |
 
-El modelo de P1L2 tiene sus fuentes, scripts, resultados y visualizador Unity
-separados de P1L1. Los archivos generados deben reconstruirse desde las fuentes
-de `P1L2/data/` antes de distribuir una actualización.
+El modelo global tiene sus fuentes, scripts, resultados y visualizador Unity en
+`Edificio/`, separado de P1L1. Los archivos generados deben reconstruirse desde
+las fuentes de `Edificio/data/` antes de distribuir una actualización.
+
+## Ejecución del modelo global
+
+Los comandos completos están en [`Edificio/README.md`](Edificio/README.md).
 
 ## Ejecución de Semana 1
 

@@ -1,0 +1,9 @@
+# Resultados reproducibles de la corrida de Semana 3
+results/*
+!results/.gitkeep
+
+# Cachés y entornos locales
+__pycache__/
+*.py[cod]
+.venv/
+venv/

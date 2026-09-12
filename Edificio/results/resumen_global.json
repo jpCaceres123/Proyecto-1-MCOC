@@ -1,0 +1,667 @@
+{
+  "checks": [
+    {
+      "control": "G: equilibrio apoyos / carga",
+      "error": 7.871886435995912e-09,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "G: compatibilidad diafragmas [m]",
+      "error": 5.340047369681473e-10,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Q: equilibrio apoyos / carga",
+      "error": 9.00436165517291e-09,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "Q: compatibilidad diafragmas [m]",
+      "error": 1.70480949114051e-10,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: equilibrio apoyos / carga",
+      "error": 7.637888996747969e-07,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: compatibilidad diafragmas [m]",
+      "error": 1.0103919723461474e-09,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: carga lateral total [kN]",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: resultante aplicada equivalente a fuerzas en CM [kNm]",
+      "error": 0.0,
+      "tolerancia": 1e-06,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: corte basal relativo",
+      "error": 7.637531179005012e-07,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: pisos con desplazamiento contrario",
+      "error": 0.0,
+      "tolerancia": 0.0,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 1 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 1 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 2 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 2 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 3 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 3 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 4 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 4 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 5 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: F=m*a piso 5 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: momento aplicado respecto al CM [kNm]",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: equilibrio apoyos / carga",
+      "error": 3.2867118143683447e-07,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: compatibilidad diafragmas [m]",
+      "error": 1.7823756750037778e-09,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: carga lateral total [kN]",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: resultante aplicada equivalente a fuerzas en CM [kNm]",
+      "error": 2.9103830456733704e-11,
+      "tolerancia": 1e-06,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: corte basal relativo",
+      "error": 3.286707776622453e-07,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: pisos con desplazamiento contrario",
+      "error": 0.0,
+      "tolerancia": 0.0,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 1 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 1 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 2 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 2 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 3 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 3 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 4 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 4 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 5 LT1",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: F=m*a piso 5 LT2",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: momento aplicado respecto al CM [kNm]",
+      "error": 0.0,
+      "tolerancia": 1e-07,
+      "estado": "OK"
+    },
+    {
+      "control": "R: equilibrio apoyos / carga",
+      "error": 3.4469131908924276e-08,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "R: compatibilidad diafragmas [m]",
+      "error": 1.315974577356313e-09,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EXG: equilibrio apoyos / carga",
+      "error": 2.555506715154796e-07,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "EXQ: equilibrio apoyos / carga",
+      "error": 4.775906001325394e-07,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: bases de masa reproducen u",
+      "error": 7.577240192075195e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: bases de masa reproducen support_r",
+      "error": 9.468746000717612e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EYG: equilibrio apoyos / carga",
+      "error": 4.779447539676935e-07,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "EYQ: equilibrio apoyos / carga",
+      "error": 2.2381548081379457e-07,
+      "tolerancia": 0.0001,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: bases de masa reproducen u",
+      "error": 8.503336947932677e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: bases de masa reproducen support_r",
+      "error": 8.121620856548254e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: masa 0.8G+0.3Q expl\u00edcita u",
+      "error": 8.134288320740506e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: masa 0.8G+0.3Q expl\u00edcita support_r",
+      "error": 5.710399633544145e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: masa 0.8G+0.3Q expl\u00edcita local_forces",
+      "error": 1.1473327237423412e-06,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: masa 0.8G+0.3Q expl\u00edcita u",
+      "error": 1.3997672263764403e-06,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: masa 0.8G+0.3Q expl\u00edcita support_r",
+      "error": 1.1077044062617415e-06,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: masa 0.8G+0.3Q expl\u00edcita local_forces",
+      "error": 1.3959515026418895e-06,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Q: conservacion piso 3.96 [kN]",
+      "error": 3.874040567097836e-05,
+      "tolerancia": 0.002,
+      "estado": "OK"
+    },
+    {
+      "control": "Q: conservacion piso 7.92 [kN]",
+      "error": 4.168240229773801e-05,
+      "tolerancia": 0.002,
+      "estado": "OK"
+    },
+    {
+      "control": "Q: conservacion piso 11.88 [kN]",
+      "error": 4.854705639445456e-05,
+      "tolerancia": 0.002,
+      "estado": "OK"
+    },
+    {
+      "control": "Q: conservacion piso 15.84 [kN]",
+      "error": 3.187574930052506e-05,
+      "tolerancia": 0.002,
+      "estado": "OK"
+    },
+    {
+      "control": "Q: conservacion piso 19.8 [kN]",
+      "error": 1.961337147804443e-06,
+      "tolerancia": 0.002,
+      "estado": "OK"
+    },
+    {
+      "control": "Superposicion: desplazamientos, error relativo maximo",
+      "error": 2.1302387767918385e-08,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Superposicion: reacciones de apoyo, error relativo maximo",
+      "error": 1.2824749942200728e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Superposicion: fuerzas internas, error relativo maximo",
+      "error": 1.459189500040783e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: sensibilidad penalty x10",
+      "error": 5.118997090005075e-05,
+      "tolerancia": 0.01,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: sensibilidad penalty x10",
+      "error": 0.00025487275455410546,
+      "tolerancia": 0.01,
+      "estado": "OK"
+    }
+  ],
+  "base_weight_excluded_kN": 1753.7706591693745,
+  "support_heights_m": [
+    0.0,
+    3.96
+  ],
+  "equilibrium": {
+    "G": {
+      "applied": [
+        0.0,
+        0.0,
+        -86461.0539558059
+      ],
+      "supports": [
+        0.00042867624614373323,
+        -0.0005247729030770643,
+        86461.05401969817
+      ]
+    },
+    "Q": {
+      "applied": [
+        0.0,
+        0.0,
+        -24606.9216951111
+      ],
+      "supports": [
+        -0.00020148907325256982,
+        9.116169105993777e-05,
+        24606.9216815171
+      ]
+    },
+    "EX": {
+      "applied": [
+        19402.148828838435,
+        0.0,
+        0.0
+      ],
+      "supports": [
+        -19402.134010386773,
+        -0.00014337594491828365,
+        -4.363743985491553e-06
+      ]
+    },
+    "EY": {
+      "applied": [
+        0.0,
+        19402.148828838435,
+        0.0
+      ],
+      "supports": [
+        9.40042733546878e-06,
+        -19402.15520575778,
+        -3.398059298831413e-06
+      ]
+    },
+    "R": {
+      "applied": [
+        15521.719063070752,
+        -5820.644648651531,
+        -138202.9551201232
+      ],
+      "supports": [
+        -15521.714285473156,
+        5820.645087240085,
+        138202.95516349302
+      ]
+    }
+  },
+  "floors": [
+    {
+      "bloque": "LT1",
+      "z_m": 3.96,
+      "piso": 1,
+      "master": 100001,
+      "G_kN": 4404.9969196625,
+      "Q_kN": 614.5736681636399,
+      "peso_sismico_kN": 4712.283753744319,
+      "masa_t": 480.51921438455736,
+      "CM_x_m": 9.5812017968513,
+      "CM_y_m": 8.280517243116533,
+      "Gx_kNm": 43948.3089050085,
+      "Gy_kNm": 36344.99023521731,
+      "Qx_kNm": 2402.065327279527,
+      "Qy_kNm": 5350.313284240861,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 942.4567507488639,
+      "Mz_EX_master_kNm": -7804.029375467548,
+      "Mz_EY_master_kNm": 9029.868313729652
+    },
+    {
+      "bloque": "LT2",
+      "z_m": 3.96,
+      "piso": 1,
+      "master": 601002,
+      "G_kN": 7116.527712413749,
+      "Q_kN": 2413.416691505785,
+      "peso_sismico_kN": 8323.236058166642,
+      "masa_t": 848.7338752955028,
+      "CM_x_m": -17.640862964141593,
+      "CM_y_m": 8.281091932562566,
+      "Gx_kNm": -126263.68331077999,
+      "Gy_kNm": 59203.28779713976,
+      "Qx_kNm": -41130.76681907952,
+      "Qy_kNm": 19444.39035391572,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 1664.6472116333284,
+      "Mz_EX_master_kNm": -13785.096594819526,
+      "Mz_EY_master_kNm": 23370.21032047988
+    },
+    {
+      "bloque": "LT1",
+      "z_m": 7.92,
+      "piso": 2,
+      "master": 200001,
+      "G_kN": 10918.11921424056,
+      "Q_kN": 3082.659349228,
+      "peso_sismico_kN": 12459.44888885456,
+      "masa_t": 1270.510203673483,
+      "CM_x_m": 21.479515622754562,
+      "CM_y_m": 7.88078587266745,
+      "Gx_kNm": 233851.58767606548,
+      "Gy_kNm": 86561.06318191013,
+      "Qx_kNm": 67542.67876599608,
+      "Qy_kNm": 23258.371205194093,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 2491.889777770912,
+      "Mz_EX_master_kNm": -19638.049756901437,
+      "Mz_EY_master_kNm": 53524.5854118127
+    },
+    {
+      "bloque": "LT2",
+      "z_m": 7.92,
+      "piso": 2,
+      "master": 600003,
+      "G_kN": 7029.1025444137495,
+      "Q_kN": 2344.58304337243,
+      "peso_sismico_kN": 8201.394066099965,
+      "masa_t": 836.309449822311,
+      "CM_x_m": -17.894092051651985,
+      "CM_y_m": 8.299402816317034,
+      "Gx_kNm": -126211.444590135,
+      "Gy_kNm": 58587.65027471176,
+      "Qx_kNm": -41090.1115610603,
+      "Qy_kNm": 18958.045470408182,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 1640.2788132199933,
+      "Mz_EX_master_kNm": -13488.673412178454,
+      "Mz_EY_master_kNm": 23219.635889567748
+    },
+    {
+      "bloque": "LT1",
+      "z_m": 11.88,
+      "piso": 3,
+      "master": 300001,
+      "G_kN": 10729.30933954056,
+      "Q_kN": 3191.4987484525,
+      "peso_sismico_kN": 12325.05871376681,
+      "masa_t": 1256.8062196332908,
+      "CM_x_m": 20.881144798066224,
+      "CM_y_m": 7.468772582357823,
+      "Gx_kNm": 222777.32747081047,
+      "Gy_kNm": 80617.08054100313,
+      "Qx_kNm": 69168.01635204423,
+      "Qy_kNm": 22871.960112657573,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 2465.0117427533623,
+      "Mz_EX_master_kNm": -18410.612119466387,
+      "Mz_EY_master_kNm": 51472.267129366526
+    },
+    {
+      "bloque": "LT2",
+      "z_m": 11.88,
+      "piso": 3,
+      "master": 600004,
+      "G_kN": 7029.10253941375,
+      "Q_kN": 2344.583036507775,
+      "peso_sismico_kN": 8201.394057667638,
+      "masa_t": 836.3094489624528,
+      "CM_x_m": -17.893786314414243,
+      "CM_y_m": 8.300052781071829,
+      "Gx_kNm": -126209.475122565,
+      "Gy_kNm": 58592.25557507027,
+      "Qx_kNm": -41089.0352512929,
+      "Qy_kNm": 18959.49596387997,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 1640.2788115335277,
+      "Mz_EX_master_kNm": -12533.456974601455,
+      "Mz_EY_master_kNm": 23220.137360007262
+    },
+    {
+      "bloque": "LT1",
+      "z_m": 15.84,
+      "piso": 4,
+      "master": 400001,
+      "G_kN": 11877.86541551556,
+      "Q_kN": 2902.2945828751276,
+      "peso_sismico_kN": 13329.012706953125,
+      "masa_t": 1359.1810360268926,
+      "CM_x_m": 23.809503212661653,
+      "CM_y_m": 7.538875422021011,
+      "Gx_kNm": 282748.6642301902,
+      "Gy_kNm": 89298.11645938613,
+      "Qx_kNm": 69217.01327523634,
+      "Qy_kNm": 22375.299673737085,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 2665.8025413906253,
+      "Mz_EX_master_kNm": -20097.153259250932,
+      "Mz_EY_master_kNm": 63471.43417356169
+    },
+    {
+      "bloque": "LT2",
+      "z_m": 15.84,
+      "piso": 4,
+      "master": 600005,
+      "G_kN": 7083.525241163749,
+      "Q_kN": 2366.496676023952,
+      "peso_sismico_kN": 8266.773579175726,
+      "masa_t": 842.9763047703066,
+      "CM_x_m": -17.71341295487376,
+      "CM_y_m": 8.331206760522804,
+      "Gx_kNm": -125884.30316774374,
+      "Gy_kNm": 59216.96242130933,
+      "Qx_kNm": -41096.94208927134,
+      "Qy_kNm": 19310.475018461548,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 1653.3547158351455,
+      "Mz_EX_master_kNm": -11720.973429040772,
+      "Mz_EY_master_kNm": 23703.463800040518
+    },
+    {
+      "bloque": "LT1",
+      "z_m": 19.8,
+      "piso": 5,
+      "master": 500001,
+      "G_kN": 12573.79395106556,
+      "Q_kN": 4375.0787858627145,
+      "peso_sismico_kN": 14761.333343996917,
+      "masa_t": 1505.2370936045356,
+      "CM_x_m": 24.810622677985457,
+      "CM_y_m": 7.029230343813885,
+      "Gx_kNm": 310025.11329371587,
+      "Gy_kNm": 86764.49225808501,
+      "Qx_kNm": 112425.517056314,
+      "Qy_kNm": 33992.63999737962,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 2952.2666687993838,
+      "Mz_EX_master_kNm": -20752.162451354965,
+      "Mz_EY_master_kNm": 73247.57436437457
+    },
+    {
+      "bloque": "LT2",
+      "z_m": 19.8,
+      "piso": 5,
+      "master": 600006,
+      "G_kN": 5944.940419206875,
+      "Q_kN": 971.7371131191851,
+      "peso_sismico_kN": 6430.8089757664675,
+      "masa_t": 655.7600175153052,
+      "CM_x_m": -18.23198866859197,
+      "CM_y_m": 8.262057924227996,
+      "Gx_kNm": -108525.00722058,
+      "Gy_kNm": 49017.068765620446,
+      "Qx_kNm": -17442.858310947533,
+      "Qy_kNm": 8229.294983614853,
+      "a_g": 0.2,
+      "a_m_s2": 1.96133,
+      "F_kN": 1286.1617951532935,
+      "Mz_EX_master_kNm": -8279.097975330813,
+      "Mz_EY_master_kNm": 17772.1982594523
+    }
+  ]
+}

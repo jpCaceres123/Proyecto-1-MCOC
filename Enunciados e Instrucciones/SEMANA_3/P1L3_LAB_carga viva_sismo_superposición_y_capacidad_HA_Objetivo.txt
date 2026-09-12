@@ -1,0 +1,78 @@
+Semana 3 — LAB: carga viva, sismo, superposición y capacidad HA
+Objetivo
+Construir los casos base que alimentarán toda la interacción posterior y comenzar la validación de capacidad HA.
+
+Parte A — carga viva
+Usar la misma geometría tributaria de Semana 2 con una intensidad q_Q.
+
+Verificar conservación:
+
+sum(Q transferida) = q_Q * A.
+
+Parte B — sismo pseudoestático
+Construir casos independientes EX y EY. Considere el sismo como una fuerza lateral definida en el centro de masa de cada piso como un porcentaje de g, multiplicada por la masa del piso. Se puede estimar la masa usando el peso propio más un 50% de la sobrecarga de uso (carga viva). Por ejemplo, la norma chilena Nch433 define para el sitio del edificio una aceleración basal de 20% de g. 
+
+El patrón y parámetros serán definidos por el profesor.
+
+Verificar:
+
+carga lateral total;
+corte basal;
+sentido de la deformada;
+torsión de piso si corresponde.
+Parte C — superposición
+Con casos:
+
+G;
+Q;
+EX;
+EY;
+construir una combinación arbitraria:
+
+R = lambda_G G + lambda_Q Q + lambda_EX EX + lambda_EY EY.
+
+Compararla con una corrida OpenSees explícita equivalente.
+
+Verificar al menos:
+
+desplazamiento;
+reacción;
+fuerza interna.
+Parte D — capacidad HA
+Construir al menos una Fiber Section de columna. 
+
+Mostrar:
+
+discretización;
+materiales;
+refuerzo;
+M-phi (gráfico momento curvatura);
+primeros puntos de una curva P-M (curva de interacción). Puede ser para P = 0, M = 0 y unos dos puntos intermedios. Interprete.  
+Defensa
+Preguntas posibles:
+
+¿por qué la superposición funciona?;
+
+¿cuándo dejaría de funcionar?;
+
+¿qué representa cada fibra?;
+
+¿por qué P cambia la capacidad de M?;
+
+¿qué diferencia hay entre demanda y capacidad?
+
+Forma de entrega
+Entrega grupal, grupos de 3 estudiantes.
+
+Todo código debe estar en el repositorio Git.
+
+En Canvas se entrega:
+
+enlace al repositorio;
+commit hash o tag exacto a evaluar;
+enlace directo al informe Markdown correspondiente cuando aplique.
+La entrega de laboratorio se demuestra en vivo.
+
+El profesor podrá escoger al azar a cualquier integrante para explicar cualquier parte del sistema.
+
+Una demostración que funciona pero que el grupo no puede explicar no se considera completamente lograda.

@@ -1,0 +1,4572 @@
+{
+  "b_m": 0.7,
+  "h_m": 0.7,
+  "fc_MPa": 35.0,
+  "fy_MPa": 420.0,
+  "concrete_key_points": [
+    {
+      "name": "Origen",
+      "strain": 0.0,
+      "stress_MPa": 0.0
+    },
+    {
+      "name": "Fase 1: inicio no lineal",
+      "strain": 0.001,
+      "stress_MPa": 26.25
+    },
+    {
+      "name": "Fase 2: resistencia m\u00e1xima",
+      "strain": 0.002,
+      "stress_MPa": 35.0
+    },
+    {
+      "name": "Fase 3: l\u00edmite \u00faltimo",
+      "strain": 0.0035,
+      "stress_MPa": 35.0
+    }
+  ],
+  "members": [
+    {
+      "id": 1,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 2,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 3,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 4,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 5,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 6,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 7,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 8,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 9,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 10,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 11,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 12,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 13,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 14,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 15,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 16,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 17,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 18,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 19,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 20,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 21,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 22,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 23,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 24,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 25,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 26,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 27,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 28,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 29,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 30,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 31,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 32,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 33,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 34,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 35,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 36,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 37,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 38,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 39,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 40,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 41,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 42,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 43,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 44,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 45,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 46,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 47,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 48,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 49,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 50,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 51,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 52,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 53,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 54,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 55,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 56,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 57,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 58,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 59,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 60,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 61,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 62,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 63,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 64,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 65,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 66,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 67,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 68,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 69,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 70,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 71,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 72,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 73,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 74,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 75,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 76,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 77,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 78,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 79,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 80,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 81,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 82,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 83,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 84,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 85,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 86,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 87,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 88,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 89,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 90,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 91,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 92,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 93,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 94,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 95,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 96,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 97,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 98,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 99,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 100,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 101,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 102,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 103,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 104,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 105,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 106,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 107,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 108,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 109,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 110,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 111,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 112,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 113,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 114,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 115,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 116,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 117,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 118,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 119,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 120,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 121,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 122,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 123,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 124,
+      "type": "COLUMN",
+      "has_capacity": true
+    },
+    {
+      "id": 207,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 359,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 360,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 361,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 362,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 363,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 364,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 365,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 208,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 366,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 367,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 368,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 369,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 370,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 209,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 371,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 372,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 373,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 374,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 375,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 376,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 377,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 210,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 378,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 211,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 379,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 212,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 380,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 381,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 382,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 213,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 383,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 384,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 385,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 214,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 386,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 215,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 387,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 216,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 388,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 389,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 390,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 217,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 391,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 218,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 392,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 219,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 393,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 394,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 395,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 220,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 221,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 222,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 223,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 224,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 225,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 226,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 227,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 396,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 397,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 398,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 399,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 400,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 401,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 402,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 403,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 228,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 404,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 405,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 406,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 407,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 408,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 409,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 410,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 229,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 411,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 412,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 413,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 414,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 415,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 416,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 417,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 230,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 231,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 418,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 232,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 419,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 233,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 420,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 234,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 421,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 235,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 422,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 236,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 423,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 237,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 238,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 424,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 239,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 425,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 240,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 241,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 426,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 242,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 243,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 244,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 245,
+      "type": "BEAM_SMALL",
+      "has_capacity": false
+    },
+    {
+      "id": 246,
+      "type": "BEAM_SMALL",
+      "has_capacity": false
+    },
+    {
+      "id": 247,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 248,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 249,
+      "type": "BEAM_VARIABLE",
+      "has_capacity": false
+    },
+    {
+      "id": 250,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 251,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 252,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 253,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 254,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 427,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 255,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 428,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 256,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 429,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 257,
+      "type": "BEAM_40x60",
+      "has_capacity": false
+    },
+    {
+      "id": 430,
+      "type": "BEAM_40x60",
+      "has_capacity": false
+    },
+    {
+      "id": 258,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 431,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 259,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 432,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 433,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 434,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 435,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 436,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 437,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 438,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 439,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 440,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 260,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 441,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 442,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 443,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 444,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 445,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 446,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 447,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 448,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 449,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 261,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 450,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 451,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 452,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 453,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 454,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 455,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 456,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 457,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 458,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 262,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 459,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 263,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 460,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 264,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 461,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 265,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 462,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 266,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 463,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 267,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 464,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 268,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 465,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 269,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 466,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 270,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 467,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 271,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 468,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 272,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 469,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 273,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 274,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 275,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 276,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 470,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 471,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 472,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 473,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 474,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 475,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 476,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 277,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 477,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 478,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 479,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 480,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 481,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 278,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 482,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 483,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 484,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 485,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 486,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 487,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 488,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 279,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 489,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 280,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 490,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 281,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 491,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 492,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 493,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 494,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 282,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 495,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 496,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 497,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 283,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 498,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 284,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 499,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 285,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 500,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 501,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 502,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 286,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 503,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 287,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 504,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 288,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 505,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 506,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 289,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 507,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 508,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 509,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 510,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 511,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 512,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 513,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 290,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 514,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 515,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 516,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 517,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 518,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 291,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 519,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 520,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 521,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 522,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 523,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 524,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 525,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 292,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 526,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 293,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 527,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 294,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 528,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 529,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 530,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 531,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 295,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 532,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 533,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 534,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 296,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 535,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 297,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 536,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 298,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 537,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 538,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 539,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 299,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 540,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 300,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 541,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 301,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 542,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 543,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 302,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 544,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 545,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 546,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 547,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 548,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 549,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 550,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 303,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 551,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 552,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 553,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 554,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 555,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 304,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 556,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 557,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 558,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 559,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 560,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 561,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 562,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 563,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 305,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 564,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 306,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 565,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 307,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 566,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 567,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 568,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 308,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 569,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 570,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 571,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 309,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 572,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 310,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 573,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 311,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 574,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 575,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 576,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 312,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 577,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 313,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 578,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 314,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 579,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 580,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 315,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 581,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 582,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 583,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 584,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 585,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 586,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 587,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 316,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 588,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 589,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 590,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 591,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 592,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 317,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 593,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 594,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 595,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 596,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 597,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 598,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 599,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 318,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 600,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 319,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 601,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 320,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 602,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 603,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 604,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 321,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 605,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 606,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 607,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 322,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 608,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 323,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 609,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 324,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 610,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 611,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 612,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 325,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 613,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 326,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 614,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 327,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 615,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 328,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 616,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 617,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 618,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 619,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 620,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 621,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 622,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 623,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 329,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 624,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 625,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 626,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 627,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 628,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 629,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 630,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 330,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 631,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 632,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 633,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 634,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 635,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 636,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 637,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 331,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 332,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 638,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 333,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 639,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 334,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 640,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 335,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 641,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 336,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 642,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 337,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 643,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 338,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 339,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 644,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 340,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 645,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 341,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 342,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 646,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 343,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 647,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 648,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 649,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 650,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 651,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 652,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 653,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 654,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 344,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 655,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 656,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 657,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 658,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 659,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 660,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 661,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 662,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 345,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 663,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 664,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 665,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 666,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 667,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 668,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 669,
+      "type": "BEAM_X",
+      "has_capacity": false
+    },
+    {
+      "id": 346,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 670,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 347,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 671,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 348,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 672,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 349,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 673,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 350,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 674,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 351,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 675,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 352,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 676,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 353,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 677,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 354,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 678,
+      "type": "BEAM_Y",
+      "has_capacity": false
+    },
+    {
+      "id": 355,
+      "type": "STEEL_COLUMN_SHS300x20",
+      "has_capacity": false
+    },
+    {
+      "id": 356,
+      "type": "STEEL_COLUMN_SHS300x20",
+      "has_capacity": false
+    },
+    {
+      "id": 357,
+      "type": "STEEL_COLUMN_SHS300x20",
+      "has_capacity": false
+    },
+    {
+      "id": 358,
+      "type": "STEEL_COLUMN_SHS300x20",
+      "has_capacity": false
+    },
+    {
+      "id": 679,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 680,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 681,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 682,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 683,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 684,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 685,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 686,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 687,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 688,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 689,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 690,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 691,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 692,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 693,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 694,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    }
+  ],
+  "pm": [
+    {
+      "p": 13560.83891840862,
+      "m": 0.0
+    },
+    {
+      "p": 13213.739739917486,
+      "m": 1047.8086048031137
+    },
+    {
+      "p": 6367.563300305559,
+      "m": 1741.580997887212
+    },
+    {
+      "p": 5690.418670129784,
+      "m": 1680.061932888526
+    },
+    {
+      "p": 3411.987945785679,
+      "m": 1495.7393326712058
+    },
+    {
+      "p": 0.0,
+      "m": 763.0823359444464
+    },
+    {
+      "p": -2554.4918184869325,
+      "m": 0.0
+    }
+  ],
+  "concrete": [
+    {
+      "strain": 0.0,
+      "stress_MPa": 0.0
+    },
+    {
+      "strain": 1.9444444444444445e-05,
+      "stress_MPa": 0.677247299382716
+    },
+    {
+      "strain": 3.888888888888889e-05,
+      "stress_MPa": 1.347878086419753
+    },
+    {
+      "strain": 5.833333333333333e-05,
+      "stress_MPa": 2.0118923611111112
+    },
+    {
+      "strain": 7.777777777777778e-05,
+      "stress_MPa": 2.6692901234567903
+    },
+    {
+      "strain": 9.722222222222223e-05,
+      "stress_MPa": 3.32007137345679
+    },
+    {
+      "strain": 0.00011666666666666667,
+      "stress_MPa": 3.964236111111111
+    },
+    {
+      "strain": 0.00013611111111111113,
+      "stress_MPa": 4.601784336419754
+    },
+    {
+      "strain": 0.00015555555555555556,
+      "stress_MPa": 5.2327160493827165
+    },
+    {
+      "strain": 0.000175,
+      "stress_MPa": 5.8570312499999995
+    },
+    {
+      "strain": 0.00019444444444444446,
+      "stress_MPa": 6.474729938271605
+    },
+    {
+      "strain": 0.0002138888888888889,
+      "stress_MPa": 7.085812114197531
+    },
+    {
+      "strain": 0.00023333333333333333,
+      "stress_MPa": 7.690277777777778
+    },
+    {
+      "strain": 0.00025277777777777777,
+      "stress_MPa": 8.288126929012344
+    },
+    {
+      "strain": 0.00027222222222222226,
+      "stress_MPa": 8.879359567901234
+    },
+    {
+      "strain": 0.0002916666666666667,
+      "stress_MPa": 9.463975694444445
+    },
+    {
+      "strain": 0.0003111111111111111,
+      "stress_MPa": 10.041975308641977
+    },
+    {
+      "strain": 0.00033055555555555556,
+      "stress_MPa": 10.613358410493827
+    },
+    {
+      "strain": 0.00035,
+      "stress_MPa": 11.178124999999998
+    },
+    {
+      "strain": 0.0003694444444444445,
+      "stress_MPa": 11.736275077160494
+    },
+    {
+      "strain": 0.0003888888888888889,
+      "stress_MPa": 12.287808641975309
+    },
+    {
+      "strain": 0.00040833333333333336,
+      "stress_MPa": 12.832725694444443
+    },
+    {
+      "strain": 0.0004277777777777778,
+      "stress_MPa": 13.3710262345679
+    },
+    {
+      "strain": 0.0004472222222222222,
+      "stress_MPa": 13.90271026234568
+    },
+    {
+      "strain": 0.00046666666666666666,
+      "stress_MPa": 14.427777777777777
+    },
+    {
+      "strain": 0.00048611111111111115,
+      "stress_MPa": 14.9462287808642
+    },
+    {
+      "strain": 0.0005055555555555555,
+      "stress_MPa": 15.458063271604939
+    },
+    {
+      "strain": 0.0005250000000000001,
+      "stress_MPa": 15.963281250000001
+    },
+    {
+      "strain": 0.0005444444444444445,
+      "stress_MPa": 16.461882716049384
+    },
+    {
+      "strain": 0.000563888888888889,
+      "stress_MPa": 16.953867669753084
+    },
+    {
+      "strain": 0.0005833333333333334,
+      "stress_MPa": 17.43923611111111
+    },
+    {
+      "strain": 0.0006027777777777778,
+      "stress_MPa": 17.917988040123458
+    },
+    {
+      "strain": 0.0006222222222222223,
+      "stress_MPa": 18.39012345679012
+    },
+    {
+      "strain": 0.0006416666666666667,
+      "stress_MPa": 18.855642361111112
+    },
+    {
+      "strain": 0.0006611111111111111,
+      "stress_MPa": 19.31454475308642
+    },
+    {
+      "strain": 0.0006805555555555556,
+      "stress_MPa": 19.76683063271605
+    },
+    {
+      "strain": 0.0007,
+      "stress_MPa": 20.212500000000002
+    },
+    {
+      "strain": 0.0007194444444444444,
+      "stress_MPa": 20.65155285493827
+    },
+    {
+      "strain": 0.000738888888888889,
+      "stress_MPa": 21.083989197530865
+    },
+    {
+      "strain": 0.0007583333333333334,
+      "stress_MPa": 21.50980902777778
+    },
+    {
+      "strain": 0.0007777777777777778,
+      "stress_MPa": 21.929012345679013
+    },
+    {
+      "strain": 0.0007972222222222223,
+      "stress_MPa": 22.34159915123457
+    },
+    {
+      "strain": 0.0008166666666666667,
+      "stress_MPa": 22.747569444444444
+    },
+    {
+      "strain": 0.0008361111111111111,
+      "stress_MPa": 23.14692322530864
+    },
+    {
+      "strain": 0.0008555555555555556,
+      "stress_MPa": 23.53966049382716
+    },
+    {
+      "strain": 0.000875,
+      "stress_MPa": 23.92578125
+    },
+    {
+      "strain": 0.0008944444444444445,
+      "stress_MPa": 24.30528549382716
+    },
+    {
+      "strain": 0.0009138888888888889,
+      "stress_MPa": 24.678173225308644
+    },
+    {
+      "strain": 0.0009333333333333333,
+      "stress_MPa": 25.044444444444444
+    },
+    {
+      "strain": 0.0009527777777777779,
+      "stress_MPa": 25.40409915123457
+    },
+    {
+      "strain": 0.0009722222222222223,
+      "stress_MPa": 25.757137345679016
+    },
+    {
+      "strain": 0.0009916666666666667,
+      "stress_MPa": 26.103559027777777
+    },
+    {
+      "strain": 0.001011111111111111,
+      "stress_MPa": 26.443364197530865
+    },
+    {
+      "strain": 0.0010305555555555556,
+      "stress_MPa": 26.776552854938274
+    },
+    {
+      "strain": 0.0010500000000000002,
+      "stress_MPa": 27.103125000000002
+    },
+    {
+      "strain": 0.0010694444444444445,
+      "stress_MPa": 27.42308063271605
+    },
+    {
+      "strain": 0.001088888888888889,
+      "stress_MPa": 27.73641975308642
+    },
+    {
+      "strain": 0.0011083333333333333,
+      "stress_MPa": 28.04314236111111
+    },
+    {
+      "strain": 0.001127777777777778,
+      "stress_MPa": 28.343248456790125
+    },
+    {
+      "strain": 0.0011472222222222222,
+      "stress_MPa": 28.636738040123458
+    },
+    {
+      "strain": 0.0011666666666666668,
+      "stress_MPa": 28.92361111111111
+    },
+    {
+      "strain": 0.001186111111111111,
+      "stress_MPa": 29.203867669753087
+    },
+    {
+      "strain": 0.0012055555555555556,
+      "stress_MPa": 29.477507716049384
+    },
+    {
+      "strain": 0.001225,
+      "stress_MPa": 29.74453125
+    },
+    {
+      "strain": 0.0012444444444444445,
+      "stress_MPa": 30.004938271604942
+    },
+    {
+      "strain": 0.001263888888888889,
+      "stress_MPa": 30.258728780864203
+    },
+    {
+      "strain": 0.0012833333333333334,
+      "stress_MPa": 30.505902777777777
+    },
+    {
+      "strain": 0.001302777777777778,
+      "stress_MPa": 30.74646026234568
+    },
+    {
+      "strain": 0.0013222222222222222,
+      "stress_MPa": 30.9804012345679
+    },
+    {
+      "strain": 0.0013416666666666668,
+      "stress_MPa": 31.20772569444445
+    },
+    {
+      "strain": 0.0013611111111111111,
+      "stress_MPa": 31.42843364197531
+    },
+    {
+      "strain": 0.0013805555555555557,
+      "stress_MPa": 31.642525077160492
+    },
+    {
+      "strain": 0.0014,
+      "stress_MPa": 31.849999999999998
+    },
+    {
+      "strain": 0.0014194444444444445,
+      "stress_MPa": 32.05085841049383
+    },
+    {
+      "strain": 0.0014388888888888889,
+      "stress_MPa": 32.24510030864198
+    },
+    {
+      "strain": 0.0014583333333333334,
+      "stress_MPa": 32.43272569444444
+    },
+    {
+      "strain": 0.001477777777777778,
+      "stress_MPa": 32.61373456790123
+    },
+    {
+      "strain": 0.0014972222222222223,
+      "stress_MPa": 32.78812692901235
+    },
+    {
+      "strain": 0.0015166666666666668,
+      "stress_MPa": 32.95590277777778
+    },
+    {
+      "strain": 0.0015361111111111111,
+      "stress_MPa": 33.11706211419753
+    },
+    {
+      "strain": 0.0015555555555555557,
+      "stress_MPa": 33.27160493827161
+    },
+    {
+      "strain": 0.001575,
+      "stress_MPa": 33.41953125
+    },
+    {
+      "strain": 0.0015944444444444446,
+      "stress_MPa": 33.56084104938272
+    },
+    {
+      "strain": 0.0016138888888888889,
+      "stress_MPa": 33.695534336419755
+    },
+    {
+      "strain": 0.0016333333333333334,
+      "stress_MPa": 33.82361111111111
+    },
+    {
+      "strain": 0.0016527777777777778,
+      "stress_MPa": 33.94507137345679
+    },
+    {
+      "strain": 0.0016722222222222223,
+      "stress_MPa": 34.05991512345679
+    },
+    {
+      "strain": 0.0016916666666666668,
+      "stress_MPa": 34.16814236111111
+    },
+    {
+      "strain": 0.0017111111111111112,
+      "stress_MPa": 34.269753086419755
+    },
+    {
+      "strain": 0.0017305555555555557,
+      "stress_MPa": 34.36474729938272
+    },
+    {
+      "strain": 0.00175,
+      "stress_MPa": 34.453125
+    },
+    {
+      "strain": 0.0017694444444444446,
+      "stress_MPa": 34.53488618827161
+    },
+    {
+      "strain": 0.001788888888888889,
+      "stress_MPa": 34.61003086419753
+    },
+    {
+      "strain": 0.0018083333333333335,
+      "stress_MPa": 34.67855902777777
+    },
+    {
+      "strain": 0.0018277777777777778,
+      "stress_MPa": 34.74047067901235
+    },
+    {
+      "strain": 0.0018472222222222223,
+      "stress_MPa": 34.795765817901234
+    },
+    {
+      "strain": 0.0018666666666666666,
+      "stress_MPa": 34.84444444444444
+    },
+    {
+      "strain": 0.0018861111111111112,
+      "stress_MPa": 34.886506558641976
+    },
+    {
+      "strain": 0.0019055555555555557,
+      "stress_MPa": 34.92195216049383
+    },
+    {
+      "strain": 0.001925,
+      "stress_MPa": 34.95078125
+    },
+    {
+      "strain": 0.0019444444444444446,
+      "stress_MPa": 34.972993827160494
+    },
+    {
+      "strain": 0.001963888888888889,
+      "stress_MPa": 34.98858989197531
+    },
+    {
+      "strain": 0.0019833333333333335,
+      "stress_MPa": 34.997569444444444
+    },
+    {
+      "strain": 0.002002777777777778,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002022222222222222,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002041666666666667,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002061111111111111,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0020805555555555555,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0021000000000000003,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0021194444444444446,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002138888888888889,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0021583333333333333,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002177777777777778,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0021972222222222224,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0022166666666666667,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002236111111111111,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002255555555555556,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002275,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0022944444444444444,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002313888888888889,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0023333333333333335,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002352777777777778,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002372222222222222,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002391666666666667,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0024111111111111113,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0024305555555555556,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.00245,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0024694444444444447,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002488888888888889,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0025083333333333333,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002527777777777778,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0025472222222222224,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0025666666666666667,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002586111111111111,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002605555555555556,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002625,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0026444444444444445,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002663888888888889,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0026833333333333336,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002702777777777778,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0027222222222222222,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002741666666666667,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0027611111111111113,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0027805555555555556,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0028,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0028194444444444447,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002838888888888889,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0028583333333333334,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0028777777777777777,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0028972222222222225,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002916666666666667,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002936111111111111,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002955555555555556,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.002975,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0029944444444444445,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.003013888888888889,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0030333333333333336,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.003052777777777778,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0030722222222222223,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0030916666666666666,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0031111111111111114,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0031305555555555557,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.00315,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0031694444444444448,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.003188888888888889,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0032083333333333334,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0032277777777777778,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0032472222222222225,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.003266666666666667,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.003286111111111111,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0033055555555555555,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0033250000000000003,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0033444444444444446,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.003363888888888889,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0033833333333333337,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.003402777777777778,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0034222222222222223,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0034416666666666667,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0034611111111111114,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0034805555555555557,
+      "stress_MPa": 35.0
+    },
+    {
+      "strain": 0.0035,
+      "stress_MPa": 35.0
+    }
+  ],
+  "steel": [
+    {
+      "strain": -0.004,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.003955555555555556,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.003911111111111111,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0038666666666666667,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0038222222222222225,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.003777777777777778,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0037333333333333333,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.003688888888888889,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0036444444444444445,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0036,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0035555555555555557,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.003511111111111111,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0034666666666666665,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0034222222222222223,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0033777777777777777,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.003333333333333333,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.003288888888888889,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0032444444444444448,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0032,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0031555555555555555,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0031111111111111114,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0030666666666666668,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.003022222222222222,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002977777777777778,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0029333333333333334,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0028888888888888888,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0028444444444444446,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0028,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0027555555555555554,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002711111111111111,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0026666666666666666,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002622222222222222,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002577777777777778,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0025333333333333336,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002488888888888889,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0024444444444444444,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0024000000000000002,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0023555555555555556,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002311111111111111,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002266666666666667,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0022222222222222222,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0021777777777777776,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0021333333333333334,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002088888888888889,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0020444444444444442,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.002,
+      "stress_MPa": -420.0
+    },
+    {
+      "strain": -0.0019555555555555554,
+      "stress_MPa": -410.66666666666663
+    },
+    {
+      "strain": -0.0019111111111111113,
+      "stress_MPa": -401.33333333333337
+    },
+    {
+      "strain": -0.0018666666666666666,
+      "stress_MPa": -392.0
+    },
+    {
+      "strain": -0.001822222222222222,
+      "stress_MPa": -382.66666666666663
+    },
+    {
+      "strain": -0.0017777777777777779,
+      "stress_MPa": -373.33333333333337
+    },
+    {
+      "strain": -0.0017333333333333333,
+      "stress_MPa": -364.0
+    },
+    {
+      "strain": -0.001688888888888889,
+      "stress_MPa": -354.6666666666667
+    },
+    {
+      "strain": -0.0016444444444444445,
+      "stress_MPa": -345.3333333333333
+    },
+    {
+      "strain": -0.0015999999999999999,
+      "stress_MPa": -335.99999999999994
+    },
+    {
+      "strain": -0.0015555555555555557,
+      "stress_MPa": -326.6666666666667
+    },
+    {
+      "strain": -0.001511111111111111,
+      "stress_MPa": -317.3333333333333
+    },
+    {
+      "strain": -0.0014666666666666665,
+      "stress_MPa": -307.99999999999994
+    },
+    {
+      "strain": -0.0014222222222222223,
+      "stress_MPa": -298.6666666666667
+    },
+    {
+      "strain": -0.0013777777777777777,
+      "stress_MPa": -289.3333333333333
+    },
+    {
+      "strain": -0.001333333333333333,
+      "stress_MPa": -279.99999999999994
+    },
+    {
+      "strain": -0.001288888888888889,
+      "stress_MPa": -270.6666666666667
+    },
+    {
+      "strain": -0.0012444444444444443,
+      "stress_MPa": -261.3333333333333
+    },
+    {
+      "strain": -0.0012000000000000001,
+      "stress_MPa": -252.00000000000003
+    },
+    {
+      "strain": -0.0011555555555555555,
+      "stress_MPa": -242.66666666666666
+    },
+    {
+      "strain": -0.001111111111111111,
+      "stress_MPa": -233.3333333333333
+    },
+    {
+      "strain": -0.0010666666666666667,
+      "stress_MPa": -224.0
+    },
+    {
+      "strain": -0.0010222222222222221,
+      "stress_MPa": -214.66666666666666
+    },
+    {
+      "strain": -0.000977777777777778,
+      "stress_MPa": -205.33333333333337
+    },
+    {
+      "strain": -0.0009333333333333333,
+      "stress_MPa": -196.0
+    },
+    {
+      "strain": -0.0008888888888888887,
+      "stress_MPa": -186.66666666666663
+    },
+    {
+      "strain": -0.0008444444444444445,
+      "stress_MPa": -177.33333333333334
+    },
+    {
+      "strain": -0.0007999999999999999,
+      "stress_MPa": -167.99999999999997
+    },
+    {
+      "strain": -0.0007555555555555553,
+      "stress_MPa": -158.66666666666663
+    },
+    {
+      "strain": -0.0007111111111111111,
+      "stress_MPa": -149.33333333333334
+    },
+    {
+      "strain": -0.0006666666666666665,
+      "stress_MPa": -139.99999999999997
+    },
+    {
+      "strain": -0.0006222222222222219,
+      "stress_MPa": -130.6666666666666
+    },
+    {
+      "strain": -0.0005777777777777778,
+      "stress_MPa": -121.33333333333333
+    },
+    {
+      "strain": -0.0005333333333333331,
+      "stress_MPa": -111.99999999999996
+    },
+    {
+      "strain": -0.000488888888888889,
+      "stress_MPa": -102.66666666666669
+    },
+    {
+      "strain": -0.00044444444444444436,
+      "stress_MPa": -93.33333333333331
+    },
+    {
+      "strain": -0.00039999999999999975,
+      "stress_MPa": -83.99999999999994
+    },
+    {
+      "strain": -0.00035555555555555557,
+      "stress_MPa": -74.66666666666667
+    },
+    {
+      "strain": -0.00031111111111111096,
+      "stress_MPa": -65.3333333333333
+    },
+    {
+      "strain": -0.0002666666666666668,
+      "stress_MPa": -56.00000000000002
+    },
+    {
+      "strain": -0.00022222222222222218,
+      "stress_MPa": -46.66666666666666
+    },
+    {
+      "strain": -0.00017777777777777757,
+      "stress_MPa": -37.33333333333329
+    },
+    {
+      "strain": -0.0001333333333333334,
+      "stress_MPa": -28.00000000000001
+    },
+    {
+      "strain": -8.888888888888835e-05,
+      "stress_MPa": -18.666666666666554
+    },
+    {
+      "strain": -4.4444444444444176e-05,
+      "stress_MPa": -9.333333333333277
+    },
+    {
+      "strain": 0.0,
+      "stress_MPa": 0.0
+    },
+    {
+      "strain": 4.4444444444444176e-05,
+      "stress_MPa": 9.333333333333277
+    },
+    {
+      "strain": 8.888888888888922e-05,
+      "stress_MPa": 18.666666666666735
+    },
+    {
+      "strain": 0.0001333333333333334,
+      "stress_MPa": 28.00000000000001
+    },
+    {
+      "strain": 0.00017777777777777757,
+      "stress_MPa": 37.33333333333329
+    },
+    {
+      "strain": 0.0002222222222222226,
+      "stress_MPa": 46.66666666666675
+    },
+    {
+      "strain": 0.0002666666666666668,
+      "stress_MPa": 56.00000000000002
+    },
+    {
+      "strain": 0.00031111111111111096,
+      "stress_MPa": 65.3333333333333
+    },
+    {
+      "strain": 0.000355555555555556,
+      "stress_MPa": 74.66666666666676
+    },
+    {
+      "strain": 0.0004000000000000002,
+      "stress_MPa": 84.00000000000004
+    },
+    {
+      "strain": 0.00044444444444444436,
+      "stress_MPa": 93.33333333333331
+    },
+    {
+      "strain": 0.0004888888888888894,
+      "stress_MPa": 102.66666666666677
+    },
+    {
+      "strain": 0.0005333333333333336,
+      "stress_MPa": 112.00000000000004
+    },
+    {
+      "strain": 0.0005777777777777778,
+      "stress_MPa": 121.33333333333333
+    },
+    {
+      "strain": 0.0006222222222222219,
+      "stress_MPa": 130.6666666666666
+    },
+    {
+      "strain": 0.000666666666666667,
+      "stress_MPa": 140.00000000000006
+    },
+    {
+      "strain": 0.0007111111111111111,
+      "stress_MPa": 149.33333333333334
+    },
+    {
+      "strain": 0.0007555555555555553,
+      "stress_MPa": 158.66666666666663
+    },
+    {
+      "strain": 0.0008000000000000004,
+      "stress_MPa": 168.00000000000009
+    },
+    {
+      "strain": 0.0008444444444444445,
+      "stress_MPa": 177.33333333333334
+    },
+    {
+      "strain": 0.0008888888888888887,
+      "stress_MPa": 186.66666666666663
+    },
+    {
+      "strain": 0.0009333333333333338,
+      "stress_MPa": 196.00000000000009
+    },
+    {
+      "strain": 0.000977777777777778,
+      "stress_MPa": 205.33333333333337
+    },
+    {
+      "strain": 0.0010222222222222221,
+      "stress_MPa": 214.66666666666666
+    },
+    {
+      "strain": 0.0010666666666666672,
+      "stress_MPa": 224.00000000000009
+    },
+    {
+      "strain": 0.0011111111111111113,
+      "stress_MPa": 233.33333333333337
+    },
+    {
+      "strain": 0.0011555555555555555,
+      "stress_MPa": 242.66666666666666
+    },
+    {
+      "strain": 0.0012000000000000005,
+      "stress_MPa": 252.0000000000001
+    },
+    {
+      "strain": 0.0012444444444444447,
+      "stress_MPa": 261.3333333333334
+    },
+    {
+      "strain": 0.001288888888888889,
+      "stress_MPa": 270.6666666666667
+    },
+    {
+      "strain": 0.001333333333333334,
+      "stress_MPa": 280.0000000000001
+    },
+    {
+      "strain": 0.0013777777777777781,
+      "stress_MPa": 289.3333333333334
+    },
+    {
+      "strain": 0.0014222222222222223,
+      "stress_MPa": 298.6666666666667
+    },
+    {
+      "strain": 0.0014666666666666665,
+      "stress_MPa": 307.99999999999994
+    },
+    {
+      "strain": 0.0015111111111111115,
+      "stress_MPa": 317.3333333333334
+    },
+    {
+      "strain": 0.0015555555555555557,
+      "stress_MPa": 326.6666666666667
+    },
+    {
+      "strain": 0.0015999999999999999,
+      "stress_MPa": 335.99999999999994
+    },
+    {
+      "strain": 0.001644444444444445,
+      "stress_MPa": 345.3333333333334
+    },
+    {
+      "strain": 0.001688888888888889,
+      "stress_MPa": 354.6666666666667
+    },
+    {
+      "strain": 0.0017333333333333333,
+      "stress_MPa": 364.0
+    },
+    {
+      "strain": 0.0017777777777777783,
+      "stress_MPa": 373.3333333333334
+    },
+    {
+      "strain": 0.0018222222222222225,
+      "stress_MPa": 382.66666666666674
+    },
+    {
+      "strain": 0.0018666666666666666,
+      "stress_MPa": 392.0
+    },
+    {
+      "strain": 0.0019111111111111117,
+      "stress_MPa": 401.3333333333334
+    },
+    {
+      "strain": 0.001955555555555556,
+      "stress_MPa": 410.66666666666674
+    },
+    {
+      "strain": 0.002,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0020444444444444442,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0020888888888888893,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0021333333333333334,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0021777777777777776,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0022222222222222227,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002266666666666667,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002311111111111111,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002355555555555556,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0024000000000000002,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0024444444444444444,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0024888888888888894,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0025333333333333336,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002577777777777778,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002622222222222223,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002666666666666667,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002711111111111111,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0027555555555555562,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0028000000000000004,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0028444444444444446,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0028888888888888888,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002933333333333334,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.002977777777777778,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003022222222222222,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003066666666666667,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0031111111111111114,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0031555555555555555,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0032000000000000006,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0032444444444444448,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003288888888888889,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003333333333333334,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003377777777777778,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0034222222222222223,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0034666666666666665,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0035111111111111116,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0035555555555555557,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0036,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003644444444444445,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003688888888888889,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0037333333333333333,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0037777777777777783,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0038222222222222234,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.0038666666666666676,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003911111111111112,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.003955555555555556,
+      "stress_MPa": 420.0
+    },
+    {
+      "strain": 0.004,
+      "stress_MPa": 420.0
+    }
+  ]
+}

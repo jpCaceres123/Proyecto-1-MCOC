@@ -1,0 +1,702 @@
+{
+  "fuente": "enfierradura_muros.md",
+  "direccion_principal": "flexion en el plano alrededor del centroide, deformacion variable a lo largo del muro",
+  "doble_malla": true,
+  "cover_center_m": 0.05,
+  "fc_MPa": 35.0,
+  "fy_MPa": 420.0,
+  "Es_MPa": 210000.0,
+  "eps_cu": 0.003,
+  "beta1": 0.8,
+  "factor_compresion_max": 0.8,
+  "assignments": [
+    {
+      "wall_id": 1,
+      "identificacion_plano": "M-LT2-1-A'-retorno",
+      "confianza": "alta",
+      "criterio_asignacion": "Retorno de 2.915 m y espesor 0.60 m junto al eje LT2/1",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 28,
+          "note": "Registro LT2 1/3, subterráneo"
+        },
+        {
+          "z_min_m": 3.96,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 28,
+          "note": "Registro LT2 1/3, piso 1"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 11.88,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Registro LT2 1/3, piso 2"
+        },
+        {
+          "z_min_m": 11.88,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Registro LT2 1/3, pisos 3 y 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 2,
+      "identificacion_plano": "M-LT2-1-A'",
+      "confianza": "alta",
+      "criterio_asignacion": "Tramo de 1.85 m y espesor 0.30 m junto al eje LT2/1",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 100,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 28,
+          "note": "Registro LT2 1/3, subterráneo"
+        },
+        {
+          "z_min_m": 3.96,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 28,
+          "note": "Registro LT2 1/3, piso 1"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 11.88,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Registro LT2 1/3, piso 2"
+        },
+        {
+          "z_min_m": 11.88,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Registro LT2 1/3, pisos 3 y 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 3,
+      "identificacion_plano": "M-LT2-3-A'-retorno",
+      "confianza": "alta",
+      "criterio_asignacion": "Retorno de 2.920 m y espesor 0.60 m junto al eje LT2/3",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 28,
+          "note": "Registro LT2 1/3, subterráneo"
+        },
+        {
+          "z_min_m": 3.96,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 28,
+          "note": "Registro LT2 1/3, piso 1"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 11.88,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Registro LT2 1/3, piso 2"
+        },
+        {
+          "z_min_m": 11.88,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Registro LT2 1/3, pisos 3 y 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 4,
+      "identificacion_plano": "M-LT2-3-A'",
+      "confianza": "alta",
+      "criterio_asignacion": "Tramo de 1.85 m y espesor 0.30 m junto al eje LT2/3",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 100,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 28,
+          "note": "Registro LT2 1/3, subterráneo"
+        },
+        {
+          "z_min_m": 3.96,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 28,
+          "note": "Registro LT2 1/3, piso 1"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 11.88,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Registro LT2 1/3, piso 2"
+        },
+        {
+          "z_min_m": 11.88,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Registro LT2 1/3, pisos 3 y 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 5,
+      "identificacion_plano": "M-LT2-D-D'-1'/2",
+      "confianza": "media",
+      "criterio_asignacion": "Muro LT2 de espesor 0.25 m en borde de junta; paño largo",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "D.M. Ø10@20, niveles inferiores"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "D.M.V. Ø10@20 y D.M.H. Ø8@16"
+        }
+      ]
+    },
+    {
+      "wall_id": 6,
+      "identificacion_plano": "M-LT2-D-D'-2/3",
+      "confianza": "media",
+      "criterio_asignacion": "Muro LT2 de espesor 0.25 m en borde de junta; paño superior",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "D.M. Ø10@20, niveles inferiores"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "D.M.V. Ø10@20 y D.M.H. Ø8@16"
+        }
+      ]
+    },
+    {
+      "wall_id": 7,
+      "identificacion_plano": "M-LT2-D-D'-2/3 (piso 4)",
+      "confianza": "media",
+      "criterio_asignacion": "Continuación desplazada del muro 6 en el último nivel",
+      "profiles": [
+        {
+          "z_min_m": 15.84,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "Piso 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 8,
+      "identificacion_plano": "M-LT2-1'-C'/D'",
+      "confianza": "media",
+      "criterio_asignacion": "Paño horizontal conectado al muro C prima",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 100,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "LT2/1 prima, niveles inferiores"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 11.88,
+          "vertical_diameter_mm": 12,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 22,
+          "note": "Piso 2"
+        },
+        {
+          "z_min_m": 11.88,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 3,
+          "boundary_diameter_mm": 16,
+          "note": "Pisos 3 y 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 9,
+      "identificacion_plano": "M-LT2-C'-1'/2",
+      "confianza": "alta",
+      "criterio_asignacion": "Longitud modelada 2.945 m coincide con la cota registrada",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 150,
+          "boundary_bars_each_end": 2,
+          "boundary_diameter_mm": 25,
+          "note": "Subterráneo"
+        },
+        {
+          "z_min_m": 3.96,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "Piso 1; borde no confirmado"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 2,
+          "boundary_diameter_mm": 25,
+          "note": "Pisos 2 a 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 10,
+      "identificacion_plano": "M-3-3'-E/F",
+      "confianza": "media",
+      "criterio_asignacion": "Muro LT1 horizontal de espesor 0.20 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 8,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 8,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 11,
+      "identificacion_plano": "M-Ec-1''/2 (borde izquierdo)",
+      "confianza": "media",
+      "criterio_asignacion": "Longitud 2.25 m y espesor 0.30 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 160,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "Subterráneo y piso 1"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "Pisos 2 a 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 12,
+      "identificacion_plano": "M-Ec-1''/2 (borde derecho)",
+      "confianza": "media",
+      "criterio_asignacion": "Longitud 2.25 m y espesor 0.30 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 160,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "Subterráneo y piso 1"
+        },
+        {
+          "z_min_m": 7.92,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "Pisos 2 a 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 13,
+      "identificacion_plano": "M-1''-E/Ec",
+      "confianza": "media",
+      "criterio_asignacion": "Paño vertical LT1 de espesor 0.20 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 120,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 14,
+      "identificacion_plano": "M-1''-Eb/Ec",
+      "confianza": "media",
+      "criterio_asignacion": "Paño LT1 de espesor 0.20 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 120,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 15,
+      "identificacion_plano": "M-Ea-2a/2",
+      "confianza": "alta",
+      "criterio_asignacion": "Longitud modelada 1.58 m coincide con cota 1.579 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 8,
+          "vertical_spacing_mm": 160,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 2,
+          "boundary_diameter_mm": 28,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 16,
+      "identificacion_plano": "M-Ed-2a/2",
+      "confianza": "alta",
+      "criterio_asignacion": "Longitud modelada 1.58 m coincide con cota 1.579 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 11.88,
+          "vertical_diameter_mm": 8,
+          "vertical_spacing_mm": 160,
+          "horizontal_diameter_mm": 10,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 2,
+          "boundary_diameter_mm": 28,
+          "note": "Hasta piso 2"
+        },
+        {
+          "z_min_m": 11.88,
+          "z_max_m": 19.8,
+          "vertical_diameter_mm": 8,
+          "vertical_spacing_mm": 160,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 2,
+          "boundary_diameter_mm": 25,
+          "note": "Pisos 3 y 4"
+        }
+      ]
+    },
+    {
+      "wall_id": 17,
+      "identificacion_plano": "M-E-E'-3/2",
+      "confianza": "media",
+      "criterio_asignacion": "Paño inferior de espesor 0.20 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 18,
+      "identificacion_plano": "M1 1-1' / M-3-3'-E/F (paño 1)",
+      "confianza": "baja",
+      "criterio_asignacion": "Paño subterráneo de espesor 0.20 m; plano no entrega vínculo ID",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 8,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 8,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 19,
+      "identificacion_plano": "M1 1-1' / M-3-3'-E/F (paño 2)",
+      "confianza": "baja",
+      "criterio_asignacion": "Paño subterráneo de espesor 0.20 m; plano no entrega vínculo ID",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 8,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 8,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 20,
+      "identificacion_plano": "M-F-F'-1/2 + M-F-F'-2/3",
+      "confianza": "alta",
+      "criterio_asignacion": "Muro continuo en eje F, espesor 0.30 m, modela ambos paños",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 16,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 16,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 21,
+      "identificacion_plano": "M1 1-1'",
+      "confianza": "baja",
+      "criterio_asignacion": "Muro subterráneo simplificado con espesor de modelo 0.30 m",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "Se conserva espesor geométrico del modelo"
+        }
+      ]
+    },
+    {
+      "wall_id": 22,
+      "identificacion_plano": "M-E-E'-2/1 + M-E-E'-3/2",
+      "confianza": "alta",
+      "criterio_asignacion": "Muro continuo sobre E prima, modela los dos paños",
+      "profiles": [
+        {
+          "z_min_m": 0,
+          "z_max_m": 3.96,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 8,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": "Se adopta Ø10@20 vertical, menor de los dos registros"
+        }
+      ]
+    },
+    {
+      "wall_id": 23,
+      "identificacion_plano": "M1 1-1' Piso 1 H-I'",
+      "confianza": "alta",
+      "criterio_asignacion": "Ubicación H-I prima y espesor 0.30 m",
+      "profiles": [
+        {
+          "z_min_m": 3.96,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 10,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 160,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 10,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "wall_id": 24,
+      "identificacion_plano": "M-I-1/2 + M-I-2/3",
+      "confianza": "alta",
+      "criterio_asignacion": "Muro continuo en eje I, espesor 0.30 m",
+      "profiles": [
+        {
+          "z_min_m": 3.96,
+          "z_max_m": 7.92,
+          "vertical_diameter_mm": 16,
+          "vertical_spacing_mm": 200,
+          "horizontal_diameter_mm": 12,
+          "horizontal_spacing_mm": 200,
+          "boundary_bars_each_end": 0,
+          "boundary_diameter_mm": 16,
+          "note": ""
+        }
+      ]
+    }
+  ],
+  "advertencia": "Las asignaciones de confianza media/baja son supuestos trazables porque el registro fuente no contiene IDs ni coordenadas del modelo. Revisar contra planos antes de diseño final."
+}

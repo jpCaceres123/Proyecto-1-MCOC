@@ -1,0 +1,72 @@
+{
+  "python": "3.12.10",
+  "versions": {
+    "openseespy": "3.8.0.0",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.1"
+  },
+  "inputs": {
+    "Edificio\\data\\parameters\\parametros.json": "9c31c6c25934ec757383dcb8a119005aa6cd697843520aee9e2651b1e3006ad8",
+    "Edificio\\results\\modelo_3d_manual.json": "b1447d57458cd596bdf0642c6d0bb46c000a9f0f32e2681ceb64ae55192fde2b",
+    "Edificio\\data\\loads\\cargas_losas.json": "f94899e106553848afd4c0456177a60579b7d6bd50cd2e7e7f31803c353ed62a",
+    "Edificio\\data\\geometry\\geometria_manual.json": "7e889a975279d128bf2dae98b92e26a28ad1bee90a622abb9eb48b1a3db5b422",
+    "Edificio\\model\\opensees\\modelo_opensees_3d.py": "b68453d6c1526e74a3f7829b22c49ee8b6fc25774bc0110773bd4aa7d1418591",
+    "Edificio\\verification\\load_transfer\\verificar_modelo.py": "c02c56e6811fa354f0176e0383cf47c9e6e38b1f6967d398278d7b6730693a52",
+    "Edificio\\analysis\\load_cases\\casos.py": "710e22bcf82333bf0de066c64541783ded010941b92513a523138acb7d3e81f6",
+    "Edificio\\analysis\\seismic\\sismo.py": "046a88bb584d8b3fc0c4925f8cc7a438ba794949e921e357b3b7f4619e796a7a",
+    "Edificio\\analysis\\capacity\\capacidad.py": "93f9c2c61bc7051301a5836688899a250d75ecf9e26246ea12ae4fde0ebb2852",
+    "Edificio\\analysis\\capacity\\capacidad_muros.py": "cb286ffdbf8804ed2674d8af206243dc8531e07f5ab5744532eb0c2a87afd7a6",
+    "Edificio\\data\\reinforcement\\enfierradura_muros.md": "60ae73aba496e319eeffb71d889f05b819d1aef85ab82d3f3ca386024c1045fc",
+    "Edificio\\data\\reinforcement\\asignacion_armadura_muros.json": "ace6044812bc0f534c1725e2242355807b4ddb52acd576d584c958db43c9f9f7",
+    "Edificio\\visualization\\exports\\exportar_aceleraciones.py": "1b4ebee18ba39ee4c248c29fb053799f912fb549268549434193864845763852",
+    "Edificio\\verification\\load_transfer\\exportar_reparto_losas.py": "201052b0dfd409ef4a33d39b2284fd46fb204a052dd00d64f2571f690fa74aa5",
+    "Edificio\\analysis\\load_cases\\ejecutar.py": "4051553159a30e522192040739c0d72724c7aee30e926e50674064b5ac3ea9a2"
+  },
+  "parametros": {
+    "q_Q_kN_m2": null,
+    "aceleracion_fraccion_g": 0.2,
+    "fraccion_Q_masa": 0.5,
+    "ponderador_G_masa": 1.0,
+    "g_m_s2": 9.80665,
+    "peso_especifico_HA_kN_m3": 24.516625,
+    "patron_sismico": "uniforme_aceleracion",
+    "aceleracion_por_piso_g": {},
+    "combinacion": {
+      "G": 1.2,
+      "Q": 1.4,
+      "EX": 0.8,
+      "EY": -0.3
+    },
+    "penalty": 100000000000000.0,
+    "columna": {
+      "b_m": 0.7,
+      "h_m": 0.7,
+      "recubrimiento_al_centro_barra_m": 0.073,
+      "recubrimiento_hasta_estribo_m": 0.05,
+      "barras_por_cara": 5,
+      "diametro_m": 0.022,
+      "diametros_por_cara_m": [
+        0.022,
+        0.022,
+        0.022,
+        0.022,
+        0.022
+      ],
+      "estribo_diametro_m": 0.012,
+      "estribo_spacing_m": 0.1,
+      "fc_MPa": 35.0,
+      "fy_MPa": 420.0,
+      "Es_MPa": 210000.0,
+      "beta1_interaccion": 0.8,
+      "eps_cu_interaccion": 0.003,
+      "factor_compresion_max": 0.8,
+      "fuente_armadura": "Detalle de pilar P.70x70 adaptado: 16 barras \u00d822 y estribos \u00d812@10 cm",
+      "eps_c0": 0.002,
+      "eps_cu": 0.0035,
+      "eps_s_lim": 0.05,
+      "fibras_por_lado": 40,
+      "pasos_curvatura": 600,
+      "phi_max_1_m": 0.15
+    }
+  }
+}
