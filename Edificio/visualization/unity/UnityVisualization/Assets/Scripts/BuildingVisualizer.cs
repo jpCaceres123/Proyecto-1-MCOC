@@ -246,7 +246,9 @@ public class BuildingVisualizer : MonoBehaviour
 
     private void CreateLocalAxes(int id, Vector3 a, Vector3 b)
     {
-        Vector3 origin = (a + b) / 2; Vector3 localX = (b - a).normalized; Vector3 localY = Mathf.Abs(Vector3.Dot(localX, Vector3.up)) > .95f ? Vector3.right : Vector3.up; Vector3 localZ = Vector3.Cross(localX, localY).normalized;
+        Vector3 origin = (a + b) / 2;
+        Vector3 localX, localY, localZ;
+        if (!StructuralPostprocessor.Get(gameObject).TryAxes(id, out localX, out localY, out localZ)) return;
         CreateAxisLine("EjeLocalX_ID_" + id, origin, origin + localX * 1.0f, Color.red); CreateAxisLine("EjeLocalY_ID_" + id, origin, origin + localY * 1.0f, Color.green); CreateAxisLine("EjeLocalZ_ID_" + id, origin, origin + localZ * 1.0f, Color.blue);
     }
     private void CreateAxisLine(string name, Vector3 a, Vector3 b, Color color) { GameObject go = new GameObject(name); go.transform.SetParent(localAxisRoot); LineRenderer line = go.AddComponent<LineRenderer>(); line.positionCount = 2; line.SetPositions(new[] { a, b }); line.startWidth = .035f; line.endWidth = .01f; SetMaterial(line, color); }

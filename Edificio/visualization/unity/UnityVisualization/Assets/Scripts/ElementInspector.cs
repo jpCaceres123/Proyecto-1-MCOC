@@ -141,6 +141,7 @@ public class ElementInspector : MonoBehaviour
 
     private void Select(Item item)
     {
+        StructuralPostprocessor.Get(gameObject).ClearSelection();
         if (selected != null)
             for (int i = 0; i < selected.renderers.Count; i++) selected.renderers[i].material.color = selected.colors[i];
         selected = item;
@@ -225,6 +226,7 @@ public class ElementInspector : MonoBehaviour
                     GUILayout.Label(values[k + 6].ToString("G5")); GUILayout.EndHorizontal();
                 }
                 GUILayout.Label("Signos originales de localForce; valores en extremos, no máximos interiores.");
+                StructuralPostprocessor.Get(gameObject).DrawMember(selected.id, loadCase, values);
                 if (selected.kind == "Columna") DrawAxialTrace(loadCase, selected.id);
                 graphs.Draw(selected.id, loadCase, values);
             }

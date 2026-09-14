@@ -378,16 +378,7 @@ public class Semana3Visualizer : MonoBehaviour
         Dictionary<int, Vector3> u;
         if (!displacements.TryGetValue(selectedCase, out u)) return;
         Color caseColor = selectedCase == "EX" ? new Color(1f,.25f,.08f) : selectedCase == "EY" ? new Color(.2f,.85f,.3f) : selectedCase == "R" ? new Color(.85f,.1f,.85f) : new Color(1f,.8f,.1f);
-        if (showDeformed)
-        {
-            foreach (Bar bar in bars)
-            {
-                if (!nodePosition.ContainsKey(bar.i) || !nodePosition.ContainsKey(bar.j) || !u.ContainsKey(bar.i) || !u.ContainsKey(bar.j)) continue;
-                Vector3 a = nodePosition[bar.i] + u[bar.i] * deformationScale;
-                Vector3 b = nodePosition[bar.j] + u[bar.j] * deformationScale;
-                Line(responseRoot, "Deformada_" + selectedCase + "_ID_" + bar.id, a, b, caseColor, .075f);
-            }
-        }
+        StructuralPostprocessor.Get(gameObject).Deform(selectedCase, this, showDeformed, deformationScale);
         foreach (Vector3 value in u.Values) maxDisplacement = Mathf.Max(maxDisplacement, value.magnitude);
         List<Floor> caseFloors;
         if (!floors.TryGetValue(selectedCase, out caseFloors)) return;
@@ -493,7 +484,7 @@ public class Semana3Visualizer : MonoBehaviour
         GUILayout.BeginHorizontal();foreach(string c in new[]{"G","Q","EX","EY","R"})CaseButton(c);GUILayout.EndHorizontal();
         DrawMassControls();
         if(selectedCase=="R") DrawCombination();
-        bool nextDeformed=GUILayout.Toggle(showDeformed,"Deformada amplificada");bool nextForces=GUILayout.Toggle(showForces,"Fuerzas sísmicas y centros de masa");
+        bool nextDeformed=GUILayout.Toggle(showDeformed,"Deformada curva + malla de muros");bool nextForces=GUILayout.Toggle(showForces,"Fuerzas sísmicas y centros de masa");
         GUILayout.Label("Escala deformada: "+deformationScale.ToString("F0")+"×");float nextScale=GUILayout.HorizontalSlider(deformationScale,1,5000);
         if(nextDeformed!=showDeformed||nextForces!=showForces||Mathf.Abs(nextScale-deformationScale)>1f){showDeformed=nextDeformed;showForces=nextForces;deformationScale=nextScale;RebuildResponse();}
         GUILayout.Label("|u| máximo: "+(maxDisplacement*1000).ToString("G4")+" mm\n|giro Z| máximo: "+(maxRotation*1000).ToString("G4")+" mrad",noteStyle);
@@ -514,7 +505,7 @@ public class Semana3Visualizer : MonoBehaviour
             GUILayout.Label("Primeros puntos P–M",titleStyle);GUILayout.Label(pmPlot,GUILayout.Width(350),GUILayout.Height(250));
             GUILayout.Label("Capacidad nominal del modelo de sección. La armadura es un supuesto pendiente de confirmar con planos.",noteStyle);
         }
-        GUILayout.Space(6);GUILayout.Label("La estructura gris/coloreada original es la geometría sin deformar. Las líneas de color son la respuesta del caso seleccionado.",noteStyle);
+        GUILayout.Space(6);GUILayout.Label("Original: geometría sin deformar. Magenta: barras con interpolación cúbica de desplazamientos y giros. Cian: bordes de shells desplazados. Escala visual amplificada; caso seleccionado.",noteStyle);
         GUILayout.EndScrollView();GUILayout.EndArea();
     }
 

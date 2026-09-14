@@ -1,0 +1,51 @@
+# Diagramas, ejes locales y deformada
+
+Seleccionar una viga o columna abre el selector `N / Vy / Vz / My / Mz` del
+inspector. Se muestra un diagrama con unidades y valores extremos, además de
+su representación sobre la barra original. `Ocultar` elimina ese diagrama.
+La longitud gráfica máxima de 1,5 m se normaliza para cada selección; no debe
+usarse el tamaño gráfico para comparar capacidades entre elementos.
+
+N es positivo en compresión. Vy, Vz, My y Mz se expresan como acciones sobre
+la cara de corte de normal +x local: en i se usa menos la acción nodal de i;
+en j se usa la acción nodal de j. Para N se invierten ambos signos. Las acciones
+originales de extremo siguen visibles en su tabla, con su convención original.
+Los diagramas recorren el elemento de i a j. El offset gráfico de N/Vy/Mz es
+y local; el de Vz/My es z local. Azul indica positivo y rojo negativo.
+
+El modelo actual aplica todas las cargas de barras a los nodos. Por ello N y V
+son constantes (salvo redondeo) y los momentos son lineales entre nodos. La
+interpolación de extremos es válida para esa idealización, no para una futura
+barra con carga distribuida o puntual interior sin subdivisión. En ese caso se
+debe extender el contrato y el evaluador antes de reutilizar los diagramas.
+
+Los ejes se consultan directamente con las respuestas `xlocal`, `ylocal` y
+`zlocal` de los elementos OpenSees. Rojo=x, verde=y, azul=z. Se transforma cada
+vector por separado de XYZ a XZY: recalcular productos vectoriales después
+del cambio de coordenadas invertiría la orientación por cambio de handedness.
+
+La deformada de barras usa interpolación cúbica de Hermite para flexión, con
+desplazamientos y giros nodales en coordenadas globales OpenSees; el axial se
+interpola linealmente. La pendiente transversal es `theta × ex`. Es coherente
+con barras Euler–Bernoulli elásticas sin carga interior. El giro torsional no
+altera el eje central mostrado. Los bordes de los 169 shells se dibujan con las
+traslaciones de sus nodos, en cian; no se representa una superficie curva
+interior ni un campo de deformaciones/tensiones de shell.
+
+Todos los resultados corresponden al caso activo. EX/EY se reconstruyen con
+las bases de masa EXG/EXQ/EYG/EYQ; R combina G,Q,EX,EY con los ponderadores
+activos, incluyendo giros y desplazamientos de nodos de muro.
+
+## Exportación
+
+`visualization/exports/exportar_resultados_unity.py` genera
+`Assets/Resources/semana4_resultados.json` a partir del modelo y los nueve NPZ
+existentes. Exporta 629 nodos analíticos, 612 barras, 169 shells, ejes y seis
+grados de libertad por nodo y caso. Comprueba topología, ortonormalidad y
+valores finitos. No ejecuta un nuevo análisis. El flujo `ejecutar.py` también
+invoca esta exportación después de generar los casos.
+
+Si cambia el edificio, deben regenerarse análisis y recursos juntos. Estos
+cambios de postproceso no corrigen apoyos, vínculos, cargas ni armaduras.
+Los diagramas N/V/M del inspector corresponden a barras: las resultantes por
+sección de corte de muro y su demanda P–M siguen siendo trabajo independiente.

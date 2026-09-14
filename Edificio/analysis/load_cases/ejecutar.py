@@ -20,6 +20,7 @@ import capacidad
 import capacidad_muros
 from exportar_reparto_losas import export_repartition
 from exportar_aceleraciones import export_accelerations
+from exportar_resultados_unity import export_results
 
 ROOT=Path(__file__).resolve().parents[2]
 PARAMETERS=ROOT/'data'/'parameters'/'parametros.json'
@@ -77,6 +78,7 @@ def export_unity(cfg, global_results, capacity_results, out):
         for f in global_results['floors']])
     export_accelerations(out/'masas_y_sismo.csv',resources/'semana3_aceleraciones.csv',cfg['g_m_s2'])
     casos.dump_csv(resources/'semana3_esfuerzos_locales.csv',member_rows)
+    export_results(out, resources/'semana4_resultados.json')
 
     # Trazabilidad vertical de pilares. P se obtiene de las acciones locales de
     # extremo de OpenSees (compresion positiva). Para cada tramo se identifica
