@@ -1,0 +1,47 @@
+{
+  "q_Q_kN_m2": null,
+  "aceleracion_fraccion_g": 0.25,
+  "fraccion_Q_masa": 0.5,
+  "ponderador_G_masa": 1.0,
+  "g_m_s2": 9.80665,
+  "peso_especifico_HA_kN_m3": 24.516625,
+  "patron_sismico": "uniforme_aceleracion",
+  "aceleracion_por_piso_g": {},
+  "combinacion": {
+    "G": 1.2,
+    "Q": 1.4,
+    "EX": 0.8,
+    "EY": -0.3
+  },
+  "penalty": 100000000000000.0,
+  "columna": {
+    "b_m": 0.7,
+    "h_m": 0.7,
+    "recubrimiento_al_centro_barra_m": 0.073,
+    "recubrimiento_hasta_estribo_m": 0.05,
+    "barras_por_cara": 5,
+    "diametro_m": 0.022,
+    "diametros_por_cara_m": [
+      0.022,
+      0.022,
+      0.022,
+      0.022,
+      0.022
+    ],
+    "estribo_diametro_m": 0.012,
+    "estribo_spacing_m": 0.1,
+    "fc_MPa": 35.0,
+    "fy_MPa": 420.0,
+    "Es_MPa": 210000.0,
+    "beta1_interaccion": 0.8,
+    "eps_cu_interaccion": 0.003,
+    "factor_compresion_max": 0.8,
+    "fuente_armadura": "Detalle de pilar P.70x70 adaptado: 16 barras Ø22 y estribos Ø12@10 cm",
+    "eps_c0": 0.002,
+    "eps_cu": 0.0035,
+    "eps_s_lim": 0.05,
+    "fibras_por_lado": 40,
+    "pasos_curvatura": 600,
+    "phi_max_1_m": 0.15
+  }
+}
