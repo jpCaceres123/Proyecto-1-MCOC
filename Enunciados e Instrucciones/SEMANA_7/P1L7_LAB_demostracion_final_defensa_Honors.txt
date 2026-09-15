@@ -1,0 +1,41 @@
+Semana 7 — LAB: demostración final + defensa + Honors
+Demo base obligatoria
+La demostración debe mostrar:
+
+geometría del edificio;
+apoyos/restricciones;
+ejes;
+diafragmas;
+áreas tributarias;
+cargas G, Q, EX, EY;
+deformada;
+diagramas;
+superposición con sliders;
+curva P-M columna;
+curva P-M muro;
+punto de demanda;
+modificación de al menos dos parámetros;
+AR básica.
+Defensa individual
+Cualquier integrante debe poder explicar el flujo completo:
+
+planos → datos → OpenSees → resultados → Unity → AR.
+
+Honors
+Después de demostrar el núcleo, el grupo puede mostrar extensiones del archivo 03_HONORS_TRACK.md.
+
+Forma de entrega
+Entrega grupal, grupos de 3 estudiantes.
+
+Todo código debe estar en el repositorio Git.
+
+En Canvas se entrega:
+
+enlace al repositorio;
+commit hash o tag exacto a evaluar;
+enlace directo al informe Markdown correspondiente cuando aplique.
+La entrega de laboratorio se demuestra en vivo.
+
+El profesor podrá escoger al azar a cualquier integrante para explicar cualquier parte del sistema.
+
+Una demostración que funciona pero que el grupo no puede explicar no se considera completamente lograda.

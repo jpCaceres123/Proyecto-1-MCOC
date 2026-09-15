@@ -44,7 +44,7 @@ class PostprocessTests(unittest.TestCase):
                                             'section_40x60_beams', 'section_steel_columns'))
             self.assertIn(item['material'], ('material', 'material_steel'))
             self.assertEqual(set(item['restraints']), {'i', 'j'})
-        self.assertEqual(len(self.data['wallDemands']), 24)
+        self.assertGreaterEqual(len(self.data['wallDemands']), 24)
         for wall in self.data['wallDemands']:
             self.assertEqual({d['name'] for d in wall['demands']}, {'G', 'Q', 'EX', 'EY', 'R'})
             for demand in wall['demands']:
@@ -63,7 +63,8 @@ class PostprocessTests(unittest.TestCase):
                 self.assertAlmostEqual(f[11] + f[5], f[1] * length, delta=1e-4)
 
     def test_wall_10_demand_matches_shell_base_resultant(self):
-        wall = next(w for w in self.model['walls'] if w['id'] == 10)
+        wall = min((w for w in self.model['walls'] if w.get('source_wall_id') == 10),
+                   key=lambda w: w['z_i_m'])
         shells = [s for s in self.data['shells'] if s['wall'] == wall['id']]
         bottom_z = min(min(self.xyz[node][2] for node in shell['nodes']) for shell in shells)
         bottom = [shell for shell in shells
@@ -85,7 +86,7 @@ class PostprocessTests(unittest.TestCase):
                 force += values[index * 6:index * 6 + 3]
                 moment += np.cross(self.xyz[node] - center, values[index * 6:index * 6 + 3])
                 moment += values[index * 6 + 3:index * 6 + 6]
-        expected = next(w for w in self.data['wallDemands'] if w['id'] == 10)
+        expected = next(w for w in self.data['wallDemands'] if w['id'] == wall['id'])
         demand = next(d for d in expected['demands'] if d['name'] == 'R')
         self.assertAlmostEqual(demand['p'], force[2], places=8)
         self.assertAlmostEqual(demand['m'], abs(np.dot(moment, transverse)), places=8)

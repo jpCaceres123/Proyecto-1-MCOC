@@ -1,0 +1,51 @@
+Semana 5 — AVANCE: laboratorio estructural interactivo v1
+Entregable
+Crear reports/semana05.md.
+
+Contenido
+1. Funciones implementadas
+Tabla de estado de:
+
+navegación;
+selección;
+apoyos;
+ejes;
+cargas;
+áreas tributarias;
+deformada;
+diagramas;
+superposición;
+P-M;
+modificación del modelo.
+2. Modificación
+Documentar dos modificaciones completas:
+
+interfaz/dato → modelo → OpenSees → resultados → Unity.
+
+Si no son automáticas, documentar claramente el flujo manual reproducible.
+
+3. Superposición interactiva
+Verificar tres estados contra resultados numéricos.
+
+4. Sidequest carga móvil
+Si se implementa:
+
+regla física;
+panel;
+reparto;
+conservación de la carga;
+respuesta visual.
+5. UX estructural
+Evaluar si el viewer ayuda realmente a contestar:
+
+¿dónde está el elemento?;
+¿cómo está apoyado?;
+¿qué lo carga?;
+¿cómo se deforma?;
+¿qué fuerzas tiene?;
+¿cuánta capacidad tiene?
+6. Preparación móvil
+Identificar teléfono compatible y crear build móvil inicial.
+
+7. IA
+Documentar una funcionalidad compleja implementada por agente y cómo se verificó.

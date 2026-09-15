@@ -1,0 +1,35 @@
+Enfierradura Longitudinal Muro 10
+
+Borde: E'
+Diámetro: Ø22
+Cantidad: 2
+L total: L=850 (40+810) 
+Piso inicial: subt 
+Piso final: piso 1
+Traslape: 140 cm con la barra siguiente
+Ubicación del traslape: dentro del piso 1 y otro dentro del piso 3
+Observación: barra de borde derecho E'
+
+
+Borde: E'
+Diámetro: Ø22
+Cantidad: 2
+L total: L=1200 (40+1160) 
+Piso inicial: subt 
+Piso final: piso 2
+Traslape: 140 cm con la barra siguiente
+Ubicación del traslape: dentro del piso 1 y otro dentro del piso 3
+Observación: barra de borde derecho E'
+
+
+Borde: E'
+Diámetro: Ø22
+Cantidad: 2
+L total: L=1200 (40+1160) 
+Piso inicial: subt 
+Piso final: piso 2
+Traslape: no indicado
+Observación: barra de borde izquierdo E'
+
+
+

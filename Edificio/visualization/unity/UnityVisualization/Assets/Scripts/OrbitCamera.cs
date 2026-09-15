@@ -47,4 +47,13 @@ public class OrbitCamera : MonoBehaviour
         transform.position = target + rotation * new Vector3(0.0f, 0.0f, -distance);
         transform.LookAt(target);
     }
+
+    public void ResetView()
+    {
+        target = new Vector3(22.5f, 6.0f, 8.0f);
+        distance = 38.0f;
+        yaw = 35.0f;
+        pitch = 22.0f;
+        Apply();
+    }
 }

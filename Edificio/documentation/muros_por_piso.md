@@ -32,7 +32,7 @@ La separación no agrega juntas ni libera desplazamientos entre pisos. Los paño
 - La conservación de cargas y el equilibrio global permanecen dentro de tolerancia.
 - Las curvas P–M cubren los 24 muros origen y se exportan por paño.
 
-En la ejecución final se obtuvieron **169 ShellMITC4**, todos con altura vertical máxima de **3,96 m**, asociados de forma única a los 82 paños. Las 22 pruebas automatizadas terminaron correctamente. La compilación de comprobación de Unity también terminó con código 0; su log está en `reports/semana05_evidencias/muros_por_piso_unity.log`.
+En la ejecución final se obtuvieron **169 ShellMITC4**, todos con altura vertical máxima de **3,96 m**, asociados de forma única a los 82 paños. Las 22 pruebas automatizadas terminaron correctamente. La compilación de comprobación de Unity también terminó con código 0; su log está en `Edificio/documentation/semana05_evidencias/muros_por_piso_unity.log`.
 
 La tabla completa está en `Edificio/results/auditoria_muros_por_piso.csv`. La geometría fuente no se duplicó manualmente: la separación es automática y se repite cada vez que se regenera el modelo.
 

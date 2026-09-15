@@ -8,7 +8,7 @@ class WallInteractionTests(unittest.TestCase):
         cls.sections,cls.registry=calculate()
 
     def test_all_model_walls_are_assigned(self):
-        self.assertEqual(set(range(1,25)),{item['wall_id'] for item in self.sections})
+        self.assertEqual(set(range(1,25)),{item['source_wall_id'] for item in self.sections})
 
     def test_profiles_cover_wall_height(self):
         by_wall={}

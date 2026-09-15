@@ -1,0 +1,56 @@
+Semana 5 — LAB: interacción, modificación y experiencia estructural
+Objetivo
+Transformar el viewer en un laboratorio interactivo.
+
+Interacción obligatoria
+El usuario debe poder:
+
+navegar;
+seleccionar elementos;
+activar/desactivar capas;
+cambiar combinación de cargas;
+observar respuesta combinada;
+inspeccionar demanda-capacidad.
+Modificación obligatoria
+Implementar desde una interfaz o flujo reproducible al menos dos de:
+
+intensidad de carga;
+apoyo;
+sección;
+propiedad material;
+activación/desactivación de elemento;
+área tributaria.
+El grupo debe indicar cuándo requiere reanálisis.
+
+Superposición
+Los sliders de casos base deben actualizar instantáneamente:
+
+deformada;
+resultados seleccionados;
+punto de demanda P-M.
+Sidequest recomendado
+Implementar o prototipar SQ4 — carga móvil asociada al usuario.
+
+Al moverse el usuario:
+
+identificar panel/región;
+
+resaltar vigas receptoras;
+
+mostrar carga asignada.
+
+Forma de entrega
+Entrega grupal, grupos de 3 estudiantes.
+
+Todo código debe estar en el repositorio Git.
+
+En Canvas se entrega:
+
+enlace al repositorio;
+commit hash o tag exacto a evaluar;
+enlace directo al informe Markdown correspondiente cuando aplique.
+La entrega de laboratorio se demuestra en vivo.
+
+El profesor podrá escoger al azar a cualquier integrante para explicar cualquier parte del sistema.
+
+Una demostración que funciona pero que el grupo no puede explicar no se considera completamente lograda.

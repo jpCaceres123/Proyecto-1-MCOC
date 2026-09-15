@@ -165,6 +165,11 @@ public class ElementInspector : MonoBehaviour
 
     public void SelectSlabById(int id) { Select(items.Find(item => item.kind == "Losa" && item.id == id)); }
 
+    public void SelectElementById(string kind, int id)
+    {
+        Select(items.Find(item => item.kind == kind && item.id == id));
+    }
+
     private void DrawSlabWeight(int id)
     {
         double[] w;

@@ -1,0 +1,371 @@
+GUIA DE EXPLICACION DEL VISOR UNITY - P1L4
+============================================
+
+OBJETIVO DEL VISOR
+-------------------
+
+Unity funciona como un postprocesador conectado a los resultados ya calculados
+por OpenSees. El visor no resuelve nuevamente el edificio. Lee la geometria,
+las cargas, los desplazamientos, las fuerzas internas y los resultados de
+capacidad exportados desde Python.
+
+La escena usa la convencion de coordenadas:
+
+  OpenSees: X, Y, Z
+  Unity:    X, Z, Y
+
+Por eso el eje Z global de OpenSees se muestra como altura vertical en Unity.
+
+
+1. PANEL DEL MODELO ESTRUCTURAL
+--------------------------------
+
+Este panel aparece al lado izquierdo de la pantalla. Primero muestra un
+resumen de la cantidad de objetos cargados:
+
+  - Nodos.
+  - Barras.
+  - Muros.
+  - Losas.
+  - Columnas de acero SHS 300x300x20, cuando corresponda.
+
+El resumen sirve para comprobar que Unity leyo el modelo esperado y no una
+escena vacia o incompleta.
+
+
+2. OPCIONES DE VISIBILIDAD
+---------------------------
+
+Cada casilla activa o desactiva una familia de objetos del modelo.
+
+Nodos
+  Muestra los nodos de la estructura. Los nodos internos de color amarillo
+  que aparecen dentro de los muros son nodos de la malla ShellMITC4; no son
+  barras de acero.
+
+Vigas
+  Muestra las barras horizontales o inclinadas del modelo.
+
+Columnas
+  Muestra las columnas de hormigon y las columnas de acero.
+
+Muros
+  Muestra los paños de muro. Los muros se visualizan por tramos de piso para
+  poder seleccionarlos individualmente.
+
+Apoyos
+  Muestra los apoyos en la base del modelo.
+
+Diafragmas / losas
+  Muestra las losas y sus piezas geometricas. Una losa puede estar dividida
+  en varias piezas si contiene vacios.
+
+IDs
+  Muestra u oculta las etiquetas de identificacion de nodos, barras, muros y
+  losas.
+
+Ejes locales
+  Muestra los ejes locales de las barras. La convencion grafica es:
+
+    Rojo  = eje local x
+    Verde = eje local y
+    Azul  = eje local z
+
+Area tributaria
+  Activa o desactiva las regiones tributarias de la losa seleccionada.
+
+
+3. FILTRO POR NIVEL
+--------------------
+
+El campo Nivel permite ocultar los objetos que estan por debajo de una cota.
+
+  -1       muestra todos los niveles.
+  0        muestra objetos desde la cota 0.
+  3.96     muestra objetos desde la cota 3.96 m.
+  7.92     muestra objetos desde la cota 7.92 m.
+
+El filtro sirve para inspeccionar una parte del edificio y facilitar la
+seleccion de un elemento. No elimina elementos del modelo ni cambia el
+analisis estructural.
+
+
+4. NAVEGACION DE LA CAMARA
+---------------------------
+
+  Boton izquierdo y arrastre: orbitar alrededor del modelo.
+  Boton central y arrastre: desplazar la vista.
+  Rueda del mouse: acercar o alejar.
+
+La escala de la deformada y de algunos diagramas es visual. No debe
+interpretarse como una escala geometrica real de deformacion.
+
+
+5. CASOS DE CARGA
+-----------------
+
+En el panel de Semana 3 se pueden seleccionar los casos:
+
+  G   Cargas permanentes.
+  Q   Sobrecarga de uso.
+  EX  Accion sismica en direccion X.
+  EY  Accion sismica en direccion Y.
+  R   Combinacion resultante.
+
+El caso activo modifica los desplazamientos, las fuerzas mostradas y la
+demanda que aparece en el inspector.
+
+La combinacion R no se debe interpretar sin revisar sus ponderadores. En el
+modelo actual se calcula con los factores definidos en parametros.json.
+
+
+6. DEFORMADA Y FUERZAS SISMICAS
+--------------------------------
+
+Deformada curva + malla de muros
+  Muestra la deformada de las barras mediante interpolacion de desplazamientos
+  y giros nodales. Los bordes de los shells de muro se muestran desplazados en
+  color cian.
+
+Fuerzas sismicas y centros de masa
+  Muestra las fuerzas horizontales aplicadas por piso y sus centros de masa en
+  los casos EX y EY.
+
+Escala deformada
+  Amplifica visualmente los desplazamientos para que puedan observarse. No
+  modifica los desplazamientos guardados ni las fuerzas del analisis.
+
+El panel tambien informa el desplazamiento maximo y el giro maximo del caso
+activo.
+
+
+7. AREAS TRIBUTARIAS
+--------------------
+
+Al seleccionar una losa se muestra su area y el reparto hacia sus cuatro
+bordes mediante el metodo de particion a 45 grados.
+
+La particion se realiza geometricamente desde las esquinas hacia el centro de
+la losa. Se muestran regiones triangulares o trapezoidales, segun la forma de
+la losa. No se usa la antigua division rectangular para losas alargadas.
+
+Colores del reparto:
+
+  Verde   = borde inferior.
+  Morado  = borde superior.
+  Naranja = borde izquierdo.
+  Rosado  = borde derecho.
+
+El color naranja intenso de una losa completa puede corresponder a la losa
+seleccionada. Las regiones tributarias son las superficies transparentes que
+se dibujan encima de ella.
+
+El inspector de la losa muestra:
+
+  - ID de la losa.
+  - Area geometrica.
+  - Area tributaria por receptor.
+  - Carga permanente G.
+  - Sobrecarga Q.
+  - Vigas o muros receptores.
+
+La losa no se analiza como placa con esfuerzos internos. Su funcion en este
+modelo es transferir cargas tributarias hacia vigas y bordes de muro.
+
+
+8. INSPECTOR DE ELEMENTOS
+--------------------------
+
+El inspector aparece en el panel derecho o debajo del panel del caso activo.
+Permite filtrar y buscar elementos por ID.
+
+Filtros:
+
+  Todos
+  Viga
+  Columna
+  Muro
+  Losa
+
+Al hacer clic sobre un objeto 3D, o sobre su boton en la lista, el elemento se
+resalta y se muestran sus datos.
+
+Al presionar Escape o Limpiar seleccion se elimina el resaltado y se borran
+los diagramas asociados.
+
+
+9. INSPECCION DE VIGAS Y COLUMNAS
+----------------------------------
+
+Para una viga o columna se muestra:
+
+  - ID del elemento.
+  - Nodo inicial i y nodo final j.
+  - Tipo de elemento.
+  - Seccion.
+  - Area de la seccion.
+  - Material.
+  - Modulo E.
+  - Restricciones en los extremos.
+  - Ejes locales OpenSees.
+
+Tambien se muestran las acciones de extremo para el caso activo:
+
+  N    Fuerza axial.
+  Vy   Corte local.
+  Vz   Corte local.
+  T    Torsion.
+  My   Momento alrededor del eje local y.
+  Mz   Momento alrededor del eje local z.
+
+Los valores se muestran en los extremos i y j. Las acciones conservan la
+convencion original de OpenSees.
+
+Los diagramas N, Vy, Vz, T, My y Mz se interpolan entre los extremos. Como las
+cargas de las barras se aplican nodalmente, N y los cortes son constantes y
+los momentos son lineales entre nodos, salvo redondeo numerico.
+
+En columnas tambien aparece la trazabilidad axial:
+
+  - P del tramo seleccionado.
+  - Suma de P de columnas superiores alineadas.
+  - Aporte vertical neto del nudo.
+
+Esta relacion permite explicar de donde proviene el axial de una columna.
+
+Las vigas no necesitan un diagrama P-M para cumplir P1L4. Para ellas se deben
+mostrar y explicar las acciones internas y sus diagramas.
+
+
+10. DIAGRAMA P-M DE COLUMNAS
+-----------------------------
+
+Al seleccionar una columna de hormigon con capacidad disponible aparece su
+diagrama de interaccion axial-flexion.
+
+Controles:
+
+  - Extremo i o extremo j.
+  - Momento |My| o |Mz|.
+
+El eje vertical representa P, positivo en compresion. El eje horizontal
+representa el momento absoluto elegido.
+
+La curva y sus puntos azules representan la capacidad nominal de la seccion.
+El punto de demanda representa las acciones del extremo seleccionado para el
+caso activo.
+
+  Punto verde = demanda dentro de la envolvente.
+  Punto rojo  = demanda fuera de la envolvente.
+
+La curva se calcula con una seccion de fibras y compatibilidad de deformaciones.
+La deformacion varia linealmente en la seccion y se suman las fuerzas del
+hormigon y del acero.
+
+Tambien se pueden consultar los puntos nominales A-G y los graficos de
+tension-deformacion del hormigon y del acero.
+
+
+11. DIAGRAMA P-M DE MUROS
+--------------------------
+
+Al seleccionar un muro aparece la curva P-M de su direccion principal.
+
+Los muros estan divididos visualmente y en el postproceso por tramos de piso.
+El muro conserva sus nodos compartidos entre pisos, por lo que la estructura
+sigue siendo continua.
+
+El inspector del muro muestra:
+
+  - Nombre del muro.
+  - Piso seleccionado.
+  - Longitud y espesor.
+  - Rango vertical del tramo.
+  - Malla vertical y horizontal.
+  - Area de acero longitudinal utilizada.
+  - Armadura de borde, cuando esta registrada.
+  - Material del hormigon y del acero.
+
+La demanda del muro se calcula en el corte inferior del tramo seleccionado:
+se suman las fuerzas de los nodos inferiores de sus shells y se calcula el
+momento resultante respecto del centro del muro.
+
+La curva azul representa la capacidad nominal. Los puntos azules son estados
+nominales calculados. El punto de demanda usa la misma convencion que la
+columna:
+
+  Punto verde = demanda dentro.
+  Punto rojo  = demanda fuera.
+
+La malla horizontal se conserva en los datos, pero en el modelo actual no se
+suma como acero longitudinal de la flexion principal. Se considera asociada
+principalmente al comportamiento de corte.
+
+
+12. SIGNIFICADO DEL DIAGRAMA P-M
+---------------------------------
+
+Cada punto de la curva corresponde a un estado de deformacion de la seccion.
+Para cada profundidad del eje neutro se hace lo siguiente:
+
+  1. Se calcula la deformacion lineal del hormigon y del acero.
+  2. Se obtiene el esfuerzo de cada fibra o capa de acero.
+  3. Se calcula la fuerza de cada componente.
+  4. Se suman las fuerzas para obtener P.
+  5. Se multiplican las fuerzas por sus brazos para obtener M.
+
+La curva no se modifica para que la demanda quede dentro. Si el punto esta
+fuera, indica que la capacidad nominal de la seccion modelada es insuficiente
+para esa demanda o que debe revisarse la informacion de entrada.
+
+
+13. TRAZABILIDAD
+----------------
+
+La trazabilidad que se debe demostrar al profesor es:
+
+  elementTag OpenSees
+      -> ID del objeto Unity
+      -> resultados de fuerzas o desplazamientos
+      -> seccion y material
+      -> curva de capacidad, cuando exista
+
+En barras, el elementTag se relaciona con los nodos i-j y con los esfuerzos
+locales exportados.
+
+En muros, los shells tienen sus propios tags y pertenecen a un muro y a un
+tramo vertical. Los nodos compartidos explican la continuidad entre pisos.
+
+
+14. LIMITACIONES QUE CONVIENE EXPLICAR
+---------------------------------------
+
+  - Unity es un postprocesador; no reemplaza el analisis OpenSees.
+  - La curva P-M es nominal y academica.
+  - No incluye automaticamente factores phi.
+  - No verifica interaccion biaxial completa.
+  - No verifica corte del muro.
+  - No incluye esbeltez ni segundo orden.
+  - La armadura longitudinal del muro 10 aun contiene supuestos pendientes de
+    confirmar con todas las cotas y secciones del plano.
+  - La longitud grafica de la deformada esta amplificada.
+  - Las losas transfieren cargas tributarias, pero no tienen esfuerzos internos
+    de placa en este modelo.
+
+
+15. SECUENCIA RECOMENDADA PARA LA DEMOSTRACION
+-----------------------------------------------
+
+  1. Mostrar el resumen de nodos, barras, muros y losas.
+  2. Activar y desactivar nodos, vigas, columnas, muros, apoyos y losas.
+  3. Seleccionar una losa y mostrar su particion tributaria a 45 grados.
+  4. Activar un caso, por ejemplo G o R, y mostrar la deformada.
+  5. Seleccionar una viga y explicar N, V, T y M en sus extremos.
+  6. Seleccionar una columna y mostrar su seccion, acciones, ejes locales y
+     diagrama P-M.
+  7. Seleccionar el muro 10 en distintos pisos y mostrar que cambian su tramo,
+     armadura, demanda y curva P-M.
+  8. Explicar el color del punto de demanda.
+  9. Explicar la cadena OpenSees -> JSON -> Unity.
+ 10. Mencionar las limitaciones del modelo y distinguir resultado nominal de
+     verificacion normativa.

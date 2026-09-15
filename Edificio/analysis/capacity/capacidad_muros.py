@@ -157,20 +157,22 @@ def calculate(model_path=MODEL, assignments_path=ASSIGNMENTS):
     registry=json.loads(Path(assignments_path).read_text(encoding='utf-8'))
     walls={int(w['id']):w for w in model['walls']}
     assignments={int(a['wall_id']):a for a in registry['assignments']}
-    if set(walls) != set(assignments):
-        raise ValueError(f'IDs sin correspondencia: modelo={sorted(set(walls)-set(assignments))}, '
-                         f'registro={sorted(set(assignments)-set(walls))}')
+    model_sources={int(w.get('source_wall_id',w['id'])) for w in walls.values()}
+    if model_sources != set(assignments):
+        raise ValueError(f'IDs de muro origen sin correspondencia: modelo={sorted(model_sources-set(assignments))}, '
+                         f'registro={sorted(set(assignments)-model_sources)}')
     material={key:registry[key] for key in
               ('fc_MPa','fy_MPa','Es_MPa','eps_cu','beta1','factor_compresion_max')}
     cover=float(registry['cover_center_m'])
     results=[]
     for wall_id in sorted(walls):
-        wall=walls[wall_id]; assignment=assignments[wall_id]
+        wall=walls[wall_id]; source_wall_id=int(wall.get('source_wall_id',wall_id)); assignment=assignments[source_wall_id]
         length=wall_length(wall); thickness=float(wall['thickness_m'])
         for sequence,(z0,z1,profile) in enumerate(active_segments(wall,assignment),1):
             layers,actual_spacing=vertical_steel_layers(length,profile,cover)
             curve,points=dense_envelope(length,thickness,layers,material)
-            results.append(dict(wall_id=wall_id,segmento=sequence,z_min_m=z0,z_max_m=z1,
+            results.append(dict(wall_id=wall_id,source_wall_id=source_wall_id,piso=int(wall.get('floor',0)),
+                segmento=sequence,z_min_m=z0,z_max_m=z1,
                 identificacion_plano=assignment['identificacion_plano'],confianza=assignment['confianza'],
                 criterio_asignacion=assignment['criterio_asignacion'],length_m=length,thickness_m=thickness,
                 vertical_diameter_mm=profile['vertical_diameter_mm'],vertical_spacing_mm=profile['vertical_spacing_mm'],
@@ -191,7 +193,7 @@ def run(out, model_path=MODEL, assignments_path=ASSIGNMENTS):
     results,registry=calculate(model_path,assignments_path)
     curve_rows=[]; point_rows=[]; summary_rows=[]
     for section in results:
-        common={key:section[key] for key in ('wall_id','segmento','z_min_m','z_max_m','identificacion_plano',
+        common={key:section[key] for key in ('wall_id','source_wall_id','piso','segmento','z_min_m','z_max_m','identificacion_plano',
             'confianza','length_m','thickness_m','vertical_diameter_mm','vertical_spacing_mm',
             'horizontal_diameter_mm','horizontal_spacing_mm','boundary_bars_each_end','boundary_diameter_mm',
             'boundary_bars_left','boundary_diameter_left_mm','boundary_bars_right','boundary_diameter_right_mm','As_m2')}
@@ -214,7 +216,7 @@ def run(out, model_path=MODEL, assignments_path=ASSIGNMENTS):
     dump_csv(out/'PM_muros_resumen.csv',summary_rows)
 
     unity_walls=[]
-    for wall_id in range(1,25):
+    for wall_id in sorted({item['wall_id'] for item in results}):
         wall_sections=[]
         for section in (item for item in results if item['wall_id']==wall_id):
             wall_sections.append(dict(z_min=section['z_min_m'],z_max=section['z_max_m'],
@@ -227,25 +229,25 @@ def run(out, model_path=MODEL, assignments_path=ASSIGNMENTS):
                 boundary_left_diameter=float(section['boundary_diameter_left_mm']),
                 boundary_right_count=int(section['boundary_bars_right']),
                 boundary_right_diameter=float(section['boundary_diameter_right_mm']),
-                As=section['As_m2'],
+                As=section['As_m2'],note=section['note'],
                 points=[dict(name=p['punto'],p=p['P_kN'],m=p['M_kNm']) for p in section['points']],
                 curve=[dict(p=p['P_kN'],m=p['M_kNm']) for p in section['curve']]))
         first=next(item for item in results if item['wall_id']==wall_id)
-        unity_walls.append(dict(id=wall_id,name=first['identificacion_plano'],
+        unity_walls.append(dict(id=wall_id,source_id=first['source_wall_id'],floor=first['piso'],name=first['identificacion_plano'],
                                 confidence=first['confianza'],segments=wall_sections))
     (out/'PM_muros_unity.json').write_text(json.dumps(dict(walls=unity_walls),ensure_ascii=False),encoding='utf-8')
 
     # Una subfigura por muro. Se grafica el segmento inferior disponible, que
     # normalmente es el más armado y deja la comparación entre los 24 IDs.
     fig,axes=plt.subplots(6,4,figsize=(15,22),layout='constrained')
-    for wall_id,ax in zip(range(1,25),axes.ravel()):
-        section=next(item for item in results if item['wall_id']==wall_id)
+    for source_wall_id,ax in zip(range(1,25),axes.ravel()):
+        section=min((item for item in results if item['source_wall_id']==source_wall_id),key=lambda item:item['z_min_m'])
         p=[item['P_kN'] for item in section['curve']]
         m=[item['M_kNm'] for item in section['curve']]
         ax.plot(m,p,color='#2368a2',lw=1.4); ax.plot([-v for v in m],p,color='#2368a2',lw=1.4)
         kp=section['points']
         ax.scatter([item['M_kNm'] for item in kp],[item['P_kN'] for item in kp],s=10,color='#d24b3e')
-        ax.set_title(f'Muro {wall_id} · L={section["length_m"]:.2f} m · e={section["thickness_m"]:.2f} m',fontsize=9)
+        ax.set_title(f'Muro origen {source_wall_id} · L={section["length_m"]:.2f} m · e={section["thickness_m"]:.2f} m',fontsize=9)
         ax.grid(alpha=.2); ax.tick_params(labelsize=7)
         ax.set_xlabel('M principal [kN·m]',fontsize=8); ax.set_ylabel('P [kN]',fontsize=8)
     fig.suptitle('Envolventes P–M nominales de muros · segmento inferior disponible',fontsize=15)
@@ -253,7 +255,8 @@ def run(out, model_path=MODEL, assignments_path=ASSIGNMENTS):
 
     counts={level:sum(1 for a in registry['assignments'] if a['confianza']==level)
             for level in ('alta','media','baja')}
-    summary=dict(estado='OK',muros=len({r['wall_id'] for r in results}),secciones=len(results),
+    summary=dict(estado='OK',muros=len({r['source_wall_id'] for r in results}),
+        panos_por_piso=len({r['wall_id'] for r in results}),secciones=len(results),
         puntos_envolvente=len(curve_rows),puntos_clave=len(point_rows),confianza=counts,
         direccion_principal=registry['direccion_principal'],doble_malla=registry['doble_malla'],
         advertencia=registry['advertencia'])

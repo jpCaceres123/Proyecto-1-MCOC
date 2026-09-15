@@ -1,0 +1,55 @@
+Semana 7 — ENTREGA FINAL: informe técnico y repositorio
+Entregable
+reports/final.md;
+tag/release final;
+producto ejecutable;
+instrucciones reproducibles.
+Informe
+1. Resumen
+2. Edificio e idealización
+3. Geometría y datos
+4. Cargas gravitacionales y áreas tributarias
+5. Carga viva
+6. Sismo pseudoestático
+7. Superposición
+8. Análisis global y verificaciones
+9. Fiber Sections
+10. M-phi
+11. P-M columna y muro
+12. Demanda-capacidad
+13. Unity como pre/postprocesador
+14. Visualización de apoyos, cargas, ejes y diagramas
+15. Modificación del modelo
+16. AR
+17. Sidequests implementados
+18. QA y tests
+19. Limitaciones
+20. Uso de IA
+Incluir:
+
+tareas delegadas;
+errores detectados;
+verificaciones;
+contribución real del agente.
+21. Contribución individual
+Cada estudiante debe identificar:
+
+contribuciones;
+módulo revisado;
+error detectado;
+concepto aprendido.
+22. Honors Track
+Solo si corresponde.
+
+Reproducibilidad
+README debe indicar:
+
+dependencias;
+versión Python;
+versión OpenSeesPy;
+versión Unity;
+cómo ejecutar análisis;
+cómo generar resultados;
+cómo abrir viewer;
+cómo compilar móvil;
+cómo ejecutar tests.

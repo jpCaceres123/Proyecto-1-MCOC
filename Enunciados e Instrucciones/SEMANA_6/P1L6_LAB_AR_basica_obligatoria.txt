@@ -1,0 +1,59 @@
+Semana 6 — LAB: AR básica obligatoria
+Objetivo
+Relacionar el modelo analítico con un elemento físico del edificio.
+
+Requisitos
+En un teléfono compatible:
+
+iniciar sesión AR;
+detectar una imagen de referencia;
+obtener pose;
+crear/usar anchor;
+transformar coordenadas del modelo;
+mostrar al menos un elemento o sector estructural;
+mantener el mismo elementTag;
+mostrar al menos un resultado OpenSees.
+Resultados posibles
+P;
+V;
+M;
+desplazamiento;
+curva P-M;
+área tributaria asociada;
+carga aplicada.
+Defensa
+El estudiante debe explicar:
+
+coordenadas OpenSees;
+
+coordenadas Unity;
+
+coordenadas AR;
+
+escala;
+
+rotación;
+
+traslación;
+
+anchor;
+
+qué corre en el teléfono;
+
+qué fue calculado previamente.
+
+Forma de entrega
+Entrega grupal, grupos de 3 estudiantes.
+
+Todo código debe estar en el repositorio Git.
+
+En Canvas se entrega:
+
+enlace al repositorio;
+commit hash o tag exacto a evaluar;
+enlace directo al informe Markdown correspondiente cuando aplique.
+La entrega de laboratorio se demuestra en vivo.
+
+El profesor podrá escoger al azar a cualquier integrante para explicar cualquier parte del sistema.
+
+Una demostración que funciona pero que el grupo no puede explicar no se considera completamente lograda.

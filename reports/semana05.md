@@ -2,7 +2,7 @@
 
 Fecha de comprobación: 14 de septiembre de 2026.
 
-**Actualización de interfaz:** posteriormente se rediseñaron los controles móviles con paneles que se pueden cerrar, navegación inferior, escala de pantalla, área segura y pestañas del inspector. También se corrigió la restauración de visibilidad al volver a todos los niveles. La evaluación de interfaz original de este informe corresponde al estado previo; consultar [interfaz_celular.md](interfaz_celular.md) para el estado actualizado y sus límites de comprobación.
+**Actualización de interfaz:** posteriormente se rediseñaron los controles móviles con paneles que se pueden cerrar, navegación inferior, escala de pantalla, área segura y pestañas del inspector. También se corrigió la restauración de visibilidad al volver a todos los niveles. La evaluación de interfaz original de este informe corresponde al estado previo; consultar [interfaz_celular.md](../Edificio/documentation/interfaz_celular.md) para el estado actualizado y sus límites de comprobación.
 
 Proyecto utilizado: `C:\Users\nico0\OneDrive\Desktop\Proyecto-1-MCOC-main`.
 Modelo y análisis: `Edificio/`. Visor: `Edificio/visualization/unity/UnityVisualization`, escena `Assets/Main.unity`.
@@ -84,8 +84,8 @@ Entrada base: `q_Q_kN_m2 = null`, que conserva las intensidades de uso por zona.
 
 El máximo uz puede disminuir aunque la carga total crezca: la variante cambia la distribución espacial de Q, no multiplica por un factor uniforme las cargas anteriores por zona.
 
-Archivo de entrada reproducible: [mod_Q_parametros.json](semana05_evidencias/mod_Q_parametros.json).
-Registro de ejecución: [mod_Q.log](semana05_evidencias/mod_Q.log).
+Archivo de entrada reproducible: [mod_Q_parametros.json](../Edificio/documentation/semana05_evidencias/mod_Q_parametros.json).
+Registro de ejecución: [mod_Q.log](../Edificio/documentation/semana05_evidencias/mod_Q.log).
 
 ### 2.3 Modificación B: aceleración pseudoestática
 
@@ -101,8 +101,8 @@ En `sismo.py`, la masa deriva del peso G y 0.5 Q; la fuerza se obtiene como `F =
 
 La razón coincide con 0.25/0.20 = 1.25 dentro del error numérico. Esta comprobación tiene una predicción física independiente del valor exportado.
 
-Archivo de entrada: [mod_sismo_parametros.json](semana05_evidencias/mod_sismo_parametros.json).
-Registro: [mod_sismo.log](semana05_evidencias/mod_sismo.log).
+Archivo de entrada: [mod_sismo_parametros.json](../Edificio/documentation/semana05_evidencias/mod_sismo_parametros.json).
+Registro: [mod_sismo.log](../Edificio/documentation/semana05_evidencias/mod_sismo.log).
 
 ### 2.4 Reproducción y restauración
 
@@ -117,17 +117,17 @@ Este script ejecuta el estado base, las dos variantes y finalmente restaura el e
 Para observar **una variante** en Unity, detener Play y ejecutar solo su comando:
 
 ```powershell
-python Edificio/analysis/load_cases/ejecutar.py --parametros reports/semana05_evidencias/mod_Q_parametros.json
+python Edificio/analysis/load_cases/ejecutar.py --parametros Edificio/documentation/semana05_evidencias/mod_Q_parametros.json
 # Reiniciar Play; seleccionar Q y revisar deformada/inspector.
 
-python Edificio/analysis/load_cases/ejecutar.py --parametros reports/semana05_evidencias/mod_sismo_parametros.json
+python Edificio/analysis/load_cases/ejecutar.py --parametros Edificio/documentation/semana05_evidencias/mod_sismo_parametros.json
 # Reiniciar Play; seleccionar EX y revisar fuerzas y deformada.
 
 # Restaurar al terminar y reiniciar Play:
 python Edificio/analysis/load_cases/ejecutar.py
 ```
 
-Las dos variantes parten de la misma base: no se acumulan entre sí. Detalle de resultados y hashes: [modificaciones.json](semana05_evidencias/modificaciones.json).
+Las dos variantes parten de la misma base: no se acumulan entre sí. Detalle de resultados y hashes: [modificaciones.json](../Edificio/documentation/semana05_evidencias/modificaciones.json).
 
 Para modificaciones futuras de geometría, regenerar primero el modelo con `python Edificio/model/builders/generar_modelo_manual.py`; los dos ejemplos anteriores solo cambian cargas y no necesitan ese paso.
 
@@ -173,7 +173,7 @@ python Edificio/analysis/load_cases/ejecutar.py
 python Edificio/verification/interactive/verificar_semana05.py
 ```
 
-Evidencia completa, incluidas reacciones, identificadores y errores absolutos: [superposicion.csv](semana05_evidencias/superposicion.csv) y [superposicion.json](semana05_evidencias/superposicion.json). El caso S2 coincide con la combinación base; S1 y S3 amplían la verificación a otro reparto y cambio de sentido sísmico.
+Evidencia completa, incluidas reacciones, identificadores y errores absolutos: [superposicion.csv](../Edificio/documentation/semana05_evidencias/superposicion.csv) y [superposicion.json](../Edificio/documentation/semana05_evidencias/superposicion.json). El caso S2 coincide con la combinación base; S1 y S3 amplían la verificación a otro reparto y cambio de sentido sísmico.
 
 ## 4. Sidequest: carga móvil
 
@@ -222,7 +222,7 @@ BuildFailedException: Falta iOS Build Support en este editor.
 No se creó proyecto Xcode ni IPA.
 ```
 
-Registro: [unity_ios.log](semana05_evidencias/unity_ios.log). Estado adicional en `Edificio/visualization/unity/UnityVisualization/Build/iOS/estado.txt`.
+Registro: [unity_ios.log](../Edificio/documentation/semana05_evidencias/unity_ios.log). Estado adicional en `Edificio/visualization/unity/UnityVisualization/Build/iOS/estado.txt`.
 
 El proyecto declara Unity **6000.5.10f1**. Para comprobar compilación se utilizó el editor disponible **6000.5.9f1**; se restauró la declaración original de versión después del intento. La comprobación no sustituye la compilación con la versión declarada y módulo iOS en un Mac.
 
@@ -255,6 +255,6 @@ Archivos nuevos principales:
 - `Edificio/verification/interactive/verificar_semana05.py`.
 - `Edificio/verification/interactive/verificar_modificaciones.py`.
 - `Assets/Editor/BuildMobile.cs` dentro del proyecto Unity.
-- Entradas de variantes, resultados de contraste, hashes y logs en `reports/semana05_evidencias/`.
+- Entradas de variantes, resultados de contraste, hashes y logs en `Edificio/documentation/semana05_evidencias/`.
 
 Al cerrar esta entrega, los parámetros y resultados numéricos activos corresponden al estado base, no a las variantes de ensayo.

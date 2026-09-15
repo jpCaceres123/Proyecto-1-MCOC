@@ -1,0 +1,46 @@
+Semana 6 — AVANCE: validación AR y cierre técnico
+Entregable
+Crear reports/semana06.md.
+
+Contenido
+1. Flujo AR
+Documentar:
+
+marker → pose → anchor → transform → elemento → resultado.
+
+2. Transformación
+Explicar matemáticamente o mediante composición de transforms cómo se relacionan los sistemas.
+
+3. Precisión
+Estimar error de alineamiento de forma simple.
+
+4. Resultados
+Mostrar al menos:
+
+un elemento real;
+su ID;
+su resultado;
+evidencia de correspondencia.
+5. QA final estructural
+Tabla:
+
+Prueba	Estado
+Equilibrio G	
+Equilibrio Q	
+Corte basal EX	
+Corte basal EY	
+Superposición	
+M-phi	
+P-M columna	
+P-M muro	
+IDs Unity	
+AR	
+6. Errores conocidos
+Listar sin ocultar.
+
+7. Plan final
+Separar:
+
+núcleo;
+polish;
+Honors.

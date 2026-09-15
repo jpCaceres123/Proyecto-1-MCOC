@@ -56,7 +56,7 @@ Rutas C# relativas a `Assets/`:
 
 La compilación Windows se comprobó con el editor disponible Unity 6000.5.9f1. Se conserva la versión declarada 6000.5.10f1 del proyecto.
 Las ejecuciones de comprobación recorren los cuatro paneles, seleccionan la columna 15 y comprueban que la interfaz bloquea la cámara y deja libre el centro cuando está cerrada.
-Los logs se guardan en `reports/semana05_evidencias/mobile_build.log`, `mobile_runtime.log` y `mobile_horizontal.log`.
+Los logs se guardan en `Edificio/documentation/semana05_evidencias/mobile_build.log`, `mobile_runtime.log` y `mobile_horizontal.log`.
 
 Resultado: compilación exitosa y ejecuciones **430 × 900** y **900 × 430** terminadas con código 0 y `MOBILE_UI_CHECKS_DONE`, sin excepciones ni aserciones fallidas.
 

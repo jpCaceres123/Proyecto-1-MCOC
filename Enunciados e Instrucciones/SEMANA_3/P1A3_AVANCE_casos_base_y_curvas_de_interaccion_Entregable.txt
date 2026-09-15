@@ -1,0 +1,57 @@
+Semana 3 — AVANCE: casos base y curvas de interacción
+Entregable
+Crear reports/semana03.md.
+
+Contenido
+1. Casos base
+Documentar:
+
+G;
+Q;
+EX;
+EY.
+2. Carga viva
+Mostrar reutilización de áreas tributarias y conservación.
+
+3. Sismo pseudoestático
+Mostrar:
+
+pesos por piso;
+fuerzas por piso;
+corte basal;
+desplazamientos;
+rotación de diafragmas.
+4. Superposición
+Elegir al menos tres combinaciones.
+
+Comparar:
+
+respuesta superpuesta vs corrida OpenSees.
+
+5. Momento-curvatura
+Para una sección representativa:
+
+definición;
+carga axial;
+curva;
+rigidez inicial;
+criterio de término;
+sensibilidad de discretización.
+6. Curva P-M de columna
+Generar una envolvente.
+
+Explicar cómo se obtiene cada punto.
+
+7. Curva P-M de muro
+Generar una envolvente en su dirección principal.
+
+8. Verificación RC
+Comparar al menos puntos característicos con cálculos simplificados del curso de hormigón armado.
+
+9. Primera demanda-capacidad
+Elegir una columna o muro del edificio.
+
+Obtener (P_d, M_d) y ubicarlo sobre su curva.
+
+10. Uso de IA
+Documentar un caso donde el agente haya propuesto un modelo, criterio o convención que el grupo tuvo que revisar.

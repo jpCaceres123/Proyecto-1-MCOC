@@ -14,7 +14,7 @@ public sealed class WallSectionGraphs : IDisposable
         public int boundary_count,boundary_left_count,boundary_right_count;
         public Point[] points,curve;
     }
-    [Serializable] private class Wall { public int id; public string name,confidence; public Segment[] segments; }
+    [Serializable] private class Wall { public int id,source_id,floor; public string name,confidence; public Segment[] segments; }
     [Serializable] private class Demand { public string name; public float p,m; }
     [Serializable] private class SegmentDemand { public float z_min,z_max; public Demand[] demands; }
     [Serializable] private class WallDemand { public int id; public Demand[] demands; public SegmentDemand[] segments; }
@@ -41,12 +41,12 @@ public sealed class WallSectionGraphs : IDisposable
             TextAsset asset=Resources.Load<TextAsset>("semana3_pm_muros");
             if(asset==null) throw new Exception("Falta exportar semana3_pm_muros.json");
             Data data=JsonUtility.FromJson<Data>(asset.text);
-            if(data==null || data.walls==null || data.walls.Length!=24) throw new Exception("Datos P–M de muros incompletos");
+            if(data==null || data.walls==null || data.walls.Length==0) throw new Exception("Datos P–M de muros incompletos");
             foreach(Wall wall in data.walls) walls.Add(wall.id,wall);
             TextAsset resultAsset=Resources.Load<TextAsset>("semana4_resultados");
             if(resultAsset==null) throw new Exception("Falta exportar semana4_resultados.json");
             Data resultData=JsonUtility.FromJson<Data>(resultAsset.text);
-            if(resultData==null || resultData.wallDemands==null || resultData.wallDemands.Length!=24)
+            if(resultData==null || resultData.wallDemands==null || resultData.wallDemands.Length==0)
                 throw new Exception("Demandas P–M de muros incompletas");
             dataMaterial=resultData.capacityMaterial;
             foreach(WallDemand demand in resultData.wallDemands) demands.Add(demand.id,demand);
@@ -141,20 +141,23 @@ public sealed class WallSectionGraphs : IDisposable
 
     private Demand DetailedDemand(int id,int segment,string caseName,Semana3Visualizer viewer)
     {
+        Wall wall=walls[id];
+        int sourceWallId=wall.source_id>0 ? wall.source_id : id;
+        int floor=wall.floor>0 ? wall.floor : segment+1;
         Demand direct;
         if(caseName!="EX" && caseName!="EY" && caseName!="R")
-            return storeyDemands.TryGetValue(caseName+":"+id+":"+segment,out direct) ? direct : null;
+            return storeyDemands.TryGetValue(caseName+":"+sourceWallId+":"+(floor-1),out direct) ? direct : null;
         Demand result=new Demand { name=caseName };
         if(caseName=="EX" || caseName=="EY")
         {
             Demand g,q;
-            if(!storeyDemands.TryGetValue(caseName+"G:"+id+":"+segment,out g) || !storeyDemands.TryGetValue(caseName+"Q:"+id+":"+segment,out q)) return null;
+            if(!storeyDemands.TryGetValue(caseName+"G:"+sourceWallId+":"+(floor-1),out g) || !storeyDemands.TryGetValue(caseName+"Q:"+sourceWallId+":"+(floor-1),out q)) return null;
             result.p=(float)(viewer.MassG*g.p+viewer.MassQ*q.p); result.m=(float)(viewer.MassG*g.m+viewer.MassQ*q.m); return result;
         }
         for(int k=0;k<4;k++)
         {
             Demand source;
-            if(!storeyDemands.TryGetValue(Semana3Visualizer.BaseCases[k]+":"+id+":"+segment,out source)) return null;
+            if(!storeyDemands.TryGetValue(Semana3Visualizer.BaseCases[k]+":"+sourceWallId+":"+(floor-1),out source)) return null;
             result.p+=(float)(viewer.Combination[k]*source.p); result.m+=(float)(viewer.Combination[k]*source.m);
         }
         return result;

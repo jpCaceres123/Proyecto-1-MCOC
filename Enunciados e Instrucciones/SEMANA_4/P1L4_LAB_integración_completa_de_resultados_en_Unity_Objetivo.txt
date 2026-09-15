@@ -1,0 +1,52 @@
+Semana 4 — LAB: integración completa de resultados en Unity
+Objetivo
+Convertir Unity en un postprocesador estructural conectado a resultados OpenSees ya verificados.
+
+Requisitos
+Al seleccionar un elemento se debe poder mostrar:
+
+ID;
+nodos;
+sección;
+material;
+ejes locales;
+condiciones/restricciones relevantes;
+N;
+Vy/Vz;
+T;
+My/Mz según corresponda.
+
+La aplicación debe visualizar:
+
+deformada;
+al menos un diagrama de momento;
+al menos un diagrama de axial o corte;
+áreas tributarias;
+cargas;
+apoyos.
+Demanda-capacidad
+Para al menos una columna y un muro:
+
+mostrar curva P-M;
+mostrar punto de demanda;
+identificar caso/combinación activa.
+Trazabilidad
+Demostrar:
+
+elementTag OpenSees ↔ objeto Unity ↔ resultados ↔ sección/capacidad.
+
+Forma de entrega
+Entrega grupal, grupos de 3 estudiantes.
+
+Todo código debe estar en el repositorio Git.
+
+En Canvas se entrega:
+
+enlace al repositorio;
+commit hash o tag exacto a evaluar;
+enlace directo al informe Markdown correspondiente cuando aplique.
+La entrega de laboratorio se demuestra en vivo.
+
+El profesor podrá escoger al azar a cualquier integrante para explicar cualquier parte del sistema.
+
+Una demostración que funciona pero que el grupo no puede explicar no se considera completamente lograda.
