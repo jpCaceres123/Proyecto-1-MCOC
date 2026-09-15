@@ -24,6 +24,7 @@ public sealed class WallSectionGraphs : IDisposable
     private class Chart { public Texture2D texture; public float xmin,xmax,ymin,ymax; }
     private readonly Dictionary<int,Wall> walls=new Dictionary<int,Wall>();
     private readonly Dictionary<int,WallDemand> demands=new Dictionary<int,WallDemand>();
+    private readonly Dictionary<string,Demand> storeyDemands=new Dictionary<string,Demand>();
     private readonly string error;
     private Chart chart;
     private string chartCase;
@@ -49,11 +50,21 @@ public sealed class WallSectionGraphs : IDisposable
                 throw new Exception("Demandas P–M de muros incompletas");
             dataMaterial=resultData.capacityMaterial;
             foreach(WallDemand demand in resultData.wallDemands) demands.Add(demand.id,demand);
+            TextAsset storeyAsset=Resources.Load<TextAsset>("semana5_demanda_muros");
+            if(storeyAsset!=null)
+                foreach(string line in storeyAsset.text.Split('\n'))
+                {
+                    string[] p=line.Trim().Split(',');
+                    if(p.Length<2 || p[0].TrimStart('\uFEFF')=="caso") continue;
+                    if(p.Length<7) continue;
+                    int source=int.Parse(p[2]); int floor=int.Parse(p[3]);
+                    storeyDemands[p[0]+":"+source+":"+(floor-1)]=new Demand { name=p[0], p=float.Parse(p[5],System.Globalization.CultureInfo.InvariantCulture), m=float.Parse(p[6],System.Globalization.CultureInfo.InvariantCulture) };
+                }
         }
         catch(Exception ex){error=ex.Message;Debug.LogError(error);}
     }
 
-    public void Draw(int id,string caseName,int requestedSegment=-1)
+    public void Draw(int id,string caseName,int requestedSegment,Semana3Visualizer viewer)
     {
         GUILayout.Space(7);
         if(error!=null){GUILayout.Label(error);return;}
@@ -72,7 +83,9 @@ public sealed class WallSectionGraphs : IDisposable
         Segment s=wall.segments[Mathf.Clamp(segmentIndex,0,wall.segments.Length-1)];
         WallDemand wallDemand;
         Demand demand=null;
-        if(demands.TryGetValue(id,out wallDemand))
+        if(storeyDemands.Count>0)
+            demand=DetailedDemand(id,segmentIndex,caseName,viewer);
+        if(demand==null && demands.TryGetValue(id,out wallDemand))
         {
             Demand[] values=wallDemand.demands;
             if(wallDemand.segments!=null && wallDemand.segments.Length>0)
@@ -125,6 +138,27 @@ public sealed class WallSectionGraphs : IDisposable
     }
 
     private CapacityMaterial dataMaterial;
+
+    private Demand DetailedDemand(int id,int segment,string caseName,Semana3Visualizer viewer)
+    {
+        Demand direct;
+        if(caseName!="EX" && caseName!="EY" && caseName!="R")
+            return storeyDemands.TryGetValue(caseName+":"+id+":"+segment,out direct) ? direct : null;
+        Demand result=new Demand { name=caseName };
+        if(caseName=="EX" || caseName=="EY")
+        {
+            Demand g,q;
+            if(!storeyDemands.TryGetValue(caseName+"G:"+id+":"+segment,out g) || !storeyDemands.TryGetValue(caseName+"Q:"+id+":"+segment,out q)) return null;
+            result.p=(float)(viewer.MassG*g.p+viewer.MassQ*q.p); result.m=(float)(viewer.MassG*g.m+viewer.MassQ*q.m); return result;
+        }
+        for(int k=0;k<4;k++)
+        {
+            Demand source;
+            if(!storeyDemands.TryGetValue(Semana3Visualizer.BaseCases[k]+":"+id+":"+segment,out source)) return null;
+            result.p+=(float)(viewer.Combination[k]*source.p); result.m+=(float)(viewer.Combination[k]*source.m);
+        }
+        return result;
+    }
 
     private static Chart CreateChart(Point[] curve,Point[] keys,Demand demand)
     {

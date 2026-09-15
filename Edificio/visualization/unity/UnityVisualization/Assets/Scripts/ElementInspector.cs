@@ -286,7 +286,7 @@ public class ElementInspector : MonoBehaviour
         double[] values;
         if (selected.kind == "Muro")
         {
-            if (resultTab == 0) wallGraphs.Draw(selected.graphId, loadCase, selected.segmentIndex);
+            if (resultTab == 0) wallGraphs.Draw(selected.graphId, loadCase, selected.segmentIndex, GetComponent<Semana3Visualizer>());
             else GetComponent<Semana3Visualizer>().DrawGlobalResult(resultTab);
             return;
         }
