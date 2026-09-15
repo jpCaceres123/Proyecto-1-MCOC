@@ -25,6 +25,8 @@ public class ElementInspector : MonoBehaviour
     private string dataError;
     private Vector2 listScroll, mouseDown;
     private bool tracking;
+    private bool browseMobile;
+    private int mobileDetail;
     private readonly string[] filters = { "Todos", "Viga", "Columna", "Muro", "Losa" };
     private SectionGraphs graphs;
     private WallSectionGraphs wallGraphs;
@@ -115,14 +117,15 @@ public class ElementInspector : MonoBehaviour
 
     private bool InViewport()
     {
-        return Input.mousePosition.x > 285 && Input.mousePosition.x < Screen.width - 410;
+        return !MobileViewerUI.Blocks(Input.mousePosition);
     }
 
     private void Update()
     {
+        if (Input.touchCount > 1) { tracking = false; return; }
         if (Input.GetKeyDown(KeyCode.Escape)) Select(null);
         if (Input.GetMouseButtonDown(0)) { mouseDown = Input.mousePosition; tracking = InViewport(); }
-        if (tracking && Vector2.Distance(mouseDown, Input.mousePosition) > 5) tracking = false;
+        if (tracking && Vector2.Distance(mouseDown, Input.mousePosition) > (MobileViewerUI.Enabled?12*MobileViewerUI.Scale:5)) tracking = false;
         if (!Input.GetMouseButtonUp(0)) return;
         bool pick = tracking && InViewport(); tracking = false;
         if (!pick) return;
@@ -145,12 +148,14 @@ public class ElementInspector : MonoBehaviour
         if (selected != null)
             for (int i = 0; i < selected.renderers.Count; i++) selected.renderers[i].material.color = selected.colors[i];
         selected = item;
+        if(item!=null && MobileViewerUI.Enabled) MobileViewerUI.Tab=2;
         if (selected != null)
             foreach (Renderer renderer in selected.renderers) renderer.material.color = new Color(1f, .8f, .05f, .85f);
         GetComponent<BuildingVisualizer>().SelectSlab(item != null && item.kind == "Losa" ? item.id : -1);
     }
 
     public void SelectSlabById(int id) { Select(items.Find(item => item.kind == "Losa" && item.id == id)); }
+    public void SelectElementById(string kind,int id) { Select(items.Find(item=>item.kind==kind && item.id==id)); }
 
     private void DrawSlabWeight(int id)
     {
@@ -185,10 +190,13 @@ public class ElementInspector : MonoBehaviour
     public void Draw(string loadCase)
     {
         GUILayout.Space(8);
-        GUILayout.Label("INSPECTOR DE ELEMENTOS");
-        filter = GUILayout.Toolbar(filter, filters);
+        bool mobile=MobileViewerUI.Enabled;
+        if(mobile && GUILayout.Button(browseMobile?"Cerrar búsqueda":"Buscar otro elemento por ID")) browseMobile=!browseMobile;
+        if(!mobile || browseMobile || selected==null) {
+        GUILayout.Label("Buscar en el modelo");
+        filter = MobileViewerUI.Enabled ? GUILayout.SelectionGrid(filter,filters,3) : GUILayout.Toolbar(filter, filters);
         GUILayout.Label("Buscar ID:"); search = GUILayout.TextField(search);
-        listScroll = GUILayout.BeginScrollView(listScroll, GUILayout.Height(110));
+        listScroll = GUILayout.BeginScrollView(listScroll, GUILayout.Height(MobileViewerUI.Enabled?150:110));
         foreach (Item item in items)
         {
             if ((filter != 0 && item.kind != filters[filter]) || !item.id.ToString().Contains(search)) continue;
@@ -196,9 +204,16 @@ public class ElementInspector : MonoBehaviour
             if (GUILayout.Button(item.kind + " " + item.id + (visible ? "" : " (oculto)"))) Select(item);
         }
         GUILayout.EndScrollView();
-        GUILayout.Label("Clic: seleccionar · arrastrar: orbitar · Esc: limpiar");
+        }
+        GUILayout.Label(MobileViewerUI.Enabled?"Toca un elemento para consultar sus resultados.":"Clic: seleccionar · arrastrar: orbitar · Esc: limpiar");
         if (selected == null) return;
         GUILayout.Label(selected.kind + " ID " + selected.id + " · Caso " + loadCase);
+        if(mobile && GUILayout.Button("Centrar este elemento")) {
+            Bounds bounds=selected.renderers[0].bounds;
+            foreach(Renderer renderer in selected.renderers) bounds.Encapsulate(renderer.bounds);
+            OrbitCamera camera=FindAnyObjectByType<OrbitCamera>();
+            if(camera) {camera.target=bounds.center;camera.distance=Mathf.Max(10,bounds.size.magnitude*2);camera.Apply();}
+        }
         GUILayout.Label(selected.details);
         if (selected.kind == "Losa")
         {
@@ -207,7 +222,7 @@ public class ElementInspector : MonoBehaviour
         }
         else if (selected.kind == "Muro")
         {
-            wallGraphs.Draw(selected.id);
+            wallGraphs.Draw(selected.id,loadCase,GetComponent<Semana3Visualizer>());
         }
         else
         {
@@ -216,6 +231,8 @@ public class ElementInspector : MonoBehaviour
                 GUILayout.Label(dataError ?? "No hay esfuerzos disponibles para esta barra.");
             else
             {
+                if(mobile) mobileDetail=GUILayout.Toolbar(mobileDetail,new[]{"Fuerzas","Capacidad"});
+                if(!mobile || mobileDetail==0) {
                 GUILayout.Label("Acciones de extremo en ejes locales OpenSees");
                 string[] labels = { "N [kN]", "Vy [kN]", "Vz [kN]", "T [kN·m]", "My [kN·m]", "Mz [kN·m]" };
                 GUILayout.BeginHorizontal(); GUILayout.Label("Componente", GUILayout.Width(100)); GUILayout.Label("Extremo i"); GUILayout.Label("Extremo j"); GUILayout.EndHorizontal();
@@ -228,6 +245,8 @@ public class ElementInspector : MonoBehaviour
                 GUILayout.Label("Signos originales de localForce; valores en extremos, no máximos interiores.");
                 StructuralPostprocessor.Get(gameObject).DrawMember(selected.id, loadCase, values);
                 if (selected.kind == "Columna") DrawAxialTrace(loadCase, selected.id);
+                }
+                if(!mobile || mobileDetail==1)
                 graphs.Draw(selected.id, loadCase, values);
             }
         }
@@ -248,7 +267,7 @@ public class ElementInspector : MonoBehaviour
         GUILayout.Label("Σ P de columnas alineadas superiores: " + a[1].ToString("F2") + " kN" +
             (string.IsNullOrEmpty(above) ? " (último tramo)" : " · elementos " + above));
         GUILayout.Label("Aporte vertical neto en el nudo: " + a[2].ToString("+0.00;-0.00;0.00") + " kN");
-        GUILayout.Label("Se cumple P tramo = ΣP superior + aporte neto. El aporte reúne la transferencia del piso (vigas, muros, cargas nodales y restricciones). Un valor negativo indica redistribución hacia otros apoyos.");
+        GUILayout.Label("Aporte neto = P del tramo − ΣP superior. Es una diferencia entre resultados; no verifica por sí sola el equilibrio del nudo. Un valor negativo indica redistribución hacia otros apoyos.");
     }
 
     private bool TryAxial(string loadCase,int id,out double[] values)

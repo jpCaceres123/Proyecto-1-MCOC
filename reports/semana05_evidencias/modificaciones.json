@@ -1,0 +1,344 @@
+{
+  "base": {
+    "equilibrio": {
+      "G": {
+        "applied": [
+          0.0,
+          0.0,
+          -86461.0539558059
+        ],
+        "supports": [
+          0.00042867624614373323,
+          -0.0005247729030770643,
+          86461.05401969817
+        ]
+      },
+      "Q": {
+        "applied": [
+          0.0,
+          0.0,
+          -24606.9216951111
+        ],
+        "supports": [
+          -0.00020148907325256982,
+          9.116169105993777e-05,
+          24606.9216815171
+        ]
+      },
+      "EX": {
+        "applied": [
+          19402.148828838435,
+          0.0,
+          0.0
+        ],
+        "supports": [
+          -19402.134010386773,
+          -0.00014337594491828365,
+          -4.363743985491553e-06
+        ]
+      },
+      "EY": {
+        "applied": [
+          0.0,
+          19402.148828838435,
+          0.0
+        ],
+        "supports": [
+          9.40042733546878e-06,
+          -19402.15520575778,
+          -3.398059298831413e-06
+        ]
+      },
+      "R": {
+        "applied": [
+          15521.719063070752,
+          -5820.644648651531,
+          -138202.9551201232
+        ],
+        "supports": [
+          -15521.714285473156,
+          5820.645087240085,
+          138202.95516349302
+        ]
+      }
+    },
+    "uz_Q_max_m": 0.0065641877828468516,
+    "ux_EX_max_m": 0.00520999392290167,
+    "sha256_resources": {
+      "model_3d.csv": "687d33bd3b8e5df6512f6be2d0a6b0fadd4aacdf923a396da25498706f97819d",
+      "semana3_aceleraciones.csv": "48dd56cb620692752764a1442aacaf01b4515b51af3ef62fb64c1e0a0c80e8b8",
+      "semana3_axiales_columnas.csv": "baeff3ab1ca8b77da250582dd0b0d302c61ed8a98fb212631ca2c0ee0bb62248",
+      "semana3_desplazamientos.csv": "0d4addb4475b30845f75f1dd592d9c42c8ba6220e00b53723e1357857b32db93",
+      "semana3_esfuerzos_locales.csv": "7383af91c26c54fddc5fa0f5a68e1fba6ba3dba6fdc9d1e3f2c06ca7d2bfcb2d",
+      "semana3_fibras.csv": "0adee809eb4e87cca3acab436328e693bf28818485818e971726a592644b269e",
+      "semana3_graficos_seccion.json": "f4907912788376fa0b9b5cbc4efff058c8932210ae0c9716f83831fa8a67b040",
+      "semana3_masa_componentes.csv": "75fdd141ecc904fdceb91c8bf5426dcf7ed849cb401a5d57524482ca136120be",
+      "semana3_momento_curvatura.csv": "8189ed063506c221cec89c704cc60ad84cba52bfaeb50626b1867b8f5a325c46",
+      "semana3_pesos_losas.csv": "eb977ef5d5e440a11d97bc21b7c2e3e24d5ef78215dc435c70aab3d4ae00334a",
+      "semana3_pisos.csv": "8977455f043e348bf287e0631ad4806c77d6b44cb74541100dc6821ab4101b03",
+      "semana3_pm.csv": "0964b64162282b9d4c095016398f441f6cb927ed0840fbeccba4ca36443ac7ff",
+      "semana3_pm_muros.json": "90f666d995c52f404aaa4fc8e4f805c159d390419291911054458ebd51fd71d9",
+      "semana3_reparto_losas.csv": "ec22a89e57ac1ea4db2f0ad41b4bb15b61fa4e0bbd6b69ca1d62b7666a17a9d4",
+      "semana3_resumen.csv": "2385b633a0144f572eade7c7c01613fe59f7b38a13b50b718fbedd24fea129d3",
+      "semana4_resultados.json": "26016cee7b4cdeb03a1466060e71a76f94091bc87ce2d1c6c3230b5b22a1d679"
+    }
+  },
+  "mod_Q": {
+    "cambio": {
+      "q_Q_kN_m2": 4.0
+    },
+    "equilibrio": {
+      "G": {
+        "applied": [
+          0.0,
+          0.0,
+          -86461.0539558059
+        ],
+        "supports": [
+          0.00042867624614373323,
+          -0.0005247729030770643,
+          86461.05401969817
+        ]
+      },
+      "Q": {
+        "applied": [
+          0.0,
+          0.0,
+          -25807.238183999994
+        ],
+        "supports": [
+          -0.0003279034552919058,
+          -0.00029662762202065096,
+          25807.23821078646
+        ]
+      },
+      "EX": {
+        "applied": [
+          19522.18047772732,
+          0.0,
+          0.0
+        ],
+        "supports": [
+          -19522.173219694865,
+          0.00011516197452701715,
+          1.5711577360244533e-05
+        ]
+      },
+      "EY": {
+        "applied": [
+          0.0,
+          19522.18047772732,
+          0.0
+        ],
+        "supports": [
+          6.497203091231085e-05,
+          -19522.18642718433,
+          -2.7185647148542103e-05
+        ]
+      },
+      "R": {
+        "applied": [
+          15617.744382181862,
+          -5856.6541433181965,
+          -139883.39820456778
+        ],
+        "supports": [
+          -15617.738372370499,
+          5856.653881409051,
+          139883.3982699646
+        ]
+      }
+    },
+    "uz_Q_max_m": 0.006050321204469187,
+    "ux_EX_max_m": 0.005262471042588458,
+    "sha256_resources": {
+      "model_3d.csv": "687d33bd3b8e5df6512f6be2d0a6b0fadd4aacdf923a396da25498706f97819d",
+      "semana3_aceleraciones.csv": "2f298ed6002660e98f63f95d9fc5fe512443b7c7a3b37389e435b92f43396849",
+      "semana3_axiales_columnas.csv": "6073766ffac87eea3eb80e1e3b70668f400592fb886917d5da9b912fcce2ca0e",
+      "semana3_desplazamientos.csv": "9395dc32d834d463f64c4ca9b5566377252b76aa36b7b54e7321a45aaa19b6e2",
+      "semana3_esfuerzos_locales.csv": "8eefcc177595073348ca06032915b77e5980ffc4e61d49a798ed6e4133df2786",
+      "semana3_fibras.csv": "0adee809eb4e87cca3acab436328e693bf28818485818e971726a592644b269e",
+      "semana3_graficos_seccion.json": "f4907912788376fa0b9b5cbc4efff058c8932210ae0c9716f83831fa8a67b040",
+      "semana3_masa_componentes.csv": "b7a80c34c15ab51904e51d93aa188b90c73b73b357dc9b79dd8db8eedc230f2b",
+      "semana3_momento_curvatura.csv": "8189ed063506c221cec89c704cc60ad84cba52bfaeb50626b1867b8f5a325c46",
+      "semana3_pesos_losas.csv": "78040642d9d01c577f2aeef9459f4efae6a88754a8a454802a80c8fe7f9147c8",
+      "semana3_pisos.csv": "2caf73b03e7f83090056132c73414c9597cc73d620e98e4c829020088dc9c266",
+      "semana3_pm.csv": "0964b64162282b9d4c095016398f441f6cb927ed0840fbeccba4ca36443ac7ff",
+      "semana3_pm_muros.json": "90f666d995c52f404aaa4fc8e4f805c159d390419291911054458ebd51fd71d9",
+      "semana3_reparto_losas.csv": "29b073360b35ea22ea9df9f8ff5fedb1ddb82ad78f5aa0029f69f15672f7e405",
+      "semana3_resumen.csv": "3cd27a3085c9c5c4e12ee3626af33da678660dfca017ed8d547c45be3770278e",
+      "semana4_resultados.json": "13f9f5a55a6a8384bcb7cd0409668010037d6c95d8c4d3e81fa2b7710427beea"
+    }
+  },
+  "mod_sismo": {
+    "cambio": {
+      "aceleracion_fraccion_g": 0.25
+    },
+    "equilibrio": {
+      "G": {
+        "applied": [
+          0.0,
+          0.0,
+          -86461.0539558059
+        ],
+        "supports": [
+          0.00042867624614373323,
+          -0.0005247729030770643,
+          86461.05401969817
+        ]
+      },
+      "Q": {
+        "applied": [
+          0.0,
+          0.0,
+          -24606.9216951111
+        ],
+        "supports": [
+          -0.00020148907325256982,
+          9.116169105993777e-05,
+          24606.9216815171
+        ]
+      },
+      "EX": {
+        "applied": [
+          24252.686036048046,
+          0.0,
+          0.0
+        ],
+        "supports": [
+          -24252.67343837515,
+          -5.29450488153671e-05,
+          1.2968221585474282e-07
+        ]
+      },
+      "EY": {
+        "applied": [
+          0.0,
+          24252.686036048046,
+          0.0
+        ],
+        "supports": [
+          -0.00010015322459749898,
+          -24252.677732524655,
+          -9.120689729513742e-05
+        ]
+      },
+      "R": {
+        "applied": [
+          19402.148828838435,
+          -7275.805810814413,
+          -138202.9551201232
+        ],
+        "supports": [
+          -19402.154060450426,
+          7275.807367019948,
+          138202.95512073205
+        ]
+      }
+    },
+    "uz_Q_max_m": 0.0065641877828468516,
+    "ux_EX_max_m": 0.006512490660808096,
+    "sha256_resources": {
+      "model_3d.csv": "687d33bd3b8e5df6512f6be2d0a6b0fadd4aacdf923a396da25498706f97819d",
+      "semana3_aceleraciones.csv": "ea764e515775946aeb6645004666f5083d15c9bff4bdb4e044d70087a7fb1305",
+      "semana3_axiales_columnas.csv": "f0a07dc33427de7ac5740dfcebc22e9db33856f93490dee58168af8dde6c5650",
+      "semana3_desplazamientos.csv": "86605e3735990755adf77eceb0d4e4b6e8bff22530eed3f989d4bfff883cfadd",
+      "semana3_esfuerzos_locales.csv": "1ea778e57280e38ea034c28365c10b2d123bd8a6cf0751661cd4fa9939890a0a",
+      "semana3_fibras.csv": "0adee809eb4e87cca3acab436328e693bf28818485818e971726a592644b269e",
+      "semana3_graficos_seccion.json": "f4907912788376fa0b9b5cbc4efff058c8932210ae0c9716f83831fa8a67b040",
+      "semana3_masa_componentes.csv": "bcab7ffc84c2150c4a15a029e80dc37d1b8b4e5dafcee1dc0882b6a957016c37",
+      "semana3_momento_curvatura.csv": "8189ed063506c221cec89c704cc60ad84cba52bfaeb50626b1867b8f5a325c46",
+      "semana3_pesos_losas.csv": "eb977ef5d5e440a11d97bc21b7c2e3e24d5ef78215dc435c70aab3d4ae00334a",
+      "semana3_pisos.csv": "cce46e908a72c665c1ca4fb991e1c16f6deba86939c2fc29987996bd90f626cb",
+      "semana3_pm.csv": "0964b64162282b9d4c095016398f441f6cb927ed0840fbeccba4ca36443ac7ff",
+      "semana3_pm_muros.json": "90f666d995c52f404aaa4fc8e4f805c159d390419291911054458ebd51fd71d9",
+      "semana3_reparto_losas.csv": "ec22a89e57ac1ea4db2f0ad41b4bb15b61fa4e0bbd6b69ca1d62b7666a17a9d4",
+      "semana3_resumen.csv": "ad46fecbb1cd0c9f5dc84078f748fbe57179cd89ef4be681b97478e8ff76160d",
+      "semana4_resultados.json": "50216650e34f6b9e043e14f12e1896a824d1e640761f042a25a3cf4d31cf2413"
+    }
+  },
+  "restaurado": {
+    "equilibrio": {
+      "G": {
+        "applied": [
+          0.0,
+          0.0,
+          -86461.0539558059
+        ],
+        "supports": [
+          0.00042867624614373323,
+          -0.0005247729030770643,
+          86461.05401969817
+        ]
+      },
+      "Q": {
+        "applied": [
+          0.0,
+          0.0,
+          -24606.9216951111
+        ],
+        "supports": [
+          -0.00020148907325256982,
+          9.116169105993777e-05,
+          24606.9216815171
+        ]
+      },
+      "EX": {
+        "applied": [
+          19402.148828838435,
+          0.0,
+          0.0
+        ],
+        "supports": [
+          -19402.134010386773,
+          -0.00014337594491828365,
+          -4.363743985491553e-06
+        ]
+      },
+      "EY": {
+        "applied": [
+          0.0,
+          19402.148828838435,
+          0.0
+        ],
+        "supports": [
+          9.40042733546878e-06,
+          -19402.15520575778,
+          -3.398059298831413e-06
+        ]
+      },
+      "R": {
+        "applied": [
+          15521.719063070752,
+          -5820.644648651531,
+          -138202.9551201232
+        ],
+        "supports": [
+          -15521.714285473156,
+          5820.645087240085,
+          138202.95516349302
+        ]
+      }
+    },
+    "uz_Q_max_m": 0.0065641877828468516,
+    "ux_EX_max_m": 0.00520999392290167,
+    "sha256_resources": {
+      "model_3d.csv": "687d33bd3b8e5df6512f6be2d0a6b0fadd4aacdf923a396da25498706f97819d",
+      "semana3_aceleraciones.csv": "48dd56cb620692752764a1442aacaf01b4515b51af3ef62fb64c1e0a0c80e8b8",
+      "semana3_axiales_columnas.csv": "baeff3ab1ca8b77da250582dd0b0d302c61ed8a98fb212631ca2c0ee0bb62248",
+      "semana3_desplazamientos.csv": "0d4addb4475b30845f75f1dd592d9c42c8ba6220e00b53723e1357857b32db93",
+      "semana3_esfuerzos_locales.csv": "7383af91c26c54fddc5fa0f5a68e1fba6ba3dba6fdc9d1e3f2c06ca7d2bfcb2d",
+      "semana3_fibras.csv": "0adee809eb4e87cca3acab436328e693bf28818485818e971726a592644b269e",
+      "semana3_graficos_seccion.json": "f4907912788376fa0b9b5cbc4efff058c8932210ae0c9716f83831fa8a67b040",
+      "semana3_masa_componentes.csv": "75fdd141ecc904fdceb91c8bf5426dcf7ed849cb401a5d57524482ca136120be",
+      "semana3_momento_curvatura.csv": "8189ed063506c221cec89c704cc60ad84cba52bfaeb50626b1867b8f5a325c46",
+      "semana3_pesos_losas.csv": "eb977ef5d5e440a11d97bc21b7c2e3e24d5ef78215dc435c70aab3d4ae00334a",
+      "semana3_pisos.csv": "8977455f043e348bf287e0631ad4806c77d6b44cb74541100dc6821ab4101b03",
+      "semana3_pm.csv": "0964b64162282b9d4c095016398f441f6cb927ed0840fbeccba4ca36443ac7ff",
+      "semana3_pm_muros.json": "90f666d995c52f404aaa4fc8e4f805c159d390419291911054458ebd51fd71d9",
+      "semana3_reparto_losas.csv": "ec22a89e57ac1ea4db2f0ad41b4bb15b61fa4e0bbd6b69ca1d62b7666a17a9d4",
+      "semana3_resumen.csv": "2385b633a0144f572eade7c7c01613fe59f7b38a13b50b718fbedd24fea129d3",
+      "semana4_resultados.json": "26016cee7b4cdeb03a1466060e71a76f94091bc87ce2d1c6c3230b5b22a1d679"
+    }
+  }
+}

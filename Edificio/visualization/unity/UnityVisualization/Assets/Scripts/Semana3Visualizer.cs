@@ -213,7 +213,7 @@ public class Semana3Visualizer : MonoBehaviour
             RebuildResponse();
             ready = true;
             Debug.Log("Semana 3 cargada: casos G, Q, EX, EY y R.");
-            if (Application.isBatchMode) Application.Quit(0);
+            if (Application.isBatchMode && !MobileViewerUI.Preview) Application.Quit(0);
         }
         catch (Exception error)
         {
@@ -478,9 +478,10 @@ public class Semana3Visualizer : MonoBehaviour
     private void OnGUI()
     {
         if (!ready) return;
+        if(MobileViewerUI.Enabled) { DrawMobile();return; }
         if(panelStyle==null){panelStyle=new GUIStyle(GUI.skin.window){padding=new RectOffset(12,12,10,10)};titleStyle=new GUIStyle(GUI.skin.label){fontSize=16,fontStyle=FontStyle.Bold};noteStyle=new GUIStyle(GUI.skin.label){fontSize=11,wordWrap=true};}
         GUILayout.BeginArea(new Rect(Screen.width-400,12,388,Screen.height-24),panelStyle);scroll=GUILayout.BeginScrollView(scroll);
-        GUILayout.Label("SEMANA 3",titleStyle);GUILayout.Label("Carga viva · sismo · superposición · capacidad HA",noteStyle);GUILayout.Space(6);
+        GUILayout.Label("LABORATORIO · SEMANA 5",titleStyle);GUILayout.Label("Carga viva · sismo · superposición · capacidad HA",noteStyle);GUILayout.Space(6);
         GUILayout.BeginHorizontal();foreach(string c in new[]{"G","Q","EX","EY","R"})CaseButton(c);GUILayout.EndHorizontal();
         DrawMassControls();
         if(selectedCase=="R") DrawCombination();
@@ -510,4 +511,64 @@ public class Semana3Visualizer : MonoBehaviour
     }
 
     private string Meta(string key){string value;return metadata.TryGetValue(key,out value)?value:"?";}
+
+    private void DrawMobile()
+    {
+        if(MobileViewerUI.Tab!=1 && MobileViewerUI.Tab!=2) return;
+        bool element=MobileViewerUI.Tab==2;
+        MobileViewerUI.BeginPanel(element?"Tu elemento":"Cargas y deformación");
+        scroll=MobileViewerUI.Scroll(scroll);
+        GUILayout.Label("Caso activo: "+selectedCase);
+        if(element) {
+            ElementInspector inspector=GetComponent<ElementInspector>();if(inspector) inspector.Draw(selectedCase);
+            GUILayout.Space(12);
+            if(GUILayout.Button(showCapacity?"Ocultar sección de referencia":"Fibras y M–φ · sección HA de referencia")) showCapacity=!showCapacity;
+            if(showCapacity) {
+                GUILayout.Label("Sección HA de referencia · 0,70 × 0,70 m. Estas curvas describen la sección de referencia, no todas las secciones del edificio.");
+                float w=MobileViewerUI.PlotWidth;
+                GUILayout.Label(sectionPlot,GUILayout.Width(w),GUILayout.Height(w*250/350));
+                GUILayout.Label("Momento–curvatura · P = 0, 3376 y 6752 kN");
+                GUILayout.Label(mPhiPlot,GUILayout.Width(w),GUILayout.Height(w*250/350));
+            }
+        } else {
+            string[] cases={"G","Q","EX","EY","R"};
+            string[] labels={"G · Peso propio","Q · Uso","EX · Sismo X","EY · Sismo Y","R · Combinación"};
+            for(int i=0;i<cases.Length;i++) {
+                GUI.backgroundColor=selectedCase==cases[i]?new Color(.25f,1f,.85f):Color.white;
+                if(GUILayout.Button(labels[i]) && selectedCase!=cases[i]) {selectedCase=cases[i];RebuildResponse();}
+            }
+            GUI.backgroundColor=Color.white;
+            GUILayout.Space(10);
+            GUILayout.Label("Desplazamiento máximo real",new GUIStyle(GUI.skin.label){fontSize=18,fontStyle=FontStyle.Bold});
+            GUILayout.Label((maxDisplacement*1000).ToString("G4")+" mm",new GUIStyle(GUI.skin.label){fontSize=28,fontStyle=FontStyle.Bold});
+            bool deform=GUILayout.Toggle(showDeformed,"Mostrar deformación");
+            bool forces=GUILayout.Toggle(showForces,"Mostrar fuerzas sísmicas");
+            GUILayout.Label("Ampliación visual: "+deformationScale.ToString("F0")+"×");
+            GUILayout.BeginHorizontal();
+            float scale=deformationScale;
+            if(GUILayout.Button("Real 1×")) scale=1;
+            if(GUILayout.Button("50×")) scale=50;
+            if(GUILayout.Button("200×")) scale=200;
+            GUILayout.EndHorizontal();
+            scale=GUILayout.HorizontalSlider(scale,1,5000,GUILayout.Height(36));
+            GUILayout.Label("La ampliación solo cambia el dibujo. El valor en mm es el desplazamiento calculado.");
+            if(deform!=showDeformed || forces!=showForces || Mathf.Abs(scale-deformationScale)>1e-3f) {
+                showDeformed=deform;showForces=forces;deformationScale=scale;RebuildResponse();
+            }
+            if(selectedCase=="R") {
+                GUILayout.Label("Multiplicadores de cada carga");
+                // Reuse the same validated coefficients and calculation as desktop.
+                if(noteStyle==null) noteStyle=new GUIStyle(GUI.skin.label){wordWrap=true,fontSize=16};
+                DrawCombination();
+            }
+            if(GUILayout.Button((MobileViewerUI.AdvancedMass?"Ocultar":"Editar")+" masa sísmica (avanzado)")) MobileViewerUI.AdvancedMass=!MobileViewerUI.AdvancedMass;
+            if(MobileViewerUI.AdvancedMass) {
+                if(titleStyle==null) titleStyle=new GUIStyle(GUI.skin.label){fontSize=18,fontStyle=FontStyle.Bold};
+                if(noteStyle==null) noteStyle=new GUIStyle(GUI.skin.label){wordWrap=true,fontSize=16};
+                DrawMassControls();
+            }
+            GUILayout.Label("Para ver fuerzas y capacidad, toca una columna, viga o muro y abre Elemento.");
+        }
+        GUILayout.EndScrollView();MobileViewerUI.EndPanel();
+    }
 }

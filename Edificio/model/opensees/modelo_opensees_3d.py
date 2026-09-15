@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import json
+import math
 
 import openseespy.opensees as ops
 
@@ -16,6 +17,48 @@ WALL_SECTION_BASE = 200
 # This tolerance is only used at wall boundary nodes, not for interior nodes.
 WALL_CONNECT_THRESHOLD_M = 2.0
 WALL_TARGET_H_ELEMENT_M = 2.0
+
+
+def wall_mesh_stations(wall, walls, frame_nodes):
+    """Stations 0..1 including every exact wall/frame intersection in plan."""
+    x0, y0 = float(wall["x_i_m"]), float(wall["y_i_m"])
+    x1, y1 = float(wall["x_j_m"]), float(wall["y_j_m"])
+    dx, dy = x1-x0, y1-y0
+    length2 = dx*dx+dy*dy
+    length = math.sqrt(length2)
+    divisions = max(1, math.ceil(length/WALL_TARGET_H_ELEMENT_M))
+    stations = {i/divisions for i in range(divisions+1)}
+
+    def add_point(x, y, tolerance=1e-6):
+        t = ((x-x0)*dx+(y-y0)*dy)/length2
+        if t < -tolerance or t > 1+tolerance:
+            return
+        px, py = x0+t*dx, y0+t*dy
+        if math.hypot(x-px, y-py) <= tolerance:
+            stations.add(min(1.0, max(0.0, t)))
+
+    # T-junctions and ends of collinear/overlapping walls.
+    for other in walls:
+        if int(other["id"]) == int(wall["id"]):
+            continue
+        add_point(float(other["x_i_m"]), float(other["y_i_m"]))
+        add_point(float(other["x_j_m"]), float(other["y_j_m"]))
+        qx, qy = float(other["x_i_m"]), float(other["y_i_m"])
+        sx = float(other["x_j_m"])-qx
+        sy = float(other["y_j_m"])-qy
+        cross = dx*sy-dy*sx
+        if abs(cross) > 1e-10:
+            qpx, qpy = qx-x0, qy-y0
+            t = (qpx*sy-qpy*sx)/cross
+            u = (qpx*dy-qpy*dx)/cross
+            if -1e-8 <= t <= 1+1e-8 and -1e-8 <= u <= 1+1e-8:
+                stations.add(min(1.0, max(0.0, t)))
+
+    # Reuse real beam/column nodes lying on the wall instead of tying a nearby
+    # non-coincident node with equalDOF.
+    for node in frame_nodes:
+        add_point(float(node["x_m"]), float(node["y_m"]))
+    return sorted(stations)
 
 
 def subbuilding_for_x(data, x):
@@ -173,15 +216,15 @@ def create_wall_mesh(data, structural_node_ids):
         if wall_len < 1e-6:
             continue
 
-        nh = max(1, round(wall_len / WALL_TARGET_H_ELEMENT_M))
+        stations = wall_mesh_stations(wall, walls, frame_nodes)
+        nh = len(stations)-1
         nv = len(wall_levels) - 1
         section_tag = wall_sections[wall["thickness_m"]]
 
         wall_nodes = []
         for j, z in enumerate(wall_levels):
             row = []
-            for i in range(nh + 1):
-                t = i / nh
+            for i, t in enumerate(stations):
                 x = x0 + t * dx
                 y = y0 + t * dy
                 key = (round(x, 6), round(y, 6), round(z, 6))
@@ -206,6 +249,7 @@ def create_wall_mesh(data, structural_node_ids):
             wall_nodes.append(row)
 
         created_shells = 0
+        shell_element_ids = []
         for j in range(nv):
             for i in range(nh):
                 n1 = wall_nodes[j][i]
@@ -215,10 +259,12 @@ def create_wall_mesh(data, structural_node_ids):
                 if n1 == n2 or n2 == n3 or n3 == n4 or n4 == n1:
                     continue
                 ops.element("ShellMITC4", next_shell, n1, n2, n3, n4, section_tag)
+                shell_element_ids.append(next_shell)
                 next_shell += 1
                 created_shells += 1
 
-                shell_area = (wall_len / nh) * (wall_levels[j + 1] - wall_levels[j])
+                shell_area = (wall_len * (stations[i+1]-stations[i])
+                              * (wall_levels[j + 1] - wall_levels[j]))
                 shell_weight = (
                     data.get("wall_density_kg_m3", 2500.0)
                     * 9.80665 / 1000.0
@@ -233,56 +279,46 @@ def create_wall_mesh(data, structural_node_ids):
 
         mesh_info["shell_count"] += created_shells
 
-        edge_node_ids = set()
-        for row in wall_nodes:
-            edge_node_ids.add(row[0])
-            edge_node_ids.add(row[-1])
-
-        connected = 0
+        reused_frame_nodes = sum(nid in structural_node_ids
+                                 for row in wall_nodes for nid in row)
+        vertical_links = 0
+        # Some architectural wall axes are offset from the frame axes. Connect
+        # only their vertical translation to the nearest frame endpoint. The
+        # rigid diaphragm added later supplies the in-plane kinematics; tying
+        # all six DOFs here created artificial axial couples in transfer walls.
+        edge_node_ids = {row[0] for row in wall_nodes} | {row[-1] for row in wall_nodes}
         for mesh_nid in edge_node_ids:
-            mx = ops.nodeCoord(mesh_nid, 1)
-            my = ops.nodeCoord(mesh_nid, 2)
-            mz = ops.nodeCoord(mesh_nid, 3)
+            mx, my, mz = ops.nodeCoord(mesh_nid)
             best_dist = WALL_CONNECT_THRESHOLD_M
             best_frame = None
-            for fn in frame_nodes:
-                if abs(fn["z_m"] - mz) > 1e-6:
+            for node in frame_nodes:
+                if abs(float(node["z_m"])-mz) > 1e-6:
                     continue
-                if subbuilding_for_x(data, fn["x_m"]) != subbuilding_for_x(data, mx):
+                if subbuilding_for_x(data, float(node["x_m"])) != subbuilding_for_x(data, mx):
                     continue
-                d = ((fn["x_m"] - mx) ** 2 + (fn["y_m"] - my) ** 2) ** 0.5
-                if d < best_dist:
-                    best_dist = d
-                    best_frame = fn["id"]
+                distance = math.hypot(float(node["x_m"])-mx, float(node["y_m"])-my)
+                if distance < best_dist:
+                    best_dist, best_frame = distance, int(node["id"])
             if best_frame is not None and best_frame != mesh_nid:
                 try:
-                    ops.equalDOF(best_frame, mesh_nid, 1, 2, 3, 4, 5, 6)
-                    connected += 1
+                    ops.equalDOF(best_frame, mesh_nid, 3)
+                    vertical_links += 1
                 except Exception:
                     pass
-
-        base_diaphragm_connection = False
-        if z0 > 1e-6 and connected == 0:
-            floor_nodes = [node for node in frame_nodes
-                           if abs(node["z_m"] - wall_levels[0]) < 1e-6]
-            if floor_nodes:
-                master = min(floor_nodes, key=lambda node: node["id"])["id"]
-                for node_id in wall_nodes[0]:
-                    if node_id == master:
-                        continue
-                    try:
-                        ops.equalDOF(master, node_id, 1, 2, 3, 4, 5, 6)
-                        connected += 1
-                    except Exception:
-                        pass
-                base_diaphragm_connection = connected > 0
 
         mesh_info["walls"].append({
             "id": wall["id"], "thickness_m": wall["thickness_m"],
             "nh": nh, "nv": nv, "shell_elements": created_shells,
-            "edge_nodes_connected": connected,
-            "base_diaphragm_connection": base_diaphragm_connection,
+            "edge_nodes_connected": reused_frame_nodes+vertical_links,
+            "vertical_frame_links": vertical_links,
+            "base_diaphragm_connection": False,
+            "mesh_stations": stations,
+            "shell_element_ids": shell_element_ids,
             "node_ids": [nid for row in wall_nodes for nid in row],
+            "node_ids_by_level": {
+                str(round(z, 6)): list(row)
+                for z, row in zip(wall_levels, wall_nodes)
+            },
             "edge_node_ids_by_level": {
                 str(round(z, 6)): [row[0], row[-1]]
                 for z, row in zip(wall_levels, wall_nodes)

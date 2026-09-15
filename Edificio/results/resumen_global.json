@@ -2,37 +2,37 @@
   "checks": [
     {
       "control": "G: equilibrio apoyos / carga",
-      "error": 7.871886435995912e-09,
+      "error": 5.528443826903636e-09,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "G: compatibilidad diafragmas [m]",
-      "error": 5.340047369681473e-10,
+      "error": 6.3509613505843355e-12,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "Q: equilibrio apoyos / carga",
-      "error": 9.00436165517291e-09,
+      "error": 1.956992299263987e-08,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "Q: compatibilidad diafragmas [m]",
-      "error": 1.70480949114051e-10,
+      "error": 1.36196090484101e-12,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EX: equilibrio apoyos / carga",
-      "error": 7.637888996747969e-07,
+      "error": 3.132175026202954e-07,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "EX: compatibilidad diafragmas [m]",
-      "error": 1.0103919723461474e-09,
+      "error": 2.0467942844855545e-11,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
@@ -50,7 +50,7 @@
     },
     {
       "control": "EX: corte basal relativo",
-      "error": 7.637531179005012e-07,
+      "error": 3.1293959095154537e-07,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
@@ -128,13 +128,13 @@
     },
     {
       "control": "EY: equilibrio apoyos / carga",
-      "error": 3.2867118143683447e-07,
+      "error": 3.783798080755576e-07,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "EY: compatibilidad diafragmas [m]",
-      "error": 1.7823756750037778e-09,
+      "error": 5.587917647409128e-11,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
@@ -152,7 +152,7 @@
     },
     {
       "control": "EY: corte basal relativo",
-      "error": 3.286707776622453e-07,
+      "error": 3.759272873577057e-07,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
@@ -230,97 +230,121 @@
     },
     {
       "control": "R: equilibrio apoyos / carga",
-      "error": 3.4469131908924276e-08,
+      "error": 8.29381737078698e-08,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "R: compatibilidad diafragmas [m]",
-      "error": 1.315974577356313e-09,
+      "error": 2.7173712746091266e-11,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EXG: equilibrio apoyos / carga",
-      "error": 2.555506715154796e-07,
+      "error": 1.6946714066529604e-07,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "EXQ: equilibrio apoyos / carga",
-      "error": 4.775906001325394e-07,
+      "error": 1.102822429929963e-06,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "EX: bases de masa reproducen u",
-      "error": 7.577240192075195e-07,
+      "error": 5.836004785941887e-07,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EX: bases de masa reproducen support_r",
-      "error": 9.468746000717612e-07,
+      "error": 4.1107036769529726e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: bases de masa reproducen demanda de muro P_compresion_kN",
+      "error": 8.740146464009046e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EX: bases de masa reproducen demanda de muro M_principal_kNm",
+      "error": 3.393902984719994e-07,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EYG: equilibrio apoyos / carga",
-      "error": 4.779447539676935e-07,
+      "error": 4.657419601255147e-07,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "EYQ: equilibrio apoyos / carga",
-      "error": 2.2381548081379457e-07,
+      "error": 8.075947801417458e-07,
       "tolerancia": 0.0001,
       "estado": "OK"
     },
     {
       "control": "EY: bases de masa reproducen u",
-      "error": 8.503336947932677e-07,
+      "error": 8.22609759165869e-06,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EY: bases de masa reproducen support_r",
-      "error": 8.121620856548254e-07,
+      "error": 3.149519738126756e-06,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: bases de masa reproducen demanda de muro P_compresion_kN",
+      "error": 4.093097202789059e-06,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "EY: bases de masa reproducen demanda de muro M_principal_kNm",
+      "error": 2.8936022594951856e-06,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EX: masa 0.8G+0.3Q expl\u00edcita u",
-      "error": 8.134288320740506e-07,
+      "error": 7.954760366300758e-07,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EX: masa 0.8G+0.3Q expl\u00edcita support_r",
-      "error": 5.710399633544145e-07,
+      "error": 9.435113150934888e-07,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EX: masa 0.8G+0.3Q expl\u00edcita local_forces",
-      "error": 1.1473327237423412e-06,
+      "error": 2.009473817843716e-06,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EY: masa 0.8G+0.3Q expl\u00edcita u",
-      "error": 1.3997672263764403e-06,
+      "error": 2.7450775136563775e-06,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EY: masa 0.8G+0.3Q expl\u00edcita support_r",
-      "error": 1.1077044062617415e-06,
+      "error": 7.047954883505976e-07,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EY: masa 0.8G+0.3Q expl\u00edcita local_forces",
-      "error": 1.3959515026418895e-06,
+      "error": 7.318326345574563e-06,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
@@ -356,31 +380,55 @@
     },
     {
       "control": "Superposicion: desplazamientos, error relativo maximo",
-      "error": 2.1302387767918385e-08,
+      "error": 2.4728813879531757e-07,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "Superposicion: reacciones de apoyo, error relativo maximo",
-      "error": 1.2824749942200728e-07,
+      "error": 3.102673625943742e-07,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "Superposicion: fuerzas internas, error relativo maximo",
-      "error": 1.459189500040783e-07,
+      "error": 2.127244382176455e-06,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Superposicion: demanda de muros P_compresion_kN, error relativo maximo",
+      "error": 3.083362827457198e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Superposicion: demanda de muros M_principal_kNm, error relativo maximo",
+      "error": 6.160715130546262e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Superposicion: demanda de muros V_en_plano_kN, error relativo maximo",
+      "error": 5.528136765286767e-07,
+      "tolerancia": 1e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Superposicion: demanda de muros V_fuera_plano_kN, error relativo maximo",
+      "error": 1.7984881686027161e-06,
       "tolerancia": 1e-05,
       "estado": "OK"
     },
     {
       "control": "EX: sensibilidad penalty x10",
-      "error": 5.118997090005075e-05,
+      "error": 1.7927753537075182e-05,
       "tolerancia": 0.01,
       "estado": "OK"
     },
     {
       "control": "EY: sensibilidad penalty x10",
-      "error": 0.00025487275455410546,
+      "error": 1.867396254583108e-05,
       "tolerancia": 0.01,
       "estado": "OK"
     }
@@ -395,12 +443,12 @@
       "applied": [
         0.0,
         0.0,
-        -86461.0539558059
+        -86461.05395580626
       ],
       "supports": [
-        0.00042867624614373323,
-        -0.0005247729030770643,
-        86461.05401969817
+        0.0004275529554220725,
+        0.00010276997629432572,
+        86461.05376841336
       ]
     },
     "Q": {
@@ -410,9 +458,9 @@
         -24606.9216951111
       ],
       "supports": [
-        -0.00020148907325256982,
-        9.116169105993777e-05,
-        24606.9216815171
+        0.0004679547767629799,
+        0.00011209805837353315,
+        24606.921676453338
       ]
     },
     "EX": {
@@ -422,9 +470,9 @@
         0.0
       ],
       "supports": [
-        -19402.134010386773,
-        -0.00014337594491828365,
-        -4.363743985491553e-06
+        -19402.142757137917,
+        0.0002557659963713377,
+        9.542679649143793e-06
       ]
     },
     "EY": {
@@ -434,21 +482,21 @@
         0.0
       ],
       "supports": [
-        9.40042733546878e-06,
-        -19402.15520575778,
-        -3.398059298831413e-06
+        0.0008317734633180862,
+        -19402.141535041257,
+        -6.749635302583101e-05
       ]
     },
     "R": {
       "applied": [
         15521.719063070752,
         -5820.644648651531,
-        -138202.9551201232
+        -138202.95512012273
       ],
       "supports": [
-        -15521.714285473156,
-        5820.645087240085,
-        138202.95516349302
+        -15521.718550701733,
+        5820.633116543618,
+        138202.95496977135
       ]
     }
   },

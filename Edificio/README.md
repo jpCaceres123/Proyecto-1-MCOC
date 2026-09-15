@@ -24,3 +24,21 @@ y cargar `Assets/Main.unity`.
 
 Los parámetros están en `Edificio/data/parameters/parametros.json`; se puede
 usar otro archivo con `--parametros ruta.json`.
+
+## Laboratorio Semana 5
+
+Informe y limitaciones: [reports/semana05.md](../reports/semana05.md).
+
+```powershell
+python Edificio/verification/interactive/verificar_semana05.py
+python Edificio/verification/interactive/verificar_modificaciones.py
+```
+
+El segundo comando ejecuta dos variantes y restaura los resultados base al terminar.
+Para iPhone 15 / iOS 26 se agregó el menú Unity
+`Build > Edificio Viewer > Exportar iOS (iPhone 15)`.
+La exportación requiere iOS Build Support y la aplicación final requiere Xcode en macOS.
+El intento local quedó bloqueado por ausencia del módulo; no hay IPA generada.
+
+La interfaz móvil se puede probar en Play con `View > Vista para celular`.
+Uso, cambios y verificación: [interfaz_celular.md](../reports/interfaz_celular.md).

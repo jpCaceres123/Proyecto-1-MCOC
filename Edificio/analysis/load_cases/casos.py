@@ -78,6 +78,66 @@ def vectors(data, cfg):
     return loads, floors, transfers, base_weight
 
 
+def wall_section_demands(data):
+    """Resultantes internas en el corte inferior de cada paño ShellMITC4.
+
+    Las fuerzas nodales resistentes de los shells de la primera hilera se
+    reducen al centro de la base. P es positiva en compresión y M_principal
+    actúa respecto del eje horizontal normal a la longitud del muro.
+    """
+    geometry = {int(w['id']): w for w in data.get('walls', [])}
+    rows = []
+    for mesh in data.get('wall_mesh', {}).get('walls', []):
+        wall = geometry[int(mesh['id'])]
+        z_cut = float(wall['z_i_m'])
+        dx = float(wall['x_j_m']) - float(wall['x_i_m'])
+        dy = float(wall['y_j_m']) - float(wall['y_i_m'])
+        length = float(np.hypot(dx, dy))
+        tangent = np.array([dx / length, dy / length, 0.0])
+        normal = np.array([-dy / length, dx / length, 0.0])
+        center = np.array([(float(wall['x_i_m']) + float(wall['x_j_m'])) / 2,
+                           (float(wall['y_i_m']) + float(wall['y_j_m'])) / 2,
+                           z_cut])
+        force_sum = np.zeros(3)
+        moment_sum = np.zeros(3)
+        used_shells = 0
+        used_terms = 0
+        for shell_id in mesh.get('shell_element_ids', []):
+            nodes = list(ops.eleNodes(shell_id))
+            values = np.asarray(ops.eleResponse(shell_id, 'forces'), dtype=float)
+            if values.size != 6 * len(nodes):
+                raise ValueError(f'Shell {shell_id}: respuesta forces incompleta')
+            if not any(abs(ops.nodeCoord(n, 3) - z_cut) <= 1e-6 for n in nodes):
+                continue
+            used_shells += 1
+            for index, node in enumerate(nodes):
+                if abs(ops.nodeCoord(node, 3) - z_cut) > 1e-6:
+                    continue
+                action = values[6*index:6*index+6]
+                force = action[:3]
+                nodal_moment = action[3:]
+                arm = np.asarray(ops.nodeCoord(node), dtype=float) - center
+                force_sum += force
+                moment_sum += nodal_moment + np.cross(arm, force)
+                used_terms += 1
+        if not used_shells or not used_terms:
+            raise ValueError(f'Muro {wall["id"]}: no se encontro la hilera Shell del corte inferior')
+        rows.append(dict(
+            panel_id=int(wall['id']),
+            source_wall_id=int(wall.get('source_wall_id', wall['id'])),
+            floor=int(wall.get('floor', 0)),
+            z_cut_m=z_cut,
+            P_compresion_kN=float(force_sum[2]),
+            M_principal_kNm=float(np.dot(moment_sum, normal)),
+            V_en_plano_kN=float(np.dot(force_sum, tangent)),
+            V_fuera_plano_kN=float(np.dot(force_sum, normal)),
+            M_vertical_kNm=float(moment_sum[2]),
+            shells_corte=used_shells,
+            terminos_nodales=used_terms,
+        ))
+    return rows
+
+
 def solve(coeff, cfg):
     data = base.build_model()
     # El constructor heredado aplica G+Q. Eliminarlos antes de definir el caso.
@@ -117,6 +177,7 @@ def solve(coeff, cfg):
     forces = {str(e): ops.eleForce(e) for e in element_tags}
     local_forces = {str(e['id']): ops.eleResponse(e['id'], 'localForce')
                     for e in data['elements'] if e['type'] != 'WALL'}
+    wall_demands = wall_section_demands(data)
     support_sum = support_r[:, :3].sum(axis=0)
     applied_sum = sum((v[:3] for v in total.values()), np.zeros(3))
     applied_moment = sum((v[3:]+np.cross(ops.nodeCoord(n),v[:3]) for n,v in total.items()),np.zeros(3))
@@ -139,6 +200,7 @@ def solve(coeff, cfg):
     # Reacciones de todos los nodos no son equivalentes a reacciones de apoyo:
     # los nodos MPC contienen fuerzas internas de restriccion.
     return dict(node_tags=tags, element_tags=element_tags, u=u, r=r, forces=forces, local_forces=local_forces,
+                wall_demands=wall_demands,
                 support_sum=support_sum, applied_sum=applied_sum,
                 applied_moment=applied_moment,
                 floor_response=floor_response, compatibility=compatibility,
@@ -155,6 +217,7 @@ def run(cfg, out):
     if cfg['q_Q_kN_m2'] is not None and cfg['q_Q_kN_m2'] < 0:
         raise ValueError('q_Q debe ser no negativa')
     results = {}
+    wall_demand_rows = []
     checks = []
     def check(name, error, tol):
         checks.append(dict(control=name, error=float(error), tolerancia=float(tol),
@@ -163,6 +226,7 @@ def run(cfg, out):
         print(f'Analizando {case}...', flush=True)
         result = solve(cfg['combinacion'] if case == 'R' else {case: 1}, cfg)
         results[case] = result
+        wall_demand_rows.extend(dict(caso=case, **row) for row in result['wall_demands'])
         np.savez_compressed(out/f'{case}.npz', node_tags=result['node_tags'],
                             u=result['u'], nodal_residual=result['r'],
                             support_tags=result['support_tags'], reaction=result['support_r'])
@@ -210,6 +274,7 @@ def run(cfg, out):
             print(f'Analizando base de masa {name}...',flush=True)
             result=solve({direction:1.},{**cfg,'ponderador_G_masa':ag,'fraccion_Q_masa':aq,'_permitir_masa_nula_base':True})
             seismic_bases[name]=result
+            wall_demand_rows.extend(dict(caso=name, **row) for row in result['wall_demands'])
             np.savez_compressed(out/f'{name}.npz',node_tags=result['node_tags'],u=result['u'])
             (out/f'{name}_fuerzas_locales.json').write_text(json.dumps(result['local_forces']),encoding='utf-8')
             dump_csv(out/f'{name}_pisos.csv',result['floor_response'])
@@ -217,6 +282,12 @@ def run(cfg, out):
         for field in ('u','support_r'):
             combined=cfg.get('ponderador_G_masa',1.)*seismic_bases[direction+'G'][field]+cfg['fraccion_Q_masa']*seismic_bases[direction+'Q'][field]
             check(f'{direction}: bases de masa reproducen {field}',np.max(np.abs(combined-results[direction][field]))/max(1e-12,np.max(np.abs(results[direction][field]))),1e-5)
+        for component in ('P_compresion_kN', 'M_principal_kNm'):
+            expected=np.array([row[component] for row in results[direction]['wall_demands']])
+            combined=(cfg.get('ponderador_G_masa',1.)*np.array([row[component] for row in seismic_bases[direction+'G']['wall_demands']])
+                      +cfg['fraccion_Q_masa']*np.array([row[component] for row in seismic_bases[direction+'Q']['wall_demands']]))
+            check(f'{direction}: bases de masa reproducen demanda de muro {component}',
+                  np.max(np.abs(combined-expected))/max(1e-12,np.max(np.abs(expected))),1e-5)
     # Contrastar ponderadores distintos con una nueva corrida explícita, también esfuerzos locales.
     for direction in ('EX','EY'):
         explicit=solve({direction:1.},{**cfg,'ponderador_G_masa':.8,'fraccion_Q_masa':.3})
@@ -240,6 +311,7 @@ def run(cfg, out):
             Fx_EX_kN=sum(f['F_kN'] for f in group),Fy_EY_kN=sum(f['F_kN'] for f in group)))
     dump_csv(out/'sismo_por_piso.csv',floor_totals)
     dump_csv(out/'transferencia_Q.csv', ref['transfers'])
+    dump_csv(out/'demanda_muros.csv', wall_demand_rows)
     # Control independiente: areas de zonas originales, no suma de receptores.
     model = json.loads(base.MODEL.read_text(encoding='utf-8'))
     source_loads = json.loads(verification.LOADS.read_text(encoding='utf-8'))
@@ -279,6 +351,12 @@ def run(cfg, out):
                                superpuesta=combined[index],explicita=explicit[index],
                                error_absoluto_max=error,error_relativo_max=relative))
     dump_csv(out/'comparacion_superposicion.csv',comparison)
+    for component in ('P_compresion_kN', 'M_principal_kNm', 'V_en_plano_kN', 'V_fuera_plano_kN'):
+        explicit=np.array([row[component] for row in results['R']['wall_demands']])
+        combined=sum((factor*np.array([row[component] for row in results[case]['wall_demands']])
+                      for case,factor in cfg['combinacion'].items()),np.zeros_like(explicit))
+        check(f'Superposicion: demanda de muros {component}, error relativo maximo',
+              np.max(np.abs(explicit-combined))/max(1e-12,np.max(np.abs(explicit))),1e-5)
     # Control de sensibilidad del metodo Penalty en ambas direcciones.
     for case in ('EX','EY'):
         refined=solve({case:1},{**cfg,'penalty':cfg['penalty']*10})

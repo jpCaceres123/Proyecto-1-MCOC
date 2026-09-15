@@ -54,6 +54,7 @@ public class BuildingVisualizer : MonoBehaviour
 
     private void Start()
     {
+        if(MobileViewerUI.Enabled) {showNodes=false;showIds=false;showTributary=false;}
         Debug.Log("=== INICIO GENERACION MODELO ===");
         Debug.Log("DataPath: " + Application.dataPath);
         Debug.Log("StreamingAssets: " + Application.streamingAssetsPath);
@@ -169,7 +170,7 @@ public class BuildingVisualizer : MonoBehaviour
         Vector3 d = wall.b - wall.a; go.transform.position = new Vector3((wall.a.x + wall.b.x) / 2, (wall.zMin + wall.zMax) / 2, (wall.a.z + wall.b.z) / 2);
         go.transform.rotation = Quaternion.LookRotation(d.normalized, Vector3.up); go.transform.localScale = new Vector3(wall.thickness, wall.zMax - wall.zMin, d.magnitude);
         SetMaterial(go.GetComponent<Renderer>(), new Color(.27f, .33f, .40f)); CreateIdLabel(go, wall.id, go.transform.position);
-        inspector.Register(go, wall.id, "Muro", "Longitud: " + d.magnitude.ToString("F3") + " m\nEspesor: " + wall.thickness.ToString("F2") + " m\nAltura modelada: " + (wall.zMax-wall.zMin).ToString("F2") + " m");
+        inspector.Register(go, wall.id, "Muro", "Paño independiente entre pisos\nLongitud: " + d.magnitude.ToString("F3") + " m\nEspesor: " + wall.thickness.ToString("F2") + " m\nCotas: " + wall.zMin.ToString("F2") + "–" + wall.zMax.ToString("F2") + " m\nAltura: " + (wall.zMax-wall.zMin).ToString("F2") + " m");
     }
 
     private void CreateSlab(Slab slab)
@@ -257,7 +258,6 @@ public class BuildingVisualizer : MonoBehaviour
     {
         if (nodeRoot) nodeRoot.gameObject.SetActive(showNodes); if (beamRoot) beamRoot.gameObject.SetActive(showBeams); if (columnRoot) columnRoot.gameObject.SetActive(showColumns); if (wallRoot) wallRoot.gameObject.SetActive(showWalls); if (supportRoot) supportRoot.gameObject.SetActive(showSupports); if (localAxisRoot) localAxisRoot.gameObject.SetActive(showLocalAxes); if (diaphragmRoot) diaphragmRoot.gameObject.SetActive(showDiaphragms); if (tributaryRoot) tributaryRoot.gameObject.SetActive(showTributary);
         foreach (Transform root in new[] { nodeRoot, beamRoot, columnRoot, wallRoot, supportRoot, localAxisRoot, diaphragmRoot }) foreach (Transform label in root.GetComponentsInChildren<Transform>(true)) if (label.name.StartsWith("ID_", StringComparison.Ordinal)) label.gameObject.SetActive(showIds);
-        if (level < 0) return;
         foreach (Transform root in new[] { nodeRoot, beamRoot, columnRoot, wallRoot, supportRoot, localAxisRoot, diaphragmRoot }) foreach (Transform child in root) child.gameObject.SetActive(levelObjects[child] && (level < 0 || child.position.y >= level - .02f));
     }
 
@@ -307,6 +307,7 @@ public class BuildingVisualizer : MonoBehaviour
 
     private void OnGUI()
     {
+        if(MobileViewerUI.Enabled) { DrawMobile(); return; }
         if (panelStyle == null) { panelStyle = new GUIStyle(GUI.skin.window) { padding = new RectOffset(12, 12, 10, 10) }; titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 16, fontStyle = FontStyle.Bold }; smallStyle = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true }; }
         GUILayout.BeginArea(new Rect(12, 12, 265, Screen.height - 24), panelStyle); scroll = GUILayout.BeginScrollView(scroll);
         GUILayout.Label("MODELO ESTRUCTURAL", titleStyle); GUILayout.Label(nodes.Count + " nodos | " + elements.Count + " barras | " + walls.Count + " muros | " + slabs.Count + " losas\n" + steelColumnCount + " columnas acero SHS 300x300x20 (turquesa)", smallStyle); GUILayout.Space(8);
@@ -316,5 +317,26 @@ public class BuildingVisualizer : MonoBehaviour
         if (selectedSlab >= 0) { Slab slab = slabs.Find(s => s.id == selectedSlab); if (slab != null) GUILayout.Label("ID: " + slab.id + "\nArea: " + slab.Area.ToString("F2") + " m2\nMetodo: reparto por cuatro bordes\nZona resaltada: centro hacia cada borde", smallStyle); }
         if (GUILayout.Button("Reiniciar seleccion")) { inspector.SelectSlabById(-1); }
         GUILayout.Label("Haz clic directamente sobre una losa para seleccionarla.\nLMB orbitar | MMB desplazar | rueda zoom\nLas zonas coloreadas muestran el reparto tributario hacia cada borde.", smallStyle); GUILayout.EndScrollView(); GUILayout.EndArea(); ApplyVisibility();
+    }
+
+    private void DrawMobile()
+    {
+        if(MobileViewerUI.Tab!=0) { ApplyVisibility();return; }
+        MobileViewerUI.BeginPanel("Qué quieres ver");
+        scroll=MobileViewerUI.Scroll(scroll);
+        GUILayout.Label(elements.Count+" barras · "+walls.Count+" muros");
+        showBeams=LayerButton("Vigas",showBeams);showColumns=LayerButton("Columnas",showColumns);
+        showWalls=LayerButton("Muros",showWalls);showDiaphragms=LayerButton("Losas",showDiaphragms);
+        showSupports=LayerButton("Apoyos",showSupports);showIds=LayerButton("Identificadores",showIds);
+        showLocalAxes=LayerButton("Ejes locales",showLocalAxes);showNodes=LayerButton("Nodos",showNodes);
+        bool tributary=LayerButton("Área tributaria de la losa",showTributary);
+        if(tributary!=showTributary) {showTributary=tributary;UpdateTributary();}
+        GUILayout.Label("Para consultar una losa, tócala en el edificio o búscala en Elemento.");
+        if(GUILayout.Button("Mostrar todos los niveles")) level=-1;
+        GUILayout.EndScrollView();MobileViewerUI.EndPanel();ApplyVisibility();
+    }
+    private bool LayerButton(string name,bool value)
+    {
+        if(GUILayout.Button((value?"✓  ":"○  ")+name)) return !value;return value;
     }
 }

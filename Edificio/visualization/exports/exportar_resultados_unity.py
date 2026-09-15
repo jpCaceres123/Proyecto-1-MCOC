@@ -34,17 +34,18 @@ def export_results(out=None, destination=None):
         if basis.shape != (3, 3) or not np.allclose(basis @ basis.T, np.eye(3), atol=1e-10):
             raise ValueError(f"Ejes inválidos en barra {e['id']}")
         bars.append(dict(id=e['id'], i=e['i'], j=e['j'], x=axes[0], y=axes[1], z=axes[2]))
-    wall_nodes = {w['id']: set(w['node_ids']) for w in data['wall_mesh']['walls']}
+    shell_owner = {int(tag): int(w['id']) for w in data['wall_mesh']['walls']
+                   for tag in w.get('shell_element_ids', [])}
     shells = []
     bar_tags = {b['id'] for b in bars}
     for tag in sorted(ops.getEleTags()):
         if tag in bar_tags:
             continue
         connectivity = list(ops.eleNodes(tag))
-        owners = [wall for wall, ids in wall_nodes.items() if set(connectivity) <= ids]
-        if len(connectivity) != 4 or len(owners) != 1:
+        owner = shell_owner.get(int(tag))
+        if len(connectivity) != 4 or owner is None:
             raise ValueError(f'Shell {tag} sin identificación única de muro')
-        shells.append(dict(id=tag, wall=owners[0], nodes=connectivity))
+        shells.append(dict(id=tag, wall=owner, nodes=connectivity))
     responses = []
     for case in CASES:
         with np.load(out / f'{case}.npz') as result:

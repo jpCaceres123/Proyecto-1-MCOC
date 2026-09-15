@@ -8,13 +8,18 @@ class WallInteractionTests(unittest.TestCase):
         cls.sections,cls.registry=calculate()
 
     def test_all_model_walls_are_assigned(self):
-        self.assertEqual(set(range(1,25)),{item['wall_id'] for item in self.sections})
+        self.assertEqual(set(range(1,25)),{item['source_wall_id'] for item in self.sections})
+
+    def test_each_analysis_wall_is_one_storey(self):
+        self.assertEqual(len({item['wall_id'] for item in self.sections}),
+                         len({(item['source_wall_id'],item['piso']) for item in self.sections}))
+        self.assertTrue(all(item['piso'] >= 1 for item in self.sections))
 
     def test_profiles_cover_wall_height(self):
         by_wall={}
         for item in self.sections:
-            by_wall.setdefault(item['wall_id'],0.0)
-            by_wall[item['wall_id']]+=item['z_max_m']-item['z_min_m']
+            by_wall.setdefault(item['source_wall_id'],0.0)
+            by_wall[item['source_wall_id']]+=item['z_max_m']-item['z_min_m']
         self.assertTrue(all(height>0 for height in by_wall.values()))
 
     def test_spacing_does_not_exceed_specification(self):

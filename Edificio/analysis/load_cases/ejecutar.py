@@ -78,6 +78,7 @@ def export_unity(cfg, global_results, capacity_results, out):
         for f in global_results['floors']])
     export_accelerations(out/'masas_y_sismo.csv',resources/'semana3_aceleraciones.csv',cfg['g_m_s2'])
     casos.dump_csv(resources/'semana3_esfuerzos_locales.csv',member_rows)
+    shutil.copy2(out/'demanda_muros.csv', resources/'semana5_demanda_muros.csv')
     export_results(out, resources/'semana4_resultados.json')
 
     # Trazabilidad vertical de pilares. P se obtiene de las acciones locales de
@@ -445,10 +446,19 @@ Error axial máximo: {c['error_axial_kN']:.3e} kN. Estado HA: **{c['estado']}**.
 
 ## Curvas P-M de muros
 
-Se calcularon envolventes nominales para **{w['muros']} muros** y
+Se calcularon envolventes nominales para **{w['muros']} muros de origen**, separados en
+**{w.get('panos_por_piso', w['muros'])} paños por piso**, y
 **{w['secciones']} secciones** según los cambios de armadura en altura. Los
 resultados se guardan en `results/PM_muros_envolvente.csv`,
 `results/PM_muros_puntos_clave.csv` y `results/resumen_capacidad_muros.json`.
+
+Para cada paño también se reduce la respuesta `forces` de los elementos
+`ShellMITC4` de su hilera inferior al centro del corte. Se informa P vertical
+con compresión positiva, el momento alrededor del eje horizontal normal a la
+longitud del muro, los dos cortes horizontales y el momento vertical. Estas
+demandas se guardan por caso en `results/demanda_muros.csv`. Unity dibuja la
+demanda del caso seleccionado como una cruz roja sobre la capacidad; EX/EY
+responden a los ponderadores de masa y R a los coeficientes interactivos.
 
 ![Envolventes P-M de muros](../results/capacidad_PM_muros.png)
 

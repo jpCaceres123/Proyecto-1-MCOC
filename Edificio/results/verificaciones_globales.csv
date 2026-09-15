@@ -1,13 +1,13 @@
 ﻿control,error,tolerancia,estado
-G: equilibrio apoyos / carga,7.871886435995912e-09,0.0001,OK
-G: compatibilidad diafragmas [m],5.340047369681473e-10,1e-05,OK
-Q: equilibrio apoyos / carga,9.00436165517291e-09,0.0001,OK
-Q: compatibilidad diafragmas [m],1.70480949114051e-10,1e-05,OK
-EX: equilibrio apoyos / carga,7.637888996747969e-07,0.0001,OK
-EX: compatibilidad diafragmas [m],1.0103919723461474e-09,1e-05,OK
+G: equilibrio apoyos / carga,5.528443826903636e-09,0.0001,OK
+G: compatibilidad diafragmas [m],6.3509613505843355e-12,1e-05,OK
+Q: equilibrio apoyos / carga,1.956992299263987e-08,0.0001,OK
+Q: compatibilidad diafragmas [m],1.36196090484101e-12,1e-05,OK
+EX: equilibrio apoyos / carga,3.132175026202954e-07,0.0001,OK
+EX: compatibilidad diafragmas [m],2.0467942844855545e-11,1e-05,OK
 EX: carga lateral total [kN],0.0,1e-07,OK
 EX: resultante aplicada equivalente a fuerzas en CM [kNm],0.0,1e-06,OK
-EX: corte basal relativo,7.637531179005012e-07,0.0001,OK
+EX: corte basal relativo,3.1293959095154537e-07,0.0001,OK
 EX: pisos con desplazamiento contrario,0.0,0.0,OK
 EX: F=m*a piso 1 LT1,0.0,1e-07,OK
 EX: F=m*a piso 1 LT2,0.0,1e-07,OK
@@ -20,11 +20,11 @@ EX: F=m*a piso 4 LT2,0.0,1e-07,OK
 EX: F=m*a piso 5 LT1,0.0,1e-07,OK
 EX: F=m*a piso 5 LT2,0.0,1e-07,OK
 EX: momento aplicado respecto al CM [kNm],0.0,1e-07,OK
-EY: equilibrio apoyos / carga,3.2867118143683447e-07,0.0001,OK
-EY: compatibilidad diafragmas [m],1.7823756750037778e-09,1e-05,OK
+EY: equilibrio apoyos / carga,3.783798080755576e-07,0.0001,OK
+EY: compatibilidad diafragmas [m],5.587917647409128e-11,1e-05,OK
 EY: carga lateral total [kN],0.0,1e-07,OK
 EY: resultante aplicada equivalente a fuerzas en CM [kNm],2.9103830456733704e-11,1e-06,OK
-EY: corte basal relativo,3.286707776622453e-07,0.0001,OK
+EY: corte basal relativo,3.759272873577057e-07,0.0001,OK
 EY: pisos con desplazamiento contrario,0.0,0.0,OK
 EY: F=m*a piso 1 LT1,0.0,1e-07,OK
 EY: F=m*a piso 1 LT2,0.0,1e-07,OK
@@ -37,29 +37,37 @@ EY: F=m*a piso 4 LT2,0.0,1e-07,OK
 EY: F=m*a piso 5 LT1,0.0,1e-07,OK
 EY: F=m*a piso 5 LT2,0.0,1e-07,OK
 EY: momento aplicado respecto al CM [kNm],0.0,1e-07,OK
-R: equilibrio apoyos / carga,3.4469131908924276e-08,0.0001,OK
-R: compatibilidad diafragmas [m],1.315974577356313e-09,1e-05,OK
-EXG: equilibrio apoyos / carga,2.555506715154796e-07,0.0001,OK
-EXQ: equilibrio apoyos / carga,4.775906001325394e-07,0.0001,OK
-EX: bases de masa reproducen u,7.577240192075195e-07,1e-05,OK
-EX: bases de masa reproducen support_r,9.468746000717612e-07,1e-05,OK
-EYG: equilibrio apoyos / carga,4.779447539676935e-07,0.0001,OK
-EYQ: equilibrio apoyos / carga,2.2381548081379457e-07,0.0001,OK
-EY: bases de masa reproducen u,8.503336947932677e-07,1e-05,OK
-EY: bases de masa reproducen support_r,8.121620856548254e-07,1e-05,OK
-EX: masa 0.8G+0.3Q explícita u,8.134288320740506e-07,1e-05,OK
-EX: masa 0.8G+0.3Q explícita support_r,5.710399633544145e-07,1e-05,OK
-EX: masa 0.8G+0.3Q explícita local_forces,1.1473327237423412e-06,1e-05,OK
-EY: masa 0.8G+0.3Q explícita u,1.3997672263764403e-06,1e-05,OK
-EY: masa 0.8G+0.3Q explícita support_r,1.1077044062617415e-06,1e-05,OK
-EY: masa 0.8G+0.3Q explícita local_forces,1.3959515026418895e-06,1e-05,OK
+R: equilibrio apoyos / carga,8.29381737078698e-08,0.0001,OK
+R: compatibilidad diafragmas [m],2.7173712746091266e-11,1e-05,OK
+EXG: equilibrio apoyos / carga,1.6946714066529604e-07,0.0001,OK
+EXQ: equilibrio apoyos / carga,1.102822429929963e-06,0.0001,OK
+EX: bases de masa reproducen u,5.836004785941887e-07,1e-05,OK
+EX: bases de masa reproducen support_r,4.1107036769529726e-07,1e-05,OK
+EX: bases de masa reproducen demanda de muro P_compresion_kN,8.740146464009046e-07,1e-05,OK
+EX: bases de masa reproducen demanda de muro M_principal_kNm,3.393902984719994e-07,1e-05,OK
+EYG: equilibrio apoyos / carga,4.657419601255147e-07,0.0001,OK
+EYQ: equilibrio apoyos / carga,8.075947801417458e-07,0.0001,OK
+EY: bases de masa reproducen u,8.22609759165869e-06,1e-05,OK
+EY: bases de masa reproducen support_r,3.149519738126756e-06,1e-05,OK
+EY: bases de masa reproducen demanda de muro P_compresion_kN,4.093097202789059e-06,1e-05,OK
+EY: bases de masa reproducen demanda de muro M_principal_kNm,2.8936022594951856e-06,1e-05,OK
+EX: masa 0.8G+0.3Q explícita u,7.954760366300758e-07,1e-05,OK
+EX: masa 0.8G+0.3Q explícita support_r,9.435113150934888e-07,1e-05,OK
+EX: masa 0.8G+0.3Q explícita local_forces,2.009473817843716e-06,1e-05,OK
+EY: masa 0.8G+0.3Q explícita u,2.7450775136563775e-06,1e-05,OK
+EY: masa 0.8G+0.3Q explícita support_r,7.047954883505976e-07,1e-05,OK
+EY: masa 0.8G+0.3Q explícita local_forces,7.318326345574563e-06,1e-05,OK
 Q: conservacion piso 3.96 [kN],3.874040567097836e-05,0.002,OK
 Q: conservacion piso 7.92 [kN],4.168240229773801e-05,0.002,OK
 Q: conservacion piso 11.88 [kN],4.854705639445456e-05,0.002,OK
 Q: conservacion piso 15.84 [kN],3.187574930052506e-05,0.002,OK
 Q: conservacion piso 19.8 [kN],1.961337147804443e-06,0.002,OK
-"Superposicion: desplazamientos, error relativo maximo",2.1302387767918385e-08,1e-05,OK
-"Superposicion: reacciones de apoyo, error relativo maximo",1.2824749942200728e-07,1e-05,OK
-"Superposicion: fuerzas internas, error relativo maximo",1.459189500040783e-07,1e-05,OK
-EX: sensibilidad penalty x10,5.118997090005075e-05,0.01,OK
-EY: sensibilidad penalty x10,0.00025487275455410546,0.01,OK
+"Superposicion: desplazamientos, error relativo maximo",2.4728813879531757e-07,1e-05,OK
+"Superposicion: reacciones de apoyo, error relativo maximo",3.102673625943742e-07,1e-05,OK
+"Superposicion: fuerzas internas, error relativo maximo",2.127244382176455e-06,1e-05,OK
+"Superposicion: demanda de muros P_compresion_kN, error relativo maximo",3.083362827457198e-07,1e-05,OK
+"Superposicion: demanda de muros M_principal_kNm, error relativo maximo",6.160715130546262e-07,1e-05,OK
+"Superposicion: demanda de muros V_en_plano_kN, error relativo maximo",5.528136765286767e-07,1e-05,OK
+"Superposicion: demanda de muros V_fuera_plano_kN, error relativo maximo",1.7984881686027161e-06,1e-05,OK
+EX: sensibilidad penalty x10,1.7927753537075182e-05,0.01,OK
+EY: sensibilidad penalty x10,1.867396254583108e-05,0.01,OK

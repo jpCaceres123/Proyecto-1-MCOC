@@ -13,8 +13,32 @@ OUTPUTS = ROOT / "results"
 MODEL = OUTPUTS / "modelo_3d_manual.json"
 EXCEL = OUTPUTS / "nodos_modelo_manual.xlsx"
 CSV = ROOT / "visualization" / "unity" / "UnityVisualization" / "Assets" / "Resources" / "model_3d.csv"
+WALL_AUDIT = OUTPUTS / "auditoria_muros_por_piso.csv"
 LOADS = LOADS_DATA / "cargas_losas.json"
 KG_TO_KN = 9.80665 / 1000.0
+
+
+def split_walls_by_story(walls, levels):
+    """Return one wall record per storey, retaining the source wall identity."""
+    result = []
+    for wall in walls:
+        lo, hi = sorted((float(wall["z_i_m"]), float(wall["z_j_m"])))
+        cuts = [float(z) for z in levels if lo - 1e-8 <= z <= hi + 1e-8]
+        if not cuts or abs(cuts[0] - lo) > 1e-8 or abs(cuts[-1] - hi) > 1e-8:
+            raise ValueError(f"Muro {wall['id']}: sus extremos verticales no coinciden con niveles")
+        for z0, z1 in zip(cuts, cuts[1:]):
+            story = next(i for i, z in enumerate(levels[1:], 1) if abs(float(z) - z1) < 1e-8)
+            segment = dict(wall)
+            segment.update(id=int(wall["id"]) * 100 + story,
+                           source_wall_id=int(wall["id"]), floor=story,
+                           source_z_i_m=lo, source_z_j_m=hi,
+                           z_i_m=z0, z_j_m=z1,
+                           status="STRUCTURAL_WALL_STORY")
+            result.append(segment)
+    ids = [wall["id"] for wall in result]
+    if len(ids) != len(set(ids)):
+        raise ValueError("IDs repetidos al separar muros por piso")
+    return result
 
 
 def main():
@@ -1360,10 +1384,24 @@ def main():
     steel_inertia = (steel_b ** 4 - steel_inner ** 4) / 12.0
     steel_j = 4.0 * ((steel_b - steel_t) ** 2) ** 2 / (4.0 * (steel_b - steel_t) / steel_t)
 
+    wall_segments = split_walls_by_story(config.get("walls", []), config["levels_m"])
+    # A slab load at a floor is received by the wall panel immediately below.
+    for load in wall_load_cases:
+        source_id = int(load["wall_id"])
+        level = float(load["level_z_m"])
+        candidates = [wall for wall in wall_segments
+                      if wall["source_wall_id"] == source_id
+                      and abs(float(wall["z_j_m"]) - level) < 1e-6]
+        if len(candidates) != 1:
+            raise ValueError(f"Carga en muro origen {source_id}, z={level}: se esperaba un paño inferior")
+        load["source_wall_id"] = source_id
+        load["wall_id"] = candidates[0]["id"]
+
     data = {"source": "geometria_manual.json", "load_source": "cargas_losas.json", "status": "MANUAL_REVIEW",
              "units": "kN-m-s", "nodes": nodes, "elements": elements,
              "subbuildings": config.get("subbuildings", {}),
-             "walls": config.get("walls", []),
+             "walls": wall_segments,
+             "source_walls": config.get("walls", []),
              "slabs": slabs,
              "beam_slab_loads": beam_slab_loads,
              "load_zones": loads.get("levels", []),
@@ -1391,14 +1429,24 @@ def main():
             "mass_per_node_t": config["mass_per_node_t"]}
     OUTPUTS.mkdir(parents=True, exist_ok=True)
     MODEL.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    wall_audit_lines = ["panel_id,muro_origen,piso,z_inferior_m,z_superior_m,altura_m,longitud_m,espesor_m,area_elevacion_m2"]
+    for wall in wall_segments:
+        length = ((wall["x_j_m"]-wall["x_i_m"])**2 + (wall["y_j_m"]-wall["y_i_m"])**2)**0.5
+        height = wall["z_j_m"]-wall["z_i_m"]
+        wall_audit_lines.append(
+            f'{wall["id"]},{wall["source_wall_id"]},{wall["floor"]},{wall["z_i_m"]},{wall["z_j_m"]},'
+            f'{height},{length},{wall["thickness_m"]},{length*height}'
+        )
+    WALL_AUDIT.write_text("\n".join(wall_audit_lines)+"\n",encoding="utf-8")
     CSV.parent.mkdir(parents=True, exist_ok=True)
     lines = ["kind,id,type,i,j,aux,x_m,y_m,z_m,level,status,restraint,axis"]
     lines.extend(f'N,{n["id"]},NODE,,,,{n["x_m"]},{n["y_m"]},{n["z_m"]},{n["level"]},{n["status"]},{str(n["restraint"]).lower()},{n["axis"]}' for n in nodes)
     lines.extend(f'E,{e["id"]},{e["type"]},{e["i"]},{e["j"]},,,,,,{e["status"]}' for e in elements)
-    for wall in config.get("walls", []):
+    for wall in wall_segments:
         lines.append(
             f'W,{wall["id"]},WALL,{wall["x_i_m"]},{wall["y_i_m"]},{wall["z_i_m"]},'
-            f'{wall["x_j_m"]},{wall["y_j_m"]},{wall["z_j_m"]},{wall["thickness_m"]},{wall.get("status", "MANUAL")}'
+            f'{wall["x_j_m"]},{wall["y_j_m"]},{wall["z_j_m"]},{wall["thickness_m"]},'
+            f'{wall.get("status", "MANUAL")};origen={wall["source_wall_id"]};piso={wall["floor"]}'
         )
     for slab in slabs:
         n1, n2, n3, n4 = slab["node_ids"]

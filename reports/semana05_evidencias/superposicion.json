@@ -1,0 +1,164 @@
+[
+  {
+    "estado": "S1",
+    "factores": [
+      1,
+      1,
+      0,
+      0
+    ],
+    "respuesta": "desplazamiento_m",
+    "id": 900116,
+    "componente": 3,
+    "superpuesta": -0.02724059671163559,
+    "explicita": -0.027240596222906355,
+    "error_max": 9.760035678957335e-10,
+    "error_relativo": 3.5829009024223245e-08,
+    "tolerancia": 1e-05,
+    "ok": true
+  },
+  {
+    "estado": "S1",
+    "factores": [
+      1,
+      1,
+      0,
+      0
+    ],
+    "respuesta": "fuerza_local_kN_kNm",
+    "id": 15,
+    "componente": 1,
+    "superpuesta": 5875.709109764581,
+    "explicita": 5875.7091077918,
+    "error_max": 0.00023222464801619935,
+    "error_relativo": 3.952282928851011e-08,
+    "tolerancia": 1e-05,
+    "ok": true
+  },
+  {
+    "estado": "S1",
+    "factores": [
+      1,
+      1,
+      0,
+      0
+    ],
+    "respuesta": "reaccion_kN_kNm",
+    "id": 700006,
+    "componente": 3,
+    "superpuesta": 5899.49513933958,
+    "explicita": 5899.4951373668,
+    "error_max": 0.00018363903927820502,
+    "error_relativo": 3.1127924509176063e-08,
+    "tolerancia": 1e-05,
+    "ok": true
+  },
+  {
+    "estado": "S2",
+    "factores": [
+      1.2,
+      1.4,
+      0.8,
+      -0.3
+    ],
+    "respuesta": "desplazamiento_m",
+    "id": 900116,
+    "componente": 3,
+    "superpuesta": -0.03497951105237007,
+    "explicita": -0.03497951169019136,
+    "error_max": 3.4364669278599824e-09,
+    "error_relativo": 9.824227845992502e-08,
+    "tolerancia": 1e-05,
+    "ok": true
+  },
+  {
+    "estado": "S2",
+    "factores": [
+      1.2,
+      1.4,
+      0.8,
+      -0.3
+    ],
+    "respuesta": "fuerza_local_kN_kNm",
+    "id": 15,
+    "componente": 1,
+    "superpuesta": 7378.855644615772,
+    "explicita": 7378.855638079027,
+    "error_max": 0.0023184372275864007,
+    "error_relativo": 3.1420010653440167e-07,
+    "tolerancia": 1e-05,
+    "ok": true
+  },
+  {
+    "estado": "S2",
+    "factores": [
+      1.2,
+      1.4,
+      0.8,
+      -0.3
+    ],
+    "respuesta": "reaccion_kN_kNm",
+    "id": 700006,
+    "componente": 3,
+    "superpuesta": 7407.398870733606,
+    "explicita": 7407.398873569027,
+    "error_max": 0.0009499803827566211,
+    "error_relativo": 1.2824749942200728e-07,
+    "tolerancia": 1e-05,
+    "ok": true
+  },
+  {
+    "estado": "S3",
+    "factores": [
+      1,
+      0.5,
+      -1,
+      0.7
+    ],
+    "respuesta": "desplazamiento_m",
+    "id": 900116,
+    "componente": 3,
+    "superpuesta": -0.022422445937991142,
+    "explicita": -0.02242244695031755,
+    "error_max": 6.98972046908608e-09,
+    "error_relativo": 3.1172871027740756e-07,
+    "tolerancia": 1e-05,
+    "ok": true
+  },
+  {
+    "estado": "S3",
+    "factores": [
+      1,
+      0.5,
+      -1,
+      0.7
+    ],
+    "respuesta": "fuerza_local_kN_kNm",
+    "id": 15,
+    "componente": 1,
+    "superpuesta": 5049.985072120979,
+    "explicita": 5049.9850574887605,
+    "error_max": 0.005041396159413125,
+    "error_relativo": 9.982992230713834e-07,
+    "tolerancia": 1e-05,
+    "ok": true
+  },
+  {
+    "estado": "S3",
+    "factores": [
+      1,
+      0.5,
+      -1,
+      0.7
+    ],
+    "respuesta": "reaccion_kN_kNm",
+    "id": 102301,
+    "componente": 3,
+    "superpuesta": 5883.4470654954075,
+    "explicita": 5883.447491601135,
+    "error_max": 0.001929017004385969,
+    "error_relativo": 3.27871882453225e-07,
+    "tolerancia": 1e-05,
+    "ok": true
+  }
+]
