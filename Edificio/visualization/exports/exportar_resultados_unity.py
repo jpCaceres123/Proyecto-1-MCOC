@@ -19,6 +19,90 @@ import openseespy.opensees as ops
 CASES = ('G', 'Q', 'EX', 'EY', 'R', 'EXG', 'EXQ', 'EYG', 'EYQ')
 
 
+def element_metadata(data):
+    sections = {
+        'COLUMN': 'section_columns',
+        'STEEL_COLUMN_SHS300x20': 'section_steel_columns',
+        'BEAM_SMALL': 'section_small_beams',
+        'BEAM_VARIABLE': 'section_variable_beams',
+        'BEAM_40x60': 'section_40x60_beams',
+    }
+    nodes = {node['id']: node for node in data['nodes']}
+    result = []
+    for element in data['elements']:
+        if element['type'] == 'WALL':
+            continue
+        section_key = sections.get(element['type'], 'section_beams')
+        material_key = 'material_steel' if element['type'] == 'STEEL_COLUMN_SHS300x20' else 'material'
+        section = data[section_key]
+        material = data[material_key]
+        result.append({
+            'id': element['id'],
+            'type': element['type'],
+            'i': element['i'],
+            'j': element['j'],
+            'section': section_key,
+            'sectionData': section,
+            'material': material_key,
+            'materialData': material,
+            'restraints': {
+                'i': bool(nodes[element['i']].get('restraint', False)),
+                'j': bool(nodes[element['j']].get('restraint', False)),
+            },
+        })
+    return result
+
+
+def wall_demands(data, out, shells):
+    """Return P-M demands at the bottom cut of every wall-floor segment."""
+    coords = {node: np.asarray(ops.nodeCoord(node), dtype=float) for node in ops.getNodeTags()}
+    by_wall = {}
+    for shell in shells:
+        by_wall.setdefault(shell['wall'], []).append(shell)
+    demands = []
+    for wall_id, wall_shells in sorted(by_wall.items()):
+        wall = next(w for w in data['walls'] if w['id'] == wall_id)
+        start = np.array([wall['x_i_m'], wall['y_i_m'], wall['z_i_m']], dtype=float)
+        end = np.array([wall['x_j_m'], wall['y_j_m'], wall['z_j_m']], dtype=float)
+        longitudinal = end - start
+        longitudinal[2] = 0.0
+        longitudinal /= np.linalg.norm(longitudinal)
+        transverse = np.cross(np.array([0.0, 0.0, 1.0]), longitudinal)
+        center = (start + end) / 2.0
+        bottom_levels = sorted({min(coords[node][2] for node in shell['nodes']) for shell in wall_shells})
+        top_level = max(max(coords[node][2] for node in shell['nodes']) for shell in wall_shells)
+        segment_demands = []
+        for bottom_z in bottom_levels:
+            bottom = [shell for shell in wall_shells
+                      if abs(min(coords[node][2] for node in shell['nodes']) - bottom_z) <= 1e-8]
+            center[2] = bottom_z
+            case_values = []
+            for case in CASES[:5]:
+                forces = json.loads((out / f'{case}_fuerzas.json').read_text(encoding='utf-8'))
+                resultant = np.zeros(3)
+                moment = 0.0
+                for shell in bottom:
+                    values = forces[str(shell['id'])]
+                    for index, node in enumerate(shell['nodes']):
+                        if abs(coords[node][2] - bottom_z) > 1e-8:
+                            continue
+                        force = np.asarray(values[index * 6:index * 6 + 3], dtype=float)
+                        nodal_moment = np.asarray(values[index * 6 + 3:index * 6 + 6], dtype=float)
+                        resultant += force
+                        moment += np.dot(np.cross(coords[node] - center, force) + nodal_moment, transverse)
+                case_values.append(dict(name=case, p=float(resultant[2]), m=float(abs(moment))))
+            top_z = min((z for z in bottom_levels if z > bottom_z), default=top_level)
+            segment_demands.append(dict(z_min=bottom_z, z_max=top_z, demands=case_values))
+        demands.append(dict(id=wall_id, demands=segment_demands[0]['demands'], segments=segment_demands))
+    return demands
+
+
+def capacity_material():
+    parameters = json.loads((ROOT / 'data' / 'parameters' / 'parametros.json').read_text(encoding='utf-8'))
+    column = parameters['columna']
+    return {key: column[key] for key in ('fc_MPa', 'fy_MPa', 'Es_MPa')}
+
+
 def export_results(out=None, destination=None):
     out = Path(out or ROOT / 'results')
     destination = Path(destination or ROOT / 'visualization' / 'unity' /
@@ -58,6 +142,9 @@ def export_results(out=None, destination=None):
     payload = dict(schema=1, axes='OpenSees global XYZ, right handed',
                    units='m, rad, kN, kN*m', memberLoads='nodal_only',
                    nodes=[dict(id=n, xyz=list(ops.nodeCoord(n))) for n in nodes],
+                   elementMetadata=element_metadata(data),
+                   capacityMaterial=capacity_material(),
+                   wallDemands=wall_demands(data, out, shells),
                    bars=bars, shells=shells, cases=responses)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(payload, ensure_ascii=False, allow_nan=False), encoding='utf-8')

@@ -218,7 +218,7 @@ Error axial máximo: 5.369e-08 kN. Estado HA: **OK**.
 ## Curvas P-M de muros
 
 Se calcularon envolventes nominales para **24 muros** y
-**45 secciones** según los cambios de armadura en altura. Los
+**48 secciones** según los cambios de armadura en altura. Los
 resultados se guardan en `results/PM_muros_envolvente.csv`,
 `results/PM_muros_puntos_clave.csv` y `results/resumen_capacidad_muros.json`.
 

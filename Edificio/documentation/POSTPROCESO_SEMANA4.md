@@ -36,16 +36,29 @@ Todos los resultados corresponden al caso activo. EX/EY se reconstruyen con
 las bases de masa EXG/EXQ/EYG/EYQ; R combina G,Q,EX,EY con los ponderadores
 activos, incluyendo giros y desplazamientos de nodos de muro.
 
+Las demandas P-M de muro se exportan para los casos G, Q, EX, EY y R. Para cada
+tramo vertical se suman las fuerzas globales de los nodos del borde inferior de
+sus shells y el momento resultante se proyecta sobre el eje transversal a la
+longitud del muro. Los tramos de pisos conservan los nodos compartidos en sus
+interfaces, por lo que esta separación es de identificación y postproceso, no
+una desconexión estructural. El punto se muestra en verde sobre la envolvente
+nominal del segmento seleccionado. Esta es una resultante compatible con la
+malla ShellMITC4; no reemplaza un diseño completo de muro ni incluye factores
+de reducción, interacción biaxial, corte o efectos de segundo orden.
+
 ## Exportación
 
 `visualization/exports/exportar_resultados_unity.py` genera
 `Assets/Resources/semana4_resultados.json` a partir del modelo y los nueve NPZ
 existentes. Exporta 629 nodos analíticos, 612 barras, 169 shells, ejes y seis
 grados de libertad por nodo y caso. Comprueba topología, ortonormalidad y
-valores finitos. No ejecuta un nuevo análisis. El flujo `ejecutar.py` también
+valores finitos. También exporta metadatos de sección, material y restricciones
+de barras, además de demandas P-M de muros para los cinco casos activos. No
+ejecuta un nuevo análisis. El flujo `ejecutar.py` también
 invoca esta exportación después de generar los casos.
 
 Si cambia el edificio, deben regenerarse análisis y recursos juntos. Estos
 cambios de postproceso no corrigen apoyos, vínculos, cargas ni armaduras.
-Los diagramas N/V/M del inspector corresponden a barras: las resultantes por
-sección de corte de muro y su demanda P–M siguen siendo trabajo independiente.
+Los diagramas N/V/M del inspector corresponden a barras. La demanda P-M de muro
+se obtiene como resultante del borde inferior de sus shells; no es un diagrama
+de esfuerzos distribuido sobre toda la superficie del muro.

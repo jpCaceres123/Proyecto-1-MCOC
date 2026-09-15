@@ -36,7 +36,7 @@ Fiber Section hasta verificarla en otra vista, planta o detalle constructivo.
 | `I` | `M-I-2/3` | Piso 1 | Entre ejes 2-3 | Por confirmar | 30 | D.M. `Ø12@20` | D.M. `Ø16@20` | Por confirmar | Registrado |
 | `F-F'` | `M-F-F'-1/2` | `1°S` | Entre ejes 1-2 | Por confirmar | 30 | D.M. `Ø12@20` | D.M. `Ø16@20` | Refuerzos laterales por confirmar | Registrado |
 | `F-F'` | `M-F-F'-2/3` | `1°S` | Entre ejes 2-3 | Por confirmar | 30 | D.M. `Ø12@20` | D.M. `Ø16@20` | Refuerzos laterales por confirmar | Registrado |
-| `3-3'` | `M-3-3'-E/F` | `1°S` | Entre ejes E-F | Por confirmar | 20 | D.M. `Ø8@20` | D.M. `Ø8@20` | Por confirmar | Registrado |
+| `1''` | `M-1''-E/Ec` | Elevación eje `1''`, pisos 1 a 4 | Entre E' y Ec | Por confirmar | 20 | D.M. `Ø10@20` | D.M. `Ø10@12` | Detalle lateral `+TØ8@24`; barras longitudinales de borde por confirmar | Registrado |
 | `2a` | `M-2a-Ea/Ed` | `1°S` a piso 4 | Entre Ea-Ed | Por confirmar | 20 | D.M. `Ø10@20` | D.M. `Ø10@20` | Bordes visibles por confirmar | Registrado |
 | `Ea` | `M-Ea-2a/2` | `1°S` | Desde 2a, 1.579 m hacia 2 | 1.579 | 25 | D.M. `Ø10@16` | D.M. `Ø8@16` | `2Ø28` de borde y otros por confirmar | Registrado |
 | `Ea` | `M-Ea-2a/2` | Piso 1 | Desde 2a, 1.579 m hacia 2 | 1.579 | 25 | D.M. `Ø10@16` | D.M. `Ø8@16` | `2Ø28` de borde y otros por confirmar | Registrado |

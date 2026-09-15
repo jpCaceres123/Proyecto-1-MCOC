@@ -1,9 +1,9 @@
 {
   "estado": "OK",
   "muros": 24,
-  "secciones": 45,
-  "puntos_envolvente": 18716,
-  "puntos_clave": 630,
+  "secciones": 48,
+  "puntos_envolvente": 19964,
+  "puntos_clave": 672,
   "confianza": {
     "alta": 11,
     "media": 10,

@@ -52,12 +52,14 @@ def vertical_steel_layers(length, profile, cover):
     positions = np.linspace(cover, length-cover, intervals+1)
     area_pair = 2.0*math.pi*diameter**2/4.0  # doble malla
     layers = [[float(d), area_pair] for d in positions]
-    n_boundary = int(profile.get('boundary_bars_each_end', 0))
-    if n_boundary:
-        db = profile['boundary_diameter_mm']/1000.0
-        boundary_area = n_boundary*math.pi*db**2/4.0
-        layers[0][1] += boundary_area
-        layers[-1][1] += boundary_area
+    n_left = int(profile.get('boundary_bars_left', profile.get('boundary_bars_each_end', 0)))
+    n_right = int(profile.get('boundary_bars_right', profile.get('boundary_bars_each_end', 0)))
+    db_left = float(profile.get('boundary_diameter_left_mm', profile.get('boundary_diameter_mm', 0)))/1000.0
+    db_right = float(profile.get('boundary_diameter_right_mm', profile.get('boundary_diameter_mm', 0)))/1000.0
+    if n_left:
+        layers[0][1] += n_left*math.pi*db_left**2/4.0
+    if n_right:
+        layers[-1][1] += n_right*math.pi*db_right**2/4.0
     return np.asarray(layers, dtype=float), float(clear/intervals)
 
 
@@ -174,7 +176,12 @@ def calculate(model_path=MODEL, assignments_path=ASSIGNMENTS):
                 vertical_diameter_mm=profile['vertical_diameter_mm'],vertical_spacing_mm=profile['vertical_spacing_mm'],
                 actual_spacing_m=actual_spacing,horizontal_diameter_mm=profile['horizontal_diameter_mm'],
                 horizontal_spacing_mm=profile['horizontal_spacing_mm'],boundary_bars_each_end=profile['boundary_bars_each_end'],
-                boundary_diameter_mm=profile['boundary_diameter_mm'],layers=layers,As_m2=float(layers[:,1].sum()),
+                boundary_diameter_mm=profile['boundary_diameter_mm'],
+                boundary_bars_left=profile.get('boundary_bars_left',profile['boundary_bars_each_end']),
+                boundary_diameter_left_mm=profile.get('boundary_diameter_left_mm',profile['boundary_diameter_mm']),
+                boundary_bars_right=profile.get('boundary_bars_right',profile['boundary_bars_each_end']),
+                boundary_diameter_right_mm=profile.get('boundary_diameter_right_mm',profile['boundary_diameter_mm']),
+                layers=layers,As_m2=float(layers[:,1].sum()),
                 curve=curve,points=points,note=profile.get('note','')))
     return results,registry
 
@@ -186,7 +193,8 @@ def run(out, model_path=MODEL, assignments_path=ASSIGNMENTS):
     for section in results:
         common={key:section[key] for key in ('wall_id','segmento','z_min_m','z_max_m','identificacion_plano',
             'confianza','length_m','thickness_m','vertical_diameter_mm','vertical_spacing_mm',
-            'horizontal_diameter_mm','horizontal_spacing_mm','boundary_bars_each_end','boundary_diameter_mm','As_m2')}
+            'horizontal_diameter_mm','horizontal_spacing_mm','boundary_bars_each_end','boundary_diameter_mm',
+            'boundary_bars_left','boundary_diameter_left_mm','boundary_bars_right','boundary_diameter_right_mm','As_m2')}
         for index,item in enumerate(section['curve']):
             for branch,sign in (('+principal',1),('-principal',-1)):
                 curve_rows.append(dict(**common,ramal=branch,indice=index,P_kN=item['P_kN'],
@@ -214,7 +222,12 @@ def run(out, model_path=MODEL, assignments_path=ASSIGNMENTS):
                 dv=float(section['vertical_diameter_mm']),sv=float(section['vertical_spacing_mm']),
                 dh=float(section['horizontal_diameter_mm']),sh=float(section['horizontal_spacing_mm']),
                 boundary_count=int(section['boundary_bars_each_end']),
-                boundary_diameter=float(section['boundary_diameter_mm']),As=section['As_m2'],
+                boundary_diameter=float(section['boundary_diameter_mm']),
+                boundary_left_count=int(section['boundary_bars_left']),
+                boundary_left_diameter=float(section['boundary_diameter_left_mm']),
+                boundary_right_count=int(section['boundary_bars_right']),
+                boundary_right_diameter=float(section['boundary_diameter_right_mm']),
+                As=section['As_m2'],
                 points=[dict(name=p['punto'],p=p['P_kN'],m=p['M_kNm']) for p in section['points']],
                 curve=[dict(p=p['P_kN'],m=p['M_kNm']) for p in section['curve']]))
         first=next(item for item in results if item['wall_id']==wall_id)

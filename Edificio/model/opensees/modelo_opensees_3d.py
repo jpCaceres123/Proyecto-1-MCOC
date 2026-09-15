@@ -206,6 +206,7 @@ def create_wall_mesh(data, structural_node_ids):
             wall_nodes.append(row)
 
         created_shells = 0
+        shell_ids_by_segment = [[] for _ in range(nv)]
         for j in range(nv):
             for i in range(nh):
                 n1 = wall_nodes[j][i]
@@ -215,6 +216,7 @@ def create_wall_mesh(data, structural_node_ids):
                 if n1 == n2 or n2 == n3 or n3 == n4 or n4 == n1:
                     continue
                 ops.element("ShellMITC4", next_shell, n1, n2, n3, n4, section_tag)
+                shell_ids_by_segment[j].append(next_shell)
                 next_shell += 1
                 created_shells += 1
 
@@ -287,6 +289,11 @@ def create_wall_mesh(data, structural_node_ids):
                 str(round(z, 6)): [row[0], row[-1]]
                 for z, row in zip(wall_levels, wall_nodes)
             },
+            "segments": [
+                {"z_min_m": wall_levels[j], "z_max_m": wall_levels[j + 1],
+                 "shell_ids": shell_ids_by_segment[j]}
+                for j in range(nv)
+            ],
         })
 
     mesh_info["mesh_node_count"] = next_mesh_node - WALL_MESH_NODE_BASE
