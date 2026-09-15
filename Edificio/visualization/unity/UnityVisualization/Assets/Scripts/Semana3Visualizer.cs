@@ -32,7 +32,9 @@ public class Semana3Visualizer : MonoBehaviour
     private string selectedCase = "EX";
     private float deformationScale = 1000f;
     private bool showDeformed = true, showForces = true, showCapacity;
-    private Vector2 scroll;
+    private bool showSettings;
+    private bool showResults;
+    private Vector2 scroll, resultScroll;
     private GUIStyle panelStyle, titleStyle, noteStyle;
     private Texture2D sectionPlot, mPhiPlot, pmPlot;
     private float maxDisplacement, maxRotation;
@@ -47,6 +49,72 @@ public class Semana3Visualizer : MonoBehaviour
     private double gravity;
     private class MassParts { public string block; public float z; public double g,q,gx,gy,qx,qy,alpha; }
     private readonly List<MassParts> massParts=new List<MassParts>();
+    public bool ShowDeformed { get { return showDeformed; } }
+    public bool ShowForces { get { return showForces; } }
+    public float DeformationScale { get { return deformationScale; } }
+    public bool ResultsOpen { get { return showResults; } }
+
+    public void SetDisplay(bool deformed, bool forces, float scale)
+    {
+        showDeformed = deformed; showForces = forces; deformationScale = Mathf.Clamp(scale, 1f, 5000f);
+        RebuildResponse();
+    }
+
+    public void DrawGlobalResult(int tab)
+    {
+        if (tab == 1)
+        {
+            GUILayout.Label("SECCION DE FIBRAS · referencia HA 0.70 x 0.70 m", titleStyle);
+            GUILayout.Label(sectionPlot, GUILayout.Width(350), GUILayout.Height(250));
+        }
+        else if (tab == 2)
+        {
+            GUILayout.Label("MOMENTO-CURVATURA", titleStyle);
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical(GUILayout.Width(370));
+            GUILayout.Label(mPhiPlot, GUILayout.Width(350), GUILayout.Height(250));
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical(GUILayout.Width(230));
+            GUILayout.Label("LEYENDA", titleStyle);
+            GUILayout.Label("Cada color representa una curva para un nivel de carga axial P diferente.", noteStyle);
+            float[] loads = UniqueAxialLoads();
+            Color[] colors = { new Color(.1f,.4f,.8f), new Color(1f,.45f,.05f), new Color(.1f,.65f,.2f) };
+            for (int i = 0; i < loads.Length; i++)
+            {
+                GUI.color = colors[i % colors.Length];
+                GUILayout.Label("●  P = " + loads[i].ToString("G5") + " kN");
+            }
+            GUI.color = Color.white;
+            GUILayout.Label("Eje horizontal: curvatura φ [1/m]\nEje vertical: momento M [kN·m]", noteStyle);
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }
+        else if (tab == 3)
+        {
+            GUILayout.Label("PUNTOS A-G · referencia nominal", titleStyle);
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical(GUILayout.Width(370));
+            GUILayout.Label(pmPlot, GUILayout.Width(350), GUILayout.Height(250));
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical(GUILayout.Width(280));
+            GUILayout.Label("Puntos característicos");
+            Color[] pointColors = { new Color(.15f,.55f,1f), new Color(1f,.55f,.08f), new Color(.2f,.8f,.35f), new Color(.75f,.35f,1f), new Color(1f,.3f,.3f), new Color(1f,.85f,.1f), new Color(.1f,.85f,.85f) };
+            for (int i = 0; i < pm.Count; i++)
+            {
+                GUI.color = pointColors[i % pointColors.Length];
+                GUILayout.Label(((char)('A' + i)) + "  P = " + pm[i].p.ToString("G6") + " kN   |M| = " + pm[i].moment.ToString("G6") + " kN·m");
+            }
+            GUI.color = Color.white;
+            GUILayout.Label("Cada letra corresponde al punto del mismo color en el gráfico.", noteStyle);
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }
+    }
+
+    private static Texture2D Solid(Color color)
+    {
+        Texture2D texture = new Texture2D(1, 1); texture.SetPixel(0, 0, color); texture.Apply(); return texture;
+    }
 
     private void ReadMassParts(string text)
     {
@@ -407,12 +475,12 @@ public class Semana3Visualizer : MonoBehaviour
 
     private void BuildPlots()
     {
-        sectionPlot = Plot(350, 250, new Color(.96f,.97f,.98f), delegate(Texture2D tex, Rect area)
+        sectionPlot = Plot(350, 250, new Color(.055f,.09f,.13f,1f), delegate(Texture2D tex, Rect area)
         {
             foreach (Vector3 f in concreteFibers) Dot(tex, Map(f.x,-.36f,.36f,area.xMin,area.xMax), Map(f.y,-.36f,.36f,area.yMax,area.yMin), 1, new Color(.35f,.55f,.72f));
             foreach (Vector3 f in steelFibers) Dot(tex, Map(f.x,-.36f,.36f,area.xMin,area.xMax), Map(f.y,-.36f,.36f,area.yMax,area.yMin), 5, new Color(.78f,.16f,.10f));
         });
-        mPhiPlot = Plot(350, 250, Color.white, delegate(Texture2D tex, Rect area)
+        mPhiPlot = Plot(350, 250, new Color(.055f,.09f,.13f,1f), delegate(Texture2D tex, Rect area)
         {
             float maxX=0,maxY=0; foreach (CurvePoint p in curves) { maxX=Mathf.Max(maxX,p.phi); maxY=Mathf.Max(maxY,p.moment); }
             float[] ps = UniqueAxialLoads(); Color[] colors={new Color(.1f,.4f,.8f),new Color(1f,.45f,.05f),new Color(.1f,.65f,.2f)};
@@ -426,13 +494,13 @@ public class Semana3Visualizer : MonoBehaviour
                 }
             }
         });
-        pmPlot = Plot(350, 250, Color.white, delegate(Texture2D tex, Rect area)
+        pmPlot = Plot(350, 250, new Color(.055f,.09f,.13f,1f), delegate(Texture2D tex, Rect area)
         {
             float maxX=0,maxY=0; foreach(PMPoint p in pm){maxX=Mathf.Max(maxX,p.moment);maxY=Mathf.Max(maxY,p.p);}
-            Vector2? previous=null; foreach(PMPoint p in pm)
+            Vector2? previous=null; int pointIndex=0; Color[] pointColors={new Color(.15f,.55f,1f),new Color(1f,.55f,.08f),new Color(.2f,.8f,.35f),new Color(.75f,.35f,1f),new Color(1f,.3f,.3f),new Color(1f,.85f,.1f),new Color(.1f,.85f,.85f)}; foreach(PMPoint p in pm)
             {
                 Vector2 current=new Vector2(Map(p.moment,0,maxX,area.xMin,area.xMax),Map(p.p,0,maxY,area.yMin,area.yMax));
-                if(previous.HasValue) PixelLine(tex,previous.Value,current,new Color(.15f,.35f,.65f)); Dot(tex,(int)current.x,(int)current.y,4,new Color(.1f,.25f,.55f)); previous=current;
+                if(previous.HasValue) PixelLine(tex,previous.Value,current,new Color(.15f,.35f,.65f)); Dot(tex,(int)current.x,(int)current.y,5,pointColors[pointIndex%pointColors.Length]); previous=current; pointIndex++;
             }
         });
     }
@@ -449,8 +517,8 @@ public class Semana3Visualizer : MonoBehaviour
     {
         Texture2D tex=new Texture2D(width,height,TextureFormat.RGBA32,false); Color[] pixels=new Color[width*height];
         for(int i=0;i<pixels.Length;i++)pixels[i]=background;tex.SetPixels(pixels);
-        Rect area=new Rect(35,15,width-48,height-38); PixelLine(tex,new Vector2(area.xMin,area.yMax),new Vector2(area.xMax,area.yMax),Color.black);
-        PixelLine(tex,new Vector2(area.xMin,area.yMin),new Vector2(area.xMin,area.yMax),Color.black);draw(tex,area);tex.Apply();return tex;
+        Rect area=new Rect(35,15,width-48,height-38); PixelLine(tex,new Vector2(area.xMin,area.yMax),new Vector2(area.xMax,area.yMax),new Color(.65f,.72f,.78f,1f));
+        PixelLine(tex,new Vector2(area.xMin,area.yMin),new Vector2(area.xMin,area.yMax),new Color(.65f,.72f,.78f,1f));draw(tex,area);tex.Apply();return tex;
     }
 
     private static int Map(float value,float min,float max,float outMin,float outMax)
@@ -478,35 +546,55 @@ public class Semana3Visualizer : MonoBehaviour
     private void OnGUI()
     {
         if (!ready) return;
-        if(panelStyle==null){panelStyle=new GUIStyle(GUI.skin.window){padding=new RectOffset(12,12,10,10)};titleStyle=new GUIStyle(GUI.skin.label){fontSize=16,fontStyle=FontStyle.Bold};noteStyle=new GUIStyle(GUI.skin.label){fontSize=11,wordWrap=true};}
-        GUILayout.BeginArea(new Rect(Screen.width-400,12,388,Screen.height-24),panelStyle);scroll=GUILayout.BeginScrollView(scroll);
-        GUILayout.Label("SEMANA 3",titleStyle);GUILayout.Label("Carga viva · sismo · superposición · capacidad HA",noteStyle);GUILayout.Space(6);
-        GUILayout.BeginHorizontal();foreach(string c in new[]{"G","Q","EX","EY","R"})CaseButton(c);GUILayout.EndHorizontal();
-        DrawMassControls();
-        if(selectedCase=="R") DrawCombination();
-        bool nextDeformed=GUILayout.Toggle(showDeformed,"Deformada curva + malla de muros");bool nextForces=GUILayout.Toggle(showForces,"Fuerzas sísmicas y centros de masa");
-        GUILayout.Label("Escala deformada: "+deformationScale.ToString("F0")+"×");float nextScale=GUILayout.HorizontalSlider(deformationScale,1,5000);
-        if(nextDeformed!=showDeformed||nextForces!=showForces||Mathf.Abs(nextScale-deformationScale)>1f){showDeformed=nextDeformed;showForces=nextForces;deformationScale=nextScale;RebuildResponse();}
-        GUILayout.Label("|u| máximo: "+(maxDisplacement*1000).ToString("G4")+" mm\n|giro Z| máximo: "+(maxRotation*1000).ToString("G4")+" mrad",noteStyle);
-        if(selectedCase=="EX"||selectedCase=="EY")
-        {
-            double total=0; foreach(Floor f in floors[selectedCase]) total+=f.force;
-            GUILayout.Label("Masa = ("+MassG+" G + "+MassQ+" Q)/g\nCarga lateral total: "+total.ToString("F2")+" kN",noteStyle);
-        }
-        if(selectedCase=="EX"||selectedCase=="EY") DrawFloorAccelerations();
-        GUILayout.Space(8);showCapacity=GUILayout.Toggle(showCapacity,"Mostrar capacidad HA");
+        if(panelStyle==null){panelStyle=new GUIStyle(GUI.skin.window){padding=new RectOffset(12,12,10,10)};panelStyle.normal.background=Solid(new Color(.055f,.09f,.13f,.97f));titleStyle=new GUIStyle(GUI.skin.label){fontSize=16,fontStyle=FontStyle.Bold,normal={textColor=Color.white}};noteStyle=new GUIStyle(GUI.skin.label){fontSize=11,wordWrap=true,normal={textColor=new Color(.82f,.87f,.91f)}};}
         ElementInspector inspector = GetComponent<ElementInspector>();
-        if (inspector != null) inspector.Draw(selectedCase);
-        if(showCapacity)
+        BuildingVisualizer building = GetComponent<BuildingVisualizer>();
+
+        GUILayout.BeginArea(new Rect(0, 0, Screen.width, 62), panelStyle);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("STRUCTVIEW", titleStyle, GUILayout.Width(145));
+        GUILayout.Label("Caso:", GUILayout.Width(38));
+        foreach(string c in new[]{"G","Q","EX","EY","R"}) CaseButton(c);
+        GUILayout.Space(12);
+        if (building != null) building.DrawTopLevel();
+        GUILayout.Space(12);
+        if (inspector != null) inspector.DrawSearchBar();
+        if (GUILayout.Button(showResults ? "Ocultar resultados" : "Resultados", GUILayout.Width(125))) showResults = !showResults;
+        if (GUILayout.Button(showSettings ? "Cerrar configuracion" : "Configuracion", GUILayout.Width(135))) showSettings = !showSettings;
+        GUILayout.EndHorizontal();
+        GUILayout.EndArea();
+        if (building != null) building.DrawTopLevelPopup();
+
+        if (showSettings)
         {
-            GUILayout.Label("Fiber Section 0,70 × 0,70 m",titleStyle);GUILayout.Label("Hormigón azul · acero rojo\nf'c="+Meta("fc_MPa")+" · fy="+Meta("fy_MPa")+" · As="+Meta("As_mm2"),noteStyle);
-            GUILayout.Label(sectionPlot,GUILayout.Width(350),GUILayout.Height(250));
-            GUILayout.Label("Momento–curvatura",titleStyle);GUILayout.Label("P = 0, 3376 y 6752 kN",noteStyle);GUILayout.Label(mPhiPlot,GUILayout.Width(350),GUILayout.Height(250));
-            GUILayout.Label("Primeros puntos P–M",titleStyle);GUILayout.Label(pmPlot,GUILayout.Width(350),GUILayout.Height(250));
-            GUILayout.Label("Capacidad nominal del modelo de sección. La armadura es un supuesto pendiente de confirmar con planos.",noteStyle);
+            GUILayout.BeginArea(new Rect(Screen.width - 350, 74, 338, Screen.height - 86), panelStyle);
+            GUILayout.Label("CONFIGURACION", titleStyle);
+            DrawMassControls();
+            DrawCombination();
+            if (GUILayout.Button("Cerrar configuracion")) showSettings = false;
+            GUILayout.EndArea();
         }
-        GUILayout.Space(6);GUILayout.Label("Original: geometría sin deformar. Magenta: barras con interpolación cúbica de desplazamientos y giros. Cian: bordes de shells desplazados. Escala visual amplificada; caso seleccionado.",noteStyle);
-        GUILayout.EndScrollView();GUILayout.EndArea();
+
+        if (!showSettings)
+        {
+            GUILayout.BeginArea(new Rect(Screen.width - 350, 74, 338, Screen.height - (showResults ? 330 : 86)), panelStyle);
+            scroll = GUILayout.BeginScrollView(scroll);
+            GUILayout.Label("INSPECTOR", titleStyle);
+            GUILayout.Label("Caso activo: " + selectedCase, noteStyle);
+            if (selectedCase == "R")
+                GUILayout.Label("R = " + Combination[0].ToString("G3") + "G + " + Combination[1].ToString("G3") + "Q + " + Combination[2].ToString("G3") + "EX + " + Combination[3].ToString("G3") + "EY", noteStyle);
+            if (inspector != null) inspector.Draw(selectedCase);
+            GUILayout.EndScrollView(); GUILayout.EndArea();
+        }
+
+        if (showResults)
+        {
+            GUILayout.BeginArea(new Rect(264, Screen.height - 245, Mathf.Max(320, Screen.width - 276), 233), panelStyle);
+            resultScroll = GUILayout.BeginScrollView(resultScroll);
+            GUILayout.Label("RESULTADOS", titleStyle);
+            if (inspector != null) inspector.DrawResults(selectedCase);
+            GUILayout.EndScrollView(); GUILayout.EndArea();
+        }
     }
 
     private string Meta(string key){string value;return metadata.TryGetValue(key,out value)?value:"?";}

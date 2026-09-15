@@ -23,7 +23,7 @@ public class BuildingVisualizer : MonoBehaviour
     private Transform supportRoot, localAxisRoot, tributaryRoot;
     private GUIStyle panelStyle, titleStyle, smallStyle;
     private int selectedSlab = -1;
-    private int level = -1;
+    private float level = -1f;
     private bool showBeams = true, showColumns = true, showWalls = true;
     private bool showSupports = true, showDiaphragms = true, showLocalAxes;
     private bool showIds = true, showTributary = true;
@@ -31,6 +31,10 @@ public class BuildingVisualizer : MonoBehaviour
     private int steelColumnCount;
     private static bool shaderWarningLogged;
     private ElementInspector inspector;
+    private readonly string[] levelNames = { "Todos los niveles", "Subterraneo", "Piso 1", "Piso 2", "Piso 3", "Piso 4" };
+    private readonly float[] levelValues = { -1f, 0f, 3.96f, 7.92f, 11.88f, 15.84f };
+    private int levelChoice;
+    private bool levelMenu;
 
     private struct Element { public int id, i, j; public string type; }
     private struct Wall { public int id; public Vector3 a, b; public float zMin, zMax, thickness; }
@@ -165,11 +169,34 @@ public class BuildingVisualizer : MonoBehaviour
 
     private void CreateWall(Wall wall)
     {
-        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube); go.name = "Muro_ID_" + wall.id; go.transform.SetParent(wallRoot);
-        Vector3 d = wall.b - wall.a; go.transform.position = new Vector3((wall.a.x + wall.b.x) / 2, (wall.zMin + wall.zMax) / 2, (wall.a.z + wall.b.z) / 2);
-        go.transform.rotation = Quaternion.LookRotation(d.normalized, Vector3.up); go.transform.localScale = new Vector3(wall.thickness, wall.zMax - wall.zMin, d.magnitude);
-        SetMaterial(go.GetComponent<Renderer>(), new Color(.27f, .33f, .40f)); CreateIdLabel(go, wall.id, go.transform.position);
-        inspector.Register(go, wall.id, "Muro", "Longitud: " + d.magnitude.ToString("F3") + " m\nEspesor: " + wall.thickness.ToString("F2") + " m\nAltura modelada: " + (wall.zMax-wall.zMin).ToString("F2") + " m");
+        Vector3 d = wall.b - wall.a;
+        const float floorHeight = 3.96f;
+        int firstFloor = Mathf.FloorToInt((wall.zMin + 1e-4f) / floorHeight);
+        int lastFloor = Mathf.CeilToInt((wall.zMax - 1e-4f) / floorHeight);
+        for (int floor = firstFloor; floor < lastFloor; floor++)
+        {
+            float z0 = Mathf.Max(wall.zMin, floor * floorHeight);
+            float z1 = Mathf.Min(wall.zMax, (floor + 1) * floorHeight);
+            if (z1 - z0 < 1e-4f) continue;
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            go.name = "Muro_ID_" + wall.id + "_Piso_" + floor;
+            go.transform.SetParent(wallRoot);
+            go.transform.position = new Vector3((wall.a.x + wall.b.x) / 2, (z0 + z1) / 2, (wall.a.z + wall.b.z) / 2);
+            go.transform.rotation = Quaternion.LookRotation(d.normalized, Vector3.up);
+            go.transform.localScale = new Vector3(wall.thickness, z1 - z0, d.magnitude);
+            SetMaterial(go.GetComponent<Renderer>(), new Color(.27f, .33f, .40f));
+            CreateIdLabel(go, wall.id, go.transform.position);
+            int segment = floor - firstFloor;
+            string levelName = floor == 0 ? "1S" : floor.ToString(CultureInfo.InvariantCulture);
+            inspector.Register(go, wall.id, "Muro",
+                "Piso: " + levelName + "\nLongitud: " + d.magnitude.ToString("F3") + " m\nEspesor: " + wall.thickness.ToString("F2") + " m\nAltura: " + (z1-z0).ToString("F2") + " m",
+                wall.id, segment);
+        }
+    }
+
+    private static Texture2D Solid(Color color)
+    {
+        Texture2D texture = new Texture2D(1, 1); texture.SetPixel(0, 0, color); texture.Apply(); return texture;
     }
 
     private void CreateSlab(Slab slab)
@@ -257,8 +284,17 @@ public class BuildingVisualizer : MonoBehaviour
     {
         if (nodeRoot) nodeRoot.gameObject.SetActive(showNodes); if (beamRoot) beamRoot.gameObject.SetActive(showBeams); if (columnRoot) columnRoot.gameObject.SetActive(showColumns); if (wallRoot) wallRoot.gameObject.SetActive(showWalls); if (supportRoot) supportRoot.gameObject.SetActive(showSupports); if (localAxisRoot) localAxisRoot.gameObject.SetActive(showLocalAxes); if (diaphragmRoot) diaphragmRoot.gameObject.SetActive(showDiaphragms); if (tributaryRoot) tributaryRoot.gameObject.SetActive(showTributary);
         foreach (Transform root in new[] { nodeRoot, beamRoot, columnRoot, wallRoot, supportRoot, localAxisRoot, diaphragmRoot }) foreach (Transform label in root.GetComponentsInChildren<Transform>(true)) if (label.name.StartsWith("ID_", StringComparison.Ordinal)) label.gameObject.SetActive(showIds);
-        if (level < 0) return;
-        foreach (Transform root in new[] { nodeRoot, beamRoot, columnRoot, wallRoot, supportRoot, localAxisRoot, diaphragmRoot }) foreach (Transform child in root) child.gameObject.SetActive(levelObjects[child] && (level < 0 || child.position.y >= level - .02f));
+        if (level < 0)
+        {
+            foreach (Transform root in new[] { nodeRoot, beamRoot, columnRoot, wallRoot, supportRoot, localAxisRoot, diaphragmRoot })
+                foreach (Transform child in root) child.gameObject.SetActive(levelObjects[child]);
+            return;
+        }
+        float upperLevel = level + 3.96f;
+        foreach (Transform root in new[] { nodeRoot, beamRoot, columnRoot, wallRoot, supportRoot, localAxisRoot, diaphragmRoot })
+            foreach (Transform child in root)
+                child.gameObject.SetActive(levelObjects[child] && (level < 0 ||
+                    (child.position.y >= level - .02f && child.position.y <= upperLevel + .02f)));
     }
 
     private void UpdateTributary()
@@ -271,13 +307,7 @@ public class BuildingVisualizer : MonoBehaviour
         // overlay above that surface so it cannot be hidden by the slab.
         float x0 = p0.x, x1 = p1.x, z0 = p0.z, z1 = p2.z, y = Mathf.Max(p0.y, p1.y, p2.y, p3.y) + .56f;
         float xm = (x0 + x1) / 2, zm = (z0 + z1) / 2, lx = Mathf.Abs(x1 - x0), lz = Mathf.Abs(z1 - z0);
-        float ratio = Mathf.Max(lx, lz) / Mathf.Min(lx, lz);
-        if (ratio >= 2.0f)
-        {
-            if (lx >= lz) { CreateTributaryPolygon(slab.id, "Borde inferior", new[] { new Vector3(x0, y, z0), new Vector3(x1, y, z0), new Vector3(x1, y, zm), new Vector3(x0, y, zm) }, 0); CreateTributaryPolygon(slab.id, "Borde superior", new[] { new Vector3(x0, y, zm), new Vector3(x1, y, zm), new Vector3(x1, y, z1), new Vector3(x0, y, z1) }, 1); }
-            else { CreateTributaryPolygon(slab.id, "Borde izquierdo", new[] { new Vector3(x0, y, z0), new Vector3(xm, y, z0), new Vector3(xm, y, z1), new Vector3(x0, y, z1) }, 0); CreateTributaryPolygon(slab.id, "Borde derecho", new[] { new Vector3(xm, y, z0), new Vector3(x1, y, z0), new Vector3(x1, y, z1), new Vector3(xm, y, z1) }, 1); }
-        }
-        else if (lx >= lz)
+        if (lx >= lz)
         {
             float d = lz / 2; CreateTributaryPolygon(slab.id, "Borde izquierdo", new[] { new Vector3(x0, y, z0), new Vector3(x0, y, z1), new Vector3(x0 + d, y, zm) }, 0); CreateTributaryPolygon(slab.id, "Borde derecho", new[] { new Vector3(x1, y, z0), new Vector3(x1 - d, y, zm), new Vector3(x1, y, z1) }, 1); CreateTributaryPolygon(slab.id, "Borde inferior", new[] { new Vector3(x0, y, z0), new Vector3(x1, y, z0), new Vector3(x1 - d, y, zm), new Vector3(x0 + d, y, zm) }, 2); CreateTributaryPolygon(slab.id, "Borde superior", new[] { new Vector3(x0, y, z1), new Vector3(x0 + d, y, zm), new Vector3(x1 - d, y, zm), new Vector3(x1, y, z1) }, 3);
         }
@@ -294,9 +324,12 @@ public class BuildingVisualizer : MonoBehaviour
         Mesh mesh = new Mesh(); mesh.vertices = points; mesh.triangles = points.Length == 3 ? new[] { 0, 2, 1 } : new[] { 0, 2, 1, 0, 3, 2 }; mesh.RecalculateNormals();
         zone.AddComponent<MeshFilter>().sharedMesh = mesh;
         MeshRenderer renderer = zone.AddComponent<MeshRenderer>();
-        Color[] colors = { new Color(1f, .18f, .08f, .68f), new Color(.82f, .12f, .92f, .68f), new Color(.08f, .55f, 1f, .68f), new Color(.10f, .78f, .35f, .68f) };
-        SetMaterial(renderer, colors[colorIndex % colors.Length], true); renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = false;
-        LineRenderer outline = zone.AddComponent<LineRenderer>(); outline.positionCount = points.Length; outline.SetPositions(points); outline.loop = true; outline.startWidth = .045f; outline.endWidth = .045f; SetMaterial(outline, new Color(colors[colorIndex % colors.Length].r, colors[colorIndex % colors.Length].g, colors[colorIndex % colors.Length].b, 1f)); outline.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; outline.receiveShadows = false;
+        Color fill = edge.StartsWith("Borde inferior") ? new Color(.133f, .773f, .365f, .55f) :
+            edge.StartsWith("Borde superior") ? new Color(.659f, .333f, .969f, .55f) :
+            edge.StartsWith("Borde izquierdo") ? new Color(.976f, .451f, .086f, .55f) :
+            new Color(.925f, .282f, .6f, .55f);
+        SetMaterial(renderer, fill, true); renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; renderer.receiveShadows = false;
+        LineRenderer outline = zone.AddComponent<LineRenderer>(); outline.positionCount = points.Length; outline.SetPositions(points); outline.loop = true; outline.startWidth = .045f; outline.endWidth = .045f; SetMaterial(outline, new Color(.067f, .094f, .129f, 1f)); outline.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; outline.receiveShadows = false;
     }
 
     public void SelectSlab(int id)
@@ -305,14 +338,59 @@ public class BuildingVisualizer : MonoBehaviour
         UpdateTributary();
     }
 
+    public void DrawTopLevel()
+    {
+        string label = levelNames[(int)Mathf.Clamp(levelChoice, 0, levelNames.Length - 1)];
+        if (GUILayout.Button("Nivel: " + label + " v", GUILayout.Width(150)))
+        {
+            levelMenu = !levelMenu;
+        }
+    }
+
+    public void DrawTopLevelPopup()
+    {
+        if (!levelMenu) return;
+        Rect popup = new Rect(390, 54, 170, 24 * levelNames.Length + 8);
+        GUI.Box(popup, "");
+        for (int i = 0; i < levelNames.Length; i++)
+        {
+            Rect option = new Rect(popup.x + 4, popup.y + 4 + i * 24, popup.width - 8, 22);
+            if (GUI.Button(option, levelNames[i]))
+            {
+                levelChoice = i;
+                level = levelValues[i];
+                levelMenu = false;
+                ApplyVisibility();
+            }
+        }
+    }
+
     private void OnGUI()
     {
-        if (panelStyle == null) { panelStyle = new GUIStyle(GUI.skin.window) { padding = new RectOffset(12, 12, 10, 10) }; titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 16, fontStyle = FontStyle.Bold }; smallStyle = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true }; }
-        GUILayout.BeginArea(new Rect(12, 12, 265, Screen.height - 24), panelStyle); scroll = GUILayout.BeginScrollView(scroll);
-        GUILayout.Label("MODELO ESTRUCTURAL", titleStyle); GUILayout.Label(nodes.Count + " nodos | " + elements.Count + " barras | " + walls.Count + " muros | " + slabs.Count + " losas\n" + steelColumnCount + " columnas acero SHS 300x300x20 (turquesa)", smallStyle); GUILayout.Space(8);
-        showNodes = GUILayout.Toggle(showNodes, "Nodos"); showBeams = GUILayout.Toggle(showBeams, "Vigas"); showColumns = GUILayout.Toggle(showColumns, "Columnas"); showWalls = GUILayout.Toggle(showWalls, "Muros"); showSupports = GUILayout.Toggle(showSupports, "Apoyos"); showDiaphragms = GUILayout.Toggle(showDiaphragms, "Diafragmas / losas"); showIds = GUILayout.Toggle(showIds, "IDs"); showLocalAxes = GUILayout.Toggle(showLocalAxes, "Ejes locales"); showTributary = GUILayout.Toggle(showTributary, "Area tributaria");
-        GUILayout.Space(8); GUILayout.Label("Nivel (-1 = todos)"); string levelText = GUILayout.TextField(level.ToString()); int parsed; if (int.TryParse(levelText, out parsed)) level = parsed;
-        GUILayout.Label("Inspector de area tributaria", titleStyle); string[] options = new string[slabs.Count + 1]; options[0] = "Seleccionar losa"; for (int i = 0; i < slabs.Count; i++) options[i + 1] = "Losa ID " + slabs[i].id; int choice = slabs.FindIndex(s => s.id == selectedSlab) + 1; int next = GUILayout.SelectionGrid(choice, options, 1); if (next != choice) { inspector.SelectSlabById(next > 0 ? slabs[next - 1].id : -1); }
+        if (panelStyle == null) { panelStyle = new GUIStyle(GUI.skin.window) { padding = new RectOffset(12, 12, 10, 10) }; panelStyle.normal.background = Solid(new Color(.055f, .09f, .13f, .97f)); titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = Color.white } }; smallStyle = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true, normal = { textColor = new Color(.82f, .87f, .91f) } }; }
+        GUILayout.BeginArea(new Rect(12, 74, 240, Screen.height - 86), panelStyle); scroll = GUILayout.BeginScrollView(scroll);
+        GUILayout.Label("MODELO", titleStyle); GUILayout.Label(nodes.Count + " nodos\n" + elements.Count + " barras\n" + walls.Count + " muros\n" + slabs.Count + " losas\n4 niveles", smallStyle); GUILayout.Space(8);
+        GUILayout.Label("CAPAS", titleStyle);
+        showBeams = GUILayout.Toggle(showBeams, "Vigas"); showColumns = GUILayout.Toggle(showColumns, "Columnas"); showWalls = GUILayout.Toggle(showWalls, "Muros"); showDiaphragms = GUILayout.Toggle(showDiaphragms, "Losas"); showNodes = GUILayout.Toggle(showNodes, "Nodos"); showSupports = GUILayout.Toggle(showSupports, "Apoyos");
+        GUILayout.Space(8); GUILayout.Label("VISUALIZACION", titleStyle);
+        showIds = GUILayout.Toggle(showIds, "Mostrar IDs"); showLocalAxes = GUILayout.Toggle(showLocalAxes, "Ejes locales"); showTributary = GUILayout.Toggle(showTributary, "Area tributaria");
+        Semana3Visualizer results = GetComponent<Semana3Visualizer>();
+        if (results != null)
+        {
+            bool deformed = results.ShowDeformed;
+            bool forces = results.ShowForces;
+            bool nextDeformed = GUILayout.Toggle(deformed, "Deformada");
+            bool nextForces = GUILayout.Toggle(forces, "Fuerzas sismicas / CM");
+            if (nextDeformed != deformed || nextForces != forces) results.SetDisplay(nextDeformed, nextForces, results.DeformationScale);
+            if (nextDeformed)
+            {
+                GUILayout.Label("Escala: " + results.DeformationScale.ToString("F0") + "x", smallStyle);
+                float scale = GUILayout.HorizontalSlider(results.DeformationScale, 1f, 5000f);
+                if (Mathf.Abs(scale - results.DeformationScale) > 1f) results.SetDisplay(nextDeformed, nextForces, scale);
+            }
+        }
+        GUILayout.Label("Area tributaria", titleStyle);
+        GUILayout.Label(selectedSlab < 0 ? "Seleccione una losa directamente en el visor." : "Losa seleccionada: " + selectedSlab, smallStyle);
         if (selectedSlab >= 0) { Slab slab = slabs.Find(s => s.id == selectedSlab); if (slab != null) GUILayout.Label("ID: " + slab.id + "\nArea: " + slab.Area.ToString("F2") + " m2\nMetodo: reparto por cuatro bordes\nZona resaltada: centro hacia cada borde", smallStyle); }
         if (GUILayout.Button("Reiniciar seleccion")) { inspector.SelectSlabById(-1); }
         GUILayout.Label("Haz clic directamente sobre una losa para seleccionarla.\nLMB orbitar | MMB desplazar | rueda zoom\nLas zonas coloreadas muestran el reparto tributario hacia cada borde.", smallStyle); GUILayout.EndScrollView(); GUILayout.EndArea(); ApplyVisibility();

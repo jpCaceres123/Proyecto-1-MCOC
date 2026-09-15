@@ -11,6 +11,21 @@ public sealed class StructuralPostprocessor : MonoBehaviour
     [Serializable] public class Shell { public int id, wall; public int[] nodes; }
     [Serializable] public class Motion { public int id; public float[] u, r; }
     [Serializable] public class Case { public string name; public Motion[] nodes; }
+    [Serializable] public class SectionData
+    {
+        public float A_m2, Iy_m4, Iz_m4, J_m4;
+        public float outer_width_m, wall_thickness_m;
+    }
+    [Serializable] public class MaterialData { public float E_kPa, nu, density_kg_m3; }
+    [Serializable] public class Restraints { public bool i, j; }
+    [Serializable] public class ElementMetadata
+    {
+        public int id, i, j;
+        public string type, section, material;
+        public SectionData sectionData;
+        public MaterialData materialData;
+        public Restraints restraints;
+    }
     [Serializable] public class Data
     {
         public int schema;
@@ -18,12 +33,14 @@ public sealed class StructuralPostprocessor : MonoBehaviour
         public Node[] nodes;
         public Bar[] bars;
         public Shell[] shells;
+        public ElementMetadata[] elementMetadata;
         public Case[] cases;
     }
 
     private Data data;
     private readonly Dictionary<int, Vector3> nodes = new Dictionary<int, Vector3>();
     private readonly Dictionary<int, Bar> bars = new Dictionary<int, Bar>();
+    private readonly Dictionary<int, ElementMetadata> metadata = new Dictionary<int, ElementMetadata>();
     private readonly Dictionary<string, Dictionary<int, Motion>> motions = new Dictionary<string, Dictionary<int, Motion>>();
     private string error, diagramKey;
     private bool loaded;
@@ -56,6 +73,8 @@ public sealed class StructuralPostprocessor : MonoBehaviour
                 throw new Exception("Contrato incompatible: estos diagramas requieren barras sin cargas interiores.");
             foreach (Node n in data.nodes) nodes.Add(n.id, Vector(n.xyz));
             foreach (Bar b in data.bars) bars.Add(b.id, b);
+            if (data.elementMetadata != null)
+                foreach (ElementMetadata item in data.elementMetadata) metadata.Add(item.id, item);
             foreach (Case c in data.cases)
             {
                 Dictionary<int, Motion> values = new Dictionary<int, Motion>();
@@ -185,6 +204,15 @@ public sealed class StructuralPostprocessor : MonoBehaviour
         GUILayout.Space(6);
         GUILayout.Label("DIAGRAMA DE ESFUERZOS · " + caseName);
         GUILayout.Label("Nodos i: " + b.i + " → j: " + b.j);
+        ElementMetadata item;
+        if (metadata.TryGetValue(id, out item))
+        {
+            GUILayout.Label("Tipo: " + item.type);
+            GUILayout.Label("Sección: " + item.section + " · A = " + item.sectionData.A_m2.ToString("G5") + " m²");
+            GUILayout.Label("Material: " + item.material + " · E = " + item.materialData.E_kPa.ToString("G5") + " kN/m²");
+            GUILayout.Label("Restricciones: i = " + (item.restraints.i ? "fijo" : "libre") +
+                " · j = " + (item.restraints.j ? "fijo" : "libre"));
+        }
         GUILayout.Label("Ejes OpenSees global XYZ: x=" + Vector(b.x).ToString("F2")
             + "  y=" + Vector(b.y).ToString("F2") + "  z=" + Vector(b.z).ToString("F2"));
         component = GUILayout.Toolbar(component, components);
@@ -198,20 +226,28 @@ public sealed class StructuralPostprocessor : MonoBehaviour
             BuildDiagram(b, first, last, index);
         }
         string unit = index < 3 ? "kN" : "kN·m";
-        GUILayout.Label(components[component] + " [" + unit + "] · i: " + first.ToString("G6") + " · j: " + last.ToString("G6"));
-        GUILayout.Label("Máx. |" + components[component] + "|: " + Math.Max(Math.Abs(first), Math.Abs(last)).ToString("G6") + " " + unit);
+        GUILayout.BeginHorizontal();
+        GUILayout.BeginVertical(GUILayout.Width(340));
         Rect rect = GUILayoutUtility.GetRect(Width, Height, GUILayout.Width(Width), GUILayout.Height(Height));
         GUI.DrawTexture(rect, plot);
-        GUIStyle labels = new GUIStyle(GUI.skin.label); labels.normal.textColor = Color.black; labels.fontSize = 10;
+        GUIStyle labels = new GUIStyle(GUI.skin.label); labels.normal.textColor = new Color(.82f,.87f,.91f); labels.fontSize = 10;
         double bound = Math.Max(Math.Abs(first), Math.Abs(last));
         GUI.Label(new Rect(rect.x + 3, rect.y + 2, 150, 20), "+" + bound.ToString("G4") + " " + unit, labels);
         GUI.Label(new Rect(rect.x + 3, rect.y + 67, 35, 20), "0", labels);
         GUI.Label(new Rect(rect.x + 3, rect.y + 117, 150, 20), "−" + bound.ToString("G4") + " " + unit, labels);
         GUI.Label(new Rect(rect.x + 55, rect.y + 136, 60, 18), "i: 0 m", labels);
         GUI.Label(new Rect(rect.x + 215, rect.y + 136, 115, 18), "j: " + Vector3.Distance(nodes[b.i], nodes[b.j]).ToString("F3") + " m", labels);
+        GUILayout.EndVertical();
+        GUILayout.BeginVertical(GUILayout.Width(300));
+        GUILayout.Label(components[component] + " [" + unit + "]");
+        GUILayout.Label("Extremo i: " + first.ToString("G6") + " " + unit);
+        GUILayout.Label("Extremo j: " + last.ToString("G6") + " " + unit);
+        GUILayout.Label("Máx. |" + components[component] + "|: " + Math.Max(Math.Abs(first), Math.Abs(last)).ToString("G6") + " " + unit);
         GUILayout.Label("N: compresión +. V/M: acciones sobre cara +x. Los signos de corte difieren de las acciones nodales de extremo.");
-        GUILayout.Label("Gráfico 3D normalizado a 1,5 m por máximo absoluto. N/Vy/Mz hacia +y; Vz/My hacia +z. Azul: positivo; rojo: negativo.");
-        GUILayout.Label("Barras sin cargas interiores: N/V constantes y M lineal, salvo residuo numérico. No incluye una carga distribuida que el modelo no aplicó.");
+        GUILayout.Label("Gráfico 3D normalizado a 1,5 m. Azul: positivo; rojo: negativo.");
+        GUILayout.Label("Barras sin cargas interiores: N/V constantes y M lineal, salvo residuo numérico.");
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
     }
 
     private void BuildDiagram(Bar b, double first, double last, int index)
@@ -221,9 +257,9 @@ public sealed class StructuralPostprocessor : MonoBehaviour
         if (plot != null) Destroy(plot);
         plot = new Texture2D(Width, Height, TextureFormat.RGBA32, false);
         Color[] pixels = new Color[Width * Height];
-        for (int k = 0; k < pixels.Length; k++) pixels[k] = Color.white;
+        for (int k = 0; k < pixels.Length; k++) pixels[k] = new Color(.055f,.09f,.13f,1f);
         plot.SetPixels(pixels);
-        for (int x = 55; x <= 315; x++) plot.SetPixel(x, 78, Color.gray);
+        for (int x = 55; x <= 315; x++) plot.SetPixel(x, 78, new Color(.65f,.72f,.78f,1f));
         double bound = Math.Max(Math.Max(Math.Abs(first), Math.Abs(last)), 1e-20);
         Vector3 a = ToUnity(nodes[b.i]), end = ToUnity(nodes[b.j]);
         Vector3 offset = ToUnity(Vector(index == 2 || index == 4 ? b.z : b.y));

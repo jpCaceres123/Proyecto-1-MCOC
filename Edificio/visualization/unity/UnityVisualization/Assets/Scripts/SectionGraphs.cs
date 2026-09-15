@@ -33,9 +33,10 @@ public sealed class SectionGraphs : IDisposable
     private string cacheKey;
     private int end, axis, material;
     private GUIStyle small;
-    private const int W = 330, H = 220, Left = 55, Right = 314, Bottom = 38, Top = 198;
+    private const int W = 330, H = 230, Left = 58, Right = 314, Bottom = 40, Top = 207;
     private static readonly Color Blue = new Color(.12f,.38f,.75f);
     private static readonly Color Red = new Color(.85f,.18f,.12f);
+    private static readonly Color Green = new Color(.1f,.65f,.15f);
 
     public SectionGraphs()
     {
@@ -53,7 +54,7 @@ public sealed class SectionGraphs : IDisposable
         catch (Exception ex) { error = ex.Message; Debug.LogError(error); }
     }
 
-    public void Draw(int id, string loadCase, double[] forces)
+    public void Draw(int id, string loadCase, double[] forces, int mode = 0)
     {
         GUILayout.Space(8);
         GUILayout.Label("DIAGRAMAS DE LA SECCIÓN");
@@ -68,6 +69,34 @@ public sealed class SectionGraphs : IDisposable
             return;
         }
         GUILayout.Label("HA " + data.b_m.ToString("F2") + " × " + data.h_m.ToString("F2") + " m · f’c = " + data.fc_MPa.ToString("G4") + " MPa");
+        if (mode == 3)
+        {
+            GUILayout.Label("PUNTOS NOMINALES A-G");
+            for (int i = 0; i < data.pm.Length; i++) GUILayout.Label("Punto " + (i + 1) + ": P = " + data.pm[i].p.ToString("G6") + " kN; |M| = " + data.pm[i].m.ToString("G6") + " kN·m");
+            return;
+        }
+        if (mode == 2) { GUILayout.Label("Momento-curvatura disponible en el panel de resultados globales."); return; }
+        if (mode == 1)
+        {
+            GUILayout.Label("Tensión–deformación de materiales");
+            material = GUILayout.Toolbar(material, new[] { "Hormigón", "Acero de armadura" });
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical(GUILayout.Width(360));
+            DrawChart(material == 0 ? concrete : steel, material == 0 ? "εc [m/m]" : "ε [m/m]", "|σ| [MPa]");
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical(GUILayout.Width(300));
+            GUILayout.Label(material == 0 ? "Hormigón: parábola–meseta; f’c = " + data.fc_MPa.ToString("G4") + " MPa." : "Steel01: elastoplástico perfecto; fy = " + data.fy_MPa.ToString("G4") + " MPa.");
+            if (material == 0 && data.concrete_key_points != null)
+            {
+                GUILayout.Label("PUNTOS CARACTERISTICOS DEL HORMIGON");
+                foreach (KeyPoint point in data.concrete_key_points)
+                    GUILayout.Label(point.name + ": deformacion = " + point.strain.ToString("G4")
+                        + "; esfuerzo = " + point.stress_MPa.ToString("G4") + " MPa");
+            }
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+            return;
+        }
         GUILayout.Label("P–M nominal · sección con armadura supuesta");
         end = GUILayout.Toolbar(end, new[] { "Extremo i", "Extremo j" });
         axis = GUILayout.Toolbar(axis, new[] { "|My|", "|Mz|" });
@@ -79,30 +108,31 @@ public sealed class SectionGraphs : IDisposable
         {
             Destroy(interaction); interaction = InteractionChart(p, m); cacheKey = key;
         }
+        bool inside = Inside(data.pm, new Vector2(m, p));
+        GUILayout.Label("CURVA P–M DE COLUMNA " + id);
+        GUILayout.BeginHorizontal();
+        GUILayout.BeginVertical(GUILayout.Width(360));
         DrawChart(interaction, "|M| [kN·m]", "P [kN], compresión +");
-        GUILayout.Label("Azul: puntos nominales · rojo: demanda " + loadCase);
-        GUILayout.Label("VALORES P–M · sección seleccionada");
+        GUILayout.Label("Azul: envolvente ±M · punto de demanda según caso " + loadCase);
+        GUILayout.EndVertical();
+        GUILayout.BeginVertical(GUILayout.Width(190));
+        GUILayout.Label("Puntos característicos (kN, kN·m)");
         for (int i = 0; i < data.pm.Length; i++)
-            GUILayout.Label("Nominal " + (i + 1) + ": P = " + data.pm[i].p.ToString("G6")
-                + " kN; |M| = " + data.pm[i].m.ToString("G6") + " kN·m");
-        GUILayout.Label("Demanda " + loadCase + ": P = " + p.ToString("G6")
-            + " kN; |M| = " + m.ToString("G6") + " kN·m");
-        GUILayout.Label("La línea solo une puntos calculados. Comparación uniaxial; no verifica flexión biaxial, esbeltez ni capacidad normativa.");
-        GUILayout.Space(6);
-        GUILayout.Label("Tensión–deformación σc–εc (compresión positiva)");
-        material = GUILayout.Toolbar(material, new[] { "Hormigón", "Acero de armadura" });
-        DrawChart(material == 0 ? concrete : steel, material == 0 ? "εc [m/m]" : "ε [m/m]", "|σ| [MPa]");
-        GUILayout.Label(material == 0
-            ? "Hormigón: parábola–meseta para compresión; εc0 = 0.002 y εcu = 0.0035. f’c = " + data.fc_MPa.ToString("G4") + " MPa."
-            : "Steel01: elastoplástico perfecto; fy = " + data.fy_MPa.ToString("G4") + " MPa. Se muestra el entorno de fluencia.");
-        if (material == 0 && data.concrete_key_points != null)
-        {
-            GUILayout.Label("PUNTOS CARACTERÍSTICOS DEL HORMIGÓN");
-            foreach (KeyPoint point in data.concrete_key_points)
-                GUILayout.Label(point.name + ": ε = " + point.strain.ToString("G4")
-                    + "; σ = " + point.stress_MPa.ToString("G4") + " MPa");
-        }
-        GUILayout.Label("Envolvente monotónica del material; no es la historia de fibras del elemento seleccionado.");
+            GUILayout.Label(((char)('A' + i)) + "    P = " + data.pm[i].p.ToString("G6")
+                + "    |M| = " + data.pm[i].m.ToString("G6"));
+        GUILayout.EndVertical();
+        GUILayout.BeginVertical(GUILayout.Width(190));
+        GUILayout.Label("Estado y verificación");
+        GUILayout.Label("P (demanda)   " + p.ToString("G6") + " kN");
+        GUILayout.Label("M (demanda)   " + m.ToString("G6") + " kN·m");
+        GUI.color = inside ? Green : Red;
+        GUILayout.Label(inside ? "[ OK ] DENTRO DE CAPACIDAD" : "[ ! ] FUERA DE CAPACIDAD");
+        GUI.color = Color.white;
+        GUILayout.Label(inside ? "La demanda se encuentra dentro de la envolvente de capacidad nominal." : "La demanda se encuentra fuera de la envolvente de capacidad nominal.");
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
+        GUILayout.Label("Comparación uniaxial; no verifica flexión biaxial, esbeltez ni capacidad normativa.");
+        return;
     }
 
     private static Chart MaterialChart(Stress[] points, Color color)
@@ -118,17 +148,36 @@ public sealed class SectionGraphs : IDisposable
     private Chart InteractionChart(float p, float m)
     {
         List<Vector2> values = new List<Vector2>();
-        foreach (PM point in data.pm) values.Add(new Vector2(point.m, point.p));
+        foreach (PM point in data.pm) { values.Add(new Vector2(point.m, point.p)); values.Add(new Vector2(-point.m, point.p)); }
         Vector2 demand = new Vector2(m,p);
         List<Vector2> bounds = new List<Vector2>(values); bounds.Add(demand);
         Chart chart = Create(bounds);
-        for (int i = 0; i < values.Count; i++)
+        for (int i = 1; i < data.pm.Length; i++)
         {
-            if (i > 0) Line(chart, values[i-1], values[i], Blue);
-            Dot(chart.texture, Pixel(chart, values[i]), 3, Blue);
+            Line(chart, new Vector2(data.pm[i-1].m,data.pm[i-1].p), new Vector2(data.pm[i].m,data.pm[i].p), Blue);
+            Line(chart, new Vector2(-data.pm[i-1].m,data.pm[i-1].p), new Vector2(-data.pm[i].m,data.pm[i].p), Blue);
         }
-        Dot(chart.texture, Pixel(chart, demand), 5, Red);
+        foreach (PM point in data.pm)
+        {
+            Dot(chart.texture, Pixel(chart, new Vector2(point.m,point.p)), 3, Blue);
+            Dot(chart.texture, Pixel(chart, new Vector2(-point.m,point.p)), 3, Blue);
+        }
+        Dot(chart.texture, Pixel(chart, demand), 5, Inside(data.pm,demand) ? Green : Red);
         chart.texture.Apply(); return chart;
+    }
+
+    private static bool Inside(PM[] curve, Vector2 test)
+    {
+        List<Vector2> polygon = new List<Vector2>();
+        foreach (PM point in curve) polygon.Add(new Vector2(point.m,point.p));
+        for (int i=curve.Length-1;i>=0;i--) polygon.Add(new Vector2(-curve[i].m,curve[i].p));
+        bool inside=false;
+        for(int i=0,j=polygon.Count-1;i<polygon.Count;j=i++)
+        {
+            Vector2 a=polygon[i],b=polygon[j];
+            if(((a.y>test.y)!=(b.y>test.y)) && test.x < (b.x-a.x)*(test.y-a.y)/(b.y-a.y)+a.x) inside=!inside;
+        }
+        return inside;
     }
 
     private static Chart Create(List<Vector2> points)
@@ -143,16 +192,16 @@ public sealed class SectionGraphs : IDisposable
         if (c.xmin < 0) c.xmin -= dx*.08f; if (c.xmax > 0) c.xmax += dx*.08f;
         if (c.ymin < 0) c.ymin -= dy*.08f; if (c.ymax > 0) c.ymax += dy*.08f;
         c.texture = new Texture2D(W,H,TextureFormat.RGBA32,false);
-        Color[] pixels = new Color[W*H]; for (int i=0;i<pixels.Length;i++) pixels[i]=Color.white;
+        Color[] pixels = new Color[W*H]; for (int i=0;i<pixels.Length;i++) pixels[i]=new Color(.055f,.09f,.13f,1f);
         c.texture.SetPixels(pixels);
         for (int i=0;i<=4;i++)
         {
             float x=Mathf.Lerp(c.xmin,c.xmax,i/4f), y=Mathf.Lerp(c.ymin,c.ymax,i/4f);
-            Line(c,new Vector2(x,c.ymin),new Vector2(x,c.ymax),new Color(.88f,.9f,.92f));
-            Line(c,new Vector2(c.xmin,y),new Vector2(c.xmax,y),new Color(.88f,.9f,.92f));
+            Line(c,new Vector2(x,c.ymin),new Vector2(x,c.ymax),new Color(.16f,.23f,.30f,1f));
+            Line(c,new Vector2(c.xmin,y),new Vector2(c.xmax,y),new Color(.16f,.23f,.30f,1f));
         }
-        Line(c,new Vector2(c.xmin,0),new Vector2(c.xmax,0),Color.black);
-        Line(c,new Vector2(0,c.ymin),new Vector2(0,c.ymax),Color.black);
+        Line(c,new Vector2(c.xmin,0),new Vector2(c.xmax,0),new Color(.65f,.72f,.78f,1f));
+        Line(c,new Vector2(0,c.ymin),new Vector2(0,c.ymax),new Color(.65f,.72f,.78f,1f));
         return c;
     }
 
@@ -176,7 +225,7 @@ public sealed class SectionGraphs : IDisposable
     }
     private void DrawChart(Chart chart,string xlabel,string ylabel)
     {
-        if(small==null) small=new GUIStyle(GUI.skin.label){fontSize=10,normal={textColor=Color.black}};
+        if(small==null) small=new GUIStyle(GUI.skin.label){fontSize=10,normal={textColor=new Color(.82f,.87f,.91f)}};
         Rect r=GUILayoutUtility.GetRect(W,H,GUILayout.Width(W),GUILayout.Height(H));
         GUI.DrawTexture(r,chart.texture);
         GUI.Label(new Rect(r.x+Left,r.y+1,260,18),ylabel,small);

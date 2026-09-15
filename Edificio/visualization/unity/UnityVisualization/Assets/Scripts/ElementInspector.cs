@@ -9,6 +9,7 @@ public class ElementInspector : MonoBehaviour
     private class Item
     {
         public int id;
+        public int graphId, segmentIndex;
         public string kind, details;
         public readonly List<Renderer> renderers = new List<Renderer>();
         public readonly List<Color> colors = new List<Color>();
@@ -32,11 +33,19 @@ public class ElementInspector : MonoBehaviour
     private string slabError;
     private readonly Dictionary<int,List<string[]>> slabReceivers = new Dictionary<int,List<string[]>>();
     private string receiverError;
+    private int resultTab;
+    private bool showElementList;
 
     public void Register(GameObject go, int id, string kind, string details)
     {
-        Item item = items.Find(value => value.id == id && value.kind == kind);
-        if (item == null) { item = new Item { id = id, kind = kind, details = details }; items.Add(item); }
+        Register(go, id, kind, details, id, -1);
+    }
+
+    public void Register(GameObject go, int id, string kind, string details, int graphId, int segmentIndex)
+    {
+        Item item = items.Find(value => value.id == id && value.kind == kind &&
+            (kind != "Muro" || value.segmentIndex == segmentIndex));
+        if (item == null) { item = new Item { id = id, kind = kind, details = details, graphId = graphId, segmentIndex = segmentIndex }; items.Add(item); }
         Renderer renderer = go.GetComponent<Renderer>();
         item.renderers.Add(renderer); item.colors.Add(renderer.material.color);
         targets[go.GetComponent<Collider>()] = item;
@@ -115,7 +124,11 @@ public class ElementInspector : MonoBehaviour
 
     private bool InViewport()
     {
-        return Input.mousePosition.x > 285 && Input.mousePosition.x < Screen.width - 410;
+        float y = Screen.height - Input.mousePosition.y;
+        Semana3Visualizer viewer = GetComponent<Semana3Visualizer>();
+        float modelBottom = viewer != null && viewer.ResultsOpen ? Screen.height - 245f : Screen.height - 74f;
+        return Input.mousePosition.x > 264 && Input.mousePosition.x < Screen.width - 350 &&
+            y > 74 && y < modelBottom;
     }
 
     private void Update()
@@ -186,16 +199,24 @@ public class ElementInspector : MonoBehaviour
     {
         GUILayout.Space(8);
         GUILayout.Label("INSPECTOR DE ELEMENTOS");
-        filter = GUILayout.Toolbar(filter, filters);
-        GUILayout.Label("Buscar ID:"); search = GUILayout.TextField(search);
-        listScroll = GUILayout.BeginScrollView(listScroll, GUILayout.Height(110));
-        foreach (Item item in items)
+        if (selected == null) GUILayout.Label("Seleccione un elemento del modelo.");
+        if (GUILayout.Button(showElementList ? "Ocultar resultados de busqueda" : "Buscar / listar elementos")) showElementList = !showElementList;
+        if (showElementList)
         {
-            if ((filter != 0 && item.kind != filters[filter]) || !item.id.ToString().Contains(search)) continue;
-            bool visible = item.renderers.Exists(r => r.gameObject.activeInHierarchy);
-            if (GUILayout.Button(item.kind + " " + item.id + (visible ? "" : " (oculto)"))) Select(item);
+            filter = GUILayout.Toolbar(filter, filters);
+            GUILayout.Label("Buscar ID:"); search = GUILayout.TextField(search);
+            listScroll = GUILayout.BeginScrollView(listScroll, GUILayout.Height(90));
+            foreach (Item item in items)
+            {
+                if ((filter != 0 && item.kind != filters[filter]) || !item.id.ToString().Contains(search)) continue;
+                bool visible = item.renderers.Exists(r => r.gameObject.activeInHierarchy);
+                string label = item.kind + " " + item.id;
+                if (item.kind == "Muro") label += " · " + item.details.Split('\n')[0];
+                if (!visible) label += " (oculto)";
+                if (GUILayout.Button(label)) Select(item);
+            }
+            GUILayout.EndScrollView();
         }
-        GUILayout.EndScrollView();
         GUILayout.Label("Clic: seleccionar · arrastrar: orbitar · Esc: limpiar");
         if (selected == null) return;
         GUILayout.Label(selected.kind + " ID " + selected.id + " · Caso " + loadCase);
@@ -205,11 +226,7 @@ public class ElementInspector : MonoBehaviour
             DrawSlabWeight(selected.id);
             GUILayout.Label("Losa tributaria: el modelo no calcula esfuerzos internos de placa.");
         }
-        else if (selected.kind == "Muro")
-        {
-            wallGraphs.Draw(selected.id);
-        }
-        else
+        else if (selected.kind != "Muro")
         {
             double[] values;
             if (!TryForces(loadCase, selected.id, out values))
@@ -226,12 +243,69 @@ public class ElementInspector : MonoBehaviour
                     GUILayout.Label(values[k + 6].ToString("G5")); GUILayout.EndHorizontal();
                 }
                 GUILayout.Label("Signos originales de localForce; valores en extremos, no máximos interiores.");
-                StructuralPostprocessor.Get(gameObject).DrawMember(selected.id, loadCase, values);
                 if (selected.kind == "Columna") DrawAxialTrace(loadCase, selected.id);
-                graphs.Draw(selected.id, loadCase, values);
             }
         }
         if (GUILayout.Button("Limpiar selección")) Select(null);
+    }
+
+    public void DrawSearchBar()
+    {
+        GUILayout.Label("Buscar ID", GUILayout.Width(75));
+        search = GUILayout.TextField(search, GUILayout.Width(220));
+        if (!string.IsNullOrEmpty(search))
+        {
+            foreach (Item item in items)
+            {
+                if ((filter != 0 && item.kind != filters[filter]) ||
+                    !item.id.ToString().Contains(search)) continue;
+                if (GUILayout.Button(item.kind + " " + item.id, GUILayout.Width(120))) Select(item);
+            }
+        }
+    }
+
+    public void DrawResults(string loadCase)
+    {
+        if (selected == null)
+        {
+            GUILayout.Label("Seleccione una viga, columna o muro para ver sus resultados.");
+            return;
+        }
+        if (selected.kind == "Losa")
+        {
+            GUILayout.Label("La losa no tiene diagramas de esfuerzos internos; consulte sus cargas tributarias en el inspector.");
+            return;
+        }
+        string[] tabs = selected.kind == "Viga"
+            ? new[] { "Diagramas de esfuerzos" }
+            : selected.kind == "Muro"
+                ? new[] { "Diagrama de interaccion", "Seccion de fibras", "Momento-curvatura", "Puntos A-G" }
+                : new[] { "Diagrama de interaccion", "Seccion de fibras", "Tension-deformacion", "Diagramas de esfuerzos", "Momento-curvatura", "Puntos A-G" };
+        resultTab = (int)Mathf.Clamp(resultTab, 0, tabs.Length - 1);
+        resultTab = GUILayout.Toolbar(resultTab, tabs);
+        double[] values;
+        if (selected.kind == "Muro")
+        {
+            if (resultTab == 0) wallGraphs.Draw(selected.graphId, loadCase, selected.segmentIndex);
+            else GetComponent<Semana3Visualizer>().DrawGlobalResult(resultTab);
+            return;
+        }
+        if (!TryForces(loadCase, selected.id, out values))
+        {
+            GUILayout.Label(dataError ?? "No hay esfuerzos disponibles para esta barra.");
+            return;
+        }
+        if (selected.kind == "Viga")
+            StructuralPostprocessor.Get(gameObject).DrawMember(selected.id, loadCase, values);
+        if (selected.kind == "Columna")
+        {
+            if (resultTab == 0) graphs.Draw(selected.id, loadCase, values, 0);
+            else if (resultTab == 1) GetComponent<Semana3Visualizer>().DrawGlobalResult(1);
+            else if (resultTab == 2) graphs.Draw(selected.id, loadCase, values, 1);
+            else if (resultTab == 3) StructuralPostprocessor.Get(gameObject).DrawMember(selected.id, loadCase, values);
+            else if (resultTab == 4) GetComponent<Semana3Visualizer>().DrawGlobalResult(2);
+            else GetComponent<Semana3Visualizer>().DrawGlobalResult(3);
+        }
     }
 
     private void OnDestroy() { if (graphs != null) graphs.Dispose(); if (wallGraphs != null) wallGraphs.Dispose(); }
