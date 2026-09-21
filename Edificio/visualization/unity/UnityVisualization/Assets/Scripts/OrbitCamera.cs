@@ -18,7 +18,7 @@ public class OrbitCamera : MonoBehaviour
         float screenY = Screen.height - Input.mousePosition.y;
         Semana3Visualizer viewer = FindAnyObjectByType<Semana3Visualizer>();
         float modelBottom = viewer != null && viewer.ResultsOpen ? Screen.height - 245.0f : Screen.height - 74.0f;
-        bool pointerOnPanel = Input.mousePosition.x < 264.0f || Input.mousePosition.x > Screen.width - 350.0f ||
+        bool pointerOnPanel = MovingLoadViewer.Blocks(Input.mousePosition) || Input.mousePosition.x < 264.0f || Input.mousePosition.x > Screen.width - 350.0f ||
             screenY < 74.0f || screenY > modelBottom;
         if (!pointerOnPanel && (Input.GetMouseButton(0) || Input.GetMouseButton(1)))
         {
@@ -55,5 +55,10 @@ public class OrbitCamera : MonoBehaviour
         yaw = 35.0f;
         pitch = 22.0f;
         Apply();
+    }
+
+    public void FocusPanel(Vector3 center,float extent)
+    {
+        target=center;distance=Mathf.Max(9,extent*1.7f);pitch=58; yaw=25;Apply();
     }
 }

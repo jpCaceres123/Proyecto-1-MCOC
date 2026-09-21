@@ -297,10 +297,13 @@ de receptores. La tolerancia es 0,002 kN por piso por redondeo del contrato.
 {qt}
 
 `transferencia_Q.csv` identifica cada losa, receptor (viga o muro), área e intensidad.
-Las resultantes de losa se reparten entre los nodos extremos del receptor,
-tal como en Semana 2. Se conserva la fuerza total, pero no se reproduce el
-diagrama de flexión local de una viga bajo carga distribuida: los esfuerzos
-gravitacionales deben interpretarse dentro de esta idealización.
+En muros las resultantes se reparten entre los nodos del borde receptor. En
+vigas se conserva la distribución uniforme, triangular o trapezoidal del
+reparto de 45 grados y se aplica dentro del elemento mediante cuadratura de
+Gauss. Cada tramo lineal conserva exactamente su fuerza y primer momento. Los
+diagramas exportados integran esa carga en 41 estaciones: una carga uniforme
+produce momento parabólico y una triangular/trapezoidal, su curva física de
+orden superior. El máximo se busca en todas las estaciones, no sólo en extremos.
 
 ## B. Casos EX y EY
 
@@ -525,6 +528,7 @@ identificados en el manifiesto.
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--parametros',type=Path,default=PARAMETERS)
+    parser.add_argument('--carga-movil',action='store_true',help='Regenerar también las bases verificadas de SQ4')
     args=parser.parse_args()
     cfg=json.loads(args.parametros.read_text(encoding='utf-8')) #Lee los parametros de la columna
     out=ROOT/'results'; out.mkdir(exist_ok=True)
@@ -546,6 +550,9 @@ def main():
                           hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},parametros=cfg)
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     report(cfg,g,c,w,out)
+    if args.carga_movil:
+        from carga_movil import generate
+        generate(cfg)
     state='OK' if c['estado']=='OK' and w['estado']=='OK' and all(r['estado']=='OK' for r in g['checks']) else 'REVISAR'
     print(f'Semana 3: {state}. Resultados: {out}')
     return 0 if state=='OK' else 1

@@ -1,0 +1,21 @@
+Registro de entrega - 2026-09-21
+
+python Edificio/analysis/load_cases/ejecutar.py --carga-movil
+SQ4 OK: 20 paneles, 25 vigas, 148 controles
+Semana 3: OK
+verificaciones_globales.csv: 72 registros OK, 0 REVISAR
+
+python -m unittest discover -s Edificio/verification/tests -p "test_*.py"
+Ran 25 tests in 12.773s
+OK
+
+Unity 6000.5.9f1 - BuildMovingPreview.Build - Windows64 Development
+Build Finished, Result: Success.
+
+Edificio.exe --moving-preview outputs/carga_movil -screen-width 1440 -screen-height 900 -screen-fullscreen 0
+SQ4_RUNTIME endpoint and zero-load error [m]: 1,455191523E-11
+SQ4_RUNTIME_OK
+
+Capturas revisadas: carga_movil_centro.png, carga_movil_reparto.png, carga_movil_cero.png.
+Registro resumido de salidas observadas; no equivale a validacion profesional del edificio.
+Limitaciones y alcance: reports/2026-09-21_vigas_y_carga_movil.md

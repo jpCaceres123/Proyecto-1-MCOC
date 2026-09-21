@@ -10,7 +10,17 @@ public sealed class StructuralPostprocessor : MonoBehaviour
     [Serializable] public class Bar { public int id, i, j; public float[] x, y, z; }
     [Serializable] public class Shell { public int id, wall; public int[] nodes; }
     [Serializable] public class Motion { public int id; public float[] u, r; }
-    [Serializable] public class Case { public string name; public Motion[] nodes; }
+    [Serializable] public class Station
+    {
+        public float s, n, vy, vz, t, my, mz;
+        public float Value(int index)
+        {
+            if (index == 0) return n; if (index == 1) return vy; if (index == 2) return vz;
+            if (index == 3) return t; if (index == 4) return my; return mz;
+        }
+    }
+    [Serializable] public class BarResponse { public int id; public float[] s, n, vy, vz, t, my, mz; }
+    [Serializable] public class Case { public string name; public Motion[] nodes; public BarResponse[] bars; }
     [Serializable] public class SectionData
     {
         public float A_m2, Iy_m4, Iz_m4, J_m4;
@@ -42,6 +52,7 @@ public sealed class StructuralPostprocessor : MonoBehaviour
     private readonly Dictionary<int, Bar> bars = new Dictionary<int, Bar>();
     private readonly Dictionary<int, ElementMetadata> metadata = new Dictionary<int, ElementMetadata>();
     private readonly Dictionary<string, Dictionary<int, Motion>> motions = new Dictionary<string, Dictionary<int, Motion>>();
+    private readonly Dictionary<string, Dictionary<int, Station[]>> stationResults = new Dictionary<string, Dictionary<int, Station[]>>();
     private string error, diagramKey;
     private bool loaded;
     private Transform deformedRoot, diagramRoot;
@@ -69,8 +80,8 @@ public sealed class StructuralPostprocessor : MonoBehaviour
             TextAsset asset = Resources.Load<TextAsset>("semana4_resultados");
             if (asset == null) throw new Exception("Falta exportar semana4_resultados.json");
             data = JsonUtility.FromJson<Data>(asset.text);
-            if (data == null || data.schema != 1 || data.memberLoads != "nodal_only")
-                throw new Exception("Contrato incompatible: estos diagramas requieren barras sin cargas interiores.");
+            if (data == null || data.schema != 2 || data.memberLoads != "distributed_with_station_results")
+                throw new Exception("Contrato incompatible: regenere los resultados con diagramas distribuidos.");
             foreach (Node n in data.nodes) nodes.Add(n.id, Vector(n.xyz));
             foreach (Bar b in data.bars) bars.Add(b.id, b);
             if (data.elementMetadata != null)
@@ -80,6 +91,20 @@ public sealed class StructuralPostprocessor : MonoBehaviour
                 Dictionary<int, Motion> values = new Dictionary<int, Motion>();
                 foreach (Motion n in c.nodes) values.Add(n.id, n);
                 motions.Add(c.name, values);
+                Dictionary<int, Station[]> barValues = new Dictionary<int, Station[]>();
+                if (c.bars == null) throw new Exception("Faltan diagramas de barras para " + c.name);
+                foreach (BarResponse b in c.bars)
+                {
+                    int count = b.s == null ? 0 : b.s.Length;
+                    if (count < 2 || b.n.Length != count || b.vy.Length != count || b.vz.Length != count
+                        || b.t.Length != count || b.my.Length != count || b.mz.Length != count)
+                        throw new Exception("Estaciones inválidas en barra " + b.id + ", caso " + c.name);
+                    Station[] stations = new Station[count];
+                    for (int k = 0; k < count; k++) stations[k] = new Station {
+                        s=b.s[k], n=b.n[k], vy=b.vy[k], vz=b.vz[k], t=b.t[k], my=b.my[k], mz=b.mz[k] };
+                    barValues.Add(b.id, stations);
+                }
+                stationResults.Add(c.name, barValues);
             }
             Shader shader = Shader.Find("Sprites/Default");
             if (shader == null) throw new Exception("Shader de líneas no disponible");
@@ -218,12 +243,24 @@ public sealed class StructuralPostprocessor : MonoBehaviour
         component = GUILayout.Toolbar(component, components);
         if (component == 0) { ClearSelection(); return; }
         int index = component <= 3 ? component - 1 : component;
-        double first = CutValue(actions, index, 0), last = CutValue(actions, index, 1);
-        string key = id + ":" + component + ":" + caseName + ":" + first.ToString("R") + ":" + last.ToString("R");
+        Station[] stations = ResolveStations(caseName, id);
+        if (stations == null || stations.Length < 2) { GUILayout.Label("No hay estaciones para esta barra."); return; }
+        double[] values = new double[stations.Length];
+        double minimum = double.PositiveInfinity, maximum = double.NegativeInfinity, absoluteMaximum = 0;
+        int maximumIndex = 0;
+        for (int k = 0; k < stations.Length; k++)
+        {
+            values[k] = stations[k].Value(index);
+            minimum = Math.Min(minimum, values[k]); maximum = Math.Max(maximum, values[k]);
+            if (Math.Abs(values[k]) > absoluteMaximum) { absoluteMaximum = Math.Abs(values[k]); maximumIndex = k; }
+        }
+        double first = values[0], last = values[values.Length-1];
+        string key = id + ":" + component + ":" + caseName;
+        for (int k = 0; k < values.Length; k++) key += ":" + values[k].ToString("R");
         if (key != diagramKey)
         {
             diagramKey = key;
-            BuildDiagram(b, first, last, index);
+            BuildDiagram(b, stations, values, index);
         }
         string unit = index < 3 ? "kN" : "kN·m";
         GUILayout.BeginHorizontal();
@@ -231,7 +268,7 @@ public sealed class StructuralPostprocessor : MonoBehaviour
         Rect rect = GUILayoutUtility.GetRect(Width, Height, GUILayout.Width(Width), GUILayout.Height(Height));
         GUI.DrawTexture(rect, plot);
         GUIStyle labels = new GUIStyle(GUI.skin.label); labels.normal.textColor = new Color(.82f,.87f,.91f); labels.fontSize = 10;
-        double bound = Math.Max(Math.Abs(first), Math.Abs(last));
+        double bound = Math.Max(Math.Abs(minimum), Math.Abs(maximum));
         GUI.Label(new Rect(rect.x + 3, rect.y + 2, 150, 20), "+" + bound.ToString("G4") + " " + unit, labels);
         GUI.Label(new Rect(rect.x + 3, rect.y + 67, 35, 20), "0", labels);
         GUI.Label(new Rect(rect.x + 3, rect.y + 117, 150, 20), "−" + bound.ToString("G4") + " " + unit, labels);
@@ -242,15 +279,47 @@ public sealed class StructuralPostprocessor : MonoBehaviour
         GUILayout.Label(components[component] + " [" + unit + "]");
         GUILayout.Label("Extremo i: " + first.ToString("G6") + " " + unit);
         GUILayout.Label("Extremo j: " + last.ToString("G6") + " " + unit);
-        GUILayout.Label("Máx. |" + components[component] + "|: " + Math.Max(Math.Abs(first), Math.Abs(last)).ToString("G6") + " " + unit);
+        GUILayout.Label("Máx. |" + components[component] + "|: " + absoluteMaximum.ToString("G6") + " " + unit
+            + " en x = " + (stations[maximumIndex].s * Vector3.Distance(nodes[b.i], nodes[b.j])).ToString("G5") + " m");
+        GUILayout.Label("Mín./máx.: " + minimum.ToString("G6") + " / " + maximum.ToString("G6") + " " + unit);
         GUILayout.Label("N: compresión +. V/M: acciones sobre cara +x. Los signos de corte difieren de las acciones nodales de extremo.");
         GUILayout.Label("Gráfico 3D normalizado a 1,5 m. Azul: positivo; rojo: negativo.");
-        GUILayout.Label("Barras sin cargas interiores: N/V constantes y M lineal, salvo residuo numérico.");
+        GUILayout.Label("Valores en 41 estaciones. Las cargas interiores producen V variable y M curvo; los casos sin carga transversal conservan M lineal.");
         GUILayout.EndVertical();
         GUILayout.EndHorizontal();
     }
 
-    private void BuildDiagram(Bar b, double first, double last, int index)
+    private Station[] ResolveStations(string caseName, int id)
+    {
+        Semana3Visualizer viewer = GetComponent<Semana3Visualizer>();
+        if (caseName != "R" && caseName != "EX" && caseName != "EY")
+            return stationResults.ContainsKey(caseName) && stationResults[caseName].ContainsKey(id) ? stationResults[caseName][id] : null;
+        if (viewer == null) return null;
+        if (caseName == "EX" || caseName == "EY")
+            return Combine(id, new[] { caseName + "G", caseName + "Q" }, new[] { viewer.MassG, viewer.MassQ });
+        return Combine(id, Semana3Visualizer.BaseCases, viewer.Combination);
+    }
+
+    private Station[] Combine(int id, string[] names, double[] factors)
+    {
+        Station[] reference = stationResults[names[0]][id], result = new Station[reference.Length];
+        for (int i = 0; i < reference.Length; i++)
+        {
+            result[i] = new Station { s = reference[i].s };
+            for (int k = 0; k < names.Length; k++)
+            {
+                Station[] source = stationResults[names[k]][id];
+                if (source.Length != reference.Length) throw new Exception("Mallas de estaciones incompatibles");
+                float factor = (float)factors[k];
+                result[i].n += factor*source[i].n; result[i].vy += factor*source[i].vy;
+                result[i].vz += factor*source[i].vz; result[i].t += factor*source[i].t;
+                result[i].my += factor*source[i].my; result[i].mz += factor*source[i].mz;
+            }
+        }
+        return result;
+    }
+
+    private void BuildDiagram(Bar b, Station[] stations, double[] values, int index)
     {
         if (diagramRoot == null) diagramRoot = Root("Diagrama_NVM_Seleccionado");
         Clear(diagramRoot);
@@ -260,25 +329,27 @@ public sealed class StructuralPostprocessor : MonoBehaviour
         for (int k = 0; k < pixels.Length; k++) pixels[k] = new Color(.055f,.09f,.13f,1f);
         plot.SetPixels(pixels);
         for (int x = 55; x <= 315; x++) plot.SetPixel(x, 78, new Color(.65f,.72f,.78f,1f));
-        double bound = Math.Max(Math.Max(Math.Abs(first), Math.Abs(last)), 1e-20);
+        double bound = 1e-20;
+        foreach (double value in values) bound = Math.Max(bound, Math.Abs(value));
         Vector3 a = ToUnity(nodes[b.i]), end = ToUnity(nodes[b.j]);
         Vector3 offset = ToUnity(Vector(index == 2 || index == 4 ? b.z : b.y));
-        const int count = 40;
         Vector3 previous = Vector3.zero;
-        for (int k = 0; k <= count; k++)
+        for (int k = 0; k < stations.Length; k++)
         {
-            float s = k / (float)count;
-            double value = first * (1 - s) + last * s;
+            float s = stations[k].s;
+            double value = values[k];
             Vector3 basePoint = Vector3.Lerp(a, end, s);
             Vector3 point = basePoint + offset * (float)(1.5 * value / bound);
             Color color = value >= 0 ? new Color(.1f, .35f, .9f) : new Color(.9f, .15f, .1f);
             if (k > 0) Line(diagramRoot, "Barra_" + b.id + "_" + k, new[] { previous, point }, color, .045f);
-            if (k % 4 == 0) Line(diagramRoot, "Ordenada_" + k, new[] { basePoint, point }, color, .02f);
+            if (k % Math.Max(1, (stations.Length-1)/10) == 0) Line(diagramRoot, "Ordenada_" + k, new[] { basePoint, point }, color, .02f);
             previous = point;
         }
         for (int x = 55; x <= 315; x++)
         {
-            double s = (x - 55) / 260.0, value = first * (1 - s) + last * s;
+            double s = (x - 55) / 260.0;
+            double station = s*(values.Length-1); int lo = Math.Min(values.Length-2, (int)Math.Floor(station));
+            double value = values[lo] + (values[lo+1]-values[lo])*(station-lo);
             int y = 78 + Mathf.RoundToInt((float)(value / bound * 55));
             for (int dy = -1; dy <= 1; dy++) plot.SetPixel(x, y + dy, value >= 0 ? Color.blue : Color.red);
         }

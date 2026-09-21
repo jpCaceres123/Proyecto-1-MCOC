@@ -177,9 +177,13 @@ Evidencia completa, incluidas reacciones, identificadores y errores absolutos: [
 
 ## 4. Sidequest: carga móvil
 
-**No implementada en esta versión.** No se encontró un caso de carga móvil con posición, regla de reparto, panel y respuesta recalculada. La navegación de cámara o el cambio de λ no representan una carga móvil. Por tanto, no se atribuye a esta entrega conservación ni respuesta de una carga móvil.
+**Implementada en la actualización del 21-09-2026 para escritorio.** Incluye regla física explícita, panel de control, reparto a dos vigas, conservación de fuerza y momento de la transferencia, y respuesta estructural incremental con diagramas y deformada. El recorrido está limitado a 20 paneles completos de cinco niveles, sin atravesar vacíos.
 
-Para una implementación posterior se necesitarían una fuerza P y posición sobre una losa, una regla explícita para sus receptores, control `sum(P receptores) = P`, rechazo de posiciones en vacíos y cálculo de respuesta mediante casos de influencia o nueva solución OpenSees.
+La carga localizada P se reparte como `P(1−η)` y `Pη` sobre dos bordes opuestos. Sus efectos se reconstruyen mediante bases de OpenSees del edificio completo y se contrastan con soluciones explícitas fuera de las posiciones base. No se confunde el movimiento de cámara con movimiento de carga. El modo muestra sólo ΔSQ4, sin sumar G/Q/sismo, y no representa efectos dinámicos.
+
+La actualización tiene 148 controles SQ4 aprobados, 25 pruebas unitarias aprobadas y comprobación de ejecución/capturas del visor Windows. La limitación heredada de momento global por vínculos equalDOF no coincidentes se mantiene documentada; no se afirma validación estructural integral del edificio ni validación iPhone.
+
+Ver [reporte de entrega y capturas](2026-09-21_vigas_y_carga_movil.md) y [regla física, controles y uso](../Edificio/documentation/CARGA_MOVIL.md). Los demás apartados de este informe conservan la evaluación histórica original salvo indicación expresa.
 
 ## 5. UX estructural
 

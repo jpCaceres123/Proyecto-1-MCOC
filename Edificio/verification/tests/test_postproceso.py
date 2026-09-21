@@ -51,16 +51,41 @@ class PostprocessTests(unittest.TestCase):
                 self.assertTrue(np.isfinite([demand['p'], demand['m']]).all())
 
     def test_member_cut_equilibrium_for_every_case(self):
-        # No member loads: N,V,T are constant. On the +x face,
-        # dMy/dx=Vz and dMz/dx=-Vy. This independently checks the end sign rule.
+        # Exported station results must recover the original OpenSees end
+        # actions after integrating every distributed element load.
         for case in self.data['cases']:
             forces = json.loads((ROOT / 'results' / (case['name'] + '_fuerzas_locales.json')).read_text())
+            diagrams = {b['id']: b for b in case['bars']}
             for b in self.data['bars']:
-                f = np.array(forces[str(b['id'])])
-                length = np.linalg.norm(self.xyz[b['j']] - self.xyz[b['i']])
-                np.testing.assert_allclose(f[:4] + f[6:10], 0, atol=1e-5)
-                self.assertAlmostEqual(f[10] + f[4], -f[2] * length, delta=1e-4)
-                self.assertAlmostEqual(f[11] + f[5], f[1] * length, delta=1e-4)
+                f = np.asarray(forces[str(b['id'])], dtype=float)
+                stations = diagrams[b['id']]
+                self.assertEqual(len(stations['s']), 41)
+                self.assertEqual(stations['s'][0], 0.0)
+                self.assertEqual(stations['s'][-1], 1.0)
+                np.testing.assert_allclose(
+                    [stations[key][0] for key in ('n','vy','vz','t','my','mz')],
+                    [f[0],-f[1],-f[2],-f[3],-f[4],-f[5]], atol=1e-5)
+                np.testing.assert_allclose(
+                    [stations[key][-1] for key in ('n','vy','vz','t','my','mz')],
+                    [-f[6],f[7],f[8],f[9],f[10],f[11]], atol=2e-4)
+
+    def test_gravity_beam_moment_has_real_interior_curvature(self):
+        gravity = next(case for case in self.data['cases'] if case['name'] == 'G')
+        metadata = {item['id']: item for item in self.data['elementMetadata']}
+        curved = 0
+        interior_governs = 0
+        for response in gravity['bars']:
+            if not metadata[response['id']]['type'].startswith('BEAM'):
+                continue
+            values = np.array(response['my'])
+            chord = np.linspace(values[0], values[-1], len(values))
+            scale = max(1.0, np.max(np.abs(values)))
+            if np.max(np.abs(values-chord)) > 1e-5*scale:
+                curved += 1
+            if np.max(np.abs(values[1:-1])) > max(abs(values[0]), abs(values[-1])) + 1e-6:
+                interior_governs += 1
+        self.assertGreater(curved, 100)
+        self.assertGreater(interior_governs, 0)
 
     def test_wall_10_demand_matches_shell_base_resultant(self):
         wall = min((w for w in self.model['walls'] if w.get('source_wall_id') == 10),

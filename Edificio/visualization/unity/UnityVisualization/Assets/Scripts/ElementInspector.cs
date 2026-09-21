@@ -124,6 +124,7 @@ public class ElementInspector : MonoBehaviour
 
     private bool InViewport()
     {
+        if (MovingLoadViewer.Active) return false;
         float y = Screen.height - Input.mousePosition.y;
         Semana3Visualizer viewer = GetComponent<Semana3Visualizer>();
         float modelBottom = viewer != null && viewer.ResultsOpen ? Screen.height - 245f : Screen.height - 74f;

@@ -73,6 +73,7 @@ public class BuildingVisualizer : MonoBehaviour
         inspector = gameObject.AddComponent<ElementInspector>();
         BuildScene();
         if (GetComponent<Semana3Visualizer>() == null) gameObject.AddComponent<Semana3Visualizer>();
+        if (GetComponent<MovingLoadViewer>() == null) gameObject.AddComponent<MovingLoadViewer>();
     }
 
     private void ReadCsv(string text)
@@ -291,6 +292,16 @@ public class BuildingVisualizer : MonoBehaviour
             return;
         }
         float upperLevel = level + 3.96f;
+        if(MovingLoadViewer.Active) {
+            foreach(Transform root in new[]{nodeRoot,beamRoot,columnRoot,wallRoot,supportRoot,localAxisRoot,diaphragmRoot})
+                foreach(Transform child in root) {
+                    bool vertical=root==columnRoot || root==wallRoot;
+                    child.gameObject.SetActive(levelObjects[child] && (vertical
+                        ? child.position.y>=level-3.96f-.02f && child.position.y<level-.02f
+                        : child.position.y>=level-.02f && child.position.y<=level+.45f));
+                }
+            return;
+        }
         foreach (Transform root in new[] { nodeRoot, beamRoot, columnRoot, wallRoot, supportRoot, localAxisRoot, diaphragmRoot })
             foreach (Transform child in root)
                 child.gameObject.SetActive(levelObjects[child] && (level < 0 ||
@@ -340,6 +351,7 @@ public class BuildingVisualizer : MonoBehaviour
 
     public void DrawTopLevel()
     {
+        if(MovingLoadViewer.Active) { GUILayout.Label("Nivel SQ4: +"+level.ToString("F2")+" m",GUILayout.Width(150));return; }
         string label = levelNames[(int)Mathf.Clamp(levelChoice, 0, levelNames.Length - 1)];
         if (GUILayout.Button("Nivel: " + label + " v", GUILayout.Width(150)))
         {
@@ -365,16 +377,43 @@ public class BuildingVisualizer : MonoBehaviour
         }
     }
 
+    public void FocusMovingPanel(int slabId, float elevation)
+    {
+        level=elevation;
+        levelChoice=Array.FindIndex(levelValues,value=>Mathf.Abs(value-elevation)<.01f);
+        if(levelChoice<0) levelChoice=0;
+        showNodes=false;showIds=false;showTributary=false;showDiaphragms=false;
+        SelectSlab(slabId);ApplyVisibility();
+    }
+
+    private float savedMovingLevel;
+    private int savedMovingChoice,savedMovingSlab;
+    private bool savedMovingNodes,savedMovingIds,savedMovingTributary,savedMovingSlabs;
+    public void BeginMovingView()
+    {
+        savedMovingLevel=level;savedMovingChoice=levelChoice;savedMovingSlab=selectedSlab;
+        savedMovingNodes=showNodes;savedMovingIds=showIds;savedMovingTributary=showTributary;
+        savedMovingSlabs=showDiaphragms;
+    }
+    public void EndMovingView()
+    {
+        level=savedMovingLevel;levelChoice=savedMovingChoice;showNodes=savedMovingNodes;
+        showIds=savedMovingIds;showTributary=savedMovingTributary;showDiaphragms=savedMovingSlabs;SelectSlab(savedMovingSlab);ApplyVisibility();
+    }
+
     private void OnGUI()
     {
         if (panelStyle == null) { panelStyle = new GUIStyle(GUI.skin.window) { padding = new RectOffset(12, 12, 10, 10) }; panelStyle.normal.background = Solid(new Color(.055f, .09f, .13f, .97f)); titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = Color.white } }; smallStyle = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true, normal = { textColor = new Color(.82f, .87f, .91f) } }; }
         GUILayout.BeginArea(new Rect(12, 74, 240, Screen.height - 86), panelStyle); scroll = GUILayout.BeginScrollView(scroll);
         GUILayout.Label("MODELO", titleStyle); GUILayout.Label(nodes.Count + " nodos\n" + elements.Count + " barras\n" + walls.Count + " muros\n" + slabs.Count + " losas\n4 niveles", smallStyle); GUILayout.Space(8);
         GUILayout.Label("CAPAS", titleStyle);
+        var moving=GetComponent<MovingLoadViewer>();
+        if(moving!=null) moving.DrawLauncher();
         showBeams = GUILayout.Toggle(showBeams, "Vigas"); showColumns = GUILayout.Toggle(showColumns, "Columnas"); showWalls = GUILayout.Toggle(showWalls, "Muros"); showDiaphragms = GUILayout.Toggle(showDiaphragms, "Losas"); showNodes = GUILayout.Toggle(showNodes, "Nodos"); showSupports = GUILayout.Toggle(showSupports, "Apoyos");
         GUILayout.Space(8); GUILayout.Label("VISUALIZACION", titleStyle);
         showIds = GUILayout.Toggle(showIds, "Mostrar IDs"); showLocalAxes = GUILayout.Toggle(showLocalAxes, "Ejes locales"); showTributary = GUILayout.Toggle(showTributary, "Area tributaria");
         Semana3Visualizer results = GetComponent<Semana3Visualizer>();
+        GUI.enabled=!MovingLoadViewer.Active;
         if (results != null)
         {
             bool deformed = results.ShowDeformed;
@@ -389,10 +428,17 @@ public class BuildingVisualizer : MonoBehaviour
                 if (Mathf.Abs(scale - results.DeformationScale) > 1f) results.SetDisplay(nextDeformed, nextForces, scale);
             }
         }
+        GUI.enabled=true;
+        if(MovingLoadViewer.Active) {
+            GUILayout.Label("LECTURA SQ4",titleStyle);
+            GUILayout.Label("Carga vertical localizada\nReparto a dos vigas opuestas\nTurquesa: borde inferior\nÁmbar: borde superior\nRosa: deformada amplificada\n\nLa respuesta Δ corresponde sólo a la carga móvil.\n\nLMB: orbitar · MMB: desplazar\nRueda: zoom\nW/A/S/D: mover carga",smallStyle);
+        } else {
         GUILayout.Label("Area tributaria", titleStyle);
         GUILayout.Label(selectedSlab < 0 ? "Seleccione una losa directamente en el visor." : "Losa seleccionada: " + selectedSlab, smallStyle);
         if (selectedSlab >= 0) { Slab slab = slabs.Find(s => s.id == selectedSlab); if (slab != null) GUILayout.Label("ID: " + slab.id + "\nArea: " + slab.Area.ToString("F2") + " m2\nMetodo: reparto por cuatro bordes\nZona resaltada: centro hacia cada borde", smallStyle); }
         if (GUILayout.Button("Reiniciar seleccion")) { inspector.SelectSlabById(-1); }
-        GUILayout.Label("Haz clic directamente sobre una losa para seleccionarla.\nLMB orbitar | MMB desplazar | rueda zoom\nLas zonas coloreadas muestran el reparto tributario hacia cada borde.", smallStyle); GUILayout.EndScrollView(); GUILayout.EndArea(); ApplyVisibility();
+        GUILayout.Label("Haz clic directamente sobre una losa para seleccionarla.\nLMB orbitar | MMB desplazar | rueda zoom\nLas zonas coloreadas muestran el reparto tributario hacia cada borde.", smallStyle);
+        }
+        GUILayout.EndScrollView(); GUILayout.EndArea(); ApplyVisibility();
     }
 }

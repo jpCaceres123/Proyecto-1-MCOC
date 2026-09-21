@@ -1,8 +1,7 @@
-"""Exporta ejes OpenSees, malla y seis GDL para el postproceso de Semana 4.
+"""Exporta ejes, malla, seis GDL y diagramas de barra para Semana 4.
 
 No resuelve ni modifica el edificio: construye su topología y lee resultados
-existentes. Las barras actuales sólo reciben cargas nodales, de modo que sus
-esfuerzos interiores se interpolan desde las acciones de extremo.
+existentes. Los diagramas por estaciones ya incluyen las cargas distribuidas.
 """
 import argparse
 import json
@@ -137,10 +136,14 @@ def export_results(out=None, destination=None):
                 raise ValueError(f'{case}: topología distinta; regenerar análisis antes de exportar')
             if not np.isfinite(result['u']).all():
                 raise ValueError(f'{case}: desplazamientos no finitos')
-            responses.append(dict(name=case, nodes=[dict(id=tag, u=u[:3].tolist(), r=u[3:].tolist())
-                                                   for tag, u in zip(tags, result['u'])]))
-    payload = dict(schema=1, axes='OpenSees global XYZ, right handed',
-                   units='m, rad, kN, kN*m', memberLoads='nodal_only',
+            diagrams = json.loads((out / f'{case}_diagramas_barras.json').read_text(encoding='utf-8'))
+            if set(map(int, diagrams)) != bar_tags:
+                raise ValueError(f'{case}: diagramas de barras incompletos')
+            responses.append(dict(name=case,
+                nodes=[dict(id=tag, u=u[:3].tolist(), r=u[3:].tolist()) for tag, u in zip(tags, result['u'])],
+                bars=[dict(id=int(tag), **stations) for tag, stations in diagrams.items()]))
+    payload = dict(schema=2, axes='OpenSees global XYZ, right handed',
+                   units='m, rad, kN, kN*m', memberLoads='distributed_with_station_results',
                    nodes=[dict(id=n, xyz=list(ops.nodeCoord(n))) for n in nodes],
                    elementMetadata=element_metadata(data),
                    capacityMaterial=capacity_material(),

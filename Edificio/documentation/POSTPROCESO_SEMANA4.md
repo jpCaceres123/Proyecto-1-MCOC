@@ -13,11 +13,20 @@ originales de extremo siguen visibles en su tabla, con su convención original.
 Los diagramas recorren el elemento de i a j. El offset gráfico de N/Vy/Mz es
 y local; el de Vz/My es z local. Azul indica positivo y rojo negativo.
 
-El modelo actual aplica todas las cargas de barras a los nodos. Por ello N y V
-son constantes (salvo redondeo) y los momentos son lineales entre nodos. La
-interpolación de extremos es válida para esa idealización, no para una futura
-barra con carga distribuida o puntual interior sin subdivisión. En ese caso se
-debe extender el contrato y el evaluador antes de reutilizar los diagramas.
+Las cargas gravitacionales de vigas se aplican dentro de cada elemento mediante
+puntos de Gauss que conservan exactamente la fuerza y el primer momento de cada
+tramo lineal de la distribución tributaria. El peso propio es uniforme; las
+cargas de losa conservan sus formas uniforme, triangular o trapezoidal según el
+reparto de 45 grados. El diagrama se exporta en 41 estaciones integrando la
+carga lineal y respetando las acciones de extremo de OpenSees. Por ello el corte
+varía y el momento es curvo: parabólico bajo carga uniforme y de orden superior
+en los tramos con carga triangular o trapezoidal. Un caso sin carga transversal
+interior mantiene correctamente un momento lineal.
+
+El inspector calcula el máximo absoluto sobre todas las estaciones, no sólo en
+los extremos, e informa su posición medida desde el nodo i. Los valores de la
+primera y última estación se verifican contra `localForce` con la convención de
+cara de corte documentada arriba.
 
 Los ejes se consultan directamente con las respuestas `xlocal`, `ylocal` y
 `zlocal` de los elementos OpenSees. Rojo=x, verde=y, azul=z. Se transforma cada
@@ -26,8 +35,9 @@ del cambio de coordenadas invertiría la orientación por cambio de handedness.
 
 La deformada de barras usa interpolación cúbica de Hermite para flexión, con
 desplazamientos y giros nodales en coordenadas globales OpenSees; el axial se
-interpola linealmente. La pendiente transversal es `theta × ex`. Es coherente
-con barras Euler–Bernoulli elásticas sin carga interior. El giro torsional no
+interpola linealmente. Los desplazamientos y giros nodales ahora provienen del
+análisis con cargas interiores de barra. La pendiente transversal es
+`theta × ex`. El giro torsional no
 altera el eje central mostrado. Los bordes de los 169 shells se dibujan con las
 traslaciones de sus nodos, en cian; no se representa una superficie curva
 interior ni un campo de deformaciones/tensiones de shell.
@@ -50,11 +60,11 @@ de reducción, interacción biaxial, corte o efectos de segundo orden.
 
 `visualization/exports/exportar_resultados_unity.py` genera
 `Assets/Resources/semana4_resultados.json` a partir del modelo y los nueve NPZ
-existentes. Exporta 629 nodos analíticos, 612 barras, 169 shells, ejes y seis
-grados de libertad por nodo y caso. Comprueba topología, ortonormalidad y
-valores finitos. También exporta metadatos de sección, material y restricciones
-de barras, además de demandas P-M de muros para los cinco casos activos. No
-ejecuta un nuevo análisis. El flujo `ejecutar.py` también
+existentes. Exporta 629 nodos analíticos, 612 barras, 169 shells, ejes, seis
+grados de libertad por nodo y 41 estaciones N/V/T/M por barra y caso. Comprueba
+topología, ortonormalidad y valores finitos. También exporta metadatos de
+sección, material y restricciones de barras, además de demandas P-M de muros
+para los cinco casos activos. No ejecuta un nuevo análisis. El flujo `ejecutar.py` también
 invoca esta exportación después de generar los casos.
 
 Si cambia el edificio, deben regenerarse análisis y recursos juntos. Estos

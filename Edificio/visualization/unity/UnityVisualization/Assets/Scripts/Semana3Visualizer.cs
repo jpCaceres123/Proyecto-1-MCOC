@@ -52,7 +52,7 @@ public class Semana3Visualizer : MonoBehaviour
     public bool ShowDeformed { get { return showDeformed; } }
     public bool ShowForces { get { return showForces; } }
     public float DeformationScale { get { return deformationScale; } }
-    public bool ResultsOpen { get { return showResults; } }
+    public bool ResultsOpen { get { return showResults || MovingLoadViewer.Active; } }
 
     public void SetDisplay(bool deformed, bool forces, float scale)
     {
@@ -553,17 +553,24 @@ public class Semana3Visualizer : MonoBehaviour
         GUILayout.BeginArea(new Rect(0, 0, Screen.width, 62), panelStyle);
         GUILayout.BeginHorizontal();
         GUILayout.Label("STRUCTVIEW", titleStyle, GUILayout.Width(145));
-        GUILayout.Label("Caso:", GUILayout.Width(38));
-        foreach(string c in new[]{"G","Q","EX","EY","R"}) CaseButton(c);
+        if(MovingLoadViewer.Active) GUILayout.Label("SQ4 · RESPUESTA ADICIONAL DE CARGA MÓVIL",titleStyle,GUILayout.Width(480));
+        else {
+            GUILayout.Label("Caso:", GUILayout.Width(38));
+            foreach(string c in new[]{"G","Q","EX","EY","R"}) CaseButton(c);
+        }
         GUILayout.Space(12);
         if (building != null) building.DrawTopLevel();
         GUILayout.Space(12);
-        if (inspector != null) inspector.DrawSearchBar();
-        if (GUILayout.Button(showResults ? "Ocultar resultados" : "Resultados", GUILayout.Width(125))) showResults = !showResults;
-        if (GUILayout.Button(showSettings ? "Cerrar configuracion" : "Configuracion", GUILayout.Width(135))) showSettings = !showSettings;
+        if(!MovingLoadViewer.Active) {
+            if (inspector != null) inspector.DrawSearchBar();
+            if (GUILayout.Button(showResults ? "Ocultar resultados" : "Resultados", GUILayout.Width(125))) showResults = !showResults;
+            if (GUILayout.Button(showSettings ? "Cerrar configuracion" : "Configuracion", GUILayout.Width(135))) showSettings = !showSettings;
+        }
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
         if (building != null) building.DrawTopLevelPopup();
+
+        if (MovingLoadViewer.Active) return;
 
         if (showSettings)
         {

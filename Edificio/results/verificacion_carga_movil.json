@@ -1,0 +1,898 @@
+{
+  "checks": [
+    {
+      "control": "Equilibrio de fuerzas viga 208, s=0.000000",
+      "error": 4.146007888877892e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 208, s=0.333333",
+      "error": 9.067149299211737e-10,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 208, s=0.666667",
+      "error": 5.5676014239491974e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 208, s=1.000000",
+      "error": 8.736588507281966e-10,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 277, s=0.000000",
+      "error": 5.552276733319589e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 277, s=0.333333",
+      "error": 3.080267603545294e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 277, s=0.666667",
+      "error": 7.006542592593737e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 277, s=1.000000",
+      "error": 2.7157500796988676e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 290, s=0.000000",
+      "error": 2.9064079894082077e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 290, s=0.333333",
+      "error": 1.5522413354673859e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 290, s=0.666667",
+      "error": 1.2717522108976356e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 290, s=1.000000",
+      "error": 5.130036761444482e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 303, s=0.000000",
+      "error": 5.129480155415054e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 303, s=0.333333",
+      "error": 2.1673091411088347e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 303, s=0.666667",
+      "error": 7.079990704744638e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 303, s=1.000000",
+      "error": 1.2676110763707076e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 316, s=0.000000",
+      "error": 4.515404084470828e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 316, s=0.333333",
+      "error": 1.1420066718299229e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 316, s=0.666667",
+      "error": 4.761526456232523e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 316, s=1.000000",
+      "error": 4.5007167864391555e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 360, s=0.000000",
+      "error": 1.1170681379901737e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 360, s=0.333333",
+      "error": 1.687150597007303e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 360, s=0.666667",
+      "error": 1.5194791484710562e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 360, s=1.000000",
+      "error": 2.5568363253772316e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 372, s=0.000000",
+      "error": 1.3397786102764542e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 372, s=0.333333",
+      "error": 6.057702006678767e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 372, s=0.666667",
+      "error": 4.610420003022241e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 372, s=1.000000",
+      "error": 9.961167641901224e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 378, s=0.000000",
+      "error": 1.0504889846885135e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 378, s=0.333333",
+      "error": 7.54746909414905e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 378, s=0.666667",
+      "error": 5.146347090124147e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 378, s=1.000000",
+      "error": 4.552151117691514e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 379, s=0.000000",
+      "error": 6.60737216213325e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 379, s=0.333333",
+      "error": 1.071939510281615e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 379, s=0.666667",
+      "error": 4.771004098996762e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 379, s=1.000000",
+      "error": 2.532016182428521e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 471, s=0.000000",
+      "error": 4.107617903982892e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 471, s=0.333333",
+      "error": 1.7650816142023018e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 471, s=0.666667",
+      "error": 9.884238316715255e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 471, s=1.000000",
+      "error": 1.2310225505629546e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 483, s=0.000000",
+      "error": 5.5034927101643175e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 483, s=0.333333",
+      "error": 4.594614622595976e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 483, s=0.666667",
+      "error": 1.8539298651809588e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 483, s=1.000000",
+      "error": 8.99699992285008e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 489, s=0.000000",
+      "error": 2.862051255292543e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 489, s=0.333333",
+      "error": 1.0499356542110339e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 489, s=0.666667",
+      "error": 3.726886466104418e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 489, s=1.000000",
+      "error": 8.779323041413435e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 490, s=0.000000",
+      "error": 1.7160159517989047e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 490, s=0.333333",
+      "error": 7.481952454905819e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 490, s=0.666667",
+      "error": 1.886750394627419e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 490, s=1.000000",
+      "error": 2.288603516379127e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 508, s=0.000000",
+      "error": 4.592482671927911e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 508, s=0.333333",
+      "error": 2.824722039314508e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 508, s=0.666667",
+      "error": 6.186165912858144e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 508, s=1.000000",
+      "error": 8.26295201190744e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 520, s=0.000000",
+      "error": 6.857453273591346e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 520, s=0.333333",
+      "error": 3.013063105882599e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 520, s=0.666667",
+      "error": 2.198194348768112e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 520, s=1.000000",
+      "error": 1.2976275831633188e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 526, s=0.000000",
+      "error": 1.4655324287460303e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 526, s=0.333333",
+      "error": 1.5271440945206858e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 526, s=0.666667",
+      "error": 6.964619658766935e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 526, s=1.000000",
+      "error": 2.5055444544098103e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 527, s=0.000000",
+      "error": 1.2987835140698678e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 527, s=0.333333",
+      "error": 7.664147316788217e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 527, s=0.666667",
+      "error": 7.241944279025585e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 527, s=1.000000",
+      "error": 3.822618095138445e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 545, s=0.000000",
+      "error": 2.5283028438001344e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 545, s=0.333333",
+      "error": 2.5947952009275355e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 545, s=0.666667",
+      "error": 2.0187385096903654e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 545, s=1.000000",
+      "error": 1.7730782730929207e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 557, s=0.000000",
+      "error": 2.6338104808232288e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 557, s=0.333333",
+      "error": 3.993485231390537e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 557, s=0.666667",
+      "error": 1.6596703512516112e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 557, s=1.000000",
+      "error": 1.6201972165650004e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 564, s=0.000000",
+      "error": 2.4238383522501294e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 564, s=0.333333",
+      "error": 1.5244500661815152e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 564, s=0.666667",
+      "error": 1.905382316310408e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 564, s=1.000000",
+      "error": 1.794515503530166e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 565, s=0.000000",
+      "error": 7.560318549318639e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 565, s=0.333333",
+      "error": 7.719005111198038e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 565, s=0.666667",
+      "error": 1.731963959620067e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 565, s=1.000000",
+      "error": 7.2171654343729155e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 582, s=0.000000",
+      "error": 2.4867026438002426e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 582, s=0.333333",
+      "error": 4.698318145646141e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 582, s=0.666667",
+      "error": 3.078102339681976e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 582, s=1.000000",
+      "error": 1.3638141100004046e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 594, s=0.000000",
+      "error": 6.561300591734209e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 594, s=0.333333",
+      "error": 6.007070763036637e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 594, s=0.666667",
+      "error": 2.956725853042741e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 594, s=1.000000",
+      "error": 2.200529336526813e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 600, s=0.000000",
+      "error": 1.4308433882170846e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 600, s=0.333333",
+      "error": 1.5200273484339277e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 600, s=0.666667",
+      "error": 8.792906180943305e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 600, s=1.000000",
+      "error": 1.1757739781792509e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 601, s=0.000000",
+      "error": 1.7983913802588347e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 601, s=0.333333",
+      "error": 3.4283098587608912e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 601, s=0.666667",
+      "error": 8.586605964902471e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Equilibrio de fuerzas viga 601, s=1.000000",
+      "error": 8.938898707799781e-10,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.217,0.683), P=37.0: u",
+      "error": 2.0685302097263164e-10,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.217,0.683), P=37.0: f",
+      "error": 1.0524559194979366e-08,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.217,0.683), P=37.0: reaction",
+      "error": 3.94992933244328e-09,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000003, 0.217,0.683",
+      "error": 1.4210854715202004e-14,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.739,0.125), P=80.0: u",
+      "error": 7.035498908712773e-11,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.739,0.125), P=80.0: f",
+      "error": 8.56774056145947e-09,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.739,0.125), P=80.0: reaction",
+      "error": 1.6609962173612304e-09,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000003, 0.739,0.125",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.0,1.0), P=1.0: u",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.0,1.0), P=1.0: f",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.0,1.0), P=1.0: reaction",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000003, 0.0,1.0",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.5,0.5), P=0.0: u",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.5,0.5), P=0.0: f",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000003, (0.5,0.5), P=0.0: reaction",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000003, 0.5,0.5",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.217,0.683), P=37.0: u",
+      "error": 1.4128626285372332e-10,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.217,0.683), P=37.0: f",
+      "error": 7.058055553880108e-09,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.217,0.683), P=37.0: reaction",
+      "error": 1.2972675836166757e-08,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000058, 0.217,0.683",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.739,0.125), P=80.0: u",
+      "error": 6.233929021737813e-10,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.739,0.125), P=80.0: f",
+      "error": 2.6201428790974442e-08,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.739,0.125), P=80.0: reaction",
+      "error": 4.0264678552618756e-09,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000058, 0.739,0.125",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.0,1.0), P=1.0: u",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.0,1.0), P=1.0: f",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.0,1.0), P=1.0: reaction",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000058, 0.0,1.0",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.5,0.5), P=0.0: u",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.5,0.5), P=0.0: f",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000058, (0.5,0.5), P=0.0: reaction",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000058, 0.5,0.5",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.217,0.683), P=37.0: u",
+      "error": 1.4844485841439164e-09,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.217,0.683), P=37.0: f",
+      "error": 2.4471955768102825e-08,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.217,0.683), P=37.0: reaction",
+      "error": 3.596913901548195e-08,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000135, 0.217,0.683",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.739,0.125), P=80.0: u",
+      "error": 5.45252642673927e-11,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.739,0.125), P=80.0: f",
+      "error": 5.890835359185772e-09,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.739,0.125), P=80.0: reaction",
+      "error": 7.322593254962783e-09,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000135, 0.739,0.125",
+      "error": 1.1368683772161603e-13,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.0,1.0), P=1.0: u",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.0,1.0), P=1.0: f",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.0,1.0), P=1.0: reaction",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000135, 0.0,1.0",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.5,0.5), P=0.0: u",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.5,0.5), P=0.0: f",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Panel 1000135, (0.5,0.5), P=0.0: reaction",
+      "error": 0.0,
+      "tolerance": 2e-05,
+      "estado": "OK"
+    },
+    {
+      "control": "Conservaci\u00f3n momento panel 1000135, 0.5,0.5",
+      "error": 0.0,
+      "tolerance": 1e-10,
+      "estado": "OK"
+    }
+  ],
+  "rule": "P_bottom=P*(1-eta), P_top=P*eta; puntos proyectados en X",
+  "units": "kN, m, rad, kN*m",
+  "panels": 20,
+  "receivers": 25,
+  "inherited_constraint_note": "El modelo heredado tiene equalDOF entre nodos no coincidentes. Conserva fuerza global, pero esas restricciones pueden introducir pares. No se afirma equilibrio de momento usando solamente las reacciones SP. El reparto SQ4 s\u00ed conserva exactamente fuerza y momento de la carga aplicada.",
+  "max_support_only_moment_residual_kNm_per_kN": 8.628596831629197
+}

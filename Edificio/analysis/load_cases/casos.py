@@ -3,6 +3,9 @@ from pathlib import Path
 import sys
 import json
 import csv
+import os
+import tempfile
+import time
 from collections import defaultdict
 import numpy as np
 import openseespy.opensees as ops
@@ -16,17 +19,185 @@ import verificar_modelo as verification
 from sismo import calcular_pisos
 
 
+DIAGRAM_STATIONS = 41
+GAUSS_X, GAUSS_W = np.polynomial.legendre.leggauss(4)
+
+
+def _piecewise_vertices(load, prefix, total, length):
+    """Return a conservative full-span line-load shape in normalized x/L."""
+    if length <= 0 or abs(total) <= 1e-14:
+        return [(0.0, 0.0), (1.0, 0.0)]
+    start = float(load.get(f'w_{prefix}_start_kN_m', 0.0))
+    peak = float(load.get(f'w_{prefix}_max_kN_m', 0.0))
+    end = float(load.get(f'w_{prefix}_end_kN_m', 0.0))
+    distribution = load.get('distribution', '')
+    if distribution == 'triangular' and peak > 0:
+        vertices = [(0.0, start), (0.5, peak), (1.0, end)]
+    elif distribution == 'trapezoidal' and peak > 0 and abs(start) < 1e-12 and abs(end) < 1e-12:
+        ratio = min(1.0, max(0.5, total / (peak * length)))
+        ramp = 1.0 - ratio
+        vertices = [(0.0, 0.0), (ramp, peak), (1.0-ramp, peak), (1.0, 0.0)]
+    elif max(abs(start-peak), abs(end-peak)) <= 1e-10 and peak > 0:
+        vertices = [(0.0, peak), (1.0, peak)]
+    else:
+        vertices = [(0.0, total / length), (1.0, total / length)]
+    area = sum((b[0]-a[0])*(a[1]+b[1])/2 for a, b in zip(vertices, vertices[1:]))
+    factor = total / (area * length) if abs(area) > 1e-14 else 0.0
+    return [(s, w*factor) for s, w in vertices]
+
+
+def distributed_profiles(data, cfg):
+    """Distributed gravity loads retained as physical element loads."""
+    elements = {e['id']: e for e in data['elements'] if e['type'] != 'WALL'}
+    profiles = {case: [] for case in ('G', 'Q', 'EX', 'EY')}
+    for load in data.get('beam_load_cases', []):
+        element = elements.get(load['beam_id'])
+        if element is None:
+            continue
+        length = np.linalg.norm(np.asarray(ops.nodeCoord(element['j'])) - ops.nodeCoord(element['i']))
+        totals = {'G': float(load['dead_load_kN']),
+                  'Q': float(load['tributary_area_m2']) * (load['q_SC_kN_m2'] if cfg['q_Q_kN_m2'] is None else cfg['q_Q_kN_m2'])}
+        for case, total in totals.items():
+            prefix = 'G' if case == 'G' else 'SC'
+            profiles[case].append(dict(element=element['id'], vertices=_piecewise_vertices(load, prefix, total, length)))
+    sections = {'COLUMN': 'section_columns', 'STEEL_COLUMN_SHS300x20': 'section_steel_columns',
+                'BEAM_SMALL': 'section_small_beams', 'BEAM_VARIABLE': 'section_variable_beams',
+                'BEAM_40x60': 'section_40x60_beams'}
+    for element in elements.values():
+        area = data[sections.get(element['type'], 'section_beams')]['A_m2']
+        unit_weight = (data['material_steel']['density_kg_m3'] * 9.80665 / 1000.0
+                       if element['type'] == 'STEEL_COLUMN_SHS300x20'
+                       else cfg['peso_especifico_HA_kN_m3'])
+        profiles['G'].append(dict(element=element['id'], vertices=[(0.0, area*unit_weight), (1.0, area*unit_weight)]))
+    return profiles
+
+
+def _value(vertices, s):
+    for a, b in zip(vertices, vertices[1:]):
+        if s <= b[0] + 1e-12:
+            ratio = (s-a[0])/(b[0]-a[0]) if b[0] > a[0] else 0.0
+            return a[1] + ratio*(b[1]-a[1])
+    return vertices[-1][1]
+
+
+def _profile_integrals(vertices, s, length):
+    """Exact integrals int(q dx) and int((x-t)q dt) for a piecewise-linear q."""
+    x = s * length
+    force = first_moment = 0.0
+    for a, b in zip(vertices, vertices[1:]):
+        lo, hi = a[0]*length, min(x, b[0]*length)
+        if hi <= lo:
+            continue
+        slope = (b[1]-a[1])/((b[0]-a[0])*length)
+        intercept = a[1]-slope*a[0]*length
+        segment_force = intercept*(hi-lo) + slope*(hi**2-lo**2)/2
+        force += segment_force
+        first_moment += x*segment_force - intercept*(hi**2-lo**2)/2 - slope*(hi**3-lo**3)/3
+        if hi >= x-1e-12:
+            break
+    return force, first_moment
+
+
+def _element_load_points(data, profiles):
+    """Gauss point representation exact for each linear segment's force and first moment."""
+    elements = {e['id']: e for e in data['elements']}
+    points = []
+    for profile in profiles:
+        element = elements[profile['element']]
+        a = np.asarray(ops.nodeCoord(element['i']), dtype=float)
+        b = np.asarray(ops.nodeCoord(element['j']), dtype=float)
+        length = np.linalg.norm(b-a)
+        basis = np.asarray([ops.eleResponse(element['id'], axis) for axis in ('xlocal','ylocal','zlocal')])
+        for left, right in zip(profile['vertices'], profile['vertices'][1:]):
+            if right[0] <= left[0]:
+                continue
+            for xi, weight in zip(GAUSS_X, GAUSS_W):
+                s = (left[0]+right[0])/2 + xi*(right[0]-left[0])/2
+                magnitude = _value(profile['vertices'], s) * length*(right[0]-left[0])/2 * weight
+                global_force = np.array([0.0, 0.0, -magnitude])
+                local_force = basis @ global_force
+                points.append(dict(element=element['id'], s=float(s), local=local_force,
+                                   global_force=global_force, position=a+s*(b-a)))
+    return points
+
+
+def bar_diagrams(data, local_forces, profiles, stations=DIAGRAM_STATIONS):
+    """N/V/M at stations, including the distributed load between end actions."""
+    grouped = defaultdict(list)
+    for profile in profiles:
+        grouped[profile['element']].append(profile)
+    rows = {}
+    for element in data['elements']:
+        if element['type'] == 'WALL':
+            continue
+        tag = element['id']
+        f = np.asarray(local_forces[str(tag)], dtype=float)
+        length = np.linalg.norm(np.asarray(ops.nodeCoord(element['j']))-ops.nodeCoord(element['i']))
+        basis = np.asarray([ops.eleResponse(tag, axis) for axis in ('xlocal','ylocal','zlocal')])
+        first = np.array([f[0], -f[1], -f[2], -f[3], -f[4], -f[5]])
+        values = []
+        for s in np.linspace(0.0, 1.0, stations):
+            q = np.zeros(3); qm = np.zeros(3)
+            for profile in grouped[tag]:
+                force, moment = _profile_integrals(profile['vertices'], float(s), length)
+                q += basis @ np.array([0.0, 0.0, -force])
+                qm += basis @ np.array([0.0, 0.0, -moment])
+            x = s*length
+            values.append(dict(s=float(s), n=float(first[0]+q[0]),
+                               vy=float(first[1]-q[1]), vz=float(first[2]-q[2]),
+                               t=float((1-s)*first[3]+s*f[9]),
+                               my=float(first[4]+first[2]*x-qm[2]),
+                               mz=float(first[5]-first[1]*x+qm[1])))
+        rows[str(tag)] = {key: [row[key] for row in values]
+                          for key in ('s', 'n', 'vy', 'vz', 't', 'my', 'mz')}
+    return rows
+
+
 def dump_csv(path, rows):
     if not rows:
         return
-    with path.open('w', newline='', encoding='utf-8-sig') as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
+    def write(temp):
+        with temp.open('w', newline='', encoding='utf-8-sig') as f:
+            writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+            writer.writeheader()
+            writer.writerows(rows)
+    _atomic_replace(path, write)
+
+
+def _atomic_replace(path, writer):
+    """Write beside the target, then retry the replace if OneDrive scans it."""
+    path = Path(path)
+    fd, name = tempfile.mkstemp(prefix=path.name + '.', suffix='.tmp', dir=path.parent)
+    os.close(fd)
+    temporary = Path(name)
+    try:
+        writer(temporary)
+        for attempt in range(30):
+            try:
+                os.replace(temporary, path)
+                return
+            except OSError:
+                if attempt == 29:
+                    raise
+                time.sleep(0.2)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def dump_json(path, value, **kwargs):
+    _atomic_replace(path, lambda temporary: temporary.write_text(json.dumps(value, **kwargs), encoding='utf-8'))
+
+
+def dump_npz(path, **arrays):
+    def write(temporary):
+        with temporary.open('wb') as stream:
+            np.savez_compressed(stream, **arrays)
+    _atomic_replace(path, write)
 
 
 def vectors(data, cfg):
     loads = {key: defaultdict(lambda: np.zeros(6)) for key in ('G', 'Q', 'EX', 'EY')}
+    mass_loads = {key: defaultdict(lambda: np.zeros(6)) for key in ('G', 'Q')}
     elements = {e['id']: e for e in data['elements']}
     walls = {w['id']: w for w in data['wall_mesh']['walls']}
     transfers = []
@@ -41,14 +212,18 @@ def vectors(data, cfg):
             q = row['q_SC_kN_m2'] if q is None else q
             live = q * row['tributary_area_m2'] #CALCULO CARGA VIVA
             for n in ends:
-                loads['G'][n][2] -= row['dead_load_kN'] / len(ends)
-                loads['Q'][n][2] -= live / len(ends)
+                mass_loads['G'][n][2] -= row['dead_load_kN'] / len(ends)
+                mass_loads['Q'][n][2] -= live / len(ends)
+                if kind == 'wall':
+                    loads['G'][n][2] -= row['dead_load_kN'] / len(ends)
+                    loads['Q'][n][2] -= live / len(ends)
             transfers.append(dict(z_m=row['level_z_m'], slab_id=row['slab_id'],
                                   receptor=kind, tag=row[f'{kind}_id'],
                                   area_m2=row['tributary_area_m2'], q_Q_kN_m2=q, Q_kN=live))
     # Peso propio de muros y barras; G de losas ya contiene terminaciones.
     for n, weight in data['wall_mesh']['node_self_weight_kN'].items():
         loads['G'][n][2] -= weight
+        mass_loads['G'][n][2] -= weight
     sections = {'COLUMN': 'section_columns', 'STEEL_COLUMN_SHS300x20': 'section_steel_columns', 'BEAM_SMALL': 'section_small_beams',
                 'BEAM_VARIABLE': 'section_variable_beams', 'BEAM_40x60': 'section_40x60_beams'}
     for e in data['elements']:
@@ -61,10 +236,10 @@ def vectors(data, cfg):
                        else cfg['peso_especifico_HA_kN_m3'])
         weight = area * length * unit_weight
         for n in (e['i'], e['j']):
-            loads['G'][n][2] -= weight / 2
+            mass_loads['G'][n][2] -= weight / 2
     coordinates={n:ops.nodeCoord(n) for n in ops.getNodeTags()}
-    gravity={n:float(-loads['G'][n][2]) for n in coordinates}
-    live={n:float(-loads['Q'][n][2]) for n in coordinates}
+    gravity={n:float(-mass_loads['G'][n][2]) for n in coordinates}
+    live={n:float(-mass_loads['Q'][n][2]) for n in coordinates}
     floors, mass_audit, base_weight=calcular_pisos(data['diaphragms'],coordinates,gravity,live,cfg)
     for floor in floors:
         master= floor['master']; F=floor['F_kN']
@@ -75,7 +250,7 @@ def vectors(data, cfg):
     for n in ops.getNodeTags():
         m = (-cfg.get('ponderador_G_masa',1.)*loads['G'][n][2] - cfg['fraccion_Q_masa'] * loads['Q'][n][2]) / cfg['g_m_s2']
         ops.mass(n, m, m, m, 0, 0, 0)
-    return loads, floors, transfers, base_weight
+    return loads, distributed_profiles(data, cfg), floors, transfers, base_weight
 
 
 def wall_section_demands(data):
@@ -137,7 +312,7 @@ def solve(coeff, cfg):
     # El constructor heredado aplica G+Q. Eliminarlos antes de definir el caso.
     for tag in (1, 2, 3, 6, 7):
         ops.remove('loadPattern', tag)
-    loads, floors, transfers, base_weight = vectors(data, cfg)
+    loads, profiles, floors, transfers, base_weight = vectors(data, cfg)
     total = defaultdict(lambda: np.zeros(6))
     for case, scale in coeff.items():
         for n, force in loads[case].items():
@@ -147,6 +322,15 @@ def solve(coeff, cfg):
     for n, force in total.items():
         if np.any(force):
             ops.load(n, *force.tolist())
+    active_profiles = []
+    for case, scale in coeff.items():
+        if scale:
+            active_profiles.extend(dict(element=p['element'], vertices=[(s, scale*w) for s,w in p['vertices']])
+                                   for p in profiles[case])
+    element_points = _element_load_points(data, active_profiles)
+    for point in element_points:
+        px, py, pz = point['local']
+        ops.eleLoad('-ele', point['element'], '-type', '-beamPoint', py, pz, point['s'], px)
     ops.constraints('Penalty', cfg['penalty'], cfg['penalty'])
     ops.numberer('RCM')
     ops.system('UmfPack')
@@ -174,7 +358,9 @@ def solve(coeff, cfg):
     wall_demands = wall_section_demands(data)
     support_sum = support_r[:, :3].sum(axis=0)
     applied_sum = sum((v[:3] for v in total.values()), np.zeros(3))
-    applied_moment = sum((v[3:]+np.cross(ops.nodeCoord(n),v[:3]) for n,v in total.items()),np.zeros(3))
+    applied_sum += sum((p['global_force'] for p in element_points), np.zeros(3))
+    applied_moment = (sum((v[3:]+np.cross(ops.nodeCoord(n),v[:3]) for n,v in total.items()),np.zeros(3))
+                      + sum((np.cross(p['position'], p['global_force']) for p in element_points), np.zeros(3)))
     floor_response = []
     compatibility = 0.0
     for d, floor in zip(data['diaphragms'], floors):
@@ -194,7 +380,7 @@ def solve(coeff, cfg):
     # Reacciones de todos los nodos no son equivalentes a reacciones de apoyo:
     # los nodos MPC contienen fuerzas internas de restriccion.
     return dict(node_tags=tags, element_tags=element_tags, u=u, r=r, forces=forces, local_forces=local_forces,
-                wall_demands=wall_demands,
+                wall_demands=wall_demands, bar_diagrams=bar_diagrams(data, local_forces, active_profiles),
                 support_sum=support_sum, applied_sum=applied_sum,
                 applied_moment=applied_moment,
                 floor_response=floor_response, compatibility=compatibility,
@@ -221,11 +407,11 @@ def run(cfg, out):
         result = solve(cfg['combinacion'] if case == 'R' else {case: 1}, cfg)
         results[case] = result
         wall_demand_rows.extend(dict(caso=case, **row) for row in result['wall_demands'])
-        np.savez_compressed(out/f'{case}.npz', node_tags=result['node_tags'],
-                            u=result['u'], nodal_residual=result['r'],
-                            support_tags=result['support_tags'], reaction=result['support_r'])
-        (out/f'{case}_fuerzas.json').write_text(json.dumps(result['forces']), encoding='utf-8')
-        (out/f'{case}_fuerzas_locales.json').write_text(json.dumps(result['local_forces']), encoding='utf-8')
+        dump_npz(out/f'{case}.npz', node_tags=result['node_tags'], u=result['u'],
+                 nodal_residual=result['r'], support_tags=result['support_tags'], reaction=result['support_r'])
+        dump_json(out/f'{case}_fuerzas.json', result['forces'])
+        dump_json(out/f'{case}_fuerzas_locales.json', result['local_forces'])
+        dump_json(out/f'{case}_diagramas_barras.json', result['bar_diagrams'])
         dump_csv(out/f'{case}_pisos.csv', result['floor_response'])
         scale = max(1, np.linalg.norm(result['applied_sum']))
         check(f'{case}: equilibrio apoyos / carga', np.linalg.norm(result['support_sum']+result['applied_sum'])/scale, 1e-4)
@@ -269,8 +455,9 @@ def run(cfg, out):
             result=solve({direction:1.},{**cfg,'ponderador_G_masa':ag,'fraccion_Q_masa':aq,'_permitir_masa_nula_base':True})
             seismic_bases[name]=result
             wall_demand_rows.extend(dict(caso=name, **row) for row in result['wall_demands'])
-            np.savez_compressed(out/f'{name}.npz',node_tags=result['node_tags'],u=result['u'])
-            (out/f'{name}_fuerzas_locales.json').write_text(json.dumps(result['local_forces']),encoding='utf-8')
+            dump_npz(out/f'{name}.npz', node_tags=result['node_tags'], u=result['u'])
+            dump_json(out/f'{name}_fuerzas_locales.json', result['local_forces'])
+            dump_json(out/f'{name}_diagramas_barras.json', result['bar_diagrams'])
             dump_csv(out/f'{name}_pisos.csv',result['floor_response'])
             check(f'{name}: equilibrio apoyos / carga',np.linalg.norm(result['support_sum']+result['applied_sum'])/max(1,np.linalg.norm(result['applied_sum'])),1e-4)
         for field in ('u','support_r'):
@@ -361,5 +548,5 @@ def run(cfg, out):
                    support_heights_m=ref['support_heights'],
                    equilibrium={k:dict(applied=v['applied_sum'].tolist(), supports=v['support_sum'].tolist()) for k,v in results.items()},
                    floors=ref['floors'])
-    (out/'resumen_global.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
+    dump_json(out/'resumen_global.json', summary, indent=2)
     return summary

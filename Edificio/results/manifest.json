@@ -1,26 +1,26 @@
 {
-  "python": "3.12.10",
+  "python": "3.11.9",
   "versions": {
-    "openseespy": "3.8.0.0",
-    "numpy": "2.5.2",
+    "openseespy": "3.7.0.1",
+    "numpy": "2.4.6",
     "matplotlib": "3.11.1"
   },
   "inputs": {
-    "Edificio\\data\\parameters\\parametros.json": "9c308c54248b5a12057562689771cba36a5c4c7b754aaf5570451fb31ce984e6",
+    "Edificio\\data\\parameters\\parametros.json": "a3eb5e373b5d08b286824154fe11d14bcccbcad4b63d6628c6d5ab0230f25d27",
     "Edificio\\results\\modelo_3d_manual.json": "8780ea467977c5fdc85b3d73e4deb6a5aba6944d56d61d02f6228836e4037b47",
     "Edificio\\data\\loads\\cargas_losas.json": "f94899e106553848afd4c0456177a60579b7d6bd50cd2e7e7f31803c353ed62a",
     "Edificio\\data\\geometry\\geometria_manual.json": "7e889a975279d128bf2dae98b92e26a28ad1bee90a622abb9eb48b1a3db5b422",
     "Edificio\\model\\opensees\\modelo_opensees_3d.py": "b60dd44ad88d572391017f7085aede0e7e039a928b8583f63014de073b15499a",
-    "Edificio\\verification\\load_transfer\\verificar_modelo.py": "c02c56e6811fa354f0176e0383cf47c9e6e38b1f6967d398278d7b6730693a52",
-    "Edificio\\analysis\\load_cases\\casos.py": "f67a4a28e4f3ae9296e6d64beac9491f9bbd69155afd3d98b0a0c55bb1153420",
+    "Edificio\\verification\\load_transfer\\verificar_modelo.py": "093dbfd979d200436df672622cea3791cd808a1ec62a8f138330ec8d7162b6dc",
+    "Edificio\\analysis\\load_cases\\casos.py": "39518b83384eee1d723b6aa95924c40f894d14fd4509f20b5e3f4852b4c69778",
     "Edificio\\analysis\\seismic\\sismo.py": "046a88bb584d8b3fc0c4925f8cc7a438ba794949e921e357b3b7f4619e796a7a",
-    "Edificio\\analysis\\capacity\\capacidad.py": "93f9c2c61bc7051301a5836688899a250d75ecf9e26246ea12ae4fde0ebb2852",
-    "Edificio\\analysis\\capacity\\capacidad_muros.py": "77117c0a873b7de9b544b54ec2f332ad256cb61ca56c60126cefdc806438cb2b",
+    "Edificio\\analysis\\capacity\\capacidad.py": "d318813e648f1eb68dbf5f783a7e92a15818e58a5097680f244988492f34e28a",
+    "Edificio\\analysis\\capacity\\capacidad_muros.py": "932fff079a396564db602ec15c75e421ae4785b7dfc7ca479d6f67b6b3178d5c",
     "Edificio\\data\\reinforcement\\enfierradura_muros.md": "6aa9484285ef086ce5758d196b89c81c0842bd027c0567f6e9008aac70b6015f",
-    "Edificio\\data\\reinforcement\\asignacion_armadura_muros.json": "622302372f555951f56d3629ad531146f2528e19b8197c52ad14f9a6bc91bf5d",
-    "Edificio\\visualization\\exports\\exportar_aceleraciones.py": "1b4ebee18ba39ee4c248c29fb053799f912fb549268549434193864845763852",
-    "Edificio\\verification\\load_transfer\\exportar_reparto_losas.py": "201052b0dfd409ef4a33d39b2284fd46fb204a052dd00d64f2571f690fa74aa5",
-    "Edificio\\analysis\\load_cases\\ejecutar.py": "2ec1b95183faa95ff5455418f231a59bc775efad6a0e71c4d0202b58d3868ee4"
+    "Edificio\\data\\reinforcement\\asignacion_armadura_muros.json": "97fcd388aa4787aa2ff64cd6b720e4d07715bfe94ae4e6d2563fb2a053750b72",
+    "Edificio\\visualization\\exports\\exportar_aceleraciones.py": "2dd2540db5263dcb408c69aa7d87ff83bfd891c614db3c2d339c70d621ee85b5",
+    "Edificio\\verification\\load_transfer\\exportar_reparto_losas.py": "afb4bd9ed09ff2a48471813abeb90d4c40b23a1ffb6a8527b3866bc9057231cd",
+    "Edificio\\analysis\\load_cases\\ejecutar.py": "f78f0a88c698ba865d50489e8b495952a89dcaa64e23aefa17063d82b9290270"
   },
   "parametros": {
     "q_Q_kN_m2": null,
