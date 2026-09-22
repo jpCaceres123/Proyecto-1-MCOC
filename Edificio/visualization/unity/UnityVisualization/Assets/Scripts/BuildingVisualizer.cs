@@ -431,7 +431,7 @@ public class BuildingVisualizer : MonoBehaviour
         GUI.enabled=true;
         if(MovingLoadViewer.Active) {
             GUILayout.Label("LECTURA SQ4",titleStyle);
-            GUILayout.Label("Carga vertical localizada\nReparto a dos vigas opuestas\nTurquesa: borde inferior\nÁmbar: borde superior\nRosa: deformada amplificada\n\nLa respuesta Δ corresponde sólo a la carga móvil.\n\nLMB: orbitar · MMB: desplazar\nRueda: zoom\nW/A/S/D: mover carga",smallStyle);
+            GUILayout.Label("Carga vertical localizada\nReparto según apoyos de la losa\nTurquesa / ámbar: receptores\nRosa: deformada amplificada\n\nLa respuesta Δ corresponde sólo a la carga móvil.\n\nClic: colocar carga\nArrastrar LMB: orbitar\nMMB: desplazar · rueda: zoom\nW/A/S/D: caminar sin cruzar vacíos",smallStyle);
         } else {
         GUILayout.Label("Area tributaria", titleStyle);
         GUILayout.Label(selectedSlab < 0 ? "Seleccione una losa directamente en el visor." : "Losa seleccionada: " + selectedSlab, smallStyle);

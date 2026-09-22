@@ -1,0 +1,18 @@
+Verificación final SQ4 todas las losas, 22-09-2026
+
+python Edificio/analysis/load_cases/carga_movil.py
+SQ4 OK: 652 paneles, 10680 controles
+
+python -m unittest discover -s Edificio/verification/tests -p "test_*.py"
+Ran 28 tests in 13.630s
+OK
+
+Unity 6000.5.9f1, BuildMovingPreview.Build, Windows64:
+Build Finished, Result: Success.
+
+Ejecutable, --moving-preview, 1440x900:
+SQ4_RUNTIME panels=652 categories=15 validCenters=True gapBlocked=True holeBlocked=True momentError=4,5871775E-06
+SQ4_RUNTIME endpoint and zero-load error [m]: 2,910383046E-11
+SQ4_RUNTIME_OK
+
+Capturas reales revisadas; no equivale a certificación estructural ni validación iOS.

@@ -1,5 +1,57 @@
 # SQ4 — carga móvil asociada al usuario
 
+## Versión 2: todas las losas (actual)
+
+Se habilitan **652 paneles, 318 vigas receptoras y cinco niveles**. Ya no se
+limita el recorrido a una franja de cuatro losas. Seleccionar nivel y losa en
+la planta general, escribir su ID, o hacer clic en la vista 3D del nivel activo.
+W/A/S/D camina entre superficies contiguas; los huecos, juntas y espacios sin
+losa bloquean el recorrido. La selección por clic puede llevar la carga a otra
+losa sin simular un recorrido por el espacio intermedio.
+
+La regla física conserva los dos bordes opuestos donde están definidos. Si un
+borde contiene varias barras, se utiliza el tramo cuya proyección está más
+cerca de la posición. Para los 9 voladizos y los 476 paneles de carga explícita
+se utilizan exclusivamente sus receptores `support`/`nearest_support` del
+modelo: P se aplica en la proyección más próxima y se incorpora el par
+`M = (r_carga − r_apoyo) × F`. No se borra la excentricidad ni se agregan apoyos.
+En los dos bordes, el par sólo corrige el desplazamiento entre la posición
+ideal en el borde y su proyección real; no duplica el primer momento ya
+conservado por P(1−η)/Pη. En empates se elige el menor ID para reproducibilidad.
+
+Esta es una transferencia idealizada de fuerza y momento, no una losa FE ni
+una validación de su rigidez de placa. El cambio de receptor entre barras no
+conectadas puede producir un salto de respuesta: no se suaviza artificialmente.
+La deformada mostrada sigue siendo de barras; no se afirma calcular la flecha
+del extremo libre de una losa en voladizo sin modelar su rigidez.
+
+La nueva respuesta utiliza bases nodales Fz/Mx/My en 310 nodos, comprimidas por
+nodo en `Resources/SQ4Nodes/*.bytes` y cargadas cuando se necesitan. Son 930
+soluciones lineales del edificio. Las cargas consistentes de una fuerza y un
+par puntuales se obtienen por trabajo virtual con Hermite y sus derivadas.
+Las acciones de extremo se corrigen restando esas cargas equivalentes a las
+fuerzas de barra de la solución nodal. La integración de curvatura incluye
+tanto fuerza puntual como par; el gráfico incorpora el salto de momento.
+
+Regenerar con `python Edificio/analysis/load_cases/carga_movil.py` o con
+`python Edificio/analysis/load_cases/ejecutar.py --carga-movil`. El archivo
+`carga_movil.json` es ahora contrato **schema 2**, con geometría, reglas y
+vacíos; necesita también los archivos de bases. La caché local en
+`results/sq4_cache/` no se publica. Si se modifica el algoritmo del modelo o
+sus módulos auxiliares, invalidar esa caché antes de regenerar.
+
+La auditoría actual registra **10.680 controles aprobados**, incluidos
+conservación por panel y contrastes de superposición en cada categoría/nivel.
+Las pruebas independientes incluyen vigas biempotradas y en voladizo con
+fuerza y par puntual, contrastadas con subdivisión explícita. Se mantienen
+los límites del modelo heredado `equalDOF` y el carácter incremental,
+lineal y cuasiestático: no se presenta como validación integral de diseño.
+
+## Versión 1: registro histórico de la franja inicial
+
+Los números de paneles, bases y restricciones de recorrido que siguen
+describen la versión anterior, sustituida por la versión 2 indicada arriba.
+
 Implementación incremental, lineal y cuasiestática. El avatar representa una
 carga viva vertical, adicional a los casos gravitacionales y sísmicos. La
 velocidad del recorrido es visual: no se modelan impacto, inercia ni vibración.

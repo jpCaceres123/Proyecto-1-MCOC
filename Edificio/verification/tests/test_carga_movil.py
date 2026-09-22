@@ -1,6 +1,7 @@
 """Independent analytical beam benchmark and generated SQ4 contract checks."""
 import json
 import hashlib
+import gzip
 from pathlib import Path
 import sys
 import unittest
@@ -54,27 +55,30 @@ class MovingLoadTests(unittest.TestCase):
         data=json.loads((ROOT/'visualization/unity/UnityVisualization/Assets/Resources/carga_movil.json').read_text())
         self.assertEqual(data['modelHash'],hashlib.sha256((ROOT/'results/modelo_3d_manual.json').read_bytes()).hexdigest())
         self.assertEqual(len(data['panels']),audit['panels'])
-        bases={b['id'] for b in data['bases']}
+        self.assertEqual(data['schema'],2)
+        self.assertEqual(len(data['panels']),652)
+        bases=set(data['basisNodes']);bars={b['id']:b for b in data['bars']}
         for panel in data['panels']:
-            self.assertTrue(set(panel['receivers'])<=bases)
+            for tag in panel['receivers']:
+                self.assertIn(bars[tag]['i'],bases);self.assertIn(bars[tag]['j'],bases)
             self.assertGreater(panel['xmax'],panel['xmin']);self.assertGreater(panel['ymax'],panel['ymin'])
-        for b in data['bases']:
-            self.assertEqual(len(b['samples']),4)
-            for sample in b['samples']:
-                self.assertEqual(len(sample['u']),len(data['nodes'])*6)
-                self.assertEqual(len(sample['f']),len(data['bars'])*12)
-                self.assertTrue(np.isfinite(sample['u']+sample['f']+sample['reaction']).all())
+        count=len(data['nodes'])*6+len(data['bars'])*12+6
+        for n in bases:
+            path=ROOT/f'visualization/unity/UnityVisualization/Assets/Resources/SQ4Nodes/n{data["nodes"][n]["id"]}.bytes'
+            array=np.frombuffer(gzip.decompress(path.read_bytes()),dtype='<f8')
+            self.assertEqual(array.size,count*3);self.assertTrue(np.isfinite(array).all())
 
     def test_shared_panel_edge_has_single_receiver(self):
         data=json.loads((ROOT/'visualization/unity/UnityVisualization/Assets/Resources/carga_movil.json').read_text())
         transitions=0
         for lower in data['panels']:
             for upper in data['panels']:
-                if lower['z']==upper['z'] and abs(lower['ymax']-upper['ymin'])<1e-9:
-                    self.assertEqual(lower['receivers'][1],upper['receivers'][0])
-                    self.assertEqual(lower['xmin'],upper['xmin']);self.assertEqual(lower['xmax'],upper['xmax'])
+                if (lower['rule']==upper['rule']=='opposite' and lower['z']==upper['z'] and
+                    abs(lower['ymax']-upper['ymin'])<1e-9 and lower['xmin']==upper['xmin'] and lower['xmax']==upper['xmax'] and
+                    len(lower['groups'][1]['ids'])==len(upper['groups'][0]['ids'])==1):
+                    self.assertEqual(lower['groups'][1]['ids'],upper['groups'][0]['ids'])
                     transitions+=1
-        self.assertEqual(transitions,15)
+        self.assertGreaterEqual(transitions,15)
 
 
 if __name__=='__main__':unittest.main()

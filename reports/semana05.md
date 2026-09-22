@@ -177,6 +177,13 @@ Evidencia completa, incluidas reacciones, identificadores y errores absolutos: [
 
 ## 4. Sidequest: carga móvil
 
+**Actualización 22-09-2026:** la restricción inicial queda eliminada: ahora se
+puede seleccionar cualquiera de los 652 paneles, con transferencia de fuerza
+y momento para apoyos excéntricos y voladizos. Incluye selección por ID/planta/clic,
+28 pruebas y 10.680 controles aprobados. Ver
+[reporte actualizado](2026-09-21_carga_movil_todas_losas.md). El párrafo siguiente
+describe el alcance histórico de la primera implementación.
+
 **Implementada en la actualización del 21-09-2026 para escritorio.** Incluye regla física explícita, panel de control, reparto a dos vigas, conservación de fuerza y momento de la transferencia, y respuesta estructural incremental con diagramas y deformada. El recorrido está limitado a 20 paneles completos de cinco niveles, sin atravesar vacíos.
 
 La carga localizada P se reparte como `P(1−η)` y `Pη` sobre dos bordes opuestos. Sus efectos se reconstruyen mediante bases de OpenSees del edificio completo y se contrastan con soluciones explícitas fuera de las posiciones base. No se confunde el movimiento de cámara con movimiento de carga. El modo muestra sólo ΔSQ4, sin sumar G/Q/sismo, y no representa efectos dinámicos.

@@ -17,6 +17,7 @@ desktop.ini
 .venv/
 analysis/.venv/
 __pycache__/
+Edificio/results/sq4_cache/
 *.py[cod]
 
 # Planos locales: no publicar archivos DWG en GitHub

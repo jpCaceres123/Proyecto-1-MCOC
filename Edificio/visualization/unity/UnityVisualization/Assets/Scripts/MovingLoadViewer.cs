@@ -5,14 +5,14 @@ using System.IO;
 using UnityEngine;
 
 // SQ4: incremental response only. The slab transfers load; it has no plate DOFs.
-public sealed class MovingLoadViewer : MonoBehaviour
+public sealed partial class MovingLoadViewer : MonoBehaviour
 {
     [Serializable] public class Node { public int id; public float[] xyz; }
     [Serializable] public class Bar { public int id,i,j; public float[] x,y,z; public float E,A,Iy,Iz; }
-    [Serializable] public class Panel { public int id; public float xmin,xmax,ymin,ymax,z; public int[] receivers; }
-    [Serializable] public class Sample { public double[] u,f,reaction; }
-    [Serializable] public class Basis { public int id; public Sample[] samples; }
-    [Serializable] public class Data { public int schema; public Node[] nodes; public Bar[] bars; public Panel[] panels; public Basis[] bases; }
+    [Serializable] public class Group { public int[] ids; }
+    [Serializable] public class Hole { public float xmin,xmax,ymin,ymax; }
+    [Serializable] public class Panel { public int id; public float xmin,xmax,ymin,ymax,z; public int[] receivers; public Group[] groups; public Hole[] voids; public string rule,status; }
+    [Serializable] public class Data { public int schema; public Node[] nodes; public Bar[] bars; public Panel[] panels; }
     public static MovingLoadViewer Instance { get; private set; }
     public static bool Active => Instance != null && Instance.active;
     private Data data;
@@ -22,7 +22,6 @@ public sealed class MovingLoadViewer : MonoBehaviour
     private double[] u,f,reaction;
     private Vector3[] xyz;
     private readonly Dictionary<int,int> barIndex=new Dictionary<int,int>();
-    private readonly Dictionary<int,Basis> basis=new Dictionary<int,Basis>();
     private readonly List<LineRenderer> lines=new List<LineRenderer>();
     private int usedLines;
     private Transform root, avatar;
@@ -69,21 +68,42 @@ public sealed class MovingLoadViewer : MonoBehaviour
         yield return new WaitForSeconds(.5f);yield return new WaitForEndOfFrame();
         ScreenCapture.CaptureScreenshot(Path.Combine(directory,"carga_movil_cero.png"));
         yield return new WaitForSeconds(.5f);
+        int cantilever=Array.FindIndex(data.panels,p=>p.status=="EXPLICIT_CANTILEVER");
+        magnitude=20;SelectPanel(cantilever);showFloorMap=true;
+        yield return new WaitForSeconds(1);yield return new WaitForEndOfFrame();
+        ScreenCapture.CaptureScreenshot(Path.Combine(directory,"carga_movil_voladizo.png"));
+        yield return new WaitForSeconds(.5f);
+        int holePanel=Array.FindIndex(data.panels,p=>p.voids.Length>0);
+        SelectPanel(holePanel);
+        yield return new WaitForSeconds(1);yield return new WaitForEndOfFrame();
+        ScreenCapture.CaptureScreenshot(Path.Combine(directory,"carga_movil_vacios.png"));
+        yield return new WaitForSeconds(.5f);
         Debug.Log(passed?"SQ4_RUNTIME_OK":"SQ4_RUNTIME_FAILED");Application.Quit(passed?0:1);
     }
 
     private bool RuntimeChecks()
     {
-        double largest=0;
-        foreach(int index in new[]{0,data.panels.Length/2,data.panels.Length-1}) {
-            panelIndex=index;magnitude=37;xi=.217f;eta=.683f;Recalculate();
-            foreach(int tag in Current.receivers) {
+        double largest=0,largestMoment=0;bool positions=true;var categories=new HashSet<string>();
+        for(int index=0;index<data.panels.Length;index++) {
+            panelIndex=index;SafeCenter();
+            positions&=Valid(Current,Mathf.Lerp(Current.xmin,Current.xmax,xi),Mathf.Lerp(Current.ymin,Current.ymax,eta));
+            if(!categories.Add(Current.status+Current.z))continue;
+            magnitude=37;Recalculate();largestMoment=Math.Max(largestMoment,momentError);
+            foreach(int tag in ActiveIds) {
                 var b=data.bars[barIndex[tag]];
                 largest=Math.Max(largest,Vector3.Distance(Displacement(b,1),Motion(b.j)));
             }
         }
         magnitude=0;Recalculate();foreach(double value in u) largest=Math.Max(largest,Math.Abs(value));
-        bool ok=largest<1e-6;Debug.Log("SQ4_RUNTIME endpoint and zero-load error [m]: "+largest.ToString("G10"));
+        Panel[] savedPanels=data.panels;int savedPanel=panelIndex;
+        data.panels=new[]{new Panel{xmin=0,xmax=1,ymin=0,ymax=1,z=0,voids=new Hole[0]},new Panel{xmin=1.001f,xmax=2,ymin=0,ymax=1,z=0,voids=new Hole[0]}};panelIndex=0;
+        bool gapBlocked=!CanWalk(.9f,.5f,1.1f,.5f);
+        data.panels=new[]{new Panel{xmin=0,xmax=2,ymin=0,ymax=1,z=0,voids=new[]{new Hole{xmin=.9999f,xmax=1.0001f,ymin=0,ymax=1}}}};
+        bool holeBlocked=!CanWalk(.9f,.5f,1.1f,.5f);
+        data.panels=savedPanels;panelIndex=savedPanel;positions&=gapBlocked && holeBlocked;
+        bool ok=positions && largest<1e-6 && largestMoment<.002;
+        Debug.Log("SQ4_RUNTIME panels="+data.panels.Length+" categories="+categories.Count+" validCenters="+positions+" gapBlocked="+gapBlocked+" holeBlocked="+holeBlocked+" momentError="+largestMoment.ToString("G10"));
+        Debug.Log("SQ4_RUNTIME endpoint and zero-load error [m]: "+largest.ToString("G10"));
         return ok;
     }
     private bool Load()
@@ -94,17 +114,10 @@ public sealed class MovingLoadViewer : MonoBehaviour
             var asset=Resources.Load<TextAsset>("carga_movil");
             if(!asset) throw new Exception("Ejecute carga_movil.py para generar las bases OpenSees.");
             data=JsonUtility.FromJson<Data>(asset.text);
-            if(data.schema!=1 || data.panels.Length==0) throw new Exception("Contrato SQ4 incompatible.");
+            if(data.schema!=2 || data.panels.Length==0) throw new Exception("Regenerar SQ4: se requiere contrato versión 2.");
             xyz=new Vector3[data.nodes.Length];
             for(int k=0;k<xyz.Length;k++) xyz[k]=V(data.nodes[k].xyz);
             for(int k=0;k<data.bars.Length;k++) barIndex.Add(data.bars[k].id,k);
-            foreach(var b in data.bases) {
-                if(b.samples.Length!=4) throw new Exception("Faltan bases de influencia.");
-                foreach(var s in b.samples)
-                    if(s.u.Length!=xyz.Length*6 || s.f.Length!=data.bars.Length*12 || s.reaction.Length!=6)
-                        throw new Exception("Dimensiones inconsistentes en las bases.");
-                basis.Add(b.id,b);
-            }
             u=new double[xyz.Length*6]; f=new double[data.bars.Length*12]; reaction=new double[6];
             root=new GameObject("SQ4_CargaMovil").transform; root.SetParent(transform,false);
             var shader=Resources.Load<Shader>("SQ4Overlay");
@@ -138,7 +151,7 @@ public sealed class MovingLoadViewer : MonoBehaviour
             savedDeformed=viewer.ShowDeformed; savedForces=viewer.ShowForces;
             viewer.SetDisplay(false,false,viewer.DeformationScale);
             StructuralPostprocessor.Get(gameObject).ClearSelection();
-            Focus(); dirty=true;
+            SafeCenter();Recalculate();Render();Focus(); dirty=true;
         } else {
             if(viewCamera) viewCamera.rect=savedViewport;
             GetComponent<BuildingVisualizer>().EndMovingView();
@@ -172,8 +185,8 @@ public sealed class MovingLoadViewer : MonoBehaviour
         for(int k=0;k<4;k++) { result[k]=1; for(int j=0;j<4;j++) if(k!=j) result[k]*=(s-nodes[j])/(nodes[k]-nodes[j]); }
         return result;
     }
-    private double LocalPosition(Bar b) => xyz[b.j].x>xyz[b.i].x?xi:1-xi;
-    private double Portion(int tag) => tag==Current.receivers[0]?1-eta:tag==Current.receivers[1]?eta:0;
+    private double LocalPosition(Bar b) { foreach(var t in transfers) if(t.id==b.id)return t.s;return .5; }
+    private double Portion(int tag) { double value=0;foreach(var t in transfers)if(t.id==tag)value+=t.weight;return value; }
 
     private void Update()
     {
@@ -181,10 +194,10 @@ public sealed class MovingLoadViewer : MonoBehaviour
         if(viewCamera && Screen.width>850 && Screen.height>500)
             viewCamera.rect=new Rect(264f/Screen.width,245f/Screen.height,(Screen.width-614f)/Screen.width,(Screen.height-319f)/Screen.height);
         if(playing) {
-            float next=xi+Time.deltaTime*speed/(Current.xmax-Current.xmin);
-            if(next>=1) { next=1;playing=false; } xi=next;dirty=true;
+            float before=xi;MoveTo(Mathf.Lerp(Current.xmin,Current.xmax,xi)+Time.deltaTime*speed,Mathf.Lerp(Current.ymin,Current.ymax,eta));
+            if(before==xi)playing=false;
         }
-        if(!Input.GetMouseButton(0)) {
+        if(!Input.GetMouseButton(0) && GUIUtility.keyboardControl==0) {
             float dx=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
             float dy=(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0);
             if(dx!=0 || dy!=0) {
@@ -192,46 +205,33 @@ public sealed class MovingLoadViewer : MonoBehaviour
                     Current.ymin+eta*(Current.ymax-Current.ymin)+dy*speed*Time.deltaTime);
             }
         }
+        PickInWorld();
         if(dirty) { Recalculate(); Render();dirty=false; }
     }
 
     private void MoveTo(float x,float y)
     {
-        float z=Current.z;
-        for(int k=0;k<data.panels.Length;k++) {
-            var p=data.panels[k];
-            if(Mathf.Abs(p.z-z)<.001f && x>=p.xmin && x<=p.xmax && y>=p.ymin && y<=p.ymax) {
-                bool changed=k!=panelIndex;panelIndex=k; xi=Mathf.InverseLerp(p.xmin,p.xmax,x);eta=Mathf.InverseLerp(p.ymin,p.ymax,y);
-                if(changed) GetComponent<BuildingVisualizer>().FocusMovingPanel(p.id,p.z);
-                dirty=true;return;
-            }
+        // Walk in short segments: never jump across a hole or a gap at low frame rate.
+        float startX=Mathf.Lerp(Current.xmin,Current.xmax,xi),startY=Mathf.Lerp(Current.ymin,Current.ymax,eta);
+        int steps=Mathf.Max(1,Mathf.CeilToInt(Vector2.Distance(new Vector2(x,y),new Vector2(startX,startY))/.025f));
+        for(int k=1;k<=steps;k++) {
+            float tx=Mathf.Lerp(startX,x,(float)k/steps),ty=Mathf.Lerp(startY,y,(float)k/steps);
+            if(!CanWalk(Mathf.Lerp(Current.xmin,Current.xmax,xi),Mathf.Lerp(Current.ymin,Current.ymax,eta),tx,ty) || !PlaceAt(tx,ty,false))break;
         }
-        xi=Mathf.Clamp01((x-Current.xmin)/(Current.xmax-Current.xmin));
-        eta=Mathf.Clamp01((y-Current.ymin)/(Current.ymax-Current.ymin)); dirty=true;
     }
 
     private void Recalculate()
     {
         Array.Clear(u,0,u.Length);Array.Clear(f,0,f.Length);Array.Clear(reaction,0,6);
-        foreach(int tag in Current.receivers) {
-            var b=data.bars[barIndex[tag]]; var w=InfluenceWeights(LocalPosition(b));
-            for(int k=0;k<4;k++) {
-                double factor=magnitude*Portion(tag)*w[k];var sample=basis[tag].samples[k];
-                for(int j=0;j<u.Length;j++) u[j]+=factor*sample.u[j];
-                for(int j=0;j<f.Length;j++) f[j]+=factor*sample.f[j];
-                for(int j=0;j<6;j++) reaction[j]+=factor*sample.reaction[j];
-            }
-        }
-        maxDisplacement=0; foreach(int tag in Current.receivers) {
+        ApplyTransfers();
+        maxDisplacement=0; foreach(int tag in ActiveIds) {
             var b=data.bars[barIndex[tag]];
             for(int k=0;k<=100;k++) maxDisplacement=Mathf.Max(maxDisplacement,Displacement(b,k/100f).magnitude*1000);
         }
-        transferError=Math.Abs(magnitude*((1.0-eta)+eta)-magnitude);
-        double y=Current.ymin+eta*(double)(Current.ymax-Current.ymin);
-        momentError=Math.Abs(magnitude*((1.0-eta)*Current.ymin+eta*Current.ymax-y));
-        var selected=data.bars[barIndex[Current.receivers[receiver]]];
+        receiver=Mathf.Clamp(receiver,0,ActiveIds.Length-1);
+        var selected=data.bars[barIndex[ActiveIds[receiver]]];
         peakMoment=0;peakPosition=0;
-        foreach(double s in new[]{0.0,LocalPosition(selected),1.0}) {
+        foreach(double s in new[]{0.0,Math.Max(0,LocalPosition(selected)-1e-8),LocalPosition(selected),1.0}) {
             float moment=(float)Cut(selected,4,s);
             if(Mathf.Abs(moment)>Mathf.Abs(peakMoment)) {peakMoment=moment;peakPosition=(float)s*Vector3.Distance(xyz[selected.i],xyz[selected.j]);}
         }
@@ -240,27 +240,12 @@ public sealed class MovingLoadViewer : MonoBehaviour
     // Positive-x cut convention, with the exact shear jump at the point load.
     private double Cut(Bar b,int component,double s)
     {
-        int k=12*barIndex[b.id]; double L=Vector3.Distance(xyz[b.i],xyz[b.j]);
-        double a=LocalPosition(b)*L, x=s*L, P=magnitude*Portion(b.id);
-        Vector3 local=new Vector3(-V(b.x).z,-V(b.y).z,-V(b.z).z)*(float)P;
-        double beyond=x>=a?1:0, arm=Math.Max(0,x-a);
-        if(component==2) return -f[k+2]-local.z*beyond;
-        if(component==4) return -f[k+4]-f[k+2]*x-local.z*arm;
-        if(component==1) return -f[k+1]-local.y*beyond;
-        return -f[k+5]+f[k+1]*x+local.y*arm;
+        return CutGlobal(b,component,s);
     }
 
     private Vector3 Displacement(Bar b,float s)
     {
-        double L=Vector3.Distance(xyz[b.i],xyz[b.j]), x=s*L;
-        Vector3 ex=V(b.x),ey=V(b.y),ez=V(b.z),ui=Motion(b.i),ri=Motion(b.i,true);
-        if(Portion(b.id)==0) return StructuralPostprocessor.Displacement(s,(float)L,ex,ui,Motion(b.j),ri,Motion(b.j,true));
-        int k=12*barIndex[b.id]; double arm=Math.Max(0,x-LocalPosition(b)*L), P=magnitude*Portion(b.id);
-        double py=-ey.z*P,pz=-ez.z*P,px=-ex.z*P;
-        double axial=Vector3.Dot(ui,ex)-(f[k]*x+px*arm)/(b.E*b.A);
-        double vy=Vector3.Dot(ui,ey)+Vector3.Dot(ri,ez)*x+(-f[k+5]*x*x/2+f[k+1]*x*x*x/6+py*arm*arm*arm/6)/(b.E*b.Iz);
-        double vz=Vector3.Dot(ui,ez)-Vector3.Dot(ri,ey)*x+(f[k+4]*x*x/2+f[k+2]*x*x*x/6+pz*arm*arm*arm/6)/(b.E*b.Iy);
-        return ex*(float)axial+ey*(float)vy+ez*(float)vz;
+        return DisplacementGlobal(b,s);
     }
 
     private void Line(Vector3[] points,Color color,float width)
@@ -284,9 +269,9 @@ public sealed class MovingLoadViewer : MonoBehaviour
         Vector3 position=new Vector3(Mathf.Lerp(p.xmin,p.xmax,xi),z,Mathf.Lerp(p.ymin,p.ymax,eta));
         avatar.position=position+Vector3.up*.47f;
         Line(new[]{new Vector3(p.xmin,z,p.ymin),new Vector3(p.xmax,z,p.ymin),new Vector3(p.xmax,z,p.ymax),new Vector3(p.xmin,z,p.ymax),new Vector3(p.xmin,z,p.ymin)},teal,.07f);
-        for(int edge=0;edge<2;edge++) {
-            int tag=p.receivers[edge];var b=data.bars[barIndex[tag]];
-            Vector3 target=new Vector3(position.x,z,edge==0?p.ymin:p.ymax);
+        for(int edge=0;edge<transfers.Count;edge++) {
+            var t=transfers[edge];int tag=t.id;var b=data.bars[barIndex[tag]];
+            Vector3 target=UnityPoint(t.q)+Vector3.up*.46f;
             Color c=edge==0?teal:amber;
             Line(new[]{position,target},new Color(c.r,c.g,c.b,.6f),.025f);
             Line(new[]{UnityPoint(xyz[b.i])+Vector3.up*.47f,UnityPoint(xyz[b.j])+Vector3.up*.47f},c,.10f);
@@ -295,6 +280,9 @@ public sealed class MovingLoadViewer : MonoBehaviour
                 Line(new[]{target+Vector3.up*h,target},c,.06f);
                 Line(new[]{target+Vector3.up*.22f+Vector3.right*.13f,target,target+Vector3.up*.22f-Vector3.right*.13f},c,.06f);
             }
+        }
+        foreach(var hole in p.voids) {
+            Line(new[]{new Vector3(hole.xmin,z,hole.ymin),new Vector3(hole.xmax,z,hole.ymin),new Vector3(hole.xmax,z,hole.ymax),new Vector3(hole.xmin,z,hole.ymax),new Vector3(hole.xmin,z,hole.ymin)},pink,.07f);
         }
         // All bars on the active floor: complete structural response, not isolated simply-supported beams.
         foreach(var b in data.bars) {
@@ -323,6 +311,7 @@ public sealed class MovingLoadViewer : MonoBehaviour
         GUILayout.BeginArea(Dock,box);scroll=GUILayout.BeginScrollView(scroll);
         GUILayout.Label("CARGA MÓVIL",title);
         GUILayout.Label("SQ4  /  CAMINO DE CARGA",muted);GUILayout.Space(10);
+        DrawPanelSelector();
         GUILayout.Label(magnitude.ToString("F2")+" kN",metric);
         GUILayout.Label("Carga vertical localizada · cuasiestática",muted);
         float next=GUILayout.HorizontalSlider(magnitude,0,100);if(next!=magnitude){magnitude=next;dirty=true;}
@@ -340,30 +329,33 @@ public sealed class MovingLoadViewer : MonoBehaviour
         GUILayout.Label("X "+Mathf.Lerp(Current.xmin,Current.xmax,xi).ToString("F2")+" m   Y "+Mathf.Lerp(Current.ymin,Current.ymax,eta).ToString("F2")+" m",muted);
         GUILayout.BeginHorizontal();
         if(GUILayout.Button(playing?"Pausar":"Recorrer →",button)){if(xi>=1)xi=0;playing=!playing;dirty=true;}
-        if(GUILayout.Button("Centrar",button)){xi=eta=.5f;playing=false;dirty=true;}
+        if(GUILayout.Button("Centrar",button)){SafeCenter();playing=false;dirty=true;}
         if(GUILayout.Button("Enfocar",button)) Focus();
         GUILayout.EndHorizontal();
         GUILayout.Label("Velocidad visual: "+speed.ToString("F2")+" m/s",muted);speed=GUILayout.HorizontalSlider(speed,.1f,2f);
         GUILayout.Space(12);GUILayout.Label("REPARTO A VIGAS",title);
-        ReceiverRow(0,teal);ReceiverRow(1,amber);
+        for(int k=0;k<ActiveIds.Length;k++)ReceiverRow(k,k==0?teal:amber);
         GUILayout.Space(8);
-        bool ok=transferError<1e-5 && momentError<1e-4 && Math.Abs(reaction[2]-magnitude)<.002;
+        bool ok=transferError<1e-4 && momentError<.002 && Math.Abs(reaction[2]-magnitude)<.002;
         GUI.color=ok?teal:pink;GUILayout.Label(ok?"✓ CARGA CONSERVADA":"REVISAR EQUILIBRIO",muted);GUI.color=Color.white;
         GUILayout.Label("ΣP = "+magnitude.ToString("F4")+" kN   ·   error "+transferError.ToString("G2")+" kN\nError de momento: "+momentError.ToString("G2")+" kN·m\nΣRz apoyos = "+reaction[2].ToString("F4")+" kN",muted);
         GUILayout.Space(10);GUILayout.Label("RESPUESTA ADICIONAL Δ",title);
         GUILayout.Label("|Δu| máx. receptoras: "+maxDisplacement.ToString("G4")+" mm",muted);
         GUILayout.Label("Deformada rosa ×"+scale.ToString("F0"),muted);next=GUILayout.HorizontalSlider(scale,1,10000);if(next!=scale){scale=next;dirty=true;}
-        GUILayout.Label("P inferior = P(1−η) · P superior = Pη\nη = distancia al borde inferior / ancho.\nTransferencia idealizada; la losa no es FE. Se muestra sólo el incremento de la carga móvil, sin sumar G/Q/sismo.",muted);
+        GUILayout.Label(Current.rule=="opposite"?"P inferior = P(1−η) · P superior = Pη":"Apoyo asignado: fuerza y par por excentricidad.",muted);
+        GUILayout.Label("Transferencia idealizada; la losa no es FE. Sólo ΔSQ4, sin G/Q/sismo. Vacíos en rosa: no transitables.",muted);
         if(GUILayout.Button("Volver a casos del edificio",button)) Toggle();
         GUILayout.EndScrollView();GUILayout.EndArea();
         DrawCharts();
     }
 
-    private void ChangePanel(int direction) { panelIndex=(panelIndex+direction+data.panels.Length)%data.panels.Length;xi=eta=.5f;playing=false;dirty=true;Focus(); }
+    private void ChangePanel(int direction) { SelectPanel((panelIndex+direction+data.panels.Length)%data.panels.Length); }
     private void ReceiverRow(int k,Color c)
     {
-        float w=k==0?1-eta:eta;GUI.color=c;
-        if(GUILayout.Button("Viga "+Current.receivers[k]+"   "+(magnitude*w).ToString("F3")+" kN  · "+(100*w).ToString("F1")+" %"+(receiver==k?"  ●":""),button)){receiver=k;dirty=true;}
+        int tag=ActiveIds[k];float w=(float)Portion(tag);GUI.color=c;
+        if(GUILayout.Button("Viga "+tag+"   "+(magnitude*w).ToString("F3")+" kN  · "+(100*w).ToString("F1")+" %"+(receiver==k?"  ●":""),button)){receiver=k;dirty=true;}
+        double couple=0;foreach(var t in transfers)if(t.id==tag)couple+=t.m.magnitude;
+        GUILayout.Label("Par transferido: "+couple.ToString("G4")+" kN·m",muted);
         Rect r=GUILayoutUtility.GetRect(10,4,GUILayout.ExpandWidth(true));GUI.DrawTexture(new Rect(r.x,r.y,r.width*w,4),Texture2D.whiteTexture);GUI.color=Color.white;
     }
     private void DrawMap(Rect r)
@@ -371,13 +363,14 @@ public sealed class MovingLoadViewer : MonoBehaviour
         Fill(r,new Color(.07f,.12f,.16f));
         for(int k=1;k<5;k++){Stroke(new Vector2(r.x+r.width*k/5,r.y),new Vector2(r.x+r.width*k/5,r.yMax),new Color(.14f,.22f,.27f),1);Stroke(new Vector2(r.x,r.y+r.height*k/5),new Vector2(r.xMax,r.y+r.height*k/5),new Color(.14f,.22f,.27f),1);}
         Fill(new Rect(r.x,r.yMax-3,r.width,3),teal);Fill(new Rect(r.x,r.y,r.width,3),amber);
+        foreach(var h in Current.voids)Fill(new Rect(r.x+(h.xmin-Current.xmin)/(Current.xmax-Current.xmin)*r.width,r.yMax-(h.ymax-Current.ymin)/(Current.ymax-Current.ymin)*r.height,(h.xmax-h.xmin)/(Current.xmax-Current.xmin)*r.width,(h.ymax-h.ymin)/(Current.ymax-Current.ymin)*r.height),new Color(.65f,.15f,.25f));
         Vector2 point=new Vector2(r.x+xi*r.width,r.yMax-eta*r.height);
         Stroke(new Vector2(point.x,r.y),new Vector2(point.x,r.yMax),new Color(.7f,.8f,.8f,.6f),1);
         Fill(new Rect(point.x-5,point.y-5,10,10),Color.white);
         var e=Event.current;int control=GUIUtility.GetControlID(FocusType.Passive);
         if(e.type==EventType.MouseDown && e.button==0 && r.Contains(e.mousePosition)) GUIUtility.hotControl=control;
         if((e.type==EventType.MouseDown || e.type==EventType.MouseDrag) && e.button==0 && GUIUtility.hotControl==control) {
-            xi=Mathf.Clamp01((e.mousePosition.x-r.x)/r.width);eta=Mathf.Clamp01(1-(e.mousePosition.y-r.y)/r.height);playing=false;dirty=true;e.Use();
+            PlaceAt(Mathf.Lerp(Current.xmin,Current.xmax,Mathf.Clamp01((e.mousePosition.x-r.x)/r.width)),Mathf.Lerp(Current.ymin,Current.ymax,Mathf.Clamp01(1-(e.mousePosition.y-r.y)/r.height)),false);playing=false;e.Use();
         }
         if(e.type==EventType.MouseUp && GUIUtility.hotControl==control){GUIUtility.hotControl=0;e.Use();}
     }
@@ -390,8 +383,9 @@ public sealed class MovingLoadViewer : MonoBehaviour
     private void DrawCharts()
     {
         Rect panel=ChartArea;GUI.Box(panel,"",box);
-        GUI.Label(new Rect(panel.x+16,panel.y+8,panel.width-32,26),"VIGA "+Current.receivers[receiver]+"   /   RESPUESTA INCREMENTAL",title);
-        var b=data.bars[barIndex[Current.receivers[receiver]]];
+        GUI.Label(new Rect(panel.x+16,panel.y+8,panel.width*.44f,26),"VIGA "+ActiveIds[receiver]+" · ΔSQ4",title);
+        GUI.Label(new Rect(panel.x+panel.width*.45f,panel.y+12,panel.width*.53f,20),"ΣP = "+magnitude.ToString("F2")+" kN · ΣRz = "+reaction[2].ToString("F2")+" kN",muted);
+        var b=data.bars[barIndex[ActiveIds[receiver]]];
         float width=(panel.width-48)/2;
         Plot(new Rect(panel.x+16,panel.y+55,width,125),b,4,"ΔMy [kN·m]",teal);
         Plot(new Rect(panel.x+32+width,panel.y+55,width,125),b,2,"ΔVz [kN]",amber);
