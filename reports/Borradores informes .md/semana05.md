@@ -179,13 +179,13 @@ Evidencia completa, incluidas reacciones, identificadores y errores absolutos: [
 
 **Actualización 23-09-2026:** vista en primera persona y personaje FBX
 Among Us; los 167 paneles con cuatro bordes definidos ahora transfieren P a
-cuatro vigas. Ver [reporte de esta actualización](2026-09-23_primera_persona_cuatro_vigas.md).
+cuatro vigas. Ver [reporte de esta actualización](../2026-09-23_primera_persona_cuatro_vigas.md).
 
 **Actualización 22-09-2026:** la restricción inicial queda eliminada: ahora se
 puede seleccionar cualquiera de los 652 paneles, con transferencia de fuerza
 y momento para apoyos excéntricos y voladizos. Incluye selección por ID/planta/clic,
 28 pruebas y 10.680 controles aprobados. Ver
-[reporte actualizado](2026-09-21_carga_movil_todas_losas.md). El párrafo siguiente
+[reporte actualizado](../2026-09-21_carga_movil_todas_losas.md). El párrafo siguiente
 describe el alcance histórico de la primera implementación.
 
 **Implementada en la actualización del 21-09-2026 para escritorio.** Incluye regla física explícita, panel de control, reparto a dos vigas, conservación de fuerza y momento de la transferencia, y respuesta estructural incremental con diagramas y deformada. El recorrido está limitado a 20 paneles completos de cinco niveles, sin atravesar vacíos.
