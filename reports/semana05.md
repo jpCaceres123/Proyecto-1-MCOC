@@ -177,6 +177,10 @@ Evidencia completa, incluidas reacciones, identificadores y errores absolutos: [
 
 ## 4. Sidequest: carga móvil
 
+**Actualización 23-09-2026:** vista en primera persona y personaje FBX
+Among Us; los 167 paneles con cuatro bordes definidos ahora transfieren P a
+cuatro vigas. Ver [reporte de esta actualización](2026-09-23_primera_persona_cuatro_vigas.md).
+
 **Actualización 22-09-2026:** la restricción inicial queda eliminada: ahora se
 puede seleccionar cualquiera de los 652 paneles, con transferencia de fuerza
 y momento para apoyos excéntricos y voladizos. Incluye selección por ID/planta/clic,

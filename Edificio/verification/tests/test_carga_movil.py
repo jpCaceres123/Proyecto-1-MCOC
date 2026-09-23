@@ -55,7 +55,7 @@ class MovingLoadTests(unittest.TestCase):
         data=json.loads((ROOT/'visualization/unity/UnityVisualization/Assets/Resources/carga_movil.json').read_text())
         self.assertEqual(data['modelHash'],hashlib.sha256((ROOT/'results/modelo_3d_manual.json').read_bytes()).hexdigest())
         self.assertEqual(len(data['panels']),audit['panels'])
-        self.assertEqual(data['schema'],2)
+        self.assertEqual(data['schema'],3)
         self.assertEqual(len(data['panels']),652)
         bases=set(data['basisNodes']);bars={b['id']:b for b in data['bars']}
         for panel in data['panels']:
@@ -73,7 +73,7 @@ class MovingLoadTests(unittest.TestCase):
         transitions=0
         for lower in data['panels']:
             for upper in data['panels']:
-                if (lower['rule']==upper['rule']=='opposite' and lower['z']==upper['z'] and
+                if (lower['rule']==upper['rule']=='four_edges' and lower['z']==upper['z'] and
                     abs(lower['ymax']-upper['ymin'])<1e-9 and lower['xmin']==upper['xmin'] and lower['xmax']==upper['xmax'] and
                     len(lower['groups'][1]['ids'])==len(upper['groups'][0]['ids'])==1):
                     self.assertEqual(lower['groups'][1]['ids'],upper['groups'][0]['ids'])

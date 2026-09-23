@@ -16,7 +16,7 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
     public static MovingLoadViewer Instance { get; private set; }
     public static bool Active => Instance != null && Instance.active;
     private Data data;
-    private bool active, playing, dirty=true, savedDeformed, savedForces;
+    private bool active, playing, firstPerson, dirty=true, savedDeformed, savedForces;
     private int panelIndex, receiver;
     private float xi=.5f, eta=.5f, magnitude=1f, speed=.5f, scale=1000f;
     private double[] u,f,reaction;
@@ -24,18 +24,19 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
     private readonly Dictionary<int,int> barIndex=new Dictionary<int,int>();
     private readonly List<LineRenderer> lines=new List<LineRenderer>();
     private int usedLines;
-    private Transform root, avatar;
+    private Transform root, avatar,avatarRoot;
     private Transform panelFill;
     private Rect savedViewport;
     private Camera viewCamera;
     private Material lineMaterial, avatarMaterial;
+    private readonly List<Material> avatarMaterials=new List<Material>();
     private GUIStyle box,title,muted,metric,button;
     private Texture2D background;
     private Vector2 scroll;
     private string error;
     private float peakMoment, peakPosition, maxDisplacement;
     private double transferError, momentError;
-    private Color teal=new Color(.16f,.88f,.76f), amber=new Color(1f,.69f,.22f), pink=new Color(1f,.37f,.62f);
+    private Color teal=new Color(.16f,.88f,.76f), amber=new Color(1f,.69f,.22f), pink=new Color(1f,.37f,.62f),blue=new Color(.35f,.63f,1f),violet=new Color(.72f,.48f,1f);
     private Panel Current => data.panels[panelIndex];
     private Rect Dock => new Rect(Screen.width-350,74,338,Mathf.Max(150,Screen.height-86));
     private Rect ChartArea => new Rect(264,Screen.height-245,Mathf.Max(200,Screen.width-626),233);
@@ -78,6 +79,19 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
         yield return new WaitForSeconds(1);yield return new WaitForEndOfFrame();
         ScreenCapture.CaptureScreenshot(Path.Combine(directory,"carga_movil_vacios.png"));
         yield return new WaitForSeconds(.5f);
+        int fourPanel=Array.FindIndex(data.panels,p=>p.rule=="four_edges" && p.groups.Length==4);
+        SelectPanel(fourPanel);magnitude=50;xi=.37f;eta=.64f;scroll=new Vector2(0,390);dirty=true;
+        yield return new WaitForSeconds(1);yield return new WaitForEndOfFrame();
+        ScreenCapture.CaptureScreenshot(Path.Combine(directory,"carga_movil_cuatro_vigas.png"));
+        yield return new WaitForSeconds(.5f);
+        scroll=Vector2.zero;SetFirstPerson(true);
+        var orbitCheck=FindAnyObjectByType<OrbitCamera>();
+        passed&=orbitCheck && orbitCheck.FirstPerson && Vector3.Distance(orbitCheck.transform.position,EyePosition())<1e-3f;
+        yield return new WaitForSeconds(1);yield return new WaitForEndOfFrame();
+        ScreenCapture.CaptureScreenshot(Path.Combine(directory,"carga_movil_primera_persona.png"));
+        yield return new WaitForSeconds(.5f);
+        SetFirstPerson(false);
+        passed&=orbitCheck && !orbitCheck.FirstPerson;
         Debug.Log(passed?"SQ4_RUNTIME_OK":"SQ4_RUNTIME_FAILED");Application.Quit(passed?0:1);
     }
 
@@ -101,8 +115,10 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
         data.panels=new[]{new Panel{xmin=0,xmax=2,ymin=0,ymax=1,z=0,voids=new[]{new Hole{xmin=.9999f,xmax=1.0001f,ymin=0,ymax=1}}}};
         bool holeBlocked=!CanWalk(.9f,.5f,1.1f,.5f);
         data.panels=savedPanels;panelIndex=savedPanel;positions&=gapBlocked && holeBlocked;
+        int fourCount=0;foreach(var p in data.panels)if(p.rule=="four_edges" && p.groups.Length==4)fourCount++;
+        positions&=fourCount>0;
         bool ok=positions && largest<1e-6 && largestMoment<.002;
-        Debug.Log("SQ4_RUNTIME panels="+data.panels.Length+" categories="+categories.Count+" validCenters="+positions+" gapBlocked="+gapBlocked+" holeBlocked="+holeBlocked+" momentError="+largestMoment.ToString("G10"));
+        Debug.Log("SQ4_RUNTIME panels="+data.panels.Length+" fourEdgePanels="+fourCount+" categories="+categories.Count+" validCenters="+positions+" gapBlocked="+gapBlocked+" holeBlocked="+holeBlocked+" momentError="+largestMoment.ToString("G10"));
         Debug.Log("SQ4_RUNTIME endpoint and zero-load error [m]: "+largest.ToString("G10"));
         return ok;
     }
@@ -114,7 +130,7 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
             var asset=Resources.Load<TextAsset>("carga_movil");
             if(!asset) throw new Exception("Ejecute carga_movil.py para generar las bases OpenSees.");
             data=JsonUtility.FromJson<Data>(asset.text);
-            if(data.schema!=2 || data.panels.Length==0) throw new Exception("Regenerar SQ4: se requiere contrato versión 2.");
+            if(data.schema!=3 || data.panels.Length==0) throw new Exception("Regenerar SQ4: se requiere contrato versión 3.");
             xyz=new Vector3[data.nodes.Length];
             for(int k=0;k<xyz.Length;k++) xyz[k]=V(data.nodes[k].xyz);
             for(int k=0;k<data.bars.Length;k++) barIndex.Add(data.bars[k].id,k);
@@ -123,12 +139,33 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
             var shader=Resources.Load<Shader>("SQ4Overlay");
             if(!shader)throw new Exception("Falta el shader SQ4Overlay en Resources.");
             lineMaterial=new Material(shader);
-            avatarMaterial=new Material(shader); avatarMaterial.color=amber;
-            avatar=GameObject.CreatePrimitive(PrimitiveType.Capsule).transform;
-            avatar.name="Usuario_carga_localizada"; avatar.SetParent(root,false);
-            avatar.localScale=new Vector3(.30f,.45f,.30f);
-            avatar.GetComponent<Renderer>().sharedMaterial=avatarMaterial;
-            Destroy(avatar.GetComponent<Collider>());
+            var supplied=Resources.Load<GameObject>("AmongUs");
+            if(!supplied)throw new Exception("No se pudo importar el Among Us FBX entregado.");
+            avatarRoot=new GameObject("Usuario_carga_localizada").transform;avatarRoot.SetParent(root,false);
+            avatar=Instantiate(supplied,avatarRoot).transform;avatar.name="AmongUs_Model";
+            var renderers=avatar.GetComponentsInChildren<Renderer>();
+            if(renderers.Length==0)throw new Exception("El Among Us FBX no contiene mallas visibles.");
+            var characterShader=Shader.Find("Standard");
+            if(!characterShader)throw new Exception("Falta el shader Standard para el personaje.");
+            foreach(var renderer in renderers) {
+                var sourceMaterials=renderer.sharedMaterials;var colors=new Material[sourceMaterials.Length];
+                for(int k=0;k<sourceMaterials.Length;k++) {
+                    string part=sourceMaterials[k]?sourceMaterials[k].name.ToLowerInvariant():"";
+                    Color color=part.Contains("ecran")||part.Contains("screen")?new Color(.56f,.91f,1f):
+                        part.Contains("pourtour")?new Color(.42f,.09f,.15f):
+                        part.Contains("001")?new Color(.68f,.15f,.23f):new Color(.91f,.13f,.22f);
+                    colors[k]=new Material(characterShader){color=color};
+                    colors[k].SetFloat("_Glossiness",.38f);
+                    avatarMaterials.Add(colors[k]);
+                }
+                renderer.sharedMaterials=colors;
+            }
+            Bounds bounds=renderers[0].bounds;foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);
+            float factor=1.2f/Mathf.Max(.001f,bounds.size.y);
+            avatar.localScale=Vector3.one*factor;
+            bounds=renderers[0].bounds;foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);
+            avatar.localPosition=new Vector3(-bounds.center.x,-bounds.min.y,-bounds.center.z);
+            foreach(var collider in avatar.GetComponentsInChildren<Collider>())Destroy(collider);
             panelFill=GameObject.CreatePrimitive(PrimitiveType.Quad).transform;
             panelFill.name="SQ4_PanelActivo";panelFill.SetParent(root,false);
             panelFill.rotation=Quaternion.Euler(90,0,0);
@@ -153,6 +190,7 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
             StructuralPostprocessor.Get(gameObject).ClearSelection();
             SafeCenter();Recalculate();Render();Focus(); dirty=true;
         } else {
+            SetFirstPerson(false);
             if(viewCamera) viewCamera.rect=savedViewport;
             GetComponent<BuildingVisualizer>().EndMovingView();
             viewer.SetDisplay(savedDeformed,savedForces,viewer.DeformationScale);
@@ -201,12 +239,16 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
             float dx=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
             float dy=(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0);
             if(dx!=0 || dy!=0) {
-                MoveTo(Current.xmin+xi*(Current.xmax-Current.xmin)+dx*speed*Time.deltaTime,
-                    Current.ymin+eta*(Current.ymax-Current.ymin)+dy*speed*Time.deltaTime);
+                var orbit=FindAnyObjectByType<OrbitCamera>();
+                Vector3 walk=firstPerson && orbit ? orbit.PlanRight*dx+orbit.PlanForward*dy : new Vector3(dx,0,dy);
+                if(walk.sqrMagnitude>1)walk.Normalize();
+                MoveTo(Current.xmin+xi*(Current.xmax-Current.xmin)+walk.x*speed*Time.deltaTime,
+                    Current.ymin+eta*(Current.ymax-Current.ymin)+walk.z*speed*Time.deltaTime);
             }
         }
         PickInWorld();
         if(dirty) { Recalculate(); Render();dirty=false; }
+        if(firstPerson)UpdateFirstPersonCamera();
     }
 
     private void MoveTo(float x,float y)
@@ -267,15 +309,15 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
         panelFill.localScale=new Vector3(p.xmax-p.xmin,p.ymax-p.ymin,1);
         var block=new MaterialPropertyBlock();block.SetColor("_Color",new Color(.08f,.8f,.7f,.18f));panelFill.GetComponent<Renderer>().SetPropertyBlock(block);
         Vector3 position=new Vector3(Mathf.Lerp(p.xmin,p.xmax,xi),z,Mathf.Lerp(p.ymin,p.ymax,eta));
-        avatar.position=position+Vector3.up*.47f;
+        avatarRoot.position=position;
         Line(new[]{new Vector3(p.xmin,z,p.ymin),new Vector3(p.xmax,z,p.ymin),new Vector3(p.xmax,z,p.ymax),new Vector3(p.xmin,z,p.ymax),new Vector3(p.xmin,z,p.ymin)},teal,.07f);
         for(int edge=0;edge<transfers.Count;edge++) {
             var t=transfers[edge];int tag=t.id;var b=data.bars[barIndex[tag]];
             Vector3 target=UnityPoint(t.q)+Vector3.up*.46f;
-            Color c=edge==0?teal:amber;
+            Color c=edge==0?teal:edge==1?amber:edge==2?blue:violet;
             Line(new[]{position,target},new Color(c.r,c.g,c.b,.6f),.025f);
             Line(new[]{UnityPoint(xyz[b.i])+Vector3.up*.47f,UnityPoint(xyz[b.j])+Vector3.up*.47f},c,.10f);
-            if(magnitude*Portion(tag)>1e-8) {
+            if(!firstPerson && magnitude*Portion(tag)>1e-8) {
                 float h=.3f+(float)Portion(tag)*1.5f;
                 Line(new[]{target+Vector3.up*h,target},c,.06f);
                 Line(new[]{target+Vector3.up*.22f+Vector3.right*.13f,target,target+Vector3.up*.22f-Vector3.right*.13f},c,.06f);
@@ -310,7 +352,10 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
         Styles();
         GUILayout.BeginArea(Dock,box);scroll=GUILayout.BeginScrollView(scroll);
         GUILayout.Label("CARGA MÓVIL",title);
-        GUILayout.Label("SQ4  /  CAMINO DE CARGA",muted);GUILayout.Space(10);
+        GUILayout.Label("SQ4  /  CAMINO DE CARGA",muted);GUILayout.Space(6);
+        if(GUILayout.Button(firstPerson?"◉ Primera persona · cambiar a exterior":"◎ Entrar en primera persona",button,GUILayout.Height(31)))SetFirstPerson(!firstPerson);
+        GUILayout.Label(firstPerson?"W/A/S/D: caminar · botón derecho: mirar · clic: reubicar":"Vista exterior · clic: reubicar carga",muted);
+        GUILayout.Space(6);
         DrawPanelSelector();
         GUILayout.Label(magnitude.ToString("F2")+" kN",metric);
         GUILayout.Label("Carga vertical localizada · cuasiestática",muted);
@@ -334,7 +379,7 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
         GUILayout.EndHorizontal();
         GUILayout.Label("Velocidad visual: "+speed.ToString("F2")+" m/s",muted);speed=GUILayout.HorizontalSlider(speed,.1f,2f);
         GUILayout.Space(12);GUILayout.Label("REPARTO A VIGAS",title);
-        for(int k=0;k<ActiveIds.Length;k++)ReceiverRow(k,k==0?teal:amber);
+        for(int k=0;k<ActiveIds.Length;k++)ReceiverRow(k,k==0?teal:k==1?amber:k==2?blue:violet);
         GUILayout.Space(8);
         bool ok=transferError<1e-4 && momentError<.002 && Math.Abs(reaction[2]-magnitude)<.002;
         GUI.color=ok?teal:pink;GUILayout.Label(ok?"✓ CARGA CONSERVADA":"REVISAR EQUILIBRIO",muted);GUI.color=Color.white;
@@ -342,18 +387,24 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
         GUILayout.Space(10);GUILayout.Label("RESPUESTA ADICIONAL Δ",title);
         GUILayout.Label("|Δu| máx. receptoras: "+maxDisplacement.ToString("G4")+" mm",muted);
         GUILayout.Label("Deformada rosa ×"+scale.ToString("F0"),muted);next=GUILayout.HorizontalSlider(scale,1,10000);if(next!=scale){scale=next;dirty=true;}
-        GUILayout.Label(Current.rule=="opposite"?"P inferior = P(1−η) · P superior = Pη":"Apoyo asignado: fuerza y par por excentricidad.",muted);
+        GUILayout.Label(Current.rule=="four_edges"?"4 bordes: inferior (1−η)/2, superior η/2, izquierdo (1−ξ)/2, derecho ξ/2.":"Apoyo asignado: fuerza y par por excentricidad.",muted);
         GUILayout.Label("Transferencia idealizada; la losa no es FE. Sólo ΔSQ4, sin G/Q/sismo. Vacíos en rosa: no transitables.",muted);
         if(GUILayout.Button("Volver a casos del edificio",button)) Toggle();
         GUILayout.EndScrollView();GUILayout.EndArea();
         DrawCharts();
+        if(firstPerson && viewCamera) {
+            Rect view=viewCamera.pixelRect;float cx=view.center.x,cy=Screen.height-view.center.y;
+            Stroke(new Vector2(cx-9,cy),new Vector2(cx+9,cy),Color.white,2);
+            Stroke(new Vector2(cx,cy-9),new Vector2(cx,cy+9),Color.white,2);
+        }
     }
 
     private void ChangePanel(int direction) { SelectPanel((panelIndex+direction+data.panels.Length)%data.panels.Length); }
     private void ReceiverRow(int k,Color c)
     {
         int tag=ActiveIds[k];float w=(float)Portion(tag);GUI.color=c;
-        if(GUILayout.Button("Viga "+tag+"   "+(magnitude*w).ToString("F3")+" kN  · "+(100*w).ToString("F1")+" %"+(receiver==k?"  ●":""),button)){receiver=k;dirty=true;}
+        string side=Current.rule=="four_edges"?(k==0?"Inferior":k==1?"Superior":k==2?"Izquierda":"Derecha"):"Apoyo";
+        if(GUILayout.Button(side+" · Viga "+tag+"   "+(magnitude*w).ToString("F2")+" kN · "+(100*w).ToString("F1")+" %"+(receiver==k?" ●":""),button)){receiver=k;dirty=true;}
         double couple=0;foreach(var t in transfers)if(t.id==tag)couple+=t.m.magnitude;
         GUILayout.Label("Par transferido: "+couple.ToString("G4")+" kN·m",muted);
         Rect r=GUILayoutUtility.GetRect(10,4,GUILayout.ExpandWidth(true));GUI.DrawTexture(new Rect(r.x,r.y,r.width*w,4),Texture2D.whiteTexture);GUI.color=Color.white;
@@ -363,6 +414,7 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
         Fill(r,new Color(.07f,.12f,.16f));
         for(int k=1;k<5;k++){Stroke(new Vector2(r.x+r.width*k/5,r.y),new Vector2(r.x+r.width*k/5,r.yMax),new Color(.14f,.22f,.27f),1);Stroke(new Vector2(r.x,r.y+r.height*k/5),new Vector2(r.xMax,r.y+r.height*k/5),new Color(.14f,.22f,.27f),1);}
         Fill(new Rect(r.x,r.yMax-3,r.width,3),teal);Fill(new Rect(r.x,r.y,r.width,3),amber);
+        if(Current.rule=="four_edges") {Fill(new Rect(r.x,r.y,3,r.height),blue);Fill(new Rect(r.xMax-3,r.y,3,r.height),violet);}
         foreach(var h in Current.voids)Fill(new Rect(r.x+(h.xmin-Current.xmin)/(Current.xmax-Current.xmin)*r.width,r.yMax-(h.ymax-Current.ymin)/(Current.ymax-Current.ymin)*r.height,(h.xmax-h.xmin)/(Current.xmax-Current.xmin)*r.width,(h.ymax-h.ymin)/(Current.ymax-Current.ymin)*r.height),new Color(.65f,.15f,.25f));
         Vector2 point=new Vector2(r.x+xi*r.width,r.yMax-eta*r.height);
         Stroke(new Vector2(point.x,r.y),new Vector2(point.x,r.yMax),new Color(.7f,.8f,.8f,.6f),1);
@@ -409,6 +461,6 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
     private void OnDestroy()
     {
         if(Instance==this)Instance=null;
-        if(lineMaterial)Destroy(lineMaterial);if(avatarMaterial)Destroy(avatarMaterial);if(background)Destroy(background);
+        if(lineMaterial)Destroy(lineMaterial);if(avatarMaterial)Destroy(avatarMaterial);foreach(var material in avatarMaterials)if(material)Destroy(material);if(background)Destroy(background);
     }
 }

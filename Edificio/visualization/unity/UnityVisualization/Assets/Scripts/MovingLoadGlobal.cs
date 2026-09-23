@@ -12,6 +12,31 @@ public sealed partial class MovingLoadViewer
     private int[] ActiveIds=new int[0];
     private string slabSearch="",selectionNote="";
     private bool showFloorMap;
+    private void SetFirstPerson(bool enabled)
+    {
+        if(firstPerson==enabled)return;
+        var orbit=FindAnyObjectByType<OrbitCamera>();
+        if(!orbit)return;
+        firstPerson=enabled;
+        if(enabled)orbit.EnterFirstPerson(EyePosition());
+        else {
+            orbit.ExitFirstPerson();
+            if(active)orbit.FocusPanel(new Vector3((Current.xmin+Current.xmax)/2,Current.z+.4f,(Current.ymin+Current.ymax)/2),
+                                       Mathf.Max(Current.xmax-Current.xmin,Current.ymax-Current.ymin));
+        }
+        if(avatarRoot)avatarRoot.gameObject.SetActive(!enabled);
+        if(panelFill)panelFill.gameObject.SetActive(!enabled);
+        dirty=true;
+    }
+    private Vector3 EyePosition()
+    {
+        return new Vector3(Mathf.Lerp(Current.xmin,Current.xmax,xi),Current.z+1.16f,
+                           Mathf.Lerp(Current.ymin,Current.ymax,eta));
+    }
+    private void UpdateFirstPersonCamera()
+    {
+        var orbit=FindAnyObjectByType<OrbitCamera>();if(orbit)orbit.MoveFirstPerson(EyePosition());
+    }
     private Vector2 pickStart;
     private bool picking;
     private bool Valid(Panel p,float x,float y)
@@ -117,8 +142,14 @@ public sealed partial class MovingLoadViewer
                 double next=(r-q).sqrMagnitude;
                 if(next<distance-1e-6 || (Math.Abs(next-distance)<1e-6 && (best==null || tag<best.id))) {distance=next;best=new Transfer{id=tag,s=s,q=q};}
             }
-            best.weight=p.rule=="opposite"?(k==0?1-eta:eta):1;
-            Vector3 applied=r;if(p.rule=="opposite")applied.y=k==0?p.ymin:p.ymax;
+            best.weight=p.rule=="four_edges"?(k==0?(1-eta)*.5:k==1?eta*.5:k==2?(1-xi)*.5:xi*.5):1;
+            Vector3 applied=r;
+            if(p.rule=="four_edges") {
+                if(k==0)applied.y=p.ymin;
+                if(k==1)applied.y=p.ymax;
+                if(k==2)applied.x=p.xmin;
+                if(k==3)applied.x=p.xmax;
+            }
             best.m=Vector3.Cross(applied-best.q,new Vector3(0,0,(float)(-magnitude*best.weight)));
             transfers.Add(best);
         }

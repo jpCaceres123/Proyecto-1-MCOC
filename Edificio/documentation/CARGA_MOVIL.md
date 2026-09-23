@@ -1,6 +1,55 @@
 # SQ4 — carga móvil asociada al usuario
 
-## Versión 2: todas las losas (actual)
+## Versión 3: cuatro bordes y cámara de primera persona (actual)
+
+En los **167 paneles** que el modelo identifica con vigas en los cuatro
+bordes, la carga P se transmite a una viga de cada lado. Con posición
+normalizada ξ en X y η en Y, las fracciones son:
+
+| Borde | Fracción de P |
+|---|---:|
+| Inferior | (1−η)/2 |
+| Superior | η/2 |
+| Izquierdo | (1−ξ)/2 |
+| Derecho | ξ/2 |
+
+La suma es P. Los primeros momentos en X/Y coinciden con la posición de la
+carga. Si un borde tiene varias barras, se escoge el tramo cuya proyección
+queda más cerca del punto; el par entre posición ideal y proyección conserva
+el momento aplicado. Las reacciones y acciones de extremo se calculan con
+bases OpenSees para el edificio completo. La auditoría comprueba fuerza y
+momento en los 652 paneles y soluciones explícitas por categoría/nivel.
+
+Los otros **485 paneles** del contrato geométrico (476 paneles explícitos y
+9 voladizos) no tienen cuatro vigas perimetrales asignadas. Siguen usando
+sus receptores estructurales declarados y la transferencia excéntrica de la
+versión 2. Dibujar cuatro vigas allí supondría inventar apoyos ausentes del
+modelo. Esta distinción se indica en el panel de SQ4. Las cargas G/Q y sus
+reglas anteriores no se modifican.
+
+El personaje proviene del FBX `among-us.zip` entregado por el usuario, con
+cuerpo rojo, contorno oscuro y visor celeste. La importación se conserva en
+`Assets/Resources/AmongUs.fbx`; el visor lo escala a 1,20 m de altura. El
+botón **Entrar en primera persona** ubica la cámara a la altura de sus ojos.
+W/A/S/D avanza respecto a la dirección de la mirada, con el mismo bloqueo de
+vacíos; mantener el botón derecho y mover el ratón cambia la mirada.
+**Cambiar a exterior** devuelve la órbita centrada en la losa activa.
+Un clic todavía coloca la carga en la superficie del nivel. El modelo del
+personaje se oculta sólo en primera persona para no tapar la cámara.
+
+La exportación usa contrato `schema = 3`, con 312 nodos base, 479 vigas
+receptoras y 10.686 controles SQ4 aprobados. Es necesario regenerar recursos
+con `python Edificio/analysis/load_cases/carga_movil.py` y reconstruir el
+ejecutable después de actualizar el proyecto. El visor antiguo no debe leer
+el contrato nuevo. Ver el
+[reporte actualizado](../../reports/2026-09-23_primera_persona_cuatro_vigas.md).
+
+## Versión 2: registro histórico de todas las losas
+
+El alcance de dos bordes y los números de bases que siguen describen la
+versión anterior, sustituida por la regla de cuatro bordes donde corresponde.
+
+### Todas las losas
 
 Se habilitan **652 paneles, 318 vigas receptoras y cinco niveles**. Ya no se
 limita el recorrido a una franja de cuatro losas. Seleccionar nivel y losa en

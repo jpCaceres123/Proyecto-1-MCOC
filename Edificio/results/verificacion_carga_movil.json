@@ -1,8 +1,8 @@
 {
-  "schema": 2,
+  "schema": 3,
   "panels": 652,
-  "receivers": 318,
-  "basisNodes": 310,
+  "receivers": 479,
+  "basisNodes": 312,
   "checks": [
     {
       "control": "Base nodo 100001, DOF 3: fuerzas",
@@ -1841,6 +1841,24 @@
       "estado": "OK"
     },
     {
+      "control": "Base nodo 609002, DOF 3: fuerzas",
+      "error": 4.889670446317496e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Base nodo 609002, DOF 4: fuerzas",
+      "error": 4.4636597875205315e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Base nodo 609002, DOF 5: fuerzas",
+      "error": 1.920448462355e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
       "control": "Base nodo 612002, DOF 3: fuerzas",
       "error": 1.3380717867050862e-08,
       "tolerance": 0.0002,
@@ -1855,6 +1873,24 @@
     {
       "control": "Base nodo 612002, DOF 5: fuerzas",
       "error": 1.756416638059655e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Base nodo 612003, DOF 3: fuerzas",
+      "error": 2.0252811105345983e-08,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Base nodo 612003, DOF 4: fuerzas",
+      "error": 5.8308244810300285e-09,
+      "tolerance": 0.0002,
+      "estado": "OK"
+    },
+    {
+      "control": "Base nodo 612003, DOF 5: fuerzas",
+      "error": 4.96921468032105e-08,
       "tolerance": 0.0002,
       "estado": "OK"
     },
@@ -5592,7 +5628,7 @@
     },
     {
       "control": "Panel 1000000 0.217,0.683: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -5604,31 +5640,31 @@
     },
     {
       "control": "Contraste 1000000 u",
-      "error": 7.037038687817099e-11,
+      "error": 3.608766164813464e-11,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000000 f",
-      "error": 4.327585650783685e-09,
+      "error": 1.9124245285980997e-09,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000000 R",
-      "error": 3.2884149814549045e-09,
+      "error": 6.347718701084934e-09,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Panel 1000000 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000000 0.739,0.125: momento",
-      "error": 3.552713678800501e-15,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -5640,13 +5676,13 @@
     },
     {
       "control": "Panel 1000000 0.5,0.5: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000000 0.5,0.5: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -5694,7 +5730,7 @@
     },
     {
       "control": "Panel 1000001 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -5712,7 +5748,7 @@
     },
     {
       "control": "Panel 1000001 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -5736,7 +5772,7 @@
     },
     {
       "control": "Panel 1000001 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -5784,7 +5820,7 @@
     },
     {
       "control": "Panel 1000002 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -5802,13 +5838,13 @@
     },
     {
       "control": "Panel 1000002 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000002 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -5874,13 +5910,13 @@
     },
     {
       "control": "Panel 1000003 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000003 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -5916,7 +5952,7 @@
     },
     {
       "control": "Panel 1000003 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -5970,7 +6006,7 @@
     },
     {
       "control": "Panel 1000004 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -5988,7 +6024,7 @@
     },
     {
       "control": "Panel 1000004 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6006,7 +6042,7 @@
     },
     {
       "control": "Panel 1000004 0.5,0.5: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6054,7 +6090,7 @@
     },
     {
       "control": "Panel 1000005 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -6072,13 +6108,13 @@
     },
     {
       "control": "Panel 1000005 0.739,0.125: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000005 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6150,7 +6186,7 @@
     },
     {
       "control": "Panel 1000006 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6162,7 +6198,7 @@
     },
     {
       "control": "Panel 1000006 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -6234,13 +6270,13 @@
     },
     {
       "control": "Panel 1000007 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000007 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6252,13 +6288,13 @@
     },
     {
       "control": "Panel 1000007 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000007 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6324,7 +6360,7 @@
     },
     {
       "control": "Panel 1000008 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -6348,7 +6384,7 @@
     },
     {
       "control": "Panel 1000008 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6366,7 +6402,7 @@
     },
     {
       "control": "Panel 1000008 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6414,13 +6450,13 @@
     },
     {
       "control": "Panel 1000009 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000009 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6504,13 +6540,13 @@
     },
     {
       "control": "Panel 1000010 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000010 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6522,13 +6558,13 @@
     },
     {
       "control": "Panel 1000010 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000010 0.739,0.125: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6594,7 +6630,7 @@
     },
     {
       "control": "Panel 1000011 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -6618,7 +6654,7 @@
     },
     {
       "control": "Panel 1000011 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6684,7 +6720,7 @@
     },
     {
       "control": "Panel 1000012 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -6702,13 +6738,13 @@
     },
     {
       "control": "Panel 1000012 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000012 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6780,7 +6816,7 @@
     },
     {
       "control": "Panel 1000013 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6882,13 +6918,13 @@
     },
     {
       "control": "Panel 1000014 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000014 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6978,7 +7014,7 @@
     },
     {
       "control": "Panel 1000015 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 2.1316282072803006e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -6996,7 +7032,7 @@
     },
     {
       "control": "Panel 1000015 0.5,0.5: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -7026,7 +7062,7 @@
     },
     {
       "control": "Panel 1000016 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -7044,13 +7080,13 @@
     },
     {
       "control": "Panel 1000016 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000016 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 2.1316282072803006e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -7158,7 +7194,7 @@
     },
     {
       "control": "Panel 1000018 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13566,7 +13602,7 @@
     },
     {
       "control": "Panel 1000019 0.217,0.683: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13578,19 +13614,19 @@
     },
     {
       "control": "Contraste 1000019 u",
-      "error": 3.779111017307345e-10,
+      "error": 1.7829382117313148e-10,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000019 f",
-      "error": 1.0418532005600605e-08,
+      "error": 1.678349158440706e-08,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000019 R",
-      "error": 1.866094714911505e-08,
+      "error": 8.236374349055328e-09,
       "tolerance": 2e-05,
       "estado": "OK"
     },
@@ -13602,7 +13638,7 @@
     },
     {
       "control": "Panel 1000019 0.739,0.125: momento",
-      "error": 3.552713678800501e-15,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13668,7 +13704,7 @@
     },
     {
       "control": "Panel 1000020 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -13686,7 +13722,7 @@
     },
     {
       "control": "Panel 1000020 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -13710,7 +13746,7 @@
     },
     {
       "control": "Panel 1000020 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13758,13 +13794,13 @@
     },
     {
       "control": "Panel 1000021 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000021 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13782,7 +13818,7 @@
     },
     {
       "control": "Panel 1000021 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13848,13 +13884,13 @@
     },
     {
       "control": "Panel 1000022 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000022 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13890,7 +13926,7 @@
     },
     {
       "control": "Panel 1000022 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13944,7 +13980,7 @@
     },
     {
       "control": "Panel 1000023 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13962,7 +13998,7 @@
     },
     {
       "control": "Panel 1000023 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -13980,7 +14016,7 @@
     },
     {
       "control": "Panel 1000023 0.5,0.5: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14028,7 +14064,7 @@
     },
     {
       "control": "Panel 1000024 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -14046,13 +14082,13 @@
     },
     {
       "control": "Panel 1000024 0.739,0.125: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000024 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14124,7 +14160,7 @@
     },
     {
       "control": "Panel 1000025 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14136,7 +14172,7 @@
     },
     {
       "control": "Panel 1000025 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -14208,13 +14244,13 @@
     },
     {
       "control": "Panel 1000026 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000026 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14226,13 +14262,13 @@
     },
     {
       "control": "Panel 1000026 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000026 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14298,7 +14334,7 @@
     },
     {
       "control": "Panel 1000027 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -14322,7 +14358,7 @@
     },
     {
       "control": "Panel 1000027 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14340,7 +14376,7 @@
     },
     {
       "control": "Panel 1000027 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14388,13 +14424,13 @@
     },
     {
       "control": "Panel 1000028 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000028 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14478,13 +14514,13 @@
     },
     {
       "control": "Panel 1000029 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000029 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14496,13 +14532,13 @@
     },
     {
       "control": "Panel 1000029 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000029 0.739,0.125: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14568,7 +14604,7 @@
     },
     {
       "control": "Panel 1000030 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -14592,7 +14628,7 @@
     },
     {
       "control": "Panel 1000030 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14658,7 +14694,7 @@
     },
     {
       "control": "Panel 1000031 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -14676,13 +14712,13 @@
     },
     {
       "control": "Panel 1000031 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000031 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14754,7 +14790,7 @@
     },
     {
       "control": "Panel 1000032 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14856,13 +14892,13 @@
     },
     {
       "control": "Panel 1000033 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000033 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -14928,7 +14964,7 @@
     },
     {
       "control": "Panel 1000034 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -14952,7 +14988,7 @@
     },
     {
       "control": "Panel 1000034 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15000,7 +15036,7 @@
     },
     {
       "control": "Panel 1000035 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -15018,13 +15054,13 @@
     },
     {
       "control": "Panel 1000035 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000035 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 2.1316282072803006e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15132,7 +15168,7 @@
     },
     {
       "control": "Panel 1000037 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15198,13 +15234,13 @@
     },
     {
       "control": "Panel 1000038 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000038 0.217,0.683: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15222,7 +15258,7 @@
     },
     {
       "control": "Panel 1000038 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15288,13 +15324,13 @@
     },
     {
       "control": "Panel 1000039 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000039 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15306,7 +15342,7 @@
     },
     {
       "control": "Panel 1000039 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -15384,7 +15420,7 @@
     },
     {
       "control": "Panel 1000040 0.217,0.683: momento",
-      "error": 7.105427357601002e-15,
+      "error": 2.1316282072803006e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15468,7 +15504,7 @@
     },
     {
       "control": "Panel 1000041 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -15492,7 +15528,7 @@
     },
     {
       "control": "Panel 1000041 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15558,13 +15594,13 @@
     },
     {
       "control": "Panel 1000042 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000042 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15576,13 +15612,13 @@
     },
     {
       "control": "Panel 1000042 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000042 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15648,13 +15684,13 @@
     },
     {
       "control": "Panel 1000043 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000043 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15738,7 +15774,7 @@
     },
     {
       "control": "Panel 1000044 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -15756,13 +15792,13 @@
     },
     {
       "control": "Panel 1000044 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000044 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15828,13 +15864,13 @@
     },
     {
       "control": "Panel 1000045 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000045 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15918,13 +15954,13 @@
     },
     {
       "control": "Panel 1000046 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000046 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -15936,13 +15972,13 @@
     },
     {
       "control": "Panel 1000046 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000046 0.739,0.125: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16008,13 +16044,13 @@
     },
     {
       "control": "Panel 1000047 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000047 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16032,7 +16068,7 @@
     },
     {
       "control": "Panel 1000047 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16098,13 +16134,13 @@
     },
     {
       "control": "Panel 1000048 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000048 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16116,13 +16152,13 @@
     },
     {
       "control": "Panel 1000048 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000048 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16188,13 +16224,13 @@
     },
     {
       "control": "Panel 1000049 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000049 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16278,13 +16314,13 @@
     },
     {
       "control": "Panel 1000050 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000050 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16296,7 +16332,7 @@
     },
     {
       "control": "Panel 1000050 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -16368,13 +16404,13 @@
     },
     {
       "control": "Panel 1000051 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000051 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16458,13 +16494,13 @@
     },
     {
       "control": "Panel 1000052 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000052 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -16476,13 +16512,13 @@
     },
     {
       "control": "Panel 1000052 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000052 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -24564,7 +24600,7 @@
     },
     {
       "control": "Panel 1000053 0.217,0.683: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -24576,25 +24612,25 @@
     },
     {
       "control": "Contraste 1000053 u",
-      "error": 6.052527687371874e-10,
+      "error": 3.98176360656773e-10,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000053 f",
-      "error": 6.275164050463214e-08,
+      "error": 3.826466160362455e-09,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000053 R",
-      "error": 7.113993810533307e-09,
+      "error": 1.6950310106787643e-08,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Panel 1000053 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -24666,7 +24702,7 @@
     },
     {
       "control": "Panel 1000054 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -24684,7 +24720,7 @@
     },
     {
       "control": "Panel 1000054 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -24708,7 +24744,7 @@
     },
     {
       "control": "Panel 1000054 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -24762,7 +24798,7 @@
     },
     {
       "control": "Panel 1000055 0.217,0.683: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -24846,13 +24882,13 @@
     },
     {
       "control": "Panel 1000056 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000056 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -24888,7 +24924,7 @@
     },
     {
       "control": "Panel 1000056 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -24942,7 +24978,7 @@
     },
     {
       "control": "Panel 1000057 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -24960,7 +24996,7 @@
     },
     {
       "control": "Panel 1000057 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -24978,7 +25014,7 @@
     },
     {
       "control": "Panel 1000057 0.5,0.5: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25026,7 +25062,7 @@
     },
     {
       "control": "Panel 1000058 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -25044,13 +25080,13 @@
     },
     {
       "control": "Panel 1000058 0.739,0.125: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000058 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25122,7 +25158,7 @@
     },
     {
       "control": "Panel 1000059 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25134,7 +25170,7 @@
     },
     {
       "control": "Panel 1000059 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -25206,13 +25242,13 @@
     },
     {
       "control": "Panel 1000060 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000060 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25224,13 +25260,13 @@
     },
     {
       "control": "Panel 1000060 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000060 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25296,7 +25332,7 @@
     },
     {
       "control": "Panel 1000061 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -25320,7 +25356,7 @@
     },
     {
       "control": "Panel 1000061 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25338,7 +25374,7 @@
     },
     {
       "control": "Panel 1000061 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25386,13 +25422,13 @@
     },
     {
       "control": "Panel 1000062 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000062 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25476,13 +25512,13 @@
     },
     {
       "control": "Panel 1000063 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000063 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25494,13 +25530,13 @@
     },
     {
       "control": "Panel 1000063 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000063 0.739,0.125: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25566,7 +25602,7 @@
     },
     {
       "control": "Panel 1000064 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -25590,7 +25626,7 @@
     },
     {
       "control": "Panel 1000064 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25656,7 +25692,7 @@
     },
     {
       "control": "Panel 1000065 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -25674,13 +25710,13 @@
     },
     {
       "control": "Panel 1000065 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000065 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25752,7 +25788,7 @@
     },
     {
       "control": "Panel 1000066 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25854,13 +25890,13 @@
     },
     {
       "control": "Panel 1000067 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000067 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25932,7 +25968,7 @@
     },
     {
       "control": "Panel 1000068 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25950,7 +25986,7 @@
     },
     {
       "control": "Panel 1000068 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -25998,7 +26034,7 @@
     },
     {
       "control": "Panel 1000069 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -26016,13 +26052,13 @@
     },
     {
       "control": "Panel 1000069 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000069 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 2.1316282072803006e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26130,7 +26166,7 @@
     },
     {
       "control": "Panel 1000071 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26196,13 +26232,13 @@
     },
     {
       "control": "Panel 1000072 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000072 0.217,0.683: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26220,7 +26256,7 @@
     },
     {
       "control": "Panel 1000072 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26286,13 +26322,13 @@
     },
     {
       "control": "Panel 1000073 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000073 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26304,7 +26340,7 @@
     },
     {
       "control": "Panel 1000073 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -26382,7 +26418,7 @@
     },
     {
       "control": "Panel 1000074 0.217,0.683: momento",
-      "error": 7.105427357601002e-15,
+      "error": 2.1316282072803006e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26466,7 +26502,7 @@
     },
     {
       "control": "Panel 1000075 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -26490,7 +26526,7 @@
     },
     {
       "control": "Panel 1000075 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26556,13 +26592,13 @@
     },
     {
       "control": "Panel 1000076 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000076 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26574,13 +26610,13 @@
     },
     {
       "control": "Panel 1000076 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000076 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26646,13 +26682,13 @@
     },
     {
       "control": "Panel 1000077 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000077 0.217,0.683: momento",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26736,13 +26772,13 @@
     },
     {
       "control": "Panel 1000078 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000078 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26826,7 +26862,7 @@
     },
     {
       "control": "Panel 1000079 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -26844,13 +26880,13 @@
     },
     {
       "control": "Panel 1000079 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000079 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -26916,13 +26952,13 @@
     },
     {
       "control": "Panel 1000080 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000080 0.217,0.683: momento",
-      "error": 7.105427357601002e-15,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27006,13 +27042,13 @@
     },
     {
       "control": "Panel 1000081 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000081 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27096,13 +27132,13 @@
     },
     {
       "control": "Panel 1000082 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000082 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27114,13 +27150,13 @@
     },
     {
       "control": "Panel 1000082 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000082 0.739,0.125: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27186,13 +27222,13 @@
     },
     {
       "control": "Panel 1000083 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000083 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27210,7 +27246,7 @@
     },
     {
       "control": "Panel 1000083 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27276,13 +27312,13 @@
     },
     {
       "control": "Panel 1000084 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000084 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27294,13 +27330,13 @@
     },
     {
       "control": "Panel 1000084 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000084 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27366,13 +27402,13 @@
     },
     {
       "control": "Panel 1000085 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000085 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27456,13 +27492,13 @@
     },
     {
       "control": "Panel 1000086 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000086 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27474,7 +27510,7 @@
     },
     {
       "control": "Panel 1000086 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -27546,13 +27582,13 @@
     },
     {
       "control": "Panel 1000087 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000087 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27636,13 +27672,13 @@
     },
     {
       "control": "Panel 1000088 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000088 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -27654,13 +27690,13 @@
     },
     {
       "control": "Panel 1000088 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000088 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -36768,7 +36804,7 @@
     },
     {
       "control": "Panel 1000089 0.217,0.683: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -36780,31 +36816,31 @@
     },
     {
       "control": "Contraste 1000089 u",
-      "error": 9.161057617849802e-11,
+      "error": 2.8571163864392187e-10,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000089 f",
-      "error": 2.9191301618970005e-09,
+      "error": 3.0307357748138034e-09,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000089 R",
-      "error": 1.0765737049264769e-09,
+      "error": 1.547590511529887e-08,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Panel 1000089 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000089 0.739,0.125: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 3.552713678800501e-15,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -36870,7 +36906,7 @@
     },
     {
       "control": "Panel 1000090 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -36888,7 +36924,7 @@
     },
     {
       "control": "Panel 1000090 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -36912,7 +36948,7 @@
     },
     {
       "control": "Panel 1000090 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -36960,7 +36996,7 @@
     },
     {
       "control": "Panel 1000091 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -36984,7 +37020,7 @@
     },
     {
       "control": "Panel 1000091 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37002,7 +37038,7 @@
     },
     {
       "control": "Panel 1000091 0.5,0.5: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37050,13 +37086,13 @@
     },
     {
       "control": "Panel 1000092 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000092 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37092,7 +37128,7 @@
     },
     {
       "control": "Panel 1000092 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37146,7 +37182,7 @@
     },
     {
       "control": "Panel 1000093 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37164,7 +37200,7 @@
     },
     {
       "control": "Panel 1000093 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37182,7 +37218,7 @@
     },
     {
       "control": "Panel 1000093 0.5,0.5: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37230,7 +37266,7 @@
     },
     {
       "control": "Panel 1000094 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -37248,13 +37284,13 @@
     },
     {
       "control": "Panel 1000094 0.739,0.125: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000094 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37326,7 +37362,7 @@
     },
     {
       "control": "Panel 1000095 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37338,7 +37374,7 @@
     },
     {
       "control": "Panel 1000095 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -37410,13 +37446,13 @@
     },
     {
       "control": "Panel 1000096 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000096 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37428,13 +37464,13 @@
     },
     {
       "control": "Panel 1000096 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000096 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37500,7 +37536,7 @@
     },
     {
       "control": "Panel 1000097 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -37524,7 +37560,7 @@
     },
     {
       "control": "Panel 1000097 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37542,7 +37578,7 @@
     },
     {
       "control": "Panel 1000097 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37590,13 +37626,13 @@
     },
     {
       "control": "Panel 1000098 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000098 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37680,13 +37716,13 @@
     },
     {
       "control": "Panel 1000099 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000099 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37698,13 +37734,13 @@
     },
     {
       "control": "Panel 1000099 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000099 0.739,0.125: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37770,7 +37806,7 @@
     },
     {
       "control": "Panel 1000100 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -37794,7 +37830,7 @@
     },
     {
       "control": "Panel 1000100 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37860,7 +37896,7 @@
     },
     {
       "control": "Panel 1000101 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -37878,13 +37914,13 @@
     },
     {
       "control": "Panel 1000101 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000101 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -37956,7 +37992,7 @@
     },
     {
       "control": "Panel 1000102 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38058,13 +38094,13 @@
     },
     {
       "control": "Panel 1000103 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000103 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38130,7 +38166,7 @@
     },
     {
       "control": "Panel 1000104 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -38154,7 +38190,7 @@
     },
     {
       "control": "Panel 1000104 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 2.1316282072803006e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38172,7 +38208,7 @@
     },
     {
       "control": "Panel 1000104 0.5,0.5: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38202,13 +38238,13 @@
     },
     {
       "control": "Panel 1000105 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000105 0.217,0.683: momento",
-      "error": 0.0,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38220,13 +38256,13 @@
     },
     {
       "control": "Panel 1000105 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000105 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38334,7 +38370,7 @@
     },
     {
       "control": "Panel 1000107 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38424,7 +38460,7 @@
     },
     {
       "control": "Panel 1000108 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38514,7 +38550,7 @@
     },
     {
       "control": "Panel 1000109 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38580,13 +38616,13 @@
     },
     {
       "control": "Panel 1000110 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000110 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38604,7 +38640,7 @@
     },
     {
       "control": "Panel 1000110 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38670,7 +38706,7 @@
     },
     {
       "control": "Panel 1000111 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -38694,7 +38730,7 @@
     },
     {
       "control": "Panel 1000111 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38760,13 +38796,13 @@
     },
     {
       "control": "Panel 1000112 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000112 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38850,13 +38886,13 @@
     },
     {
       "control": "Panel 1000113 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000113 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38868,13 +38904,13 @@
     },
     {
       "control": "Panel 1000113 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000113 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -38940,13 +38976,13 @@
     },
     {
       "control": "Panel 1000114 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000114 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39030,7 +39066,7 @@
     },
     {
       "control": "Panel 1000115 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -39048,13 +39084,13 @@
     },
     {
       "control": "Panel 1000115 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000115 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39144,7 +39180,7 @@
     },
     {
       "control": "Panel 1000116 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39210,13 +39246,13 @@
     },
     {
       "control": "Panel 1000117 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000117 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39300,13 +39336,13 @@
     },
     {
       "control": "Panel 1000118 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000118 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39318,13 +39354,13 @@
     },
     {
       "control": "Panel 1000118 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000118 0.739,0.125: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39390,13 +39426,13 @@
     },
     {
       "control": "Panel 1000119 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000119 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39414,7 +39450,7 @@
     },
     {
       "control": "Panel 1000119 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39480,13 +39516,13 @@
     },
     {
       "control": "Panel 1000120 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000120 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39498,13 +39534,13 @@
     },
     {
       "control": "Panel 1000120 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000120 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39570,13 +39606,13 @@
     },
     {
       "control": "Panel 1000121 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000121 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39660,13 +39696,13 @@
     },
     {
       "control": "Panel 1000122 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000122 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39678,7 +39714,7 @@
     },
     {
       "control": "Panel 1000122 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -39750,13 +39786,13 @@
     },
     {
       "control": "Panel 1000123 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000123 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39840,13 +39876,13 @@
     },
     {
       "control": "Panel 1000124 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000124 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39858,13 +39894,13 @@
     },
     {
       "control": "Panel 1000124 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000124 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -39954,7 +39990,7 @@
     },
     {
       "control": "Panel 1000125 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -40044,7 +40080,7 @@
     },
     {
       "control": "Panel 1000126 0.739,0.125: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -40116,7 +40152,7 @@
     },
     {
       "control": "Panel 1000127 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -40206,7 +40242,7 @@
     },
     {
       "control": "Panel 1000128 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -40218,13 +40254,13 @@
     },
     {
       "control": "Panel 1000128 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000128 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51492,7 +51528,7 @@
     },
     {
       "control": "Panel 1000129 0.217,0.683: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51504,31 +51540,31 @@
     },
     {
       "control": "Contraste 1000129 u",
-      "error": 7.518817367005828e-10,
+      "error": 4.1451538735541054e-10,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000129 f",
-      "error": 9.979853767806096e-09,
+      "error": 1.2326569862925343e-08,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Contraste 1000129 R",
-      "error": 3.2241230041593474e-09,
+      "error": 1.4830791826519702e-08,
       "tolerance": 2e-05,
       "estado": "OK"
     },
     {
       "control": "Panel 1000129 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000129 0.739,0.125: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 3.552713678800501e-15,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51594,7 +51630,7 @@
     },
     {
       "control": "Panel 1000130 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -51612,7 +51648,7 @@
     },
     {
       "control": "Panel 1000130 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -51636,7 +51672,7 @@
     },
     {
       "control": "Panel 1000130 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51690,7 +51726,7 @@
     },
     {
       "control": "Panel 1000131 0.217,0.683: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51708,7 +51744,7 @@
     },
     {
       "control": "Panel 1000131 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51774,13 +51810,13 @@
     },
     {
       "control": "Panel 1000132 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000132 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51816,7 +51852,7 @@
     },
     {
       "control": "Panel 1000132 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51870,7 +51906,7 @@
     },
     {
       "control": "Panel 1000133 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51888,7 +51924,7 @@
     },
     {
       "control": "Panel 1000133 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51906,7 +51942,7 @@
     },
     {
       "control": "Panel 1000133 0.5,0.5: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -51954,7 +51990,7 @@
     },
     {
       "control": "Panel 1000134 0.217,0.683: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -51972,13 +52008,13 @@
     },
     {
       "control": "Panel 1000134 0.739,0.125: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000134 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52050,7 +52086,7 @@
     },
     {
       "control": "Panel 1000135 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52062,7 +52098,7 @@
     },
     {
       "control": "Panel 1000135 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -52134,13 +52170,13 @@
     },
     {
       "control": "Panel 1000136 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000136 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52152,13 +52188,13 @@
     },
     {
       "control": "Panel 1000136 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000136 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52224,7 +52260,7 @@
     },
     {
       "control": "Panel 1000137 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -52248,7 +52284,7 @@
     },
     {
       "control": "Panel 1000137 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52266,7 +52302,7 @@
     },
     {
       "control": "Panel 1000137 0.5,0.5: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52314,13 +52350,13 @@
     },
     {
       "control": "Panel 1000138 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000138 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52404,13 +52440,13 @@
     },
     {
       "control": "Panel 1000139 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000139 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52422,13 +52458,13 @@
     },
     {
       "control": "Panel 1000139 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000139 0.739,0.125: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52494,7 +52530,7 @@
     },
     {
       "control": "Panel 1000140 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -52518,7 +52554,7 @@
     },
     {
       "control": "Panel 1000140 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52584,7 +52620,7 @@
     },
     {
       "control": "Panel 1000141 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -52602,13 +52638,13 @@
     },
     {
       "control": "Panel 1000141 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000141 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52680,7 +52716,7 @@
     },
     {
       "control": "Panel 1000142 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52782,13 +52818,13 @@
     },
     {
       "control": "Panel 1000143 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000143 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52854,7 +52890,7 @@
     },
     {
       "control": "Panel 1000144 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -52878,7 +52914,7 @@
     },
     {
       "control": "Panel 1000144 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 1.4210854715202004e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52896,7 +52932,7 @@
     },
     {
       "control": "Panel 1000144 0.5,0.5: momento",
-      "error": 1.4210854715202004e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -52926,7 +52962,7 @@
     },
     {
       "control": "Panel 1000145 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -52944,13 +52980,13 @@
     },
     {
       "control": "Panel 1000145 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000145 0.739,0.125: momento",
-      "error": 2.842170943040401e-14,
+      "error": 2.1316282072803006e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53076,7 +53112,7 @@
     },
     {
       "control": "Panel 1000147 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53160,13 +53196,13 @@
     },
     {
       "control": "Panel 1000148 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000148 0.217,0.683: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53184,7 +53220,7 @@
     },
     {
       "control": "Panel 1000148 0.739,0.125: momento",
-      "error": 5.684341886080802e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53250,13 +53286,13 @@
     },
     {
       "control": "Panel 1000149 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000149 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53268,7 +53304,7 @@
     },
     {
       "control": "Panel 1000149 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -53340,13 +53376,13 @@
     },
     {
       "control": "Panel 1000150 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000150 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53430,13 +53466,13 @@
     },
     {
       "control": "Panel 1000151 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000151 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53448,13 +53484,13 @@
     },
     {
       "control": "Panel 1000151 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000151 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53520,13 +53556,13 @@
     },
     {
       "control": "Panel 1000152 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000152 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53610,7 +53646,7 @@
     },
     {
       "control": "Panel 1000153 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -53628,13 +53664,13 @@
     },
     {
       "control": "Panel 1000153 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000153 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 1.1368683772161603e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53790,13 +53826,13 @@
     },
     {
       "control": "Panel 1000155 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000155 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53880,13 +53916,13 @@
     },
     {
       "control": "Panel 1000156 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000156 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53898,13 +53934,13 @@
     },
     {
       "control": "Panel 1000156 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000156 0.739,0.125: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53970,13 +54006,13 @@
     },
     {
       "control": "Panel 1000157 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000157 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -53994,7 +54030,7 @@
     },
     {
       "control": "Panel 1000157 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54060,13 +54096,13 @@
     },
     {
       "control": "Panel 1000158 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000158 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54078,13 +54114,13 @@
     },
     {
       "control": "Panel 1000158 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000158 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54150,13 +54186,13 @@
     },
     {
       "control": "Panel 1000159 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000159 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54240,13 +54276,13 @@
     },
     {
       "control": "Panel 1000160 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000160 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54258,7 +54294,7 @@
     },
     {
       "control": "Panel 1000160 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
@@ -54330,13 +54366,13 @@
     },
     {
       "control": "Panel 1000161 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000161 0.217,0.683: momento",
-      "error": 2.842170943040401e-14,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54420,13 +54456,13 @@
     },
     {
       "control": "Panel 1000162 0.217,0.683: fuerza",
-      "error": 7.105427357601002e-15,
+      "error": 0.0,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000162 0.217,0.683: momento",
-      "error": 1.1368683772161603e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54438,13 +54474,13 @@
     },
     {
       "control": "Panel 1000162 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000162 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54534,7 +54570,7 @@
     },
     {
       "control": "Panel 1000163 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 2.2737367544323206e-13,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54624,7 +54660,7 @@
     },
     {
       "control": "Panel 1000164 0.739,0.125: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 0.0,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54696,7 +54732,7 @@
     },
     {
       "control": "Panel 1000165 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 2.842170943040401e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54786,7 +54822,7 @@
     },
     {
       "control": "Panel 1000166 0.217,0.683: momento",
-      "error": 2.2737367544323206e-13,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },
@@ -54798,13 +54834,13 @@
     },
     {
       "control": "Panel 1000166 0.739,0.125: fuerza",
-      "error": 0.0,
+      "error": 7.105427357601002e-15,
       "tolerance": 1e-10,
       "estado": "OK"
     },
     {
       "control": "Panel 1000166 0.739,0.125: momento",
-      "error": 0.0,
+      "error": 5.684341886080802e-14,
       "tolerance": 1e-09,
       "estado": "OK"
     },

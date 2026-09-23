@@ -10,6 +10,21 @@ sys.path.insert(0,str(ROOT/'analysis/load_cases'))
 from carga_movil_global import equivalent,valid,transfer
 
 class AllSlabsTests(unittest.TestCase):
+    def test_four_edges_receive_conservative_weights(self):
+        data=json.loads((ROOT/'visualization/unity/UnityVisualization/Assets/Resources/carga_movil.json').read_text())
+        bars={b['id']:b for b in data['bars']};xyz=np.array([n['xyz'] for n in data['nodes']])
+        panels=[p for p in data['panels'] if p['rule']=='four_edges']
+        self.assertGreater(len(panels),100)
+        for p in panels:
+            for xi,eta in ((.5,.5),(.17,.83),(.01,.99)):
+                x=p['xmin']+xi*(p['xmax']-p['xmin']);y=p['ymin']+eta*(p['ymax']-p['ymin'])
+                if not valid(p,x,y):continue
+                parts=transfer(p,x,y,40,bars,xyz)
+                self.assertEqual(len(parts),4)
+                np.testing.assert_allclose([t['P'] for t in parts],
+                    [20*(1-eta),20*eta,20*(1-xi),20*xi],atol=1e-9)
+                applied=sum((np.cross(t['q'],[0,0,-t['P']])+t['moment'] for t in parts),np.zeros(3))
+                np.testing.assert_allclose(applied,np.cross([x,y,p['z']],[0,0,-40]),atol=1e-8)
     def test_eccentric_point_force_and_couple_against_split_beam(self):
         xyz=np.array([[0.,0.,0.],[6.,0.,0.]])
         b=dict(i=0,j=1,x=[1,0,0],y=[0,1,0],z=[0,0,1])

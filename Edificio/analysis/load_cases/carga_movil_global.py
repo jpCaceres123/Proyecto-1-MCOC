@@ -25,7 +25,8 @@ def prepare():
     by_id={b['id']:b for b in bars}; xyz=np.array([ops.nodeCoord(n) for n in nodes]); panels=[]
     for slab in data['slabs']:
         c=slab['coordinates']; edges=slab['edge_beam_ids']
-        groups=[edges['bottom'],edges['top']] if edges.get('bottom') and edges.get('top') else [edges.get('support',edges.get('nearest_support',[]))]
+        four=all(edges.get(side) for side in ('bottom','top','left','right'))
+        groups=[edges[side] for side in ('bottom','top','left','right')] if four else [edges.get('support',edges.get('nearest_support',[]))]
         if not all(groups) or any(tag not in by_id for g in groups for tag in g):
             raise ValueError(f'Panel {slab["id"]}: apoyo sin barra analítica')
         for tag in {tag for g in groups for tag in g}:
@@ -36,7 +37,7 @@ def prepare():
             ymin=min(p['y_m'] for p in c),ymax=max(p['y_m'] for p in c),z=slab['z_m'],
             groups=[dict(ids=sorted(set(g))) for g in groups],receivers=sorted({tag for g in groups for tag in g}),
             voids=[dict(xmin=v['x_min_m'],xmax=v['x_max_m'],ymin=v['y_min_m'],ymax=v['y_max_m']) for v in slab.get('voids',[])],
-            rule='opposite' if len(groups)==2 else 'eccentric',status=slab['status']))
+            rule='four_edges' if four else 'eccentric',status=slab['status']))
     panels.sort(key=lambda p:(p['z'],p['id']))
     return data,nodes,bars,panels
 
@@ -47,7 +48,9 @@ def valid(panel,x,y):
 def transfer(panel,x,y,P,bars,xyz):
     if not valid(panel,x,y): raise ValueError('Posición fuera de losa o dentro de vacío')
     r=np.array([x,y,panel['z']]); eta=(y-panel['ymin'])/(panel['ymax']-panel['ymin']); result=[]
-    for group,w in zip(panel['groups'],[1-eta,eta] if panel['rule']=='opposite' else [1.]):
+    xi=(x-panel['xmin'])/(panel['xmax']-panel['xmin'])
+    weights=[(1-eta)/2,eta/2,(1-xi)/2,xi/2] if panel['rule']=='four_edges' else [1.]
+    for group,w in zip(panel['groups'],weights):
         candidates=[]
         for tag in group['ids']:
             b=bars[tag]; a=xyz[b['i']]; d=xyz[b['j']]-a
@@ -56,12 +59,13 @@ def transfer(panel,x,y,P,bars,xyz):
         _,tag,s,q=min(candidates,key=lambda item:(round(item[0],10),item[1]))
         force=np.array([0.,0.,-P*w]); moment=np.cross(r-q,force)
         result.append(dict(id=tag,s=s,P=P*w,moment=moment,q=q))
-    # Opposite-edge transfer already preserves its transverse first moment.
-    # Couples only correct projection offsets along the edge (segmented/overhanging edges).
-    if panel['rule']=='opposite':
-        for t in result:
-            r_edge=np.array([x,panel['ymin'] if t is result[0] else panel['ymax'],panel['z']])
-            t['moment']=np.cross(r_edge-t['q'],[0,0,-t['P']])
+    # Four-edge weights preserve both in-plane first moments. Correct only the
+    # difference between each ideal edge point and its actual bar projection.
+    if panel['rule']=='four_edges':
+        edge_points=((x,panel['ymin']),(x,panel['ymax']),
+                     (panel['xmin'],y),(panel['xmax'],y))
+        for t,(ex,ey) in zip(result,edge_points):
+            t['moment']=np.cross(np.array([ex,ey,panel['z']])-t['q'],[0,0,-t['P']])
     return result
 
 def equivalent(b,xyz,s,P,moment):
@@ -136,11 +140,11 @@ def generate(cfg=None):
                 actual=solve_nodal(loads,cfg)
                 for name,a,z in (('u',0,len(nodes)*6),('f',len(nodes)*6,length-6),('R',length-6,length)):
                     check(f'Contraste {p["id"]} {name}',np.max(np.abs(actual[a:z]-approx[a:z]))/max(1e-8,np.max(np.abs(actual[a:z]))),2e-5)
-    audit=dict(schema=2,panels=len(panels),receivers=len(receivers),basisNodes=len(indices),checks=checks,
+    audit=dict(schema=3,panels=len(panels),receivers=len(receivers),basisNodes=len(indices),checks=checks,
         inherited_constraint_note='equalDOF no coincidentes: no se afirma equilibrio global de momentos usando sólo apoyos SP.')
     dump_json(ROOT/'results/verificacion_carga_movil.json',audit,indent=2)
     if any(c['estado']!='OK' for c in checks):raise RuntimeError('REVISAR auditoría SQ4')
-    payload=dict(schema=2,units='kN, m, rad, kN*m',modelHash=hashlib.sha256(model.MODEL.read_bytes()).hexdigest(),
+    payload=dict(schema=3,units='kN, m, rad, kN*m',modelHash=hashlib.sha256(model.MODEL.read_bytes()).hexdigest(),
         nodes=[dict(id=n,xyz=xyz[k].tolist()) for k,n in enumerate(nodes)],bars=bars,panels=panels,basisNodes=indices)
     dump_json(resources/'carga_movil.json',payload,separators=(',',':'),allow_nan=False)
     print(f'SQ4 OK: {len(panels)} paneles, {len(checks)} controles',flush=True)
