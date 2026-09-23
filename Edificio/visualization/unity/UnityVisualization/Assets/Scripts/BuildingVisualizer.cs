@@ -35,6 +35,7 @@ public class BuildingVisualizer : MonoBehaviour
     private readonly float[] levelValues = { -1f, 0f, 3.96f, 7.92f, 11.88f, 15.84f };
     private int levelChoice;
     private bool levelMenu;
+    private Material concreteBeamMaterial, grassMaterial, skyMaterial;
 
     private struct Element { public int id, i, j; public string type; }
     private struct Wall { public int id; public Vector3 a, b; public float zMin, zMax, thickness; }
@@ -71,6 +72,7 @@ public class BuildingVisualizer : MonoBehaviour
         Debug.Log("Muros cargados: " + walls.Count);
         Debug.Log("Losas cargadas: " + slabs.Count);
         inspector = gameObject.AddComponent<ElementInspector>();
+        ConfigureEnvironment();
         BuildScene();
         if (GetComponent<Semana3Visualizer>() == null) gameObject.AddComponent<Semana3Visualizer>();
         if (GetComponent<MovingLoadViewer>() == null) gameObject.AddComponent<MovingLoadViewer>();
@@ -114,10 +116,113 @@ public class BuildingVisualizer : MonoBehaviour
     private static float ParseFloat(string value) { return float.Parse(value, CultureInfo.InvariantCulture); }
     private Transform Root(string name) { return new GameObject(name).transform; }
 
+    private void ConfigureEnvironment()
+    {
+        Camera camera = Camera.main;
+        if (camera)
+        {
+            camera.clearFlags = CameraClearFlags.Skybox;
+            camera.backgroundColor = new Color(.47f, .72f, .91f);
+        }
+        Shader skyShader = Shader.Find("Skybox/Procedural");
+        if (skyShader)
+        {
+            skyMaterial = new Material(skyShader);
+            skyMaterial.SetColor("_SkyTint", new Color(.63f, .79f, .96f));
+            skyMaterial.SetColor("_GroundColor", new Color(.38f, .43f, .34f));
+            skyMaterial.SetFloat("_AtmosphereThickness", 1.0f);
+            skyMaterial.SetFloat("_SunSize", .035f);
+            RenderSettings.skybox = skyMaterial;
+        }
+        else if (camera) camera.clearFlags = CameraClearFlags.SolidColor;
+
+        RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
+        RenderSettings.ambientSkyColor = new Color(.66f, .78f, .88f);
+        RenderSettings.ambientEquatorColor = new Color(.55f, .58f, .55f);
+        RenderSettings.ambientGroundColor = new Color(.28f, .30f, .25f);
+
+        Shader standard = Shader.Find("Standard");
+        if (!standard) return;
+        concreteBeamMaterial = new Material(standard);
+        concreteBeamMaterial.name = "Hormigon texturado";
+        concreteBeamMaterial.color = new Color(.82f, .83f, .82f);
+        concreteBeamMaterial.mainTexture = MakeConcreteTexture();
+        concreteBeamMaterial.mainTextureScale = new Vector2(1.2f, 1.2f);
+        concreteBeamMaterial.SetFloat("_Glossiness", .12f);
+
+        grassMaterial = new Material(standard);
+        grassMaterial.name = "Pasto texturado";
+        grassMaterial.color = Color.white;
+        grassMaterial.mainTexture = MakeGrassTexture();
+        grassMaterial.mainTextureScale = new Vector2(24f, 24f);
+        grassMaterial.SetFloat("_Glossiness", .05f);
+    }
+
+    private static Texture2D MakeConcreteTexture()
+    {
+        const int size = 128;
+        var texture = new Texture2D(size, size, TextureFormat.RGB24, false);
+        texture.name = "Hormigon_grano_fino";
+        texture.wrapMode = TextureWrapMode.Repeat;
+        texture.filterMode = FilterMode.Bilinear;
+        var random = new System.Random(60423);
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float noise = (float)random.NextDouble() - .5f;
+                float fleck = random.NextDouble() < .035 ? -.16f : 0f;
+                float shade = Mathf.Clamp(.69f + noise * .12f + fleck, .36f, .82f);
+                texture.SetPixel(x, y, new Color(shade, shade * 1.01f, shade * 1.02f));
+            }
+        texture.Apply();
+        return texture;
+    }
+
+    private static Texture2D MakeGrassTexture()
+    {
+        const int size = 128;
+        var texture = new Texture2D(size, size, TextureFormat.RGB24, false);
+        texture.name = "Pasto_variacion_natural";
+        texture.wrapMode = TextureWrapMode.Repeat;
+        texture.filterMode = FilterMode.Bilinear;
+        var random = new System.Random(60424);
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float noise = (float)random.NextDouble() - .5f;
+                float blade = random.NextDouble() < .16 ? .10f : 0f;
+                float green = Mathf.Clamp(.34f + noise * .18f + blade, .16f, .58f);
+                texture.SetPixel(x, y, new Color(green * .55f, green, green * .40f));
+            }
+        texture.Apply();
+        return texture;
+    }
+
+    private void CreateGround()
+    {
+        if (nodes.Count == 0 || !grassMaterial) return;
+        float minX = float.PositiveInfinity, maxX = float.NegativeInfinity;
+        float minZ = float.PositiveInfinity, maxZ = float.NegativeInfinity;
+        float minY = float.PositiveInfinity;
+        foreach (Vector3 point in nodes.Values)
+        {
+            minX = Mathf.Min(minX, point.x); maxX = Mathf.Max(maxX, point.x);
+            minZ = Mathf.Min(minZ, point.z); maxZ = Mathf.Max(maxZ, point.z);
+            minY = Mathf.Min(minY, point.y);
+        }
+        GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        ground.name = "Terreno_pasto";
+        ground.transform.position = new Vector3((minX + maxX) * .5f, minY - .58f, (minZ + maxZ) * .5f);
+        ground.transform.localScale = new Vector3((maxX - minX + 16f) / 10f, 1f, (maxZ - minZ + 16f) / 10f);
+        ground.GetComponent<Renderer>().sharedMaterial = grassMaterial;
+        ground.GetComponent<Collider>().enabled = false;
+    }
+
     private void BuildScene()
     {
         nodeRoot = Root("Nodos"); beamRoot = Root("Vigas"); columnRoot = Root("Columnas"); wallRoot = Root("Muros");
         diaphragmRoot = Root("Diafragmas"); supportRoot = Root("Apoyos"); localAxisRoot = Root("EjesLocales"); tributaryRoot = Root("AreaTributaria");
+        CreateGround();
         foreach (Element e in elements)
         {
             if (!nodes.ContainsKey(e.i) || !nodes.ContainsKey(e.j)) continue;
@@ -237,7 +342,16 @@ public class BuildingVisualizer : MonoBehaviour
         bool steelColumn = type == "STEEL_COLUMN_SHS300x20";
         float width = steelColumn ? .30f : (type == "COLUMN" ? .70f : (type == "BEAM_SMALL" ? .30f : (type == "BEAM_40x60" ? .40f : .60f)));
         float depth = steelColumn ? .30f : (type == "COLUMN" ? .70f : (type == "BEAM_SMALL" ? .45f : (type == "BEAM_40x60" ? .60f : (type == "BEAM_VARIABLE" ? .35f : .80f))));
-        go.transform.localScale = new Vector3(width, d.magnitude, depth); SetMaterial(go.GetComponent<Renderer>(), color); CreateIdLabel(go, idFromName(name), go.transform.position);
+        go.transform.localScale = new Vector3(width, d.magnitude, depth);
+        Renderer memberRenderer = go.GetComponent<Renderer>();
+        SetMaterial(memberRenderer, color);
+        if (!steelColumn && parent == beamRoot && concreteBeamMaterial)
+        {
+            Material colorMaterial = memberRenderer.sharedMaterial;
+            memberRenderer.sharedMaterial = concreteBeamMaterial;
+            if (colorMaterial) Destroy(colorMaterial);
+        }
+        CreateIdLabel(go, idFromName(name), go.transform.position);
         inspector.Register(go, idFromName(name), type.Contains("COLUMN") ? "Columna" : "Viga", "Tipo: " + type + "\nLongitud: " + d.magnitude.ToString("F2") + " m");
     }
 

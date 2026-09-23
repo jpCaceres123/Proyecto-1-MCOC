@@ -73,3 +73,12 @@ Para probarlo sin abrir el editor, el ejecutable Windows quedó en
 (compilación local, no incluida en GitHub por su tamaño). En Unity se puede
 abrir el proyecto `Edificio/visualization/unity/UnityVisualization` y ejecutar
 la escena principal con el contrato SQ4 actualizado.
+
+## Actualización visual del entorno
+
+El visor ahora configura un cielo azul claro con iluminación ambiental más
+natural, crea un terreno de pasto bajo la estructura y aplica a las vigas una
+textura de hormigón de grano fino. Las texturas se generan de forma procedural
+al iniciar Unity, así que no dependen de archivos externos ni cambian los datos
+ni el cálculo estructural. El código está en
+`Edificio/visualization/unity/UnityVisualization/Assets/Scripts/BuildingVisualizer.cs`.
