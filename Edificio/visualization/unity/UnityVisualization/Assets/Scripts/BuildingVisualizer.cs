@@ -186,14 +186,36 @@ public class BuildingVisualizer : MonoBehaviour
         texture.wrapMode = TextureWrapMode.Repeat;
         texture.filterMode = FilterMode.Bilinear;
         var random = new System.Random(60424);
+        var pixels = new Color[size * size];
         for (int y = 0; y < size; y++)
             for (int x = 0; x < size; x++)
             {
                 float noise = (float)random.NextDouble() - .5f;
-                float blade = random.NextDouble() < .16 ? .10f : 0f;
-                float green = Mathf.Clamp(.34f + noise * .18f + blade, .16f, .58f);
-                texture.SetPixel(x, y, new Color(green * .55f, green, green * .40f));
+                float green = Mathf.Clamp(.32f + noise * .08f, .22f, .42f);
+                pixels[y * size + x] = new Color(green * .58f, green, green * .42f);
             }
+        texture.SetPixels(pixels);
+
+        // Short tapered-looking strokes break up the base mottling into fine
+        // blades; the seamless texture repeats across the full ground plane.
+        for (int blade = 0; blade < 260; blade++)
+        {
+            int x0 = random.Next(size), y0 = random.Next(size);
+            int length = 5 + random.Next(11);
+            int lean = random.Next(-3, 4);
+            float green = .38f + (float)random.NextDouble() * .27f;
+            Color color = blade % 3 == 0
+                ? new Color(green * .72f, green, green * .52f)
+                : new Color(green * .55f, green, green * .39f);
+            for (int step = 0; step < length; step++)
+            {
+                int x = (x0 + lean * step / length + size) & (size - 1);
+                int y = (y0 + step) & (size - 1);
+                texture.SetPixel(x, y, color);
+                if ((blade & 1) == 0 && step < length - 2)
+                    texture.SetPixel((x + 1) & (size - 1), y, color * .82f);
+            }
+        }
         texture.Apply();
         return texture;
     }
