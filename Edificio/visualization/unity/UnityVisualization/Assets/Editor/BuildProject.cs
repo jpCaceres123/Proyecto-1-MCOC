@@ -25,7 +25,8 @@ public static class BuildProject
         PlayerSettings.companyName = "MCOC";
         PlayerSettings.defaultScreenWidth = 1440;
         PlayerSettings.defaultScreenHeight = 900;
-        PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
+        PlayerSettings.resizableWindow = true;
+        PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
         string outputPath = Path.GetFullPath("Build/EdificioViewer.exe");
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
         Debug.Log("=== INICIO BUILD EDIFICIO VIEWER ===");

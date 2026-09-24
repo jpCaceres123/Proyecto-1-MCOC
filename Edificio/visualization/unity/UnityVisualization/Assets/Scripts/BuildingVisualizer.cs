@@ -59,6 +59,7 @@ public class BuildingVisualizer : MonoBehaviour
 
     private void Start()
     {
+        SetDesktopFullscreen();
         Debug.Log("=== INICIO GENERACION MODELO ===");
         Debug.Log("DataPath: " + Application.dataPath);
         Debug.Log("StreamingAssets: " + Application.streamingAssetsPath);
@@ -76,6 +77,17 @@ public class BuildingVisualizer : MonoBehaviour
         BuildScene();
         if (GetComponent<Semana3Visualizer>() == null) gameObject.AddComponent<Semana3Visualizer>();
         if (GetComponent<MovingLoadViewer>() == null) gameObject.AddComponent<MovingLoadViewer>();
+    }
+
+    private static void SetDesktopFullscreen()
+    {
+        if (Application.platform != RuntimePlatform.WindowsPlayer) return;
+        foreach (string arg in Environment.GetCommandLineArgs())
+            if (string.Equals(arg, "-screen-fullscreen", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(arg, "-window-mode", StringComparison.OrdinalIgnoreCase)) return;
+        Resolution native = Screen.currentResolution;
+        if (native.width > 0 && native.height > 0)
+            Screen.SetResolution(native.width, native.height, FullScreenMode.FullScreenWindow);
     }
 
     private void ReadCsv(string text)
