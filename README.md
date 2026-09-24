@@ -7,7 +7,7 @@ Repositorio del proyecto colaborativo de modelación estructural, OpenSeesPy y v
 | Laboratorio | Estado | Documentación |
 |---|---|---|
 | Semana 1: benchmark 3D | Completado | [`P1L1/`](P1L1/) |
-| Semana 2-3: edificio completo, gravedad, sismo y capacidad | En desarrollo | [`Edificio/`](Edificio/) · [`Enunciados`](Enunciados%20e%20Instrucciones/) |
+| Semana 2-5: edificio, sismo, capacidad y viewer interactivo | En desarrollo | [`Edificio/`](Edificio/) · [Guía Semana 5](Edificio/documentation/SEMANA5_VARIANTES.md) · [`Enunciados`](Enunciados%20e%20Instrucciones/) |
 
 El modelo global tiene sus fuentes, scripts, resultados y visualizador Unity en
 `Edificio/`, separado de P1L1. Los archivos generados deben reconstruirse desde
@@ -33,3 +33,5 @@ El modelo, los resultados, el visor Unity, los avances y los archivos SAP2000 de
 - [Enunciados](Enunciados%20e%20Instrucciones/)
 - [Avances P1L1](P1L1/Avances/)
 - [Material SAP2000 P1L1](P1L1/sap2000/)
+
+La guía de Semana 5 detalla la superposición en vivo, las modificaciones de intensidad/sección, las reglas de reanálisis y los verificadores ejecutables.

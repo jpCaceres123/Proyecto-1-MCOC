@@ -28,6 +28,7 @@ public sealed class WallSectionGraphs : IDisposable
     private readonly string error;
     private Chart chart;
     private string chartCase;
+    private string chartKey;
     private int selectedWall=-1,segmentIndex;
     private GUIStyle small;
     private const int W=330,H=230,Left=58,Right=314,Bottom=40,Top=207;
@@ -70,7 +71,7 @@ public sealed class WallSectionGraphs : IDisposable
         if(error!=null){GUILayout.Label(error);return;}
         Wall wall;
         if(!walls.TryGetValue(id,out wall)){GUILayout.Label("Muro sin asignación de armadura.");return;}
-        if(selectedWall!=id){selectedWall=id;segmentIndex=0;Destroy(chart);chart=null;chartCase=null;}
+        if(selectedWall!=id){selectedWall=id;segmentIndex=0;Destroy(chart);chart=null;chartCase=null;chartKey=null;}
         if(requestedSegment>=0 && requestedSegment<wall.segments.Length && requestedSegment!=segmentIndex)
         { segmentIndex=requestedSegment; Destroy(chart); chart=null; chartCase=null; }
         if(wall.segments.Length>1)
@@ -85,16 +86,22 @@ public sealed class WallSectionGraphs : IDisposable
         Demand demand=null;
         if(storeyDemands.Count>0)
             demand=DetailedDemand(id,segmentIndex,caseName,viewer);
-        if(demand==null && demands.TryGetValue(id,out wallDemand))
+        // Cached R never follows live λ; cached EX/EY are valid only for the
+        // exported α when detailed EXG/EXQ/EYG/EYQ wall bases are unavailable.
+        bool cachedMassValid=viewer!=null && viewer.UsesExportedMassWeights;
+        bool cachedCaseAllowed=storeyDemands.Count==0 && caseName!="R"
+            && ((caseName!="EX" && caseName!="EY") || cachedMassValid);
+        if(demand==null && cachedCaseAllowed && demands.TryGetValue(id,out wallDemand))
         {
             Demand[] values=wallDemand.demands;
             if(wallDemand.segments!=null && wallDemand.segments.Length>0)
                 values=wallDemand.segments[Mathf.Clamp(segmentIndex,0,wallDemand.segments.Length-1)].demands;
             demand=Array.Find(values,value=>value.name==caseName);
         }
-        if(chart==null || chartCase!=caseName)
+        string currentKey=ChartKey(id,segmentIndex,caseName,s,demand,viewer);
+        if(chart==null || chartKey!=currentKey)
         {
-            Destroy(chart); chart=CreateChart(s.curve,s.points,demand); chartCase=caseName;
+            Destroy(chart); chart=CreateChart(s.curve,s.points,demand); chartCase=caseName; chartKey=currentKey;
         }
         GUILayout.Label("CURVA P–M DEL " + wall.name.ToUpperInvariant());
         GUILayout.BeginHorizontal();
@@ -119,7 +126,7 @@ public sealed class WallSectionGraphs : IDisposable
             GUI.color = Color.white;
             GUILayout.Label(inside ? "La demanda se encuentra dentro de la envolvente de capacidad nominal." : "La demanda se encuentra fuera de la envolvente de capacidad nominal.");
         }
-        else GUILayout.Label("No hay demanda para el caso " + caseName + ".");
+        else GUILayout.Label("Sin demanda P–M compatible para " + caseName + ". Faltan bases actuales; no se reutilizó una demanda almacenada obsoleta.");
         GUILayout.EndVertical();
         GUILayout.BeginVertical(GUILayout.Width(220));
         GUILayout.Label("Datos del tramo");
@@ -131,7 +138,7 @@ public sealed class WallSectionGraphs : IDisposable
             GUILayout.Label("Borde E': "+s.boundary_left_count+"Ø"+s.boundary_left_diameter.ToString("G3")+" · Ec: "+s.boundary_right_count+"Ø"+s.boundary_right_diameter.ToString("G3"));
         if(dataMaterial!=null)
             GUILayout.Label("f'c = "+dataMaterial.fc_MPa.ToString("G5")+" MPa · fy = "+dataMaterial.fy_MPa.ToString("G5")+" MPa");
-        GUILayout.Label("Capacidad nominal: compatibilidad de deformaciones y bloque de Whitney.");
+        GUILayout.Label("Capacidad nominal uniaxial: bloque de Whitney; no es una comprobación normativa completa ni biaxial.");
         if(wall.confidence!="alta") GUILayout.Label("Revisar relación nombre–ID contra planos.");
         GUILayout.EndVertical();
         GUILayout.EndHorizontal();
@@ -161,6 +168,23 @@ public sealed class WallSectionGraphs : IDisposable
             result.p+=(float)(viewer.Combination[k]*source.p); result.m+=(float)(viewer.Combination[k]*source.m);
         }
         return result;
+    }
+
+    private static string ChartKey(int wallId,int segment,string caseName,Segment capacity,Demand demand,Semana3Visualizer viewer)
+    {
+        // Include current capacity and demand values: the case label can remain R
+        // while λ or α changes the actual P–M point.
+        System.Text.StringBuilder key=new System.Text.StringBuilder();
+        key.Append(wallId).Append('|').Append(segment).Append('|').Append(caseName).Append('|');
+        key.Append(demand==null?"none":demand.p.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+":"+demand.m.ToString("R",System.Globalization.CultureInfo.InvariantCulture));
+        if(viewer!=null)
+        {
+            key.Append("|alpha:").Append(viewer.MassG.ToString("R",System.Globalization.CultureInfo.InvariantCulture)).Append(':').Append(viewer.MassQ.ToString("R",System.Globalization.CultureInfo.InvariantCulture));
+            foreach(double coefficient in viewer.Combination) key.Append("|lambda:").Append(coefficient.ToString("R",System.Globalization.CultureInfo.InvariantCulture));
+        }
+        if(capacity.curve!=null) foreach(Point p in capacity.curve) key.Append("|curve:").Append(p.p.ToString("R",System.Globalization.CultureInfo.InvariantCulture)).Append(':').Append(p.m.ToString("R",System.Globalization.CultureInfo.InvariantCulture));
+        if(capacity.points!=null) foreach(Point p in capacity.points) key.Append("|key:").Append(p.name).Append(':').Append(p.p.ToString("R",System.Globalization.CultureInfo.InvariantCulture)).Append(':').Append(p.m.ToString("R",System.Globalization.CultureInfo.InvariantCulture));
+        return key.ToString();
     }
 
     private static Chart CreateChart(Point[] curve,Point[] keys,Demand demand)

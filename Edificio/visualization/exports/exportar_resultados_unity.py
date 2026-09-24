@@ -33,7 +33,7 @@ def element_metadata(data):
             continue
         section_key = sections.get(element['type'], 'section_beams')
         material_key = 'material_steel' if element['type'] == 'STEEL_COLUMN_SHS300x20' else 'material'
-        section = data[section_key]
+        section = element.get('section_override', data[section_key])
         material = data[material_key]
         result.append({
             'id': element['id'],

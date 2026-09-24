@@ -12,7 +12,7 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
     [Serializable] public class Group { public int[] ids; }
     [Serializable] public class Hole { public float xmin,xmax,ymin,ymax; }
     [Serializable] public class Panel { public int id; public float xmin,xmax,ymin,ymax,z; public int[] receivers; public Group[] groups; public Hole[] voids; public string rule,status; }
-    [Serializable] public class Data { public int schema; public Node[] nodes; public Bar[] bars; public Panel[] panels; }
+    [Serializable] public class Data { public int schema; public string modelHash; public Node[] nodes; public Bar[] bars; public Panel[] panels; }
     public static MovingLoadViewer Instance { get; private set; }
     public static bool Active => Instance != null && Instance.active;
     private Data data;
@@ -131,6 +131,9 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
             if(!asset) throw new Exception("Ejecute carga_movil.py para generar las bases OpenSees.");
             data=JsonUtility.FromJson<Data>(asset.text);
             if(data.schema!=3 || data.panels.Length==0) throw new Exception("Regenerar SQ4: se requiere contrato versión 3.");
+            var modelHash=Resources.Load<TextAsset>("semana5_modelo_hash");
+            if(!modelHash || string.IsNullOrEmpty(data.modelHash) || data.modelHash!=modelHash.text.Trim())
+                throw new Exception("Bases SQ4 desactualizadas para este modelo/sección. Regenerar con analysis/load_cases/carga_movil.py.");
             xyz=new Vector3[data.nodes.Length];
             for(int k=0;k<xyz.Length;k++) xyz[k]=V(data.nodes[k].xyz);
             for(int k=0;k<data.bars.Length;k++) barIndex.Add(data.bars[k].id,k);

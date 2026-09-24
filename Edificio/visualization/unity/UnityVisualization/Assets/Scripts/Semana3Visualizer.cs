@@ -45,6 +45,18 @@ public class Semana3Visualizer : MonoBehaviour
     private string combinationError;
     public double MassG { get; private set; }
     public double MassQ { get; private set; }
+    public bool UsesExportedMassWeights
+    {
+        get
+        {
+            double g,q;
+            return metadata.TryGetValue("ponderador_G_masa",out string gt)
+                && metadata.TryGetValue("fraccion_Q_masa",out string qt)
+                && double.TryParse(gt,NumberStyles.Float,CultureInfo.InvariantCulture,out g)
+                && double.TryParse(qt,NumberStyles.Float,CultureInfo.InvariantCulture,out q)
+                && Math.Abs(MassG-g)<1e-10 && Math.Abs(MassQ-q)<1e-10;
+        }
+    }
     private string massGText, massQText, massError;
     private double gravity;
     private class MassParts { public string block; public float z; public double g,q,gx,gy,qx,qy,alpha; }
@@ -208,8 +220,8 @@ public class Semana3Visualizer : MonoBehaviour
         double[] next = new double[4];
         for (int k=0;k<4;k++)
             if (!double.TryParse(coefficientText[k].Trim().Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out next[k])
-                || double.IsNaN(next[k]) || double.IsInfinity(next[k]) || Math.Abs(next[k]) > 1000)
-            { combinationError = "Introduce cuatro números finitos entre −1000 y 1000 (coma o punto decimal)."; return; }
+                || double.IsNaN(next[k]) || double.IsInfinity(next[k]) || next[k] < (k<2 ? 0.0 : -2.0) || next[k] > 2.0)
+            { combinationError = "λG/λQ: 0 a 2; λEX/λEY: −2 a 2. Usa coma o punto decimal."; return; }
         RebuildCombination(next);
         combinationError=null;
         if (ready && selectedCase=="R") RebuildResponse();
@@ -242,18 +254,31 @@ public class Semana3Visualizer : MonoBehaviour
     private void DrawCombination()
     {
         GUILayout.Label("R = λG·G + λQ·Q + λEX·EX + λEY·EY",noteStyle);
+        GUILayout.Label("Desliza para actualizar R al instante. λ sísmicos admiten signo ±. Unidades: respuestas del modelo.",noteStyle);
         for(int k=0;k<4;k++)
         {
-            GUILayout.BeginHorizontal(); GUILayout.Label("λ"+BaseCases[k],GUILayout.Width(55));
-            coefficientText[k]=GUILayout.TextField(coefficientText[k]); GUILayout.EndHorizontal();
+            double parsed;
+            if(!double.TryParse(coefficientText[k].Trim().Replace(',', '.'),NumberStyles.Float,CultureInfo.InvariantCulture,out parsed) || double.IsNaN(parsed) || double.IsInfinity(parsed)) parsed=Combination[k];
+            float lo=k<2?0f:-2f, hi=2f;
+            GUILayout.BeginHorizontal(); GUILayout.Label("λ"+BaseCases[k],GUILayout.Width(48));
+            float next=GUILayout.HorizontalSlider(Mathf.Clamp((float)parsed,lo,hi),lo,hi,GUILayout.Width(130));
+            string typed=GUILayout.TextField(coefficientText[k],GUILayout.Width(58));
+            if(typed!=coefficientText[k]) coefficientText[k]=typed;
+            if(Math.Abs(next-parsed)>0.0001f)
+            {
+                coefficientText[k]=next.ToString("F2",CultureInfo.InvariantCulture);
+                if(selectedCase!="R") selectedCase="R";
+                ApplyCombination();
+            }
+            GUILayout.EndHorizontal();
         }
         GUILayout.BeginHorizontal();
-        if(GUILayout.Button("Aplicar λ")) ApplyCombination();
-        if(GUILayout.Button("Restablecer")) ResetCombination();
+        if(GUILayout.Button("Aplicar valores escritos")) { if(selectedCase!="R") selectedCase="R"; ApplyCombination(); }
+        if(GUILayout.Button("Restablecer base")) { if(selectedCase!="R") selectedCase="R"; ResetCombination(); }
         GUILayout.EndHorizontal();
         if(combinationError!=null) GUILayout.Label(combinationError,noteStyle);
         GUILayout.Label("Aplicados: "+Combination[0]+" G; "+Combination[1]+" Q; "+Combination[2]+" EX; "+Combination[3]+" EY",noteStyle);
-        GUILayout.Label("Superposición elástica con los EX/EY actuales. Los λ combinan respuestas; los α determinan la masa sísmica.",noteStyle);
+        GUILayout.Label("La superposición usa bases elásticas del mismo modelo; cambiar λ no requiere reanálisis. α cambia la masa pseudoestática y su alcance depende de las bases disponibles.",noteStyle);
     }
 
     private static float F(string value) { return float.Parse(value, CultureInfo.InvariantCulture); }
