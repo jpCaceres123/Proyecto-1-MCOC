@@ -84,6 +84,7 @@ def build_model():
             transform = 1
         else:
             transform = 2
+        section = element.get("section_override", section)
         ops.element("elasticBeamColumn", element["id"], element["i"], element["j"],
                     section["A_m2"], E, G, section["J_m4"], section["Iy_m4"],
                     section["Iz_m4"], transform)

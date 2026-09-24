@@ -37,7 +37,7 @@ public class BuildingVisualizer : MonoBehaviour
     private bool levelMenu;
     private Material concreteBeamMaterial, grassMaterial, skyMaterial;
 
-    private struct Element { public int id, i, j; public string type; }
+    private struct Element { public int id, i, j; public string type; public float sectionB, sectionH; }
     private struct Wall { public int id; public Vector3 a, b; public float zMin, zMax, thickness; }
     private struct SlabVoid { public float xMin, xMax, zMin, zMax; }
     private class Slab
@@ -97,7 +97,7 @@ public class BuildingVisualizer : MonoBehaviour
                 }
                 else if (p[0] == "E" && p[2] != "WALL")
                 {
-                    elements.Add(new Element { id = int.Parse(p[1]), type = p[2], i = int.Parse(p[3]), j = int.Parse(p[4]) });
+                    elements.Add(new Element { id = int.Parse(p[1]), type = p[2], i = int.Parse(p[3]), j = int.Parse(p[4]), sectionB = p.Length > 14 && !string.IsNullOrEmpty(p[13]) ? ParseFloat(p[13]) : 0f, sectionH = p.Length > 14 && !string.IsNullOrEmpty(p[14]) ? ParseFloat(p[14]) : 0f });
                     if (p[2] == "STEEL_COLUMN_SHS300x20") steelColumnCount++;
                 }
                 else if (p[0] == "W") walls.Add(new Wall { id = int.Parse(p[1]), a = StructuralToUnity(ParseFloat(p[3]), ParseFloat(p[4]), 0), b = StructuralToUnity(ParseFloat(p[6]), ParseFloat(p[7]), 0), zMin = ParseFloat(p[5]), zMax = ParseFloat(p[8]), thickness = ParseFloat(p[9]) });
@@ -252,7 +252,7 @@ public class BuildingVisualizer : MonoBehaviour
             bool column = e.type == "COLUMN" || steelColumn;
             try
             {
-                CreateMember(e.type + "_ID_" + e.id, e.type, nodes[e.i], nodes[e.j], steelColumn ? new Color(.15f, .78f, .72f) : (column ? new Color(.85f, .18f, .12f) : new Color(.10f, .35f, .85f)), column ? columnRoot : beamRoot);
+                CreateMember(e.type + "_ID_" + e.id, e.type, nodes[e.i], nodes[e.j], steelColumn ? new Color(.15f, .78f, .72f) : (column ? new Color(.85f, .18f, .12f) : new Color(.10f, .35f, .85f)), column ? columnRoot : beamRoot, e.sectionB, e.sectionH);
                 CreateLocalAxes(e.id, nodes[e.i], nodes[e.j]);
                 if (e.id % 50 == 0) Debug.Log("Elementos generados hasta ID: " + e.id);
             }
@@ -357,13 +357,14 @@ public class BuildingVisualizer : MonoBehaviour
         }
     }
 
-    private void CreateMember(string name, string type, Vector3 a, Vector3 b, Color color, Transform parent)
+    private void CreateMember(string name, string type, Vector3 a, Vector3 b, Color color, Transform parent, float sectionB, float sectionH)
     {
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube); go.name = name; go.transform.SetParent(parent); Vector3 d = b - a;
         go.transform.position = (a + b) / 2; go.transform.rotation = Quaternion.FromToRotation(Vector3.up, d);
         bool steelColumn = type == "STEEL_COLUMN_SHS300x20";
         float width = steelColumn ? .30f : (type == "COLUMN" ? .70f : (type == "BEAM_SMALL" ? .30f : (type == "BEAM_40x60" ? .40f : .60f)));
         float depth = steelColumn ? .30f : (type == "COLUMN" ? .70f : (type == "BEAM_SMALL" ? .45f : (type == "BEAM_40x60" ? .60f : (type == "BEAM_VARIABLE" ? .35f : .80f))));
+        if (sectionB > 0f && sectionH > 0f) { width = sectionH; depth = sectionB; }
         go.transform.localScale = new Vector3(width, d.magnitude, depth);
         Renderer memberRenderer = go.GetComponent<Renderer>();
         SetMaterial(memberRenderer, color);

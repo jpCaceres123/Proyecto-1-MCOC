@@ -2,7 +2,12 @@
 
 Fecha de comprobación: 14 de septiembre de 2026.
 
-**Actualización de interfaz:** posteriormente se rediseñaron los controles móviles con paneles que se pueden cerrar, navegación inferior, escala de pantalla, área segura y pestañas del inspector. También se corrigió la restauración de visibilidad al volver a todos los niveles. La evaluación de interfaz original de este informe corresponde al estado previo; consultar [interfaz_celular.md](../Edificio/documentation/interfaz_celular.md) para el estado actualizado y sus límites de comprobación.
+> **Revisión de código 23-09-2026.** Esta carpeta no contiene metadatos Git, así que no fue posible verificar el commit indicado en el prompt ni separar cambios previos del usuario. En esta revisión los scripts `verification/interactive/verificar_semana05.py` y `verificar_modificaciones.py` no estaban presentes; ahora el primero se ejecutó y registró 120 errores por componente (traslaciones, rotaciones, acciones, diagramas y P–M, para tres combinaciones y dos formulaciones α), todos bajo tolerancia relativa 1e−5. El segundo se ejecutó en una copia temporal completa del checkout; carga y sección se analizaron y la restauración devolvió respuesta y hashes de Resources idénticos. En el checkout original se regeneraron las 312 bases SQ4: 652 paneles y 10 686 controles aprobados; luego pasaron las 29 pruebas unitarias. El hash que antes era incompatible ahora coincide.
+>
+> Se incorporaron sliders λ inmediatos, invalidación P–M por valores de demanda/capacidad, resolución sísmica con α, modificación real de sección por ID y bloqueo de SQ4 si el hash del modelo no coincide. La incompatibilidad inicial de SQ4 quedó corregida al regenerar las bases y exportar el hash vigente. Se ejecutó `verificar_modificaciones.py` en copia temporal: la viga 207 cambió de 0.80×0.60 m a 0.75×0.45 m, varió Vzi de 348.879910 a 340.259958 kN y Myi de −745.476764 a −694.973953 kN·m; la restauración fue exacta. Se intentó abrir una copia temporal del proyecto con Unity 6000.5.9f1; el editor solo emitió el inicio del registro/licencia y no produjo una compilación verificable. El recorrido visual y la captura siguen pendientes. El estado actualizado y los comandos están en [SEMANA5_VARIANTES.md](../../Edificio/documentation/SEMANA5_VARIANTES.md). Los resultados narrados más abajo corresponden a evidencias históricas ya presentes en el borrador y no sustituyen esas comprobaciones actuales.
+
+
+**Actualización de interfaz:** posteriormente se rediseñaron los controles móviles con paneles que se pueden cerrar, navegación inferior, escala de pantalla, área segura y pestañas del inspector. También se corrigió la restauración de visibilidad al volver a todos los niveles. La evaluación de interfaz original de este informe corresponde al estado previo; consultar [interfaz_celular.md](../../Edificio/documentation/interfaz_celular.md) para el estado actualizado y sus límites de comprobación.
 
 Proyecto utilizado: `C:\Users\nico0\OneDrive\Desktop\Proyecto-1-MCOC-main`.
 Modelo y análisis: `Edificio/`. Visor: `Edificio/visualization/unity/UnityVisualization`, escena `Assets/Main.unity`.
@@ -56,80 +61,37 @@ tratamiento como sección compuesta con los muros perpendiculares. Dentro del
 modelo rectangular solicitado, todos sus paños quedan dentro para EX, EY y R;
 la utilización máxima es 0,823 para el muro 2 y 0,827 para el muro 4.
 
-## 2. Dos modificaciones completas
+## 2. Dos categorías de modificación verificadas
 
-### 2.1 Cadena común de datos y cálculo
+### 2.1 Intensidad de carga viva
 
-1. **Dato:** `Edificio/data/parameters/parametros.json` o variante indicada con `--parametros`.
-2. **Modelo:** `Edificio/analysis/load_cases/casos.py`, funciones `vectors()` y `solve()`, construye los vectores de carga sobre el modelo de `Edificio/model/opensees/modelo_opensees_3d.py`. La geometría generada está en `Edificio/results/modelo_3d_manual.json`.
-3. **Sismo:** `Edificio/analysis/seismic/sismo.py`, `calcular_pisos()`, forma masas, centros de masa y fuerzas pseudoestáticas.
-4. **OpenSees:** `solve()` reconstruye el dominio, aplica la combinación explícita y resuelve. Recupera desplazamientos, reacciones y esfuerzos locales. No interpola resultados de otra variante para presentar el cambio como un análisis nuevo.
-5. **Resultados:** `Edificio/analysis/load_cases/ejecutar.py` orquesta casos, capacidad y verificaciones; escribe NPZ, JSON y CSV en `Edificio/results/`.
-6. **Exportación:** `export_unity()` en ese mismo archivo y módulos de `Edificio/visualization/exports/` actualizan `Assets/Resources/`. Entre los datos consumidos están `semana3_desplazamientos.csv`, `semana3_esfuerzos_locales.csv`, `semana3_pisos.csv` y `semana4_resultados.json`.
-7. **Unity:** detener Play, dejar importar los recursos y volver a Play en `Assets/Main.unity`. `Semana3Visualizer.Start()` vuelve a leerlos; `ElementInspector` y `StructuralPostprocessor` presentan respuestas. Un ejecutable ya construido necesita volver a compilarse: los Resources están empaquetados.
+Entrada base: `q_Q_kN_m2 = null`. Variante: `q_Q_kN_m2 = 4.0 kN/m²`. Se conserva geometría y rigidez, y se regeneran los casos con OpenSees.
 
-La comprobación automática de esta entrega llega hasta los archivos que consume Unity. El paso visual anterior es el procedimiento manual reproducible; no se presenta como interacción realizada en pantalla.
-
-### 2.2 Modificación A: intensidad de carga viva
-
-Entrada base: `q_Q_kN_m2 = null`, que conserva las intensidades de uso por zona. Variante: `q_Q_kN_m2 = 4.0`, una intensidad uniforme de **4 kN/m²** sobre las áreas cargadas. Es una prueba del flujo, no una sustitución definitiva de las cargas del proyecto.
-
-`vectors()` transforma las áreas tributarias en fuerzas Q y entrega los vectores al modelo. Al intervenir Q en la masa sísmica también cambian EX/EY. Se mantienen geometría, secciones y apoyos.
-
-| Magnitud | Base | Variante Q = 4 kN/m² |
+| Respuesta R | Base | Q = 4 kN/m² |
 |---|---:|---:|
-| Carga Q vertical total, magnitud [kN] | 24606.921695 | 25807.238184 |
-| Máximo absoluto uz del caso Q [mm] | 6.564188 | 6.050321 |
-| Fuerza EX total [kN] | 19402.148829 | 19522.180478 |
+| Máximo |uz| [m], nodo 900116 | 0.0336096580 | 0.0328676641 |
+| Vzi, elemento 207 [kN] | 348.879910 | 336.593528 |
+| Myi, elemento 207 [kN·m] | −745.476764 | −711.709899 |
 
-El máximo uz puede disminuir aunque la carga total crezca: la variante cambia la distribución espacial de Q, no multiplica por un factor uniforme las cargas anteriores por zona.
+Entrada: [mod_Q_parametros.json](../../Edificio/documentation/semana05_evidencias/mod_Q_parametros.json).
 
-Archivo de entrada reproducible: [mod_Q_parametros.json](../Edificio/documentation/semana05_evidencias/mod_Q_parametros.json).
-Registro de ejecución: [mod_Q.log](../Edificio/documentation/semana05_evidencias/mod_Q.log).
+### 2.2 Cambio de sección de viga
 
-### 2.3 Modificación B: aceleración pseudoestática
+El dato fuente de geometría selecciona la viga analítica ID 207 (`BEAM_X`, nodos 900000–601002): sección heredada 0.80×0.60 m; variante rectangular 0.75×0.45 m. La cadena recalcula A=0.3375 m², Iy=0.0158203 m⁴, Iz=0.00569531 m⁴ y J=0.0142629 m⁴, usa el override en el `elasticBeamColumn`, actualiza peso propio/masa y exporta dimensiones para la geometría Unity. Las salidas de `R` de la misma viga cambian a Vzi=340.259958 kN y Myi=−694.973953 kN·m. El máximo |uz| del edificio cambia de 0.0336096580 a 0.0336097043 m.
 
-Entrada base: `aceleracion_fraccion_g = 0.20`. Variante: **0.25**, conservando el patrón `uniforme_aceleracion`, masas y rigidez. Es un parámetro del laboratorio, no un valor normativo recalculado para el sitio.
+Entrada: [mod_seccion_viga_207_geometria.json](../../Edificio/documentation/semana05_evidencias/mod_seccion_viga_207_geometria.json). El flujo se verificó en una copia temporal del checkout; no se presentó capacidad P–M de viga porque esta variante no genera esa capacidad.
 
-En `sismo.py`, la masa deriva del peso G y 0.5 Q; la fuerza se obtiene como `F = masa × aceleración`. `casos.solve()` vuelve a aplicar EX/EY en los centros de masa mediante su representación de fuerza y momento equivalente.
+### 2.3 Ejecución y restauración
 
-| Magnitud | Base 0.20 g | Variante 0.25 g |
-|---|---:|---:|
-| Fuerza EX total [kN] | 19402.148829 | 24252.686036 |
-| Máximo absoluto ux de EX [mm] | 5.209994 | 6.512491 |
-| Razón de desplazamientos variante/base | — | 1.249999665 |
-
-La razón coincide con 0.25/0.20 = 1.25 dentro del error numérico. Esta comprobación tiene una predicción física independiente del valor exportado.
-
-Archivo de entrada: [mod_sismo_parametros.json](../Edificio/documentation/semana05_evidencias/mod_sismo_parametros.json).
-Registro: [mod_sismo.log](../Edificio/documentation/semana05_evidencias/mod_sismo.log).
-
-### 2.4 Reproducción y restauración
-
-Ejecutar desde la raíz del proyecto, con las dependencias de `Edificio/requirements.txt` instaladas:
+Desde la raíz del proyecto, con `Edificio/requirements.txt` instalado:
 
 ```powershell
 python Edificio/verification/interactive/verificar_modificaciones.py
 ```
 
-Este script ejecuta el estado base, las dos variantes y finalmente restaura el estado base, incluso si falla una variante. Registra fuerzas aplicadas/reacciones, desplazamientos máximos y hashes SHA-256 de todos los CSV/JSON en Resources. La ejecución realizada confirmó que los resultados y hashes finales coinciden exactamente con los iniciales.
+El script crea las entradas de variante, regenera la geometría y resuelve las bases/casos, recoge desplazamientos y acciones de viga en `R`, vuelve a generar el modelo base y comprueba la respuesta base más el SHA-256 de los 667 archivos de Resources, incluidos los nodos binarios SQ4. El registro de esta ejecución es [modificaciones_ejecucion.json](../../Edificio/documentation/semana05_evidencias/modificaciones_ejecucion.json); `restored_exactly` es true.
 
-Para observar **una variante** en Unity, detener Play y ejecutar solo su comando:
-
-```powershell
-python Edificio/analysis/load_cases/ejecutar.py --parametros Edificio/documentation/semana05_evidencias/mod_Q_parametros.json
-# Reiniciar Play; seleccionar Q y revisar deformada/inspector.
-
-python Edificio/analysis/load_cases/ejecutar.py --parametros Edificio/documentation/semana05_evidencias/mod_sismo_parametros.json
-# Reiniciar Play; seleccionar EX y revisar fuerzas y deformada.
-
-# Restaurar al terminar y reiniciar Play:
-python Edificio/analysis/load_cases/ejecutar.py
-```
-
-Las dos variantes parten de la misma base: no se acumulan entre sí. Detalle de resultados y hashes: [modificaciones.json](../Edificio/documentation/semana05_evidencias/modificaciones.json).
-
-Para modificaciones futuras de geometría, regenerar primero el modelo con `python Edificio/model/builders/generar_modelo_manual.py`; los dos ejemplos anteriores solo cambian cargas y no necesitan ese paso.
+Los resultados de variante se escribieron en una copia temporal para no sustituir archivos generados locales. Para ver una variante en Unity, correr el script en una copia de trabajo, abrir `Assets/Main.unity`, y regenerar SQ4 con `python Edificio/analysis/load_cases/carga_movil.py` antes de usarlo con el nuevo hash. El estado base queda restaurado con el mismo comando de verificación.
 
 ## 3. Superposición interactiva: tres estados
 
@@ -173,7 +135,7 @@ python Edificio/analysis/load_cases/ejecutar.py
 python Edificio/verification/interactive/verificar_semana05.py
 ```
 
-Evidencia completa, incluidas reacciones, identificadores y errores absolutos: [superposicion.csv](../Edificio/documentation/semana05_evidencias/superposicion.csv) y [superposicion.json](../Edificio/documentation/semana05_evidencias/superposicion.json). El caso S2 coincide con la combinación base; S1 y S3 amplían la verificación a otro reparto y cambio de sentido sísmico.
+Evidencia completa, incluidas reacciones, identificadores y errores absolutos: [superposicion.csv](../../Edificio/documentation/semana05_evidencias/superposicion.csv) y [superposicion.json](../../Edificio/documentation/semana05_evidencias/superposicion.json). El caso S2 coincide con la combinación base; S1 y S3 amplían la verificación a otro reparto y cambio de sentido sísmico.
 
 ## 4. Sidequest: carga móvil
 
@@ -194,7 +156,7 @@ La carga localizada P se reparte como `P(1−η)` y `Pη` sobre dos bordes opues
 
 La actualización tiene 148 controles SQ4 aprobados, 25 pruebas unitarias aprobadas y comprobación de ejecución/capturas del visor Windows. La limitación heredada de momento global por vínculos equalDOF no coincidentes se mantiene documentada; no se afirma validación estructural integral del edificio ni validación iPhone.
 
-Ver [reporte de entrega y capturas](2026-09-21_vigas_y_carga_movil.md) y [regla física, controles y uso](../Edificio/documentation/CARGA_MOVIL.md). Los demás apartados de este informe conservan la evaluación histórica original salvo indicación expresa.
+Ver [reporte de entrega y capturas](../2026-09-21_vigas_y_carga_movil.md) y [regla física, controles y uso](../../Edificio/documentation/CARGA_MOVIL.md). Los demás apartados de este informe conservan la evaluación histórica original salvo indicación expresa.
 
 ## 5. UX estructural
 
@@ -237,7 +199,7 @@ BuildFailedException: Falta iOS Build Support en este editor.
 No se creó proyecto Xcode ni IPA.
 ```
 
-Registro: [unity_ios.log](../Edificio/documentation/semana05_evidencias/unity_ios.log). Estado adicional en `Edificio/visualization/unity/UnityVisualization/Build/iOS/estado.txt`.
+No se encontró `unity_ios.log` en el checkout revisado; consultar el estado del build en `Edificio/visualization/unity/UnityVisualization/Build/iOS/estado.txt`. No hay un archivo de estado de build iOS en el checkout revisado.
 
 El proyecto declara Unity **6000.5.10f1**. Para comprobar compilación se utilizó el editor disponible **6000.5.9f1**; se restauró la declaración original de versión después del intento. La comprobación no sustituye la compilación con la versión declarada y módulo iOS en un Mac.
 

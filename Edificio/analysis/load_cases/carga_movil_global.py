@@ -17,7 +17,7 @@ def prepare():
     bars=[]
     for b in data['elements']:
         if b['type']=='WALL': continue
-        sec=data[sections.get(b['type'],'section_beams')]
+        sec=b.get('section_override',data[sections.get(b['type'],'section_beams')])
         mat=data['material_steel' if b['type'].startswith('STEEL') else 'material']
         bars.append(dict(id=b['id'],i=indices[b['i']],j=indices[b['j']],
             x=ops.eleResponse(b['id'],'xlocal'),y=ops.eleResponse(b['id'],'ylocal'),z=ops.eleResponse(b['id'],'zlocal'),

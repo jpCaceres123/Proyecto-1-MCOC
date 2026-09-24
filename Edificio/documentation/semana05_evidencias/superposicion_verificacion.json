@@ -1,0 +1,1082 @@
+[
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "u_m",
+    "component": "ux",
+    "unit": "m",
+    "max_abs_error": 6.903770074064355e-11,
+    "relative_error": 3.015683881290935e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "u_m",
+    "component": "uy",
+    "unit": "m",
+    "max_abs_error": 6.370922791599544e-12,
+    "relative_error": 1.6846710508836923e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "u_m",
+    "component": "uz",
+    "unit": "m",
+    "max_abs_error": 2.846497343389487e-11,
+    "relative_error": 1.0692459716100693e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "rotation_rad",
+    "component": "rx",
+    "unit": "rad",
+    "max_abs_error": 2.3230349935343675e-12,
+    "relative_error": 3.9529868615663616e-10
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "rotation_rad",
+    "component": "ry",
+    "unit": "rad",
+    "max_abs_error": 9.990795219122842e-12,
+    "relative_error": 3.5445085179385102e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "rotation_rad",
+    "component": "rz",
+    "unit": "rad",
+    "max_abs_error": 1.761760206824709e-15,
+    "relative_error": 2.2662993901227338e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "local_force_kN",
+    "component": "N",
+    "unit": "kN",
+    "max_abs_error": 4.490816368729611e-05,
+    "relative_error": 6.9982755882252165e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "local_force_kN",
+    "component": "Vy",
+    "unit": "kN",
+    "max_abs_error": 1.537047580768558e-06,
+    "relative_error": 3.5139933763317616e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "local_force_kN",
+    "component": "Vz",
+    "unit": "kN",
+    "max_abs_error": 0.00048035998827344883,
+    "relative_error": 3.5415826110936453e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "local_moment_kNm",
+    "component": "T",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 4.490816368729611e-05,
+    "relative_error": 6.9982755882252165e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "local_moment_kNm",
+    "component": "My",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.537047580768558e-06,
+    "relative_error": 3.5139933763317616e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "local_moment_kNm",
+    "component": "Mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.00048035998827344883,
+    "relative_error": 3.5415826110936453e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "n",
+    "unit": "kN",
+    "max_abs_error": 4.490816368729611e-05,
+    "relative_error": 6.9982755882252165e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "vy",
+    "unit": "kN",
+    "max_abs_error": 1.537047580768558e-06,
+    "relative_error": 3.5139933763317616e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "vz",
+    "unit": "kN",
+    "max_abs_error": 0.00048035998827344883,
+    "relative_error": 3.5415826110936453e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "t",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.1329629501233285e-07,
+    "relative_error": 1.679455546978377e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "my",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 6.0045000225272815e-05,
+    "relative_error": 4.142615940467373e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 3.554204184297305e-06,
+    "relative_error": 3.923241330460844e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "wall_P",
+    "component": "combined wall demand",
+    "unit": "kN",
+    "max_abs_error": 5.385068698160467e-05,
+    "relative_error": 1.7826998308722215e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S1",
+    "quantity": "wall_M",
+    "component": "combined wall demand",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.0003639073779595492,
+    "relative_error": 1.69292124306252e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "u_m",
+    "component": "ux",
+    "unit": "m",
+    "max_abs_error": 4.416134086020207e-10,
+    "relative_error": 2.1888217472050408e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "u_m",
+    "component": "uy",
+    "unit": "m",
+    "max_abs_error": 2.3410252745657487e-10,
+    "relative_error": 6.809792260106691e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "u_m",
+    "component": "uz",
+    "unit": "m",
+    "max_abs_error": 1.7203945212873606e-10,
+    "relative_error": 5.1187504607598795e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "rotation_rad",
+    "component": "rx",
+    "unit": "rad",
+    "max_abs_error": 2.1560748832464248e-11,
+    "relative_error": 2.8956779864944334e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "rotation_rad",
+    "component": "ry",
+    "unit": "rad",
+    "max_abs_error": 8.830984064129264e-11,
+    "relative_error": 2.463129316402174e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "rotation_rad",
+    "component": "rz",
+    "unit": "rad",
+    "max_abs_error": 1.0247132201005473e-13,
+    "relative_error": 6.2024288503490415e-06
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "local_force_kN",
+    "component": "N",
+    "unit": "kN",
+    "max_abs_error": 8.838136477606895e-05,
+    "relative_error": 1.0945458562029442e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "local_force_kN",
+    "component": "Vy",
+    "unit": "kN",
+    "max_abs_error": 1.4163961822077908e-05,
+    "relative_error": 2.6038610497654062e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "local_force_kN",
+    "component": "Vz",
+    "unit": "kN",
+    "max_abs_error": 0.004457410892428015,
+    "relative_error": 2.6763986911677586e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "local_moment_kNm",
+    "component": "T",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 8.838136477606895e-05,
+    "relative_error": 1.0945458562029442e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "local_moment_kNm",
+    "component": "My",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.4163961822077908e-05,
+    "relative_error": 2.6038610497654062e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "local_moment_kNm",
+    "component": "Mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.004457410892428015,
+    "relative_error": 2.6763986911677586e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "n",
+    "unit": "kN",
+    "max_abs_error": 8.838136477606895e-05,
+    "relative_error": 1.0945458562029442e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "vy",
+    "unit": "kN",
+    "max_abs_error": 1.4163961822077908e-05,
+    "relative_error": 2.6038610497654062e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "vz",
+    "unit": "kN",
+    "max_abs_error": 0.004457410894247005,
+    "relative_error": 2.676398692259949e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "t",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.09777267454092e-06,
+    "relative_error": 1.2854005612642381e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "my",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.0005571763776970329,
+    "relative_error": 2.676624313011375e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 2.976915834551619e-05,
+    "relative_error": 2.641718150293033e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "wall_P",
+    "component": "combined wall demand",
+    "unit": "kN",
+    "max_abs_error": 0.00013976506545532175,
+    "relative_error": 3.779352225056862e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S2",
+    "quantity": "wall_M",
+    "component": "combined wall demand",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.001805603085358598,
+    "relative_error": 1.517770980866578e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "u_m",
+    "component": "ux",
+    "unit": "m",
+    "max_abs_error": 4.2155712601243955e-10,
+    "relative_error": 2.1535849529581547e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "u_m",
+    "component": "uy",
+    "unit": "m",
+    "max_abs_error": 6.659998236496073e-11,
+    "relative_error": 6.911373294851465e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "u_m",
+    "component": "uz",
+    "unit": "m",
+    "max_abs_error": 3.229725462766675e-10,
+    "relative_error": 1.4144379741708904e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "rotation_rad",
+    "component": "rx",
+    "unit": "rad",
+    "max_abs_error": 2.5064438656627504e-11,
+    "relative_error": 5.004369818732366e-09
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "rotation_rad",
+    "component": "ry",
+    "unit": "rad",
+    "max_abs_error": 1.179217007650805e-10,
+    "relative_error": 4.908926689368181e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "rotation_rad",
+    "component": "rz",
+    "unit": "rad",
+    "max_abs_error": 4.104472794850013e-14,
+    "relative_error": 3.79148312757826e-06
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "local_force_kN",
+    "component": "N",
+    "unit": "kN",
+    "max_abs_error": 9.797114125831285e-05,
+    "relative_error": 1.7873713540437023e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "local_force_kN",
+    "component": "Vy",
+    "unit": "kN",
+    "max_abs_error": 1.892801547853651e-05,
+    "relative_error": 4.869368211534138e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "local_force_kN",
+    "component": "Vz",
+    "unit": "kN",
+    "max_abs_error": 0.002576051680080127,
+    "relative_error": 1.194859646728221e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "local_moment_kNm",
+    "component": "T",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 9.797114125831285e-05,
+    "relative_error": 1.7873713540437023e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "local_moment_kNm",
+    "component": "My",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.892801547853651e-05,
+    "relative_error": 4.869368211534138e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "local_moment_kNm",
+    "component": "Mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.002576051680080127,
+    "relative_error": 1.194859646728221e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "n",
+    "unit": "kN",
+    "max_abs_error": 9.797114125831285e-05,
+    "relative_error": 1.7873713540437023e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "vy",
+    "unit": "kN",
+    "max_abs_error": 1.892801547853651e-05,
+    "relative_error": 4.869368211534138e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "vz",
+    "unit": "kN",
+    "max_abs_error": 0.0025760516837181058,
+    "relative_error": 1.1946708118885613e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "t",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.022358887325936e-06,
+    "relative_error": 1.7807420296703293e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "my",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.0003220064691049629,
+    "relative_error": 1.1947338103190035e-07
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 3.9914941362795275e-05,
+    "relative_error": 4.9659317729050244e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "wall_P",
+    "component": "combined wall demand",
+    "unit": "kN",
+    "max_abs_error": 0.00025643813110320934,
+    "relative_error": 9.118009190686483e-08
+  },
+  {
+    "mass_case": "alphaG=1,alphaQ=.5",
+    "state": "S3",
+    "quantity": "wall_M",
+    "component": "combined wall demand",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.0030112101521808654,
+    "relative_error": 1.4995176454061633e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "u_m",
+    "component": "ux",
+    "unit": "m",
+    "max_abs_error": 6.903770074064355e-11,
+    "relative_error": 3.015683881290935e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "u_m",
+    "component": "uy",
+    "unit": "m",
+    "max_abs_error": 6.370922791599544e-12,
+    "relative_error": 1.6846710508836923e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "u_m",
+    "component": "uz",
+    "unit": "m",
+    "max_abs_error": 2.846497343389487e-11,
+    "relative_error": 1.0692459716100693e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "rotation_rad",
+    "component": "rx",
+    "unit": "rad",
+    "max_abs_error": 2.3230349935343675e-12,
+    "relative_error": 3.9529868615663616e-10
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "rotation_rad",
+    "component": "ry",
+    "unit": "rad",
+    "max_abs_error": 9.990795219122842e-12,
+    "relative_error": 3.5445085179385102e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "rotation_rad",
+    "component": "rz",
+    "unit": "rad",
+    "max_abs_error": 1.761760206824709e-15,
+    "relative_error": 2.2662993901227338e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "local_force_kN",
+    "component": "N",
+    "unit": "kN",
+    "max_abs_error": 4.490816368729611e-05,
+    "relative_error": 6.9982755882252165e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "local_force_kN",
+    "component": "Vy",
+    "unit": "kN",
+    "max_abs_error": 1.537047580768558e-06,
+    "relative_error": 3.5139933763317616e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "local_force_kN",
+    "component": "Vz",
+    "unit": "kN",
+    "max_abs_error": 0.00048035998827344883,
+    "relative_error": 3.5415826110936453e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "local_moment_kNm",
+    "component": "T",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 4.490816368729611e-05,
+    "relative_error": 6.9982755882252165e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "local_moment_kNm",
+    "component": "My",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.537047580768558e-06,
+    "relative_error": 3.5139933763317616e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "local_moment_kNm",
+    "component": "Mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.00048035998827344883,
+    "relative_error": 3.5415826110936453e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "n",
+    "unit": "kN",
+    "max_abs_error": 4.490816368729611e-05,
+    "relative_error": 6.9982755882252165e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "vy",
+    "unit": "kN",
+    "max_abs_error": 1.537047580768558e-06,
+    "relative_error": 3.5139933763317616e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "vz",
+    "unit": "kN",
+    "max_abs_error": 0.00048035998827344883,
+    "relative_error": 3.5415826110936453e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "t",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.1329629501233285e-07,
+    "relative_error": 1.679455546978377e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "my",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 6.0045000225272815e-05,
+    "relative_error": 4.142615940467373e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "bar_diagram",
+    "component": "mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 3.554204184297305e-06,
+    "relative_error": 3.923241330460844e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "wall_P",
+    "component": "combined wall demand",
+    "unit": "kN",
+    "max_abs_error": 5.385068698160467e-05,
+    "relative_error": 1.7826998308722215e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S1",
+    "quantity": "wall_M",
+    "component": "combined wall demand",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.0003639073779595492,
+    "relative_error": 1.69292124306252e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "u_m",
+    "component": "ux",
+    "unit": "m",
+    "max_abs_error": 4.639276521539032e-10,
+    "relative_error": 2.891436215625491e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "u_m",
+    "component": "uy",
+    "unit": "m",
+    "max_abs_error": 1.5409765087223692e-10,
+    "relative_error": 6.16780373515678e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "u_m",
+    "component": "uz",
+    "unit": "m",
+    "max_abs_error": 1.7275455371779103e-10,
+    "relative_error": 5.154161951212817e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "rotation_rad",
+    "component": "rx",
+    "unit": "rad",
+    "max_abs_error": 4.50722749054111e-11,
+    "relative_error": 6.075340646551474e-09
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "rotation_rad",
+    "component": "ry",
+    "unit": "rad",
+    "max_abs_error": 1.5619064375194114e-10,
+    "relative_error": 4.377107058786374e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "rotation_rad",
+    "component": "rz",
+    "unit": "rad",
+    "max_abs_error": 1.3421089640696148e-14,
+    "relative_error": 9.069618380097148e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "local_force_kN",
+    "component": "N",
+    "unit": "kN",
+    "max_abs_error": 0.00013940875624030014,
+    "relative_error": 1.7263670853111066e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "local_force_kN",
+    "component": "Vy",
+    "unit": "kN",
+    "max_abs_error": 1.8924653659269097e-05,
+    "relative_error": 3.477425942996472e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "local_force_kN",
+    "component": "Vz",
+    "unit": "kN",
+    "max_abs_error": 0.005859075426997151,
+    "relative_error": 4.654498373532697e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "local_moment_kNm",
+    "component": "T",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.00013940875624030014,
+    "relative_error": 1.7263670853111066e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "local_moment_kNm",
+    "component": "My",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 1.8924653659269097e-05,
+    "relative_error": 3.477425942996472e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "local_moment_kNm",
+    "component": "Mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.005859075426997151,
+    "relative_error": 4.654498373532697e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "n",
+    "unit": "kN",
+    "max_abs_error": 0.00013940875624030014,
+    "relative_error": 1.7263670853111066e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "vy",
+    "unit": "kN",
+    "max_abs_error": 1.8924653659269097e-05,
+    "relative_error": 3.477425942996472e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "vz",
+    "unit": "kN",
+    "max_abs_error": 0.005859075428816141,
+    "relative_error": 4.6544983749777174e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "t",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 8.71667900526063e-07,
+    "relative_error": 1.0236267798661659e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "my",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.000732384448610901,
+    "relative_error": 4.051638007460019e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "bar_diagram",
+    "component": "mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 3.940597798646195e-05,
+    "relative_error": 3.494889675571583e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "wall_P",
+    "component": "combined wall demand",
+    "unit": "kN",
+    "max_abs_error": 0.00014688349995140015,
+    "relative_error": 3.966317851449897e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S2",
+    "quantity": "wall_M",
+    "component": "combined wall demand",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.0044835427124780836,
+    "relative_error": 5.32752704212798e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "u_m",
+    "component": "ux",
+    "unit": "m",
+    "max_abs_error": 1.333902425798214e-09,
+    "relative_error": 9.248574757407641e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "u_m",
+    "component": "uy",
+    "unit": "m",
+    "max_abs_error": 3.5746731681489397e-10,
+    "relative_error": 4.832397646178247e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "u_m",
+    "component": "uz",
+    "unit": "m",
+    "max_abs_error": 4.749117444788342e-10,
+    "relative_error": 2.0670090259016655e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "rotation_rad",
+    "component": "rx",
+    "unit": "rad",
+    "max_abs_error": 8.481682804012403e-11,
+    "relative_error": 1.6801629250364673e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "rotation_rad",
+    "component": "ry",
+    "unit": "rad",
+    "max_abs_error": 1.592486620816038e-10,
+    "relative_error": 6.573057987738169e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "rotation_rad",
+    "component": "rz",
+    "unit": "rad",
+    "max_abs_error": 3.464416000590578e-15,
+    "relative_error": 5.396628043889145e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "local_force_kN",
+    "component": "N",
+    "unit": "kN",
+    "max_abs_error": 0.00033114812936219096,
+    "relative_error": 6.042929671763648e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "local_force_kN",
+    "component": "Vy",
+    "unit": "kN",
+    "max_abs_error": 2.1761979070333837e-05,
+    "relative_error": 5.604012981396776e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "local_force_kN",
+    "component": "Vz",
+    "unit": "kN",
+    "max_abs_error": 0.010783365072711604,
+    "relative_error": 6.545035720623019e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "local_moment_kNm",
+    "component": "T",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.00033114812936219096,
+    "relative_error": 6.042929671763648e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "local_moment_kNm",
+    "component": "My",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 2.1761979070333837e-05,
+    "relative_error": 5.604012981396776e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "local_moment_kNm",
+    "component": "Mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.010783365072711604,
+    "relative_error": 6.545035720623019e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "n",
+    "unit": "kN",
+    "max_abs_error": 0.0003311481294758778,
+    "relative_error": 6.042929673838253e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "vy",
+    "unit": "kN",
+    "max_abs_error": 2.1761979070333837e-05,
+    "relative_error": 5.604012981396776e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "vz",
+    "unit": "kN",
+    "max_abs_error": 0.010783365076349583,
+    "relative_error": 6.543682231923383e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "t",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 2.034879649670529e-06,
+    "relative_error": 3.5220427751825254e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "my",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.0013479206718329806,
+    "relative_error": 6.544133655853699e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "bar_diagram",
+    "component": "mz",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 4.903233264297313e-05,
+    "relative_error": 6.10745031082392e-08
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "wall_P",
+    "component": "combined wall demand",
+    "unit": "kN",
+    "max_abs_error": 0.0002934257134370455,
+    "relative_error": 1.0458765914856435e-07
+  },
+  {
+    "mass_case": "alphaG=.8,alphaQ=.25",
+    "state": "S3",
+    "quantity": "wall_M",
+    "component": "combined wall demand",
+    "unit": "kN\u00b7m",
+    "max_abs_error": 0.009939807752743945,
+    "relative_error": 6.317161706686558e-07
+  }
+]

@@ -64,7 +64,7 @@ def distributed_profiles(data, cfg):
                 'BEAM_SMALL': 'section_small_beams', 'BEAM_VARIABLE': 'section_variable_beams',
                 'BEAM_40x60': 'section_40x60_beams'}
     for element in elements.values():
-        area = data[sections.get(element['type'], 'section_beams')]['A_m2']
+        area = element.get('section_override', {}).get('A_m2', data[sections.get(element['type'], 'section_beams')]['A_m2'])
         unit_weight = (data['material_steel']['density_kg_m3'] * 9.80665 / 1000.0
                        if element['type'] == 'STEEL_COLUMN_SHS300x20'
                        else cfg['peso_especifico_HA_kN_m3'])
@@ -229,7 +229,7 @@ def vectors(data, cfg):
     for e in data['elements']:
         if e['type'] == 'WALL':
             continue
-        area = data[sections.get(e['type'], 'section_beams')]['A_m2']
+        area = e.get('section_override', {}).get('A_m2', data[sections.get(e['type'], 'section_beams')]['A_m2'])
         length = np.linalg.norm(np.array(ops.nodeCoord(e['j'])) - ops.nodeCoord(e['i']))
         unit_weight = (data['material_steel']['density_kg_m3'] * 9.80665 / 1000.0
                        if e['type'] == 'STEEL_COLUMN_SHS300x20'

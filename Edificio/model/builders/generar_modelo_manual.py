@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import json
+import argparse
 
 from openpyxl import Workbook
 
@@ -40,8 +41,20 @@ def split_walls_by_story(walls, levels):
     return result
 
 
-def main():
-    config = json.loads((GEOMETRY / "geometria_manual.json").read_text(encoding="utf-8"))
+def rectangular_section(b, h):
+    if b <= 0 or h <= 0:
+        raise ValueError("Las dimensiones de seccion deben ser positivas")
+    short, long = min(b, h), max(b, h)
+    # Saint-Venant rectangular approximation, matching the beam model convention.
+    ratio = short / long
+    j = long * short**3 * (1.0/3.0 - 0.21*ratio*(1.0-ratio**4/12.0))
+    return {"b_m": b, "h_m": h, "A_m2": b*h,
+            "Iy_m4": h*b**3/12.0, "Iz_m4": b*h**3/12.0, "J_m4": j}
+
+
+def main(geometry_path=None):
+    geometry_path = Path(geometry_path) if geometry_path else GEOMETRY / "geometria_manual.json"
+    config = json.loads(geometry_path.read_text(encoding="utf-8"))
     loads = json.loads(LOADS.read_text(encoding="utf-8")) if LOADS.exists() else {"levels": [], "lt2": {}, "lt2_load_cases": []}
     joint = config.get("subbuildings", {}).get("dilatation_joint")
 
@@ -282,6 +295,12 @@ def main():
                 next_split_element += 1
     elements = split_elements
     eid = next_split_element
+    for element in elements:
+        dims = config.get("element_section_overrides", {}).get(str(element["id"]))
+        if dims:
+            if not element["type"].startswith("BEAM"):
+                raise ValueError(f"El elemento {element['id']} no es una viga")
+            element["section_override"] = rectangular_section(float(dims["b_m"]), float(dims["h_m"]))
 
     def covered(intervals, start, end):
         current = start
@@ -1434,9 +1453,9 @@ def main():
         audit_lines.append(f'{wall["id"]},{wall["source_wall_id"]},{wall["floor"]},{wall["z_i_m"]},{wall["z_j_m"]},{height},{length},{wall["thickness_m"]},{length*height}')
     WALL_AUDIT.write_text("\n".join(audit_lines)+"\n", encoding="utf-8")
     CSV.parent.mkdir(parents=True, exist_ok=True)
-    lines = ["kind,id,type,i,j,aux,x_m,y_m,z_m,level,status,restraint,axis"]
+    lines = ["kind,id,type,i,j,aux,x_m,y_m,z_m,level,status,restraint,axis,section_b_m,section_h_m"]
     lines.extend(f'N,{n["id"]},NODE,,,,{n["x_m"]},{n["y_m"]},{n["z_m"]},{n["level"]},{n["status"]},{str(n["restraint"]).lower()},{n["axis"]}' for n in nodes)
-    lines.extend(f'E,{e["id"]},{e["type"]},{e["i"]},{e["j"]},,,,,,{e["status"]}' for e in elements)
+    lines.extend(f'E,{e["id"]},{e["type"]},{e["i"]},{e["j"]},,,,,,{e["status"]},,,{e.get("section_override", {}).get("b_m", "")},{e.get("section_override", {}).get("h_m", "")}' for e in elements)
     for wall in wall_segments:
         lines.append(
             f'W,{wall["id"]},WALL,{wall["x_i_m"]},{wall["y_i_m"]},{wall["z_i_m"]},'
@@ -1488,4 +1507,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--geometria", type=Path, help="JSON fuente de geometria (base o variante)")
+    main(parser.parse_args().geometria)

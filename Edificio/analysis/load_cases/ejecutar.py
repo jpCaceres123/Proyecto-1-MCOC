@@ -41,7 +41,9 @@ def export_unity(cfg, global_results, capacity_results, out):
     """Exporta CSV simples que Unity puede leer con TextAsset/Resources."""
     resources=ROOT/'visualization'/'unity'/'UnityVisualization'/'Assets'/'Resources'
     resources.mkdir(parents=True,exist_ok=True)
-    model=json.loads(casos.base.MODEL.read_text(encoding='utf-8'))
+    model_bytes=casos.base.MODEL.read_bytes()
+    model=json.loads(model_bytes.decode('utf-8'))
+    (resources/'semana5_modelo_hash.txt').write_text(hashlib.sha256(model_bytes).hexdigest(),encoding='ascii')
     visible_nodes={int(n['id']) for n in model['nodes']}
     displacement_rows=[]
     floor_rows=[]

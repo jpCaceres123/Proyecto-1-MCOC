@@ -24,3 +24,7 @@ y cargar `Assets/Main.unity`.
 
 Los parámetros están en `Edificio/data/parameters/parametros.json`; se puede
 usar otro archivo con `--parametros ruta.json`.
+
+## Semana 5 — viewer interactivo y variantes
+
+La guía de uso, los rangos de sliders, las reglas de reanálisis, los verificadores y el flujo de restauración están en [SEMANA5_VARIANTES.md](documentation/SEMANA5_VARIANTES.md). Desde la raíz del checkout: `python Edificio/verification/interactive/verificar_semana05.py` verifica superposición frente a soluciones explícitas; `python Edificio/verification/interactive/verificar_modificaciones.py` ejecuta variantes de carga y sección, y restaura el estado base. La verificación de modificaciones regenera `Edificio/results/` y los recursos Unity; SQ4 debe regenerarse cuando el hash del modelo cambie.
