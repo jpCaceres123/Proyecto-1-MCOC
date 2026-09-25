@@ -498,57 +498,9 @@ Lo que **no** se ha verificado: el recorrido visual de los controles nuevos en
 Unity, el comportamiento en el ejecutable Windows recien construido y el uso en un
 telefono. El detalle de uso esta en `Edificio/documentation/EDICION_UNITY.md`.
 
-## 10. Resultados y verificaciones
 
-| Control | Resultado |
-|---|---|
-| Equilibrio y compatibilidad global | 72 controles, todos `OK` |
-| Demanda-capacidad total | 1650 elementos revisados, 1650 cumplen y 0 fuera de capacidad |
-| Muros | 410 revisiones, todas dentro de capacidad nominal |
-| Columnas | 1240 revisiones, todas dentro de capacidad nominal |
-| Envolvente de muros | 24 muros origen, 82 secciones, 33 942 puntos de envolvente |
-| Superposicion interactiva | 120 registros, maximo relativo 6.202e-6 bajo tolerancia 1e-5 |
-| Conservacion de carga Q por piso | 5 pisos, error absoluto maximo 4.855e-5 kN |
-| Auditoria SQ4 | 10 686 controles, 652 paneles, 479 receptores, 312 nodos de influencia |
-| Pruebas unitarias | 33 pruebas, 32 aprobadas, 1 fallo preexistente de hash |
-| Compilacion de scripts C# | Unity 6000.5.10f1, 0 errores, 4 advertencias |
-| Reanalisis de variantes | 2 trabajos aislados, ambos `OK` |
 
-El equilibrio y los resultados globales se consultan en
-`Edificio/results/verificaciones_globales.csv` y
-`Edificio/results/resumen_global.json`. La auditoria SQ4 esta en
-`Edificio/results/verificacion_carga_movil.json` y la capacidad en
-`capacidad_HA.png` y `capacidad_PM_muros.png`.
 
-## 11. Entrega en Canvas
-
-El enunciado exige enlace al repositorio, commit hash o tag exacto a evaluar y
-enlace directo al informe Markdown.
-
-| Campo | Valor |
-|---|---|
-| Repositorio | https://github.com/jpCaceres123/Proyecto-1-MCOC |
-| Commit base evaluado | `895667ce5e8786f1dac6a30a5267d29b568ebd06` |
-| Informe | `Reports/semana05.md` |
-
-**Pendiente antes de entregar**: el panel de modificacion, el puente de reanalisis
-y la deformada por elemento estan implementados y verificados numericamente, pero
-**aun no estan en un commit**. Al confirmar los cambios se debe reemplazar el hash de
-esta tabla por el hash exacto de la entrega y regenerar el PDF del informe.
-
-## Limitaciones
-
-- El modelo es lineal elastico y academico.
-- Las losas transfieren cargas tributarias; no tienen elementos finitos ni esfuerzos internos de placa, y el espesor no introduce rigidez de placa.
-- La carga adicional de barras y muros pertenece al caso Q y no edita el peso propio G.
-- La capacidad de una columna con seccion editada no se recalcula; sus pestanas de capacidad se bloquean.
-- Las curvas P-M son nominales y uniaxiales; no incluyen automaticamente factores phi, corte, esbeltez, segundo orden ni interaccion biaxial completa.
-- La armadura de borde adoptada para algunos muros es un supuesto academico pendiente de confirmar con planos.
-- La deformada y los diagramas tienen componentes amplificadas o reconstruidas para visualizacion.
-- SQ4 es lineal, cuasiestatica e incremental; la conservacion del par transferido no certifica el equilibrio global de momento calculado solo con apoyos SP.
-- El build movil esta bloqueado por falta de iOS Build Support; no hay prueba en telefono.
-- La verificacion visual de los controles nuevos de modificacion y deformada esta pendiente de un build Windows actualizado.
-- Una prueba automatizada falla por hash de SQ4 frente al modelo base local; no afecta el modelo exportado, pero debe resolverse antes de la entrega.
 
 ## Conclusiones
 
@@ -566,32 +518,6 @@ persona con el personaje Among Us. La deformada propia de cada elemento y el pan
 de modificacion quedan implementados y verificados numericamente, a la espera de
 la evidencia visual en un ejecutable Windows recien construido.
 
-## Checklist P1A5
 
-| Requisito | Ubicacion en este informe | Estado |
-|---|---|---|
-| 1. Funciones implementadas | Seccion 1 | Cubierto |
-| 2. Modificacion: dos categorias completas | Secciones 3.1 y 3.2 | Cubierto y verificado |
-| 2. Indicacion de reanalisis | Seccion 3.3 y panel de la interfaz | Cubierto |
-| 3. Superposicion interactiva: tres estados | Seccion 4 | Cubierto, 120 controles |
-| 4. Sidequest de carga movil | Seccion 5 | Implementado y verificado |
-| 5. UX estructural | Seccion 7 | Cubierto con limitaciones |
-| 6. Preparacion movil | Seccion 8 | Preparada; build iOS pendiente por entorno |
-| 7. IA: funcionalidad compleja | Seccion 9 | Implementada y verificada |
-| Interaccion obligatoria P1L5 | Secciones 1 y 6.1 | Cubierto; falta evidencia visual de lo nuevo |
-| Entrega en Canvas | Seccion 11 | Falta actualizar el hash tras el commit |
 
-## Referencias y archivos principales
 
-- Enunciado del laboratorio: `Enunciados e Instrucciones/SEMANA_5/P1L5_LAB_interaccion_modificacion_y_experiencia_estructural_Objetivo.txt`.
-- Enunciado del entregable: `Enunciados e Instrucciones/SEMANA_5/P1A5_AVANCE_laboratorio_estructural_interactivo_v1_Entregable.txt`.
-- Uso de la edicion en Unity: `Edificio/documentation/EDICION_UNITY.md`.
-- Controles, variantes y reanalisis: `Edificio/documentation/SEMANA5_VARIANTES.md`.
-- Regla fisica de la carga movil: `Edificio/documentation/CARGA_MOVIL.md`.
-- Modelo y resultados: `Edificio/results/README.md`.
-- Evidencia de modificaciones: `Edificio/documentation/semana05_evidencias/modificaciones.json` y `modificaciones_ejecucion.json`.
-- Evidencia de superposicion: `Edificio/documentation/semana05_evidencias/superposicion_verificacion.json`, `superposicion.csv` y `superposicion.json`.
-- Entrega de vigas y carga movil: `Reports/2026-09-21_vigas_y_carga_movil.md`.
-- Ampliacion a todas las losas: `Reports/2026-09-21_carga_movil_todas_losas.md`.
-- Primera persona y cuatro vigas: `Reports/2026-09-23_primera_persona_cuatro_vigas.md`.
-- Evidencia visual: `Reports/assets/carga_movil/`, `Reports/assets/carga_movil_todas/` y `Reports/assets/carga_movil_among_us/`.
