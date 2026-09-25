@@ -57,7 +57,7 @@ public class ElementInspector : MonoBehaviour
         wallGraphs = new WallSectionGraphs();
         try
         {
-            TextAsset csv = Resources.Load<TextAsset>("semana3_axiales_columnas");
+            TextAsset csv = AnalysisResources.Load("semana3_axiales_columnas");
             if (csv == null) throw new Exception("Falta exportar semana3_axiales_columnas.csv");
             foreach (string line in csv.text.Split('\n'))
             {
@@ -76,7 +76,7 @@ public class ElementInspector : MonoBehaviour
         catch (Exception error) { axialError = error.Message; Debug.LogError(axialError); }
         try
         {
-            TextAsset csv=Resources.Load<TextAsset>("semana3_reparto_losas");
+            TextAsset csv=AnalysisResources.Load("semana3_reparto_losas");
             if(csv==null) throw new Exception("Falta exportar semana3_reparto_losas.csv");
             foreach(string line in csv.text.Split('\n'))
             {
@@ -91,7 +91,7 @@ public class ElementInspector : MonoBehaviour
         catch(Exception error) { receiverError=error.Message; Debug.LogError(receiverError); }
         try
         {
-            TextAsset csv = Resources.Load<TextAsset>("semana3_pesos_losas");
+            TextAsset csv = AnalysisResources.Load("semana3_pesos_losas");
             if (csv == null) throw new Exception("Falta exportar semana3_pesos_losas.csv");
             foreach (string line in csv.text.Split('\n'))
             {
@@ -106,7 +106,7 @@ public class ElementInspector : MonoBehaviour
         catch (Exception error) { slabError = error.Message; Debug.LogError(slabError); }
         try
         {
-            TextAsset csv = Resources.Load<TextAsset>("semana3_esfuerzos_locales");
+            TextAsset csv = AnalysisResources.Load("semana3_esfuerzos_locales");
             if (csv == null) throw new Exception("Falta exportar semana3_esfuerzos_locales.csv");
             foreach (string line in csv.text.Split('\n'))
             {
@@ -227,6 +227,7 @@ public class ElementInspector : MonoBehaviour
         if (selected == null) return;
         GUILayout.Label(selected.kind + " ID " + selected.id + " · Caso " + loadCase);
         GUILayout.Label(selected.details);
+        ModelVariantPanel.Get(gameObject).Draw(selected.kind, selected.id);
         if (selected.kind == "Losa")
         {
             DrawSlabWeight(selected.id);
@@ -279,16 +280,26 @@ public class ElementInspector : MonoBehaviour
         }
         if (selected.kind == "Losa")
         {
-            GUILayout.Label("La losa no tiene diagramas de esfuerzos internos; consulte sus cargas tributarias en el inspector.");
+            StructuralPostprocessor.Get(gameObject).DrawSelectedDeformation(selected.kind, selected.id, loadCase);
             return;
         }
         string[] tabs = selected.kind == "Viga"
-            ? new[] { "Diagramas de esfuerzos" }
+            ? new[] { "Diagramas de esfuerzos", "Deformada" }
             : selected.kind == "Muro"
-                ? new[] { "Diagrama de interaccion", "Seccion de fibras", "Momento-curvatura", "Puntos A-G" }
-                : new[] { "Diagrama de interaccion", "Seccion de fibras", "Tension-deformacion", "Diagramas de esfuerzos", "Momento-curvatura", "Puntos A-G" };
+                ? new[] { "Diagrama de interaccion", "Seccion de fibras", "Momento-curvatura", "Puntos A-G", "Deformada" }
+                : new[] { "Diagrama de interaccion", "Seccion de fibras", "Tension-deformacion", "Diagramas de esfuerzos", "Momento-curvatura", "Puntos A-G", "Deformada" };
         resultTab = (int)Mathf.Clamp(resultTab, 0, tabs.Length - 1);
         resultTab = GUILayout.Toolbar(resultTab, tabs);
+        if (resultTab == tabs.Length - 1)
+        {
+            StructuralPostprocessor.Get(gameObject).DrawSelectedDeformation(selected.kind, selected.id, loadCase);
+            return;
+        }
+        if (selected.kind == "Columna" && ModelVariantPanel.SectionChanged(selected.kind, selected.id) && resultTab != 3)
+        {
+            GUILayout.Label("Sección modificada: demanda recalculada; capacidad de columna no recalculada para esta armadura. Consulte esfuerzos y deformada.");
+            return;
+        }
         double[] values;
         if (selected.kind == "Muro")
         {

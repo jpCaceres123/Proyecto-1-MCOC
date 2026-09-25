@@ -77,7 +77,7 @@ public sealed class StructuralPostprocessor : MonoBehaviour
         loaded = true;
         try
         {
-            TextAsset asset = Resources.Load<TextAsset>("semana4_resultados");
+            TextAsset asset = AnalysisResources.Load("semana4_resultados");
             if (asset == null) throw new Exception("Falta exportar semana4_resultados.json");
             data = JsonUtility.FromJson<Data>(asset.text);
             if (data == null || data.schema != 2 || data.memberLoads != "distributed_with_station_results")
@@ -219,6 +219,137 @@ public sealed class StructuralPostprocessor : MonoBehaviour
     {
         if (diagramRoot != null) Clear(diagramRoot);
         diagramKey = null;
+    }
+
+    public bool IsSteel(int id)
+    {
+        ElementMetadata item;
+        return Load() && metadata.TryGetValue(id, out item) && item.type.StartsWith("STEEL");
+    }
+
+    public void Dimensions(string kind, int id, out double b, out double h)
+    {
+        b = .6; h = .8;
+        ElementMetadata item;
+        if (kind != "Losa" && kind != "Muro" && Load() && metadata.TryGetValue(id, out item))
+        {
+            var s = item.sectionData;
+            b = IsSteel(id) ? s.outer_width_m : Math.Sqrt(12*s.Iy_m4/s.A_m2);
+            h = IsSteel(id) ? s.wall_thickness_m : Math.Sqrt(12*s.Iz_m4/s.A_m2);
+            return;
+        }
+        var csv = AnalysisResources.Load("model_3d");
+        if (!csv) return;
+        foreach (var row in csv.text.Split('\n'))
+        {
+            var p = row.Trim().Split(',');
+            if (p.Length > 9 && kind == "Muro" && p[0] == "W" && p[1] == id.ToString())
+                h = double.Parse(p[9], System.Globalization.CultureInfo.InvariantCulture);
+            if (p.Length > 7 && kind == "Losa" && p[0] == "S" && p[1] == id.ToString())
+                h = double.Parse(p[7], System.Globalization.CultureInfo.InvariantCulture);
+        }
+    }
+
+    public void DrawSelectedDeformation(string kind, int id, string caseName)
+    {
+        if (!Load()) { GUILayout.Label(error); return; }
+        var viewer = GetComponent<Semana3Visualizer>();
+        float scale = viewer.DeformationScale;
+        var selectedBars = new HashSet<int>(); var selectedWalls = new HashSet<int>();
+        if (kind == "Losa")
+        {
+            var csv = AnalysisResources.Load("semana3_reparto_losas");
+            if (csv) foreach (var row in csv.text.Split('\n'))
+            {
+                var p = row.Trim().Split(',');
+                if (p.Length >= 3 && p[0] == id.ToString())
+                    (p[1] == "beam" ? selectedBars : selectedWalls).Add(int.Parse(p[2]));
+            }
+        }
+        else if (kind == "Muro") selectedWalls.Add(id);
+        else selectedBars.Add(id);
+        var reference = new List<Vector3[]>(); var deformed = new List<Vector3[]>();
+        var magnitudes = new List<float>();
+        float maximum = 0; Vector3 peak = Vector3.zero;
+        foreach (int tag in selectedBars)
+        {
+            Bar bar; if (!bars.TryGetValue(tag, out bar)) continue;
+            Vector3 a = nodes[bar.i], end = nodes[bar.j], ex = Vector(bar.x);
+            Vector3 ui = Response(caseName, bar.i, false, viewer), uj = Response(caseName, bar.j, false, viewer);
+            Vector3 ri = Response(caseName, bar.i, true, viewer), rj = Response(caseName, bar.j, true, viewer);
+            var original = new Vector3[41]; var curve = new Vector3[41];
+            for (int k = 0; k < curve.Length; k++)
+            {
+                float s = k/40f;
+                Vector3 u = Displacement(s, Vector3.Distance(a, end), ex, ui, uj, ri, rj);
+                original[k] = ToUnity(Vector3.Lerp(a, end, s)); curve[k] = original[k] + scale*ToUnity(u);
+                magnitudes.Add(u.magnitude*1000);
+                if (u.magnitude > maximum) { maximum = u.magnitude; peak = u; }
+            }
+            reference.Add(original); deformed.Add(curve);
+        }
+        foreach (var shell in data.shells)
+        {
+            if (!selectedWalls.Contains(shell.wall)) continue;
+            var original = new Vector3[5]; var curve = new Vector3[5];
+            for (int k = 0; k < 5; k++)
+            {
+                int node = shell.nodes[k%4]; var u = Response(caseName, node, false, viewer);
+                original[k] = ToUnity(nodes[node]); curve[k] = ToUnity(nodes[node] + scale*u);
+                if (u.magnitude > maximum) { maximum = u.magnitude; peak = u; }
+            }
+            reference.Add(original); deformed.Add(curve);
+        }
+        string key = "deformation:" + kind + id + caseName + scale + viewer.MassG + ":" + viewer.MassQ;
+        foreach (double factor in viewer.Combination) key += ":" + factor.ToString("R");
+        if (key != diagramKey)
+        {
+            ClearSelection(); diagramKey = key;
+            if (!diagramRoot) diagramRoot = Root("Deformada_Seleccionada");
+            for (int k = 0; k < reference.Count; k++)
+            {
+                Line(diagramRoot, "Original_"+k, reference[k], Color.gray, .035f);
+                Line(diagramRoot, "Deformada_"+k, deformed[k], Color.magenta, .065f);
+            }
+            if (plot) Destroy(plot);
+            plot = new Texture2D(Width, Height);
+            var pixels = new Color[Width*Height];
+            for (int k = 0; k < pixels.Length; k++) pixels[k] = new Color(.055f,.09f,.13f);
+            plot.SetPixels(pixels);
+            if (selectedBars.Count == 1 && magnitudes.Count == 41)
+                for (int x = 10; x < Width-10; x++)
+                {
+                    float t = (x-10f)/(Width-21)*40; int k = Math.Min(39, (int)t);
+                    float value = Mathf.Lerp(magnitudes[k], magnitudes[k+1], t-k);
+                    int y = 12 + Mathf.RoundToInt(value/Mathf.Max(maximum*1000, 1e-12f)*(Height-28));
+                    plot.SetPixel(x, y, Color.magenta);
+                }
+            plot.Apply();
+        }
+        GUILayout.Label(kind + " " + id + " · " + caseName + " · gris: original / magenta: deformada ×" + scale.ToString("G4"));
+        if (reference.Count == 0) { GUILayout.Label("Sin nodos analíticos de respuesta disponibles."); return; }
+        GUILayout.BeginHorizontal();
+        if (kind == "Viga" || kind == "Columna")
+        {
+            GUILayout.BeginVertical(GUILayout.Width(340));
+            GUILayout.Label("|u| [mm] a lo largo de la barra (i → j)");
+            GUILayout.Label(plot, GUILayout.Width(Width), GUILayout.Height(Height));
+            GUILayout.EndVertical();
+        }
+        GUILayout.BeginVertical();
+        GUILayout.Label("Máximo muestreado |u|: " + (maximum*1000).ToString("G6") + " mm");
+        GUILayout.Label("En ese punto, global OpenSees: ux=" + (peak.x*1000).ToString("G5") +
+            ", uy=" + (peak.y*1000).ToString("G5") + ", uz=" + (peak.z*1000).ToString("G5") + " mm");
+        if (kind == "Losa") GUILayout.Label("Movimiento de receptores; no es deformada de placa: las losas no son elementos finitos.");
+        else if (kind == "Muro") GUILayout.Label("Desplazamientos nodales de la malla Shell del paño seleccionado.");
+        else
+        {
+            Bar bar = bars[id];
+            GUILayout.Label("i [mm]: " + (Response(caseName, bar.i, false, viewer)*1000).ToString("F4"));
+            GUILayout.Label("j [mm]: " + (Response(caseName, bar.j, false, viewer)*1000).ToString("F4"));
+            GUILayout.Label("Interpolación cúbica de traslaciones/rotaciones nodales; 41 muestras. No es solución exacta interior bajo carga distribuida.");
+        }
+        GUILayout.EndVertical(); GUILayout.EndHorizontal();
     }
 
     public void DrawMember(int id, string caseName, double[] actions)

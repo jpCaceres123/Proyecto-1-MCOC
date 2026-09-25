@@ -1444,6 +1444,9 @@ def main(geometry_path=None):
                                       "Iz_m4": steel_inertia, "J_m4": steel_j},
             "material": config["material"], "material_steel": config["steel"],
             "mass_per_node_t": config["mass_per_node_t"]}
+    if config.get('interactive_changes'):
+        from variantes_interactivas import apply
+        apply(data, config['interactive_changes'])
     OUTPUTS.mkdir(parents=True, exist_ok=True)
     MODEL.write_text(json.dumps(data, indent=2), encoding="utf-8")
     audit_lines = ["panel_id,muro_origen,piso,z_inferior_m,z_superior_m,altura_m,longitud_m,espesor_m,area_elevacion_m2"]

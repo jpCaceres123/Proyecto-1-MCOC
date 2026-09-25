@@ -64,7 +64,7 @@ public class BuildingVisualizer : MonoBehaviour
         Debug.Log("DataPath: " + Application.dataPath);
         Debug.Log("StreamingAssets: " + Application.streamingAssetsPath);
         Debug.Log("PersistentDataPath: " + Application.persistentDataPath);
-        if (modelCsv == null) modelCsv = Resources.Load<TextAsset>("model_3d");
+        if (modelCsv == null || AnalysisResources.IsVariant) modelCsv = AnalysisResources.Load("model_3d");
         if (modelCsv == null) { Debug.LogError("No se encontro Resources/model_3d.csv"); return; }
         ReadCsv(modelCsv.text);
         Debug.Log("Nodos cargados: " + nodes.Count);
@@ -73,6 +73,7 @@ public class BuildingVisualizer : MonoBehaviour
         Debug.Log("Muros cargados: " + walls.Count);
         Debug.Log("Losas cargadas: " + slabs.Count);
         inspector = gameObject.AddComponent<ElementInspector>();
+        ModelVariantPanel.Get(gameObject);
         ConfigureEnvironment();
         BuildScene();
         if (GetComponent<Semana3Visualizer>() == null) gameObject.AddComponent<Semana3Visualizer>();

@@ -12,6 +12,7 @@ def export_repartition(model, cfg, target):
             values[0] += row['tributary_area_m2']
             values[1] += row['dead_load_kN']
             q = row['q_SC_kN_m2'] if cfg['q_Q_kN_m2'] is None else cfg['q_Q_kN_m2']
+            q = row.get('interactive_q_kN_m2', q)
             values[2] += row['tributary_area_m2'] * q
     rows = []
     for slab in model['slabs']:

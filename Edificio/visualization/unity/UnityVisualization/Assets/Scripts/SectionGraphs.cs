@@ -42,7 +42,7 @@ public sealed class SectionGraphs : IDisposable
     {
         try
         {
-            TextAsset asset = Resources.Load<TextAsset>("semana3_graficos_seccion");
+            TextAsset asset = AnalysisResources.Load("semana3_graficos_seccion");
             if (asset == null) throw new Exception("Falta exportar semana3_graficos_seccion.json");
             data = JsonUtility.FromJson<Data>(asset.text);
             if (data == null || data.members == null || data.pm == null || data.pm.Length < 2)

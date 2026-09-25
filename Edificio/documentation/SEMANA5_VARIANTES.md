@@ -1,5 +1,9 @@
 # Semana 5: controles, variantes y alcance de reanálisis
 
+## Edición desde Unity (Editor / Windows)
+
+El inspector incorpora **Configurar carga / sección** por elemento y la pestaña **Deformada** en resultados. Uso, unidades, reanálisis, requisitos de Python y límites: [EDICION_UNITY.md](EDICION_UNITY.md).
+
 La escena del viewer es `Edificio/visualization/unity/UnityVisualization/Assets/Main.unity` (Unity 6000.5.10f1). Ejecutar estos comandos desde la raíz del checkout con los paquetes de `Edificio/requirements.txt` instalados.
 
 ## Verificaciones reproducibles

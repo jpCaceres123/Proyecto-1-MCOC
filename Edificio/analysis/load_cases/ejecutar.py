@@ -149,7 +149,7 @@ def export_unity(cfg, global_results, capacity_results, out):
         weight=mass*9.80665/1000  # Misma gravedad usada por el generador de losas.
         loads=transfers[slab['id']]
         dead=sum(row['dead_load_kN'] for row in loads)
-        live=sum(row['tributary_area_m2']*(row['q_SC_kN_m2'] if cfg['q_Q_kN_m2'] is None
+        live=sum(row['tributary_area_m2']*row.get('interactive_q_kN_m2', row['q_SC_kN_m2'] if cfg['q_Q_kN_m2'] is None
                  else cfg['q_Q_kN_m2']) for row in loads)
         slab_rows.append(dict(losa_id=slab['id'],area_neta_m2=area,espesor_m=slab['thickness_m'],
             densidad_kg_m3=slab['density_kg_m3'],masa_propia_kg=mass,peso_propio_kN=weight,

@@ -202,6 +202,7 @@ public sealed partial class MovingLoadViewer : MonoBehaviour
 
     public void DrawLauncher()
     {
+        if (AnalysisResources.IsVariant) { GUILayout.Label("SQ4: restaurar base para usar sus bases de influencia."); return; }
         GUILayout.Space(12);
         if(GUILayout.Button(active?"Cerrar carga móvil":"Explorar carga móvil",GUILayout.Height(34))) Toggle();
         if(error!=null) GUILayout.Label(error);

@@ -39,19 +39,19 @@ public sealed class WallSectionGraphs : IDisposable
     {
         try
         {
-            TextAsset asset=Resources.Load<TextAsset>("semana3_pm_muros");
+            TextAsset asset=AnalysisResources.Load("semana3_pm_muros");
             if(asset==null) throw new Exception("Falta exportar semana3_pm_muros.json");
             Data data=JsonUtility.FromJson<Data>(asset.text);
             if(data==null || data.walls==null || data.walls.Length==0) throw new Exception("Datos P–M de muros incompletos");
             foreach(Wall wall in data.walls) walls.Add(wall.id,wall);
-            TextAsset resultAsset=Resources.Load<TextAsset>("semana4_resultados");
+            TextAsset resultAsset=AnalysisResources.Load("semana4_resultados");
             if(resultAsset==null) throw new Exception("Falta exportar semana4_resultados.json");
             Data resultData=JsonUtility.FromJson<Data>(resultAsset.text);
             if(resultData==null || resultData.wallDemands==null || resultData.wallDemands.Length==0)
                 throw new Exception("Demandas P–M de muros incompletas");
             dataMaterial=resultData.capacityMaterial;
             foreach(WallDemand demand in resultData.wallDemands) demands.Add(demand.id,demand);
-            TextAsset storeyAsset=Resources.Load<TextAsset>("semana5_demanda_muros");
+            TextAsset storeyAsset=AnalysisResources.Load("semana5_demanda_muros");
             if(storeyAsset!=null)
                 foreach(string line in storeyAsset.text.Split('\n'))
                 {

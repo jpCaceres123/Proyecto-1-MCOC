@@ -56,7 +56,7 @@ def distributed_profiles(data, cfg):
             continue
         length = np.linalg.norm(np.asarray(ops.nodeCoord(element['j'])) - ops.nodeCoord(element['i']))
         totals = {'G': float(load['dead_load_kN']),
-                  'Q': float(load['tributary_area_m2']) * (load['q_SC_kN_m2'] if cfg['q_Q_kN_m2'] is None else cfg['q_Q_kN_m2'])}
+                  'Q': float(load['tributary_area_m2']) * load.get('interactive_q_kN_m2', load['q_SC_kN_m2'] if cfg['q_Q_kN_m2'] is None else cfg['q_Q_kN_m2'])}
         for case, total in totals.items():
             prefix = 'G' if case == 'G' else 'SC'
             profiles[case].append(dict(element=element['id'], vertices=_piecewise_vertices(load, prefix, total, length)))
@@ -69,6 +69,9 @@ def distributed_profiles(data, cfg):
                        if element['type'] == 'STEEL_COLUMN_SHS300x20'
                        else cfg['peso_especifico_HA_kN_m3'])
         profiles['G'].append(dict(element=element['id'], vertices=[(0.0, area*unit_weight), (1.0, area*unit_weight)]))
+        q = element.get('interactive_Q_kN_m', 0.0)
+        if q:
+            profiles['Q'].append(dict(element=element['id'], vertices=[(0., q), (1., q)]))
     return profiles
 
 
@@ -210,6 +213,7 @@ def vectors(data, cfg):
                 ends = walls[row['wall_id']]['edge_node_ids_by_level'][str(round(row['level_z_m'], 6))]
             q = cfg['q_Q_kN_m2'] 
             q = row['q_SC_kN_m2'] if q is None else q
+            q = row.get('interactive_q_kN_m2', q)
             live = q * row['tributary_area_m2'] #CALCULO CARGA VIVA
             for n in ends:
                 mass_loads['G'][n][2] -= row['dead_load_kN'] / len(ends)
@@ -237,6 +241,16 @@ def vectors(data, cfg):
         weight = area * length * unit_weight
         for n in (e['i'], e['j']):
             mass_loads['G'][n][2] -= weight / 2
+            mass_loads['Q'][n][2] -= e.get('interactive_Q_kN_m', 0.) * length / 2
+    for wall in data['walls']:
+        q = wall.get('interactive_Q_kN_m', 0.)
+        if not q:
+            continue
+        length = np.hypot(wall['x_j_m']-wall['x_i_m'], wall['y_j_m']-wall['y_i_m'])
+        ends = walls[wall['id']]['edge_node_ids_by_level'][str(round(wall['z_j_m'], 6))]
+        for n in ends:
+            loads['Q'][n][2] -= q*length/len(ends)
+            mass_loads['Q'][n][2] -= q*length/len(ends)
     coordinates={n:ops.nodeCoord(n) for n in ops.getNodeTags()}
     gravity={n:float(-mass_loads['G'][n][2]) for n in coordinates}
     live={n:float(-mass_loads['Q'][n][2]) for n in coordinates}
@@ -502,6 +516,14 @@ def run(cfg, out):
         expected = verification.expected_floor_loads(model, source_loads, geometry, z)
         q0 = cfg['q_Q_kN_m2']
         target = expected['live_load_kN'] if q0 is None else q0 * expected['area_m2']
+        # Preserve the source-zone benchmark, replacing only the edited slab's
+        # original Q with q_new * NET geometric area (not the new receiver sum).
+        # Additional line loads on bars/walls are checked by global equilibrium;
+        # this audit continues to measure slab tributary-load conservation only.
+        for slab in model['slabs']:
+            if abs(slab['z_m']-z) < 1e-6 and 'interactive_q_kN_m2' in slab:
+                original = slab['interactive_original_Q_kN'] if q0 is None else q0*slab['area_m2']
+                target += slab['interactive_q_kN_m2']*slab['area_m2']-original
         actual = sum(r['Q_kN'] for r in ref['transfers'] if r['z_m']==z)
         qrows.append(dict(z_m=z, area_origen_m2=expected['area_m2'], Q_origen_kN=target,
                           Q_transferida_kN=actual, diferencia_kN=actual-target))

@@ -316,7 +316,7 @@ public class Semana3Visualizer : MonoBehaviour
 
     private static string Load(string name)
     {
-        TextAsset asset = Resources.Load<TextAsset>(name);
+        TextAsset asset = AnalysisResources.Load(name);
         if (asset == null) throw new Exception("Falta Assets/Resources/" + name + ".csv");
         return asset.text;
     }
