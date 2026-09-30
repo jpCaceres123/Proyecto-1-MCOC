@@ -1,4 +1,10 @@
 # Unity generated files
+visualization/unity/UnityVisualization/Library/
+visualization/unity/UnityVisualization/Logs/
+visualization/unity/UnityVisualization/UserSettings/
+visualization/unity/UnityVisualization/Temp/
+visualization/unity/UnityVisualization/Obj/
+visualization/unity/UnityVisualization/Build/
 UnityVisualization/Library/
 UnityVisualization/Logs/
 UnityVisualization/UserSettings/

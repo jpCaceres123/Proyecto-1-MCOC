@@ -159,6 +159,8 @@ def main(geometry_path=None):
                 wall_edge_ids[(wall_index, round(z0, 3))] = eid
                 eid += 1
 
+    # A level with any explicit manual layout must not receive overlapping
+    # provisional grid beams; the explicit beams define its intended framing.
     manual_z = {round(b["z_m"], 3) for b in manual_beams}
     node_at = {(n["axis"], round(n["y_m"], 3), round(n["z_m"], 3)): n for n in nodes}
     node_by_xyz = {(round(n["x_m"], 3), round(n["y_m"], 3), round(n["z_m"], 3)): n for n in nodes}
@@ -213,7 +215,10 @@ def main(geometry_path=None):
                             ensure_beam_node(x, beam["y_i_m"], z))
             b = node_at.get((beam["axis"], round(beam["y_j_m"], 3), z),
                             ensure_beam_node(x, beam["y_j_m"], z))
-        elements.append({"id": eid, "type": beam.get("member_type", "BEAM_" + beam["direction"]), "direction": beam["direction"], "i": a["id"], "j": b["id"], "status": "MANUAL"})
+        element = {"id": eid, "type": beam.get("member_type", "BEAM_" + beam["direction"]), "direction": beam["direction"], "i": a["id"], "j": b["id"], "status": "MANUAL"}
+        if beam.get("section_m"):
+            element["section_override"] = rectangular_section(*map(float, beam["section_m"]))
+        elements.append(element)
         eid += 1
 
     # Perfiles tubulares que unen verticalmente las puntas de los voladizos.
@@ -293,7 +298,22 @@ def main(geometry_path=None):
                                    "status": "SPLIT_INTERSECTION" if len(cut_nodes) > 2 else element["status"]})
             if index > 0:
                 next_split_element += 1
-    elements = split_elements
+    # Keep a single analytical member per geometric span. Manual beams may
+    # overlap provisional beams at grid lines; prefer the explicit definition
+    # (including its section override) and discard the duplicate span.
+    unique_beams = {}
+    elements_without_beams = [element for element in split_elements
+                              if not element["type"].startswith("BEAM")]
+    for element in split_elements:
+        if not element["type"].startswith("BEAM"):
+            continue
+        a, b = beam_coordinates(element)
+        key = tuple(sorted((tuple(round(a[k], 6) for k in ("x_m", "y_m", "z_m")),
+                            tuple(round(b[k], 6) for k in ("x_m", "y_m", "z_m")))))
+        current = unique_beams.get(key)
+        if current is None or (element.get("status") == "MANUAL" and current.get("status") != "MANUAL"):
+            unique_beams[key] = element
+    elements = elements_without_beams + list(unique_beams.values())
     eid = next_split_element
     for element in elements:
         dims = config.get("element_section_overrides", {}).get(str(element["id"]))

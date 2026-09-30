@@ -8,6 +8,7 @@ Repositorio del proyecto colaborativo de modelación estructural, OpenSeesPy y v
 |---|---|---|
 | Semana 1: benchmark 3D | Completado | [`P1L1/`](P1L1/) |
 | Semana 2-5: edificio, sismo, capacidad y viewer interactivo | En desarrollo | [`Edificio/`](Edificio/) · [Guía Semana 5](Edificio/documentation/SEMANA5_VARIANTES.md) · [`Enunciados`](Enunciados%20e%20Instrucciones/) |
+| Semana 6: AR Android con marcadores | APK compilado; prueba física pendiente | [APK Android](Edificio/visualization/android-ar/dist/EdificioAR.apk) · [Marcadores imprimibles](Edificio/visualization/android-ar/markers/imprimir.html) · [Guía AR](Edificio/visualization/android-ar/README.md) · [Informe](reports/semana06.md) |
 
 El modelo global tiene sus fuentes, scripts, resultados y visualizador Unity en
 `Edificio/`, separado de P1L1. Los archivos generados deben reconstruirse desde

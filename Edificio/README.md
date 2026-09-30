@@ -28,3 +28,7 @@ usar otro archivo con `--parametros ruta.json`.
 ## Semana 5 — viewer interactivo y variantes
 
 La guía de uso, los rangos de sliders, las reglas de reanálisis, los verificadores y el flujo de restauración están en [SEMANA5_VARIANTES.md](documentation/SEMANA5_VARIANTES.md). Desde la raíz del checkout: `python Edificio/verification/interactive/verificar_semana05.py` verifica superposición frente a soluciones explícitas; `python Edificio/verification/interactive/verificar_modificaciones.py` ejecuta variantes de carga y sección, y restaura el estado base. La verificación de modificaciones regenera `Edificio/results/` y los recursos Unity; SQ4 debe regenerarse cuando el hash del modelo cambie.
+
+## Semana 6 — aplicación AR Android
+
+La aplicación para identificar vigas y columnas mediante imágenes impresas está en [visualization/android-ar](visualization/android-ar/README.md). El APK se genera en `visualization/android-ar/dist/EdificioAR.apk`; las imágenes para imprimir se seleccionan en `visualization/android-ar/markers/imprimir.html`. Usa los mismos IDs y resultados OpenSees del contrato del visor Unity, con casos G/Q/EX/EY/R, esfuerzos firmados y diagramas por estación. La prueba de detección y alineamiento en el Redmi Note 9 Pro está pendiente de validación física.
