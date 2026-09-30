@@ -1,1 +1,6 @@
 *.dwg filter=lfs diff=lfs merge=lfs -text
+
+# Preserve the exact bytes used by the Android snapshot's SHA-256 contracts.
+Edificio/results/modelo_3d_manual.json -text whitespace=cr-at-eol
+Edificio/visualization/unity/UnityVisualization/Assets/Resources/semana4_resultados.json -text
+Edificio/visualization/android-ar/app/src/main/assets/structural_data.json -text
