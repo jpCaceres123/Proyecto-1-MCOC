@@ -25,9 +25,9 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :app:mergeDebugShaders UP-TO-DATE
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:mergeDebugAssets UP-TO-DATE
-> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
 > Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:compressDebugAssets
 > Task :app:dexBuilderDebug
 > Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
 > Task :app:processDebugJavaRes NO-SOURCE
@@ -53,17 +53,17 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect UP-TO-DATE
 > Task :app:assembleDebug
-> Task :app:lintAnalyzeDebugUnitTest
-> Task :app:lintAnalyzeDebugAndroidTest
 > Task :app:lintAnalyzeDebug
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:lintAnalyzeDebugUnitTest
 
 > Task :app:lintReportDebug
 Wrote HTML report to file:///C:/Users/nico0/Desktop/Proyecto-1-MCOC-main/Edificio/visualization/android-ar/app/build/reports/lint-results-debug.html
 
 > Task :app:lintDebug
 
-BUILD SUCCESSFUL in 1m 9s
-45 actionable tasks: 13 executed, 32 up-to-date
+BUILD SUCCESSFUL in 2m 50s
+45 actionable tasks: 15 executed, 30 up-to-date
 Verifies
 Verified using v1 scheme (JAR signing): false
 Verified using v2 scheme (APK Signature Scheme v2): true
@@ -75,5 +75,5 @@ Number of signers: 1
 
 
 Algorithm : SHA256
-Hash      : 8327E2F7A1A81319DFEF1830A5A8A64A92E5E75FF898768CD2342605C5A648CF
+Hash      : DE5A4DF10E318B5111E62BD994F2615DE4DF247AD0C0A0735CD0F6E260AB71CC
 Path      : C:\Users\nico0\Desktop\Proyecto-1-MCOC-main\Edificio\visualization\android-ar\dist\EdificioAR.apk

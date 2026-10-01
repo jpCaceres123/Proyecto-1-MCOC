@@ -4,7 +4,7 @@ Implementación: `Edificio/visualization/android-ar/`. Plataforma objetivo: Xiao
 
 ## Flujo implementado
 
-Imagen impresa de 20 cm → reconocimiento ARCore → pose de la imagen → anchor → transformación de los ejes locales OpenSees → eje y sección de viga/columna → ID y esfuerzos N, Vy, Vz, T, My, Mz del caso seleccionado.
+Imagen impresa de 20 cm → reconocimiento ARCore → pose de la imagen → anchor → transformación de los ejes locales OpenSees → eje y sección de viga/columna → ID, desplazamiento, esfuerzos N/V/T/M, área tributaria, carga aplicada y curva P-M cuando corresponde.
 
 Los resultados se calculan previamente en el computador. El teléfono carga los datos, detecta imágenes, sigue la pose y dibuja la representación. La consulta del catálogo es manual y se identifica como tal.
 
