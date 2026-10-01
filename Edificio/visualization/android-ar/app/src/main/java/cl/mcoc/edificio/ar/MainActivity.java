@@ -28,7 +28,7 @@ public final class MainActivity extends Activity {
     volatile boolean scanning=true;
     private GLSurfaceView surface;
     private ARRenderer renderer;
-    private TextView status,title,values,position,coordinates,hash;
+    private TextView status,title,values,position,coordinates,hash,extraSummary;
     private DiagramView plot;
     private Button scaleButton;
     private final ArrayList<Integer> activeIds=new ArrayList<>(Arrays.asList(1,241,246));
@@ -60,12 +60,13 @@ public final class MainActivity extends Activity {
         choose.addView(spinner(StructuralData.CASES,4,index->{loadCase=StructuralData.CASES[index];refresh();}),new LinearLayout.LayoutParams(0,dp(43),1));
         choose.addView(spinner(StructuralData.COMPONENTS,4,index->{component=index;refresh();}),new LinearLayout.LayoutParams(0,dp(43),1));controls.addView(choose);
         values=text("N   —       Vy   —       Vz   —\nT   —       My   —       Mz   —",13,0xFFE4ECF3);values.setTypeface(Typeface.MONOSPACE);controls.addView(values);
+        extraSummary=text("Desplazamiento, área tributaria y carga: esperando elemento",11,0xFFB1C4D3);controls.addView(extraSummary);
         plot=new DiagramView(this);controls.addView(plot,new LinearLayout.LayoutParams(-1,dp(104)));
         position=text("Posición i → j: 50%",12,0xFFFFC967);controls.addView(position);
         SeekBar seek=new SeekBar(this);seek.setMax(100);seek.setProgress(50);seek.setContentDescription("Posición a lo largo del elemento");
         seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){public void onProgressChanged(SeekBar bar,int p,boolean user){station=p/100f;refresh();}public void onStartTrackingTouch(SeekBar b){}public void onStopTrackingTouch(SeekBar b){}});
         controls.addView(seek,new LinearLayout.LayoutParams(-1,dp(32)));
-        LinearLayout buttons=row();buttons.addView(button("Escanear IDs",this::chooseMarkers),new LinearLayout.LayoutParams(0,dp(43),1));buttons.addView(button("Catálogo",this::catalog),new LinearLayout.LayoutParams(0,dp(43),1));controls.addView(buttons);
+        LinearLayout buttons=row();buttons.addView(button("Resultados +",this::details),new LinearLayout.LayoutParams(0,dp(43),1));buttons.addView(button("Escanear IDs",this::chooseMarkers),new LinearLayout.LayoutParams(0,dp(43),1));buttons.addView(button("Catálogo",this::catalog),new LinearLayout.LayoutParams(0,dp(43),1));controls.addView(buttons);
         LinearLayout extras=row();scaleButton=button("Maqueta 1:10",()->{float newScale=scale<1?1:0.1f;normalOffset*=newScale/scale;scale=newScale;scaleButton.setText(scale<1?"Maqueta 1:10":"Escala real 1:1");});extras.addView(scaleButton,new LinearLayout.LayoutParams(0,dp(40),1));extras.addView(button("Reanclar",()->{renderer.reset();scanning=true;setStatus("Apunta otra vez al marcador para crear un anclaje.");}),new LinearLayout.LayoutParams(0,dp(40),1));extras.addView(button("Ayuda",this::help),new LinearLayout.LayoutParams(0,dp(40),0.7f));controls.addView(extras);
         hash=text("",10,0xFF94AABF);controls.addView(hash);
         new Thread(()->{try{data=new StructuralData(getAssets());runOnUiThread(()->{hash.setText(data.members.size()+" elementos · modelo "+data.modelHash.substring(0,12));setStatus("Preparando AR · marcadores 1, 241 y 246");if(foreground)resumeAR();});}catch(Exception e){runOnUiThread(()->setStatus("Error de datos: "+e.getMessage()));}},"structural-data").start();
@@ -87,9 +88,28 @@ public final class MainActivity extends Activity {
         StructuralData.Member m=selected;StructuralData.Response r=m.cases.get(loadCase);title.setText(m.label());
         coordinates.setText(String.format(Locale.US,"i (%s) → j (%s) m · L %.2f m · %.0f × %.0f cm",xyz(m.start),xyz(m.end),m.length,m.width*100,m.height*100));
         values.setText(String.format(Locale.US,"N %+.2f  Vy %+.2f  Vz %+.2f kN\nT %+.2f  My %+.2f  Mz %+.2f kN·m",r.at(0,station),r.at(1,station),r.at(2,station),r.at(3,station),r.at(4,station),r.at(5,station)));
+        float[] u=r.displacement(station,m.length,m.localX);float um=(float)Math.sqrt(u[0]*u[0]+u[1]*u[1]+u[2]*u[2]);
+        extraSummary.setText(String.format(Locale.US,"|u| %.3f mm · Área tributaria %.3f m² · Carga %s %.2f kN",um*1000,m.loadInfo.tributaryArea,loadCase,m.loadInfo.applied.get(loadCase)));
         position.setText(String.format(Locale.US,"Caso %s · x = %.2f m (%.0f%% i → j) · %s",loadCase,station*m.length,station*100,StructuralData.COMPONENTS[component]));plot.show(r,component,station,m.length);
     }
     private String xyz(float[] p){return String.format(Locale.US,"%.2f, %.2f, %.2f",p[0],p[1],p[2]);}
+    private void details(){
+        if(selected==null){setStatus("Primero detecta o selecciona un elemento.");return;}
+        StructuralData.Member m=selected;StructuralData.Response r=m.cases.get(loadCase);float[] u=r.displacement(station,m.length,m.localX);
+        ScrollView scroll=new ScrollView(this);LinearLayout box=column();box.setPadding(dp(18),dp(8),dp(18),dp(18));scroll.addView(box);
+        box.addView(text(String.format(Locale.US,"Desplazamiento interpolado · caso %s · x %.2f m",loadCase,station*m.length),16,0xFF101A29));
+        box.addView(text(String.format(Locale.US,"Ux %+.3f mm   Uy %+.3f mm   Uz %+.3f mm\n|u| %.3f mm",u[0]*1000,u[1]*1000,u[2]*1000,Math.sqrt(u[0]*u[0]+u[1]*u[1]+u[2]*u[2])*1000),13,0xFF243549));
+        box.addView(text("Área tributaria asociada",16,0xFF101A29));
+        String slabs=m.loadInfo.slabIds.length==0?"Ninguna losa asignada directamente":Arrays.toString(m.loadInfo.slabIds);
+        box.addView(text(String.format(Locale.US,"Área total: %.3f m²\nLosas: %s",m.loadInfo.tributaryArea,slabs),13,0xFF243549));
+        box.addView(text("Carga aplicada al elemento",16,0xFF101A29));
+        box.addView(text(String.format(Locale.US,"Peso propio barra: %.2f kN\nG de losas: %.2f kN · Q de losas: %.2f kN\nTotal seleccionado %s: %.2f kN",m.loadInfo.selfWeight,m.loadInfo.slabDead,m.loadInfo.slabLive,loadCase,m.loadInfo.applied.get(loadCase)),13,0xFF243549));
+        box.addView(text("Los totales son resultantes verticales distribuidas. EX/EY se aplican en nodos de diafragma; por eso su carga directa en esta barra es 0 kN.",11,0xFF526A7F));
+        box.addView(text("Curva P-M",16,0xFF101A29));
+        box.addView(text(m.pmNote,12,0xFF526A7F));
+        if(m.pm.length>0){float p=r.at(0,station),my=r.at(4,station),mz=r.at(5,station);PMChartView chart=new PMChartView(this);chart.show(m.pm,p,(float)Math.sqrt(my*my+mz*mz));box.addView(chart,new LinearLayout.LayoutParams(-1,dp(235)));box.addView(text("Punto amarillo: P y resultante |M| de la estación. Comparación referencial con envolvente uniaxial; no constituye verificación biaxial de capacidad.",11,0xFF526A7F));}
+        new AlertDialog.Builder(this).setTitle(m.label()+" · resultados").setView(scroll).setPositiveButton("Cerrar",null).show();
+    }
     private void calibrate(){
         EditText input=new EditText(this);input.setText(Float.toString(normalOffset));input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER|android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL|android.text.InputType.TYPE_NUMBER_FLAG_SIGNED);
         String suggestion=selected==null?"":String.format(Locale.US,"\nPara la cara normal al eje local z de este elemento: offset inicial %.3f m a la escala actual.",-selected.extentZ*scale/2);
@@ -151,7 +171,7 @@ public final class MainActivity extends Activity {
             try{LinkedHashSet<Integer> ids=new LinkedHashSet<>();for(String token:input.getText().toString().split(",")){int id=Integer.parseInt(token.trim());if(!data.members.containsKey(id))throw new IllegalArgumentException("No existe la viga/columna "+id);ids.add(id);}
                 if(ids.size()<1||ids.size()>24)throw new IllegalArgumentException("Selecciona entre 1 y 24 IDs");
                 surface.onPause();renderer.reset();synchronized(sessionLock){if(session!=null){session.pause();session.close();session=null;}}
-                activeIds.clear();activeIds.addAll(ids);selected=null;title.setText("Apunta a un marcador");values.setText("Esperando detección de un elemento");coordinates.setText("");plot.show(null,component,station,1);scanning=true;surface.onResume();dialog.dismiss();resumeAR();
+                activeIds.clear();activeIds.addAll(ids);selected=null;title.setText("Apunta a un marcador");values.setText("Esperando detección de un elemento");extraSummary.setText("Desplazamiento, área tributaria y carga: esperando elemento");coordinates.setText("");plot.show(null,component,station,1);scanning=true;surface.onResume();dialog.dismiss();resumeAR();
             }catch(Exception e){input.setError(e.getMessage());}
         }));dialog.show();
     }

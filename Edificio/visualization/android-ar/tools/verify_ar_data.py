@@ -20,6 +20,7 @@ def main():
     source_bars={b['id']:b for b in source['bars']}
     source_nodes={n['id']:n['xyz'] for n in source['nodes']}
     source_cases={c['name']:{b['id']:b for b in c['bars']} for c in source['cases']}
+    source_motions={c['name']:{n['id']:n for n in c['nodes']} for c in source['cases']}
     ids=set()
     for m in data['members']:
         tag=m['id'];assert tag not in ids;ids.add(tag)
@@ -27,7 +28,11 @@ def main():
         assert m['end']==source_nodes[source_bars[tag]['j']]
         assert math.isclose(m['length_m'],math.dist(m['start'],m['end']))
         for name,result in m['cases'].items():
-            for key,values in result.items():assert values==source_cases[name][tag][key],(tag,name,key)
+            for key in ('s','n','vy','vz','t','my','mz'):assert result[key]==source_cases[name][tag][key],(tag,name,key)
+            assert result['ui']==source_motions[name][m['i']]['u'] and result['uj']==source_motions[name][m['j']]['u']
+            assert result['ri']==source_motions[name][m['i']]['r'] and result['rj']==source_motions[name][m['j']]['r']
+        assert m['load_info']['tributary_area_m2'] >= 0
+        assert all(math.isfinite(v) for v in m['load_info']['applied_total_kN'].values())
         assert (assets/m['marker']).exists()
         # Unit length and orientation are preserved by each right-handed map.
         for p in [(1,0,0),(0,1,0),(0,0,1)]:

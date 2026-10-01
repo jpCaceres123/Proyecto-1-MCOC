@@ -5,8 +5,8 @@
   "abi": "arm64-v8a",
   "min_sdk": 24,
   "target_sdk": 35,
-  "size_bytes": 26370497,
-  "sha256": "8327e2f7a1a81319dfef1830a5a8a64a92e5e75ff898768cd2342605c5a648cf",
+  "size_bytes": 26876614,
+  "sha256": "de5a4df10e318b5111e62bd994f2615de4df247ad0c0a0735cd0f6e260ab71cc",
   "model_sha256": "8bd412a67dd5ce61e77f090f9fcc0c36ac8dc58db658a87750d92d05880899c5",
   "members": 619,
   "cases": [
@@ -21,5 +21,12 @@
   "build": "SUCCESS",
   "lint": "0 errors; warnings retained in report",
   "signature": "APK v2 verified, development certificate",
+  "features": [
+    "N/V/T/M por estación",
+    "desplazamiento Ux/Uy/Uz interpolado",
+    "área tributaria y losas asociadas",
+    "carga aplicada G/Q/EX/EY/R",
+    "curva P-M para columnas HA de referencia"
+  ],
   "physical_device_test": "PENDING"
 }

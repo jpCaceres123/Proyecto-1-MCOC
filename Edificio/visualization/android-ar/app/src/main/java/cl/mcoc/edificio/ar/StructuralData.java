@@ -22,7 +22,7 @@ public final class StructuralData {
             while ((count = in.read(buffer)) != -1) bytes.write(buffer, 0, count);
             root = new JSONObject(new String(bytes.toByteArray(), StandardCharsets.UTF_8));
         }
-        if (root.getInt("schema") != 1) throw new IOException("Versión de datos incompatible");
+        if (root.getInt("schema") != 2) throw new IOException("Versión de datos incompatible");
         modelHash = root.getString("model_sha256"); resultsHash = root.getString("results_sha256");markerHash=root.getString("marker_set_sha256");
         JSONArray rows = root.getJSONArray("members");
         for (int i=0; i<rows.length(); i++) {
@@ -41,9 +41,12 @@ public final class StructuralData {
     }
     public static final class Response {
         public final float[] s;
+        public final float[] ui, uj, ri, rj;
         public final float[][] values = new float[6][];
         Response(JSONObject json) throws JSONException {
             s = floats(json.getJSONArray("s"));
+            ui=floats(json.getJSONArray("ui"));uj=floats(json.getJSONArray("uj"));
+            ri=floats(json.getJSONArray("ri"));rj=floats(json.getJSONArray("rj"));
             if (s.length < 2) throw new JSONException("Faltan estaciones");
             for (int i=0; i<6; i++) {
                 values[i] = floats(json.getJSONArray(FIELDS[i]));
@@ -61,12 +64,33 @@ public final class StructuralData {
         public float maxAbs(int component) {
             float max=0; for(float v:values[component]) max=Math.max(max,Math.abs(v)); return max;
         }
+        public float[] displacement(float position, float length, float[] ex) {
+            float q=Math.max(0,Math.min(1,position)),h1=1-3*q*q+2*q*q*q,h2=q-2*q*q+q*q*q,h3=3*q*q-2*q*q*q,h4=-q*q+q*q*q;
+            float di=dot(ui,ex),dj=dot(uj,ex);float[] result=new float[3];
+            float[] cI=cross(ri,ex),cJ=cross(rj,ex);
+            for(int k=0;k<3;k++)result[k]=(1-q)*di*ex[k]+q*dj*ex[k]+h1*(ui[k]-di*ex[k])+h3*(uj[k]-dj*ex[k])+length*(h2*cI[k]+h4*cJ[k]);
+            return result;
+        }
+        private static float dot(float[] a,float[] b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+        private static float[] cross(float[] a,float[] b){return new float[]{a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]};}
     }
+    public static final class LoadInfo {
+        public final float tributaryArea, slabDead, slabLive, selfWeight;
+        public final int[] slabIds; public final Map<String,Float> applied=new HashMap<>();
+        LoadInfo(JSONObject json)throws JSONException{
+            tributaryArea=(float)json.getDouble("tributary_area_m2");slabDead=(float)json.getDouble("slab_dead_load_kN");
+            slabLive=(float)json.getDouble("slab_live_load_kN");selfWeight=(float)json.getDouble("member_self_weight_kN");
+            JSONArray ids=json.getJSONArray("associated_slab_ids");slabIds=new int[ids.length()];for(int k=0;k<ids.length();k++)slabIds[k]=ids.getInt(k);
+            JSONObject totals=json.getJSONObject("applied_total_kN");for(String c:CASES)applied.put(c,(float)totals.getDouble(c+"_kN"));
+        }
+    }
+    public static final class PMPoint {public final String point;public final float p,m;PMPoint(JSONObject j)throws JSONException{point=j.getString("point");p=(float)j.getDouble("P_kN");m=(float)j.getDouble("M_kNm");}}
     public static final class Member {
         public final int id, i, j;
         public final String type, marker;
         public final float[] start, end, localX, localY, localZ;
         public final float length, width, height, markerWidth, extentY, extentZ;
+        public final LoadInfo loadInfo; public final PMPoint[] pm; public final String pmNote;
         public final Map<String, Response> cases = new HashMap<>();
         Member(JSONObject row) throws JSONException {
             id=row.getInt("id"); i=row.getInt("i"); j=row.getInt("j");
@@ -75,6 +99,8 @@ public final class StructuralData {
             localX=floats(row.getJSONArray("local_x")); localY=floats(row.getJSONArray("local_y")); localZ=floats(row.getJSONArray("local_z"));
             length=(float)row.getDouble("length_m"); width=(float)row.getDouble("width_m"); height=(float)row.getDouble("height_m");
             markerWidth=(float)row.getDouble("marker_width_m");
+            loadInfo=new LoadInfo(row.getJSONObject("load_info"));pmNote=row.getString("pm_note");
+            JSONArray curve=row.getJSONArray("pm_curve");pm=new PMPoint[curve.length()];for(int k=0;k<pm.length;k++)pm[k]=new PMPoint(curve.getJSONObject(k));
             JSONObject section=row.getJSONObject("section");
             if(section.has("outer_width_m")){extentY=extentZ=(float)section.getDouble("outer_width_m");}
             else{

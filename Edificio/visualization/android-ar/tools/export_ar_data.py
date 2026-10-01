@@ -1,6 +1,7 @@
 """Exporta una instantánea OpenSees y marcadores reproducibles; no recalcula la estructura."""
 from pathlib import Path
 import hashlib
+import csv
 import json
 import math
 import random
@@ -57,6 +58,16 @@ def main():
     metadata = {e['id']: e for e in data['elementMetadata']}
     elements = {e['id']: e for e in model['elements']}
     cases = {c['name']: {b['id']: b for b in c['bars']} for c in data['cases'] if c['name'] in ('G', 'Q', 'EX', 'EY', 'R')}
+    motions = {c['name']: {n['id']: n for n in c['nodes']} for c in data['cases'] if c['name'] in cases}
+    loads_by_beam = {}
+    for load in model.get('beam_load_cases', []):
+        loads_by_beam.setdefault(int(load['beam_id']), []).append(load)
+    parameters = json.loads((BUILDING/'data/parameters/parametros.json').read_text(encoding='utf-8'))
+    combination = parameters['combinacion']
+    pm_curve = []
+    with (BUILDING/'results/PM_puntos.csv').open(encoding='utf-8-sig', newline='') as stream:
+        for row in csv.DictReader(stream):
+            pm_curve.append(dict(point=row['punto'], P_kN=float(row['P_kN']), M_kNm=float(row['M_kNm'])))
     members = []
     for bar in sorted(data['bars'], key=lambda b: b['id']):
         tag = bar['id']
@@ -81,17 +92,35 @@ def main():
             assert len(response['s']) >= 2
             fields = {key: response[key] for key in ('s', 'n', 'vy', 'vz', 't', 'my', 'mz')}
             assert all(len(v) == len(response['s']) and all(math.isfinite(x) for x in v) for v in fields.values())
-            responses[name] = fields
+            ni, nj = motions[name][bar['i']], motions[name][bar['j']]
+            responses[name] = dict(**fields, ui=ni['u'], uj=nj['u'], ri=ni['r'], rj=nj['r'])
+        tributary = loads_by_beam.get(tag, [])
+        tributary_area = sum(float(row['tributary_area_m2']) for row in tributary)
+        slab_dead = sum(float(row['dead_load_kN']) for row in tributary)
+        slab_live = sum(float(row['live_load_kN']) for row in tributary)
+        density_weight = (data.get('elementMetadata') and
+                          (meta.get('materialData', {}).get('density_kg_m3', 0.0) * 9.80665 / 1000.0))
+        unit_weight = density_weight if density_weight else float(parameters['peso_especifico_HA_kN_m3'])
+        self_weight = float(section['A_m2']) * unit_weight * length
+        applied = dict(G_kN=self_weight + slab_dead, Q_kN=slab_live, EX_kN=0.0, EY_kN=0.0,
+                       R_kN=combination['G']*(self_weight + slab_dead) + combination['Q']*slab_live)
+        load_info = dict(tributary_area_m2=tributary_area, associated_slab_ids=sorted({int(row['slab_id']) for row in tributary}),
+                         slab_dead_load_kN=slab_dead, slab_live_load_kN=slab_live,
+                         member_self_weight_kN=self_weight, applied_total_kN=applied)
         members.append(dict(id=tag, type=meta['type'], i=bar['i'], j=bar['j'], start=a, end=b,
                             length_m=length, width_m=width, height_m=height, local_x=bar['x'], local_y=bar['y'], local_z=bar['z'],
-                            section=section, cases=responses, marker=f'markers/element_{tag}.png', marker_width_m=0.20))
+                            section=section, load_info=load_info, cases=responses,
+                            pm_curve=pm_curve if meta['type'] == 'COLUMN' else [],
+                            pm_note=('Curva nominal P-M de la columna HA de referencia 70x70 cm.' if meta['type'] == 'COLUMN'
+                                     else 'No aplica: no existe una curva P-M verificada para este tipo de elemento.'),
+                            marker=f'markers/element_{tag}.png', marker_width_m=0.20))
         make_marker(tag, ASSETS / f'markers/element_{tag}.png')
     # Results are kept at their source precision; signs/local basis are not altered.
     marker_hash = hashlib.sha256()
     for member in members:
         marker_hash.update(str(member['id']).encode('ascii'))
         marker_hash.update((ASSETS/member['marker']).read_bytes())
-    snapshot = dict(schema=1, marker_set_sha256=marker_hash.hexdigest(), model_sha256=hashlib.sha256(model_path.read_bytes()).hexdigest(),
+    snapshot = dict(schema=2, marker_set_sha256=marker_hash.hexdigest(), model_sha256=hashlib.sha256(model_path.read_bytes()).hexdigest(),
                     results_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), units='m, kN, kN*m',
                     origin='OpenSees, resultados precalculados', members=members)
     (ASSETS / 'structural_data.json').write_text(json.dumps(snapshot, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
