@@ -1,0 +1,16 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'cl.mcoc.edificio.ar'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'cl.mcoc.edificio.ar'
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName '1.0.0'
+        ndk { abiFilters 'arm64-v8a' }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    buildTypes { release { minifyEnabled false } }
+}
+dependencies { implementation 'com.google.ar:core:1.56.0' }
