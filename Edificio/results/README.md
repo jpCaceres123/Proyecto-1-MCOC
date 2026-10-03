@@ -10,6 +10,21 @@ No mover ni renombrar archivos sin actualizar primero esos consumidores.
 Desde la raiz del proyecto:
 
 ```powershell
+python Edificio/model/builders/generar_modelo_manual.py
+python Edificio/analysis/load_cases/ejecutar.py --carga-movil
+python Edificio/visualization/android-ar/tools/export_ar_data.py
+python Edificio/visualization/android-ar/tools/verify_ar_data.py
+python -m unittest discover -s Edificio/verification/tests -p "test_*.py"
+```
+
+La geometria y las cargas fuente gobiernan el modelo; no subir cambios hechos
+directamente en `modelo_3d_manual.json`. `--carga-movil` reconstruye las bases
+SQ4 y su hash cuando el modelo cambia. Después se deben actualizar la
+instantánea Android y su APK (`Edificio/visualization/android-ar/build-apk.ps1`)
+antes de instalarlo. Las fuentes no se deben mezclar con recursos de una corrida
+anterior. Para ejecutar solamente los casos base (sin rehacer SQ4):
+
+```powershell
 python Edificio/analysis/load_cases/ejecutar.py
 ```
 

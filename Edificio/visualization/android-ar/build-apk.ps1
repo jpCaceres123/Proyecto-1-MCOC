@@ -17,5 +17,7 @@ try {
     Copy-Item -LiteralPath (Join-Path $projectPath 'app/build/outputs/apk/debug/app-debug.apk') -Destination (Join-Path $projectPath 'dist/EdificioAR.apk') -Force
     & (Join-Path $sdkDirectory 'build-tools/35.0.0/apksigner.bat') verify --verbose (Join-Path $projectPath 'dist/EdificioAR.apk')
     if ($LASTEXITCODE -ne 0) { throw 'La firma del APK no es válida.' }
+    & python (Join-Path $projectPath 'tools/verify_apk.py')
+    if ($LASTEXITCODE -ne 0) { throw 'APK con instantánea o marcadores desactualizados.' }
     Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $projectPath 'dist/EdificioAR.apk') | Format-List
 } finally { Pop-Location }

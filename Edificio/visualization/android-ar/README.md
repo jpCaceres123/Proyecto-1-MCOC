@@ -57,6 +57,8 @@ El script de compilación usa JDK 17, Gradle 8.10.2 y Android SDK en `%USERPROFI
 
 `verification.json` contiene la identidad de los datos y, cuando está disponible `arcoreimg.exe`, la calidad de todas las imágenes. El resumen de compilación, lint y firma está en `dist/delivery.json`. El umbral del verificador de marcadores es 75 puntos, siguiendo la [recomendación de Google](https://developers.google.com/ar/develop/augmented-images/arcoreimg).
 
+Tras regenerar desde las fuentes estructurales vigentes, el contrato incluye **612** vigas y columnas y **652** paneles SQ4. El script de compilación también comprueba que el APK contenga exactamente la instantánea y los marcadores de los archivos fuente y reconstruye `dist/delivery.json`; un hash antiguo bloquea la entrega. Tres imágenes nuevas (IDs 344, 431 y 653) requieren evaluación de calidad con la herramienta oficial `arcoreimg.exe`: mientras no esté disponible, `verification.json` y `dist/delivery.json` indican calidad **PENDING**, sin reutilizar puntuaciones de otro juego de marcadores. El equipo confirmó que usó el Redmi Note 9 Pro con los marcadores **1, 241, 246 y otros**, y que observó resultados iguales a los del visor Unity. Esta confirmación manual no está codificada en `physical_device_test`, que permanece `PENDING` en los manifiestos automáticos; no se comunicaron medidas del error espacial.
+
 Para validar en el Redmi:
 
 - Confirmar permiso, cámara y detección de los tres marcadores iniciales.
@@ -65,7 +67,7 @@ Para validar en el Redmi:
 - Ocultar el marcador y comprobar continuidad del anclaje; cambiar de etiqueta y usar Reanclar.
 - Probar pausa/reanudación, permiso rechazado, catálogo sin cámara y cambio de IDs activos.
 
-La precisión en obra y el comportamiento de cámara no se pueden certificar únicamente compilando. Su estado se registra como **pendiente** hasta una prueba física. No se fabricaron capturas ni mediciones en terreno.
+La precisión en obra y el comportamiento de la cámara no se pueden certificar únicamente compilando ni comparando resultados estructurales con Unity. Se informó una prueba funcional en el Redmi; siguen pendientes la **medición del error de alineamiento** y un registro reproducible de las condiciones de detección y seguimiento. No se fabricaron capturas ni mediciones en terreno.
 
 ## Referencias
 
