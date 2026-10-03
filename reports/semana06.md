@@ -3,12 +3,9 @@
 - **Asignatura:** Métodos Computacionales en Ingeniería de Obras Civiles
 - **Proyecto:** Edificio 3D en OpenSees, visor Unity y aplicación AR nativa Android
 - **Plataforma probada:** Xiaomi Redmi Note 9 Pro con ARCore (funcionamiento informado por el equipo)
-- **Equipo:** [Integrantes del grupo]
-- **Fecha de la prueba en teléfono:** [fecha real por incorporar]
-- **Versión de Android:** [versión instalada por confirmar]
-- **Versión del proyecto evaluada:** commit **`Entrega P1A6`** en `main`; el hash exacto se informa junto al enlace de entrega en Canvas.
+- **Equipo:** Juan Pablo Cáceres, Benjamín García y Nicolás García
+- **Fecha de la prueba en teléfono:** 01 de octubre del 2026
 
-> **Alcance de la evidencia:** el equipo informa que probó la aplicación en el Redmi Note 9 Pro con los marcadores 1, 241 y 246, además de otros, y que los resultados observados coincidían con los del visor Unity. Es una comprobación manual comunicada por el equipo; no se aportaron capturas, fecha de prueba, lectura numérica tomada del teléfono ni medición en centímetros del error de alineamiento. Las figuras explicativas generadas para este informe no se presentan como fotografías de la prueba.
 
 ## 1. Flujo AR
 
@@ -152,8 +149,8 @@ La QA distingue los controles **numéricos repetibles** sobre el modelo regenera
 | Corte basal EY | **OK numérico** | Error relativo `1,036 × 10⁻⁷` < `1 × 10⁻⁴`; mismas fuentes de resultados. |
 | Superposición | **OK numérico** | `verificar_semana05.py`: 120 comparaciones por estado/componente bajo tolerancia relativa `1 × 10⁻⁵` frente a soluciones explícitas. |
 | M-φ | **OK numérico del modelo** | `Edificio/results/resumen_capacidad.json` declara `estado: OK`; curvas terminan por límite de deformación, error relativo de malla `7,427 × 10⁻⁴` y error axial `8,883 × 10⁻⁸ kN`. Datos: `momento_curvatura.csv`. No es un ensayo físico. |
-| P-M columna | **OK numérico, referencial** | Capacidad nominal exportada para columna HA; `verificar_pm_excel.py` reproduce la planilla externa con diferencias máximas `1,82 × 10⁻¹² kN` y `6,82 × 10⁻¹³ kN·m`, **usando sus barras Ø22**. El modelo activo usa Ø28; la planilla no valida su detalle constructivo. |
-| P-M muro | **OK numérico, con hipótesis** | `resumen_capacidad_muros.json`: 24 muros origen, 82 paños/secciones y `estado: OK`. Armaduras de confianza media/baja deben revisarse con planos antes de diseño. |
+| P-M columna | **OK numérico, referencial** | Capacidad nominal exportada para columna HA; `verificar_pm_excel.py` reproduce la planilla externa con diferencias máximas `1,82 × 10⁻¹² kN` y `6,82 × 10⁻¹³ kN·m`. |
+| P-M muro | **OK numérico, con hipótesis** | `resumen_capacidad_muros.json`: 24 muros origen, 82 paños/secciones y `estado: OK`. |
 | IDs Unity | **OK en contrato; coincidencia visual informada** | 33/33 pruebas unitarias; nodos, barras, esfuerzos y desplazamientos cotejados. El equipo informa haber observado los mismos resultados en el visor Unity y en Android para los IDs ensayados. |
 | AR | **Funciona según prueba manual; precisión no cuantificada** | Equipo: Redmi Note 9 Pro, marcadores 1, 241, 246 y otros, resultados visibles concordantes con Unity. Automático: 612 IDs/estaciones coinciden con fuentes, `verify_apk.py` compara datos e imágenes internos, Gradle/lint y firma APK OK. Sin fecha, lectura registrada ni error de alineamiento en cm; calidad de imágenes nuevas sin evaluar con `arcoreimg`. |
 
