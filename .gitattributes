@@ -1,1 +1,4 @@
 *.dwg filter=lfs diff=lfs merge=lfs -text
+
+Edificio/visualization/unity/CampusPlayable/Assets/Resources/estructura_principal.csv -text
+Edificio/visualization/unity/CampusPlayable/Assets/Resources/inspeccion_estructural.json -text

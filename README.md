@@ -36,3 +36,11 @@ El modelo, los resultados, el visor Unity, los avances y los archivos SAP2000 de
 - [Material SAP2000 P1L1](P1L1/sap2000/)
 
 La guía de Semana 5 detalla la superposición en vivo, las modificaciones de intensidad/sección, las reglas de reanálisis y los verificadores ejecutables.
+
+## Campus jugable en primera persona
+
+- [Proyecto Unity y guía de controles](Edificio/visualization/unity/CampusPlayable/README.md), para Unity **6000.5.11f1**.
+- [ZIP Windows](Edificio/visualization/unity/CampusPlayable/Delivery/CampusIngenieria_Windows.zip): extraer completo y abrir `CampusIngenieria/CampusIngenieria.exe`.
+- [ZIP del proyecto editable](Edificio/visualization/unity/CampusPlayable/Delivery/CampusIngenieria_Unity.zip).
+
+Incluye el recorrido arquitectónico, terraza y cafetería, láser de consulta de resultados estructurales (tecla 1), AK-47 (tecla 2) y el panel con cargas, diagramas y movimientos. Los resultados corresponden a análisis guardados; la arquitectura del recorrido conserva el contrato estructural original. La versión fue compilada; el recorrido actualizado no tiene una nueva prueba de juego.

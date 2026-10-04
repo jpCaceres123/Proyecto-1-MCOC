@@ -1,0 +1,150 @@
+{
+  "revision": "LT1: dos volumenes y dos descansos abiertos",
+  "build": "Succeeded",
+  "build_errors": 0,
+  "play_test_performed": false,
+  "structure_csv_sha256": "60daa1d0ed805f62b34affaa1a18df4e65a402dad515c9cffd1d6074bc4be212",
+  "cantilevers": [
+    {
+      "x": [
+        9.7,
+        17.79
+      ],
+      "elevation": [
+        7.92,
+        11.88
+      ]
+    },
+    {
+      "x": [
+        19.7,
+        30.3
+      ],
+      "elevation": [
+        15.84,
+        19.8
+      ]
+    }
+  ],
+  "landings": [
+    {
+      "x": [
+        19.7,
+        30.3
+      ],
+      "elevation": 11.88
+    },
+    {
+      "x": [
+        9.7,
+        12.5
+      ],
+      "elevation": 15.84
+    }
+  ],
+  "lower_stair": {
+    "start_unity": [
+      29.2,
+      4.41,
+      -6.35
+    ],
+    "end_unity": [
+      39.2,
+      8.37,
+      -6.35
+    ],
+    "width_m": 2.04,
+    "floor_difference_m": 3.96,
+    "arrival_slab": true,
+    "aligned_with_upper_stair": false,
+    "side": "lado exterior marcado rojo"
+  },
+  "new_access_slabs": true,
+  "rear_terrace": {
+    "x": [
+      -28,
+      45
+    ],
+    "horizontal_y": [
+      17.05,
+      26
+    ],
+    "elevation_unity": 4.41,
+    "dimensions": "interpretadas de fotografias"
+  },
+  "terrain": "terreno elevado junto a losa, talud hacia cancha y sendero a nivel",
+  "side_entrance": {
+    "door": "interactive",
+    "position_unity": [
+      45.8,
+      8.37,
+      10.8
+    ],
+    "terrain_void_filled": true
+  },
+  "rear_terrace_stair": {
+    "width_m": 4,
+    "from_unity": [
+      47,
+      8.37,
+      21.5
+    ],
+    "to_unity": [
+      37,
+      4.41,
+      21.5
+    ],
+    "stages": "tramo inferior, losa intermedia de 2 m, tramo superior"
+  },
+  "terrace_furniture": {
+    "tables": 9,
+    "chairs": 36,
+    "ventilation_equipment_removed": true
+  },
+  "cafeteria": {
+    "entrance_x": 34.5,
+    "floor_unity": 4.41,
+    "interactive_door": true,
+    "interior": "barra, maquina, mesas y sillas",
+    "analytical_csv_modified": false
+  },
+  "lowest_LT1_floor": "cubierto por relleno a cota de llegada 4.41 m",
+  "laser": {
+    "database_elements": 1357,
+    "cases": [
+      "G",
+      "Q",
+      "EX",
+      "EY",
+      "R",
+      "EXG",
+      "EXQ",
+      "EYG",
+      "EYQ"
+    ],
+    "real_saved_results": true,
+    "live_solver": false,
+    "controls": "L activar, Q caso, Tab diagramas completos, clic derecho fijar, rueda desplazar"
+  },
+  "equipment": {
+    "1": "laser",
+    "2": "AK47",
+    "fire": "left mouse hold",
+    "reload": "T",
+    "magazine": 30,
+    "play_test_performed": false
+  },
+  "inspector_ui": {
+    "sections": [
+      "Resumen",
+      "Cargas",
+      "Diagramas",
+      "Movimiento"
+    ],
+    "cards": true,
+    "plots": true,
+    "controls": "Tab seccion, Q caso, I extremo",
+    "displacement_units": "mm",
+    "rotation_units": "rad"
+  }
+}
