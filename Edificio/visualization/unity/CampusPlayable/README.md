@@ -10,8 +10,20 @@ Abrir `Build/Windows/CampusIngenieria.exe`, o extraer el ZIP Windows y abrir el 
 - Shift: correr; Espacio: saltar.
 - E: abrir/cerrar puertas, elegir piso en el ascensor, leer placas e inspeccionar miembros estructurales próximos.
 - F: linterna; Esc: pausa y sensibilidad del mouse; R: volver al acceso.
+- F5: alternar primera/tercera persona; el visitante usa el mismo AmongUs.fbx de la carga móvil.
+- F6: alternar arquitectura/modo estructural, también disponible desde Esc. En modo estructural se muestran únicamente losas, columnas y muros; se ocultan vigas, fachadas, tabiques, mobiliario y paisaje. Los apoyos de recorrido se mantienen invisibles para conservar el desplazamiento.
 
-El ascensor del extremo LT2 permite llegar a todos los niveles. La escalera exterior del LT1 sigue tres tramos por la fachada, unidos por dos descansos abiertos; el tramo desde el patio sube desde la izquierda al descanso inferior, sin prolongarse hasta el extremo derecho. Las placas de cada piso completan la ruta de cinco espacios.
+La revisión de código del 5 de octubre reemplaza el ascensor exterior LT2 por dos interiores en huecos existentes de las losas. E abre la selección de piso del ascensor próximo y conserva ese mismo ascensor al llegar. Es una transición de piso, no una simulación dinámica de una cabina. La escalera exterior del LT1 sigue tres tramos por la fachada, unidos por dos descansos abiertos; el tramo desde el patio sube desde la izquierda al descanso inferior, sin prolongarse hasta el extremo derecho. Las placas de cada piso completan la ruta de cinco espacios.
+
+## Revisión local del 5 de octubre: estado de entrega
+
+Los cambios F5/F6 y ascensores están en el código fuente, **no en los ZIP ni ejecutables entregados previamente**. La compilación C# contra las referencias de Unity 6000.5.9f1 pasó; únicamente quedó la advertencia preexistente de `CampusLaser.details` sin uso. Unity rechazó generar el Player por falta de licencia válida (salida 198). Por tanto no se afirma prueba de juego, precisión de cámara ni accesibilidad final de los ascensores.
+
+La implantación usa la intersección de los huecos exportados que contienen los puntos OpenSees (X,Y)=(5,4) y (5,11): primer hueco X=3.40–6.70, Y=2.405–6.95 m; segundo X=3.60–6.30, Y=10.15–12.15 m. Las medidas comunes evitan invadir las losas entre niveles. Las paradas se derivan de los niveles con huecos reales: 3.96, 7.92, 11.88 y 15.84 m (más el acabado de recorrido). No se habilita el piso enterrado ni se perfora la cubierta de 19.80 m para inventar otra parada. La asignación de estos dos huecos a ascensores responde a la petición del usuario; debe contrastarse con los planos si existe otra designación. No se crean huecos nuevos ni se modifican cálculos, IDs o resultados OpenSees.
+
+Las losas visuales del modo estructural siguen las superficies y vacíos del CSV. Su espesor representado es 0.15 m de referencia, no una verificación de espesor por paño ni una placa FE. Los pisos de circulación conservan el acabado anterior a +0.45 m: no confundir esos apoyos de recorrido con la cota analítica. La arquitectura puede restaurarse sin perder las colisiones originales. La cámara de tercera persona limita su distancia frente a obstáculos y oculta el avatar si queda demasiado cerca. El AK47 en primera persona se oculta en tercera persona; el láser de consulta se conserva.
+
+Tras activar la licencia y generar el nuevo build con `Campus > Construir Windows`, ejecutar `CampusIngenieria.exe -campus-feature-check -campus-output <carpeta>` para comprobar estado reversible de las capas, ocho puntos de apoyo en los ascensores y disponibilidad del FBX, y producir dos capturas. La prueba está añadida, pero **no se ha ejecutado**. Completar además pruebas manuales de F5/F6, recorrido y salida/entrada de ambas cabinas antes de sustituir los ZIP de entrega.
 
 ## Abrir el proyecto editable
 

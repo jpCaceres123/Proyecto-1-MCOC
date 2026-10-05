@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 // Architectural interpretation built on the unchanged analytical node/member contract.
-public class CampusWorld : MonoBehaviour
+public partial class CampusWorld : MonoBehaviour
 {
     public const float Storey = 3.96f, Finish = .45f;
     public int nodeCount, memberCount, slabCount, wallCount;
@@ -33,12 +33,13 @@ public class CampusWorld : MonoBehaviour
         go.AddComponent<CampusLaser>();
         go.AddComponent<CampusRifle>();
         player.Teleport(Entrance);
-        if (Environment.GetCommandLineArgs().Contains("-campus-check"))
-            StartCoroutine(DeliveryCheck());
+        if (Environment.GetCommandLineArgs().Contains("-campus-feature-check"))StartCoroutine(FeatureCheck());
+        else if (Environment.GetCommandLineArgs().Contains("-campus-check"))
+            StartCoroutine(FeatureCheck());
         else if (Environment.GetCommandLineArgs().Contains("-campus-ui-preview")) StartCoroutine(InspectorPreview());
         else if (Environment.GetCommandLineArgs().Contains("-campus-capture")) StartCoroutine(CaptureRevision());
     }
-    public Vector3 Spawn(int level) { return new Vector3(-30f, level*Storey+Finish+.08f,-6f); }
+    public Vector3 Spawn(int level) { return ElevatorArrival(0,level); }
     public Vector3 Entrance { get { return new Vector3(-28,Finish+.08f,-16); } }
     public void Generate()
     {
@@ -69,11 +70,14 @@ public class CampusWorld : MonoBehaviour
         nodeCount=nodes.Count; slabCount=slabs.Count;
         structure=new GameObject("Estructura_original_IDS").transform; structure.SetParent(transform);
         architecture=new GameObject("Arquitectura_y_campus").transform; architecture.SetParent(transform);
+        PrepareStructuralLayers();
         Materials(); EnvironmentSetup(); StructuralGeometry();
         for(int level=0;level<=5;level++) { Deck(level); if(level<5){ Facade(level); Interior(level); } }
         Circulation(); Landscape(); RearTerrace(); Cafeteria(); SideEntrance(); Roof();
-        Combine(structure); Combine(architecture);
+        ClearLiftIntersections();
+        Combine(structure); Combine(beamLayer); Combine(slabLayer); Combine(architecture);
         SlabInspectionTargets();
+        RememberArchitectureState();
         Physics.SyncTransforms();
         Debug.Log($"CAMPUS_READY nodes={nodeCount} members={memberCount} slabs={slabCount} walls={wallCount} accessible_levels=6");
     }
@@ -155,7 +159,7 @@ public class CampusWorld : MonoBehaviour
                 Vector3 a=nodes[int.Parse(r[3])],b=nodes[int.Parse(r[4])];bool col=r[2].Contains("COLUMN");
                 float w=col?.7f:.6f,h=col?.7f:.8f;if(r[2].Contains("SHS")){w=.3f;h=.3f;}
                 if(r.Length>14 && r[13]!=""){w=F(r[13]);h=F(r[14]);}
-                var g=Box((col?"Columna_":"Viga_")+r[1],(a+b)/2,new Vector3(h,(b-a).magnitude,w),concrete,true,structure);
+                var g=Box((col?"Columna_":"Viga_")+r[1],(a+b)/2,new Vector3(h,(b-a).magnitude,w),concrete,true,col?structure:beamLayer);
                 g.transform.rotation=Quaternion.FromToRotation(Vector3.up,b-a);
                 var id=g.AddComponent<StructuralIdentity>();id.key="E:"+r[1];id.description=(col?"Columna ":"Viga ")+r[1]+"\nNodos "+r[3]+" → "+r[4]+"\nGeometría del modelo principal";memberCount++;
             } else if(r[0]=="W") {
@@ -352,16 +356,7 @@ public class CampusWorld : MonoBehaviour
         Box("Losa lateral de llegada LT1",new Vector3(43.1f,accessY-.15f,-3.75f),new Vector3(7.8f,.30f,7.5f),concrete);
         // The outer side is flush with the elevated campus terrain, allowing access onto the slab.
         Box("Antepecho frontal losa lateral LT1",new Vector3(43.1f,accessY+.46f,-7.45f),new Vector3(7.8f,.92f,.16f),concrete);
-        for(int level=0;level<=5;level++) {
-            float y=level*Storey+Finish;
-            Box("Plataforma ascensor",new Vector3(-30,y-.1f,-6),new Vector3(3.6f,.2f,2.8f),concrete);
-            Box("Acceso ascensor",new Vector3(-28,y-.1f,-2.7f),new Vector3(2,.2f,7.6f),concrete);
-            Box("Conexion ascensor",new Vector3(-29,y-.1f,-6),new Vector3(3.3f,.2f,2.8f),concrete);
-            var panel=Box("Panel ascensor",new Vector3(-31,y+1.15f,-5.8f),new Vector3(.25f,.55f,.3f),orange);
-            var act=panel.AddComponent<CampusAction>();act.kind=1;act.title="Ascensor · elegir nivel";actions.Add(act);
-            Label(new Vector3(-30.8f,y+2.4f,-5.6f),"NIVEL "+level,.12f);
-        }
-        for(int side=-1;side<=1;side+=2)Line("Guia ascensor",new Vector3(-31.5f,.5f,-6+side*1.1f),new Vector3(-31.5f,21,-6+side*1.1f),.13f,metal);
+        InteriorElevators();
     }
     void Landing(float lo,float hi,int level,float front) {
         float y=level*Storey+Finish;
@@ -592,7 +587,8 @@ public class CampusWorld : MonoBehaviour
         var groups=new Dictionary<Material,List<CombineInstance>>();
         foreach(var mf in parent.GetComponentsInChildren<MeshFilter>()) {
             var renderer=mf.GetComponent<MeshRenderer>();
-            if(!renderer || mf.GetComponent<TextMesh>() || mf.GetComponentInParent<CampusDoor>())continue;
+            if(!renderer || !renderer.enabled || mf.GetComponent<TextMesh>() || mf.GetComponentInParent<CampusDoor>() ||
+                (parent==structure && mf.transform.IsChildOf(beamLayer)))continue;
             var m=renderer.sharedMaterial;if(!groups.ContainsKey(m))groups[m]=new List<CombineInstance>();
             groups[m].Add(new CombineInstance{mesh=mf.sharedMesh,transform=parent.worldToLocalMatrix*mf.transform.localToWorldMatrix});renderer.enabled=false;
         }

@@ -50,7 +50,7 @@ public class CampusRifle : MonoBehaviour {
     }
     void Update() {
         if(!model)return;
-        bool equipped=player.equippedTool==2 && player.InspectionAllowed;model.gameObject.SetActive(equipped);
+        bool equipped=player.equippedTool==2 && player.InspectionAllowed && !player.ThirdPerson;model.gameObject.SetActive(equipped);
         if(!equipped){flash.SetActive(false);return;}
         if(Input.GetKeyDown(KeyCode.T) && rounds<30 && !reloading){reloading=true;reloadUntil=Time.time+1.6f;}
         if(reloading && Time.time>=reloadUntil){rounds=30;reloading=false;}
