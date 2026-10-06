@@ -30,9 +30,9 @@ public class CampusLaser : MonoBehaviour {
     }
     void LateUpdate() {
         if(!player || !beam)return;
-        if(player.InspectionAllowed && (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1))){active=true;pinned=false;}
-        if(player.InspectionAllowed && Input.GetKeyDown(KeyCode.L)){active=!active;pinned=false;player.equippedTool=1;}
-        bool visible=active && player.equippedTool==1 && player.InspectionAllowed;beam.enabled=visible;dot.SetActive(visible);if(!visible)return;
+        if(player.InspectionAllowed && !player.ThirdPerson && (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1))){active=true;pinned=false;}
+        if(player.InspectionAllowed && !player.ThirdPerson && Input.GetKeyDown(KeyCode.L)){active=!active;pinned=false;player.equippedTool=1;}
+        bool visible=active && player.equippedTool==1 && player.InspectionAllowed && !player.ThirdPerson;beam.enabled=visible;dot.SetActive(visible);if(!visible)return;
         if(Input.GetKeyDown(KeyCode.Tab)){page=(page+1)%4;scroll=Vector2.zero;}
         if(Input.GetKeyDown(KeyCode.I))endJ=!endJ;
         if(Input.GetKeyDown(KeyCode.Q)){selectedCase=(selectedCase+1)%9;scroll=Vector2.zero;}
@@ -139,7 +139,7 @@ public class CampusLaser : MonoBehaviour {
         return y+12;
     }
     void OnGUI() {
-        if(!player || !active || player.equippedTool!=1 || !player.InspectionAllowed)return;
+        if(!player || !active || player.equippedTool!=1 || !player.InspectionAllowed || player.ThirdPerson)return;
         Styles();float w=Mathf.Min(490,Screen.width*.40f),h=Screen.height-48,x=Screen.width-w-24;
         Fill(new Rect(x+5,29,w,h),new Color(0,0,0,.25f));Fill(new Rect(x,24,w,h),bg);Fill(new Rect(x,24,w,3),accent);
         entries.TryGetValue(key,out var entry);
