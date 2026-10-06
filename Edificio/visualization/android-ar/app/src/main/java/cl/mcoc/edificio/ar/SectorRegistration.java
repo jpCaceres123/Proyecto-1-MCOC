@@ -42,7 +42,7 @@ public final class SectorRegistration {
     public static float distance(float[] a,float[] b){float s=0;for(int k=0;k<3;k++)s+=(a[k]-b[k])*(a[k]-b[k]);return (float)Math.sqrt(s);}
     static float angle(Pose a,Pose b){float[] x=a.getRotationQuaternion(),y=b.getRotationQuaternion();float dot=0;for(int k=0;k<4;k++)dot+=x[k]*y[k];return 2*(float)Math.acos(Math.min(1,Math.abs(dot)));}
     public Pose pose(){return anchor!=null&&anchor.getTrackingState()==TrackingState.TRACKING?anchor.getPose():null;}
-    public void reset(){if(anchor!=null)anchor.detach();anchor=null;pending=null;stable=0;state="CALIBRATING";}
+    public void reset(){if(anchor!=null)anchor.detach();anchor=null;pending=null;stable=0;checks.clear();state="CALIBRATING";}
     public void update(Session session,Collection<AugmentedImage> images){
         ArrayList<Pose> candidates=new ArrayList<>();accepted=0;rejected=0;
         for(AugmentedImage image:images){

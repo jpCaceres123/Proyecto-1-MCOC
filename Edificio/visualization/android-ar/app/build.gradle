@@ -2,6 +2,7 @@ plugins { id 'com.android.application' }
 android {
     namespace 'cl.mcoc.edificio.ar'
     compileSdk 35
+    buildToolsVersion '36.0.0'
     defaultConfig {
         applicationId 'cl.mcoc.edificio.ar'
         minSdk 24
@@ -13,4 +14,8 @@ android {
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
     buildTypes { release { minifyEnabled false } }
 }
-dependencies { implementation 'com.google.ar:core:1.56.0' }
+dependencies {
+    implementation 'com.google.ar:core:1.56.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.json:json:20240303'
+}

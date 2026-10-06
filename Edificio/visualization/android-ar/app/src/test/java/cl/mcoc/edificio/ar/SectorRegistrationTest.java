@@ -16,5 +16,5 @@ public class SectorRegistrationTest {
     @Test public void refusesUnsurveyed()throws Exception{StructuralData d=data();JSONObject f=form(d).put("surveyed",false);assertThrows(IllegalArgumentException.class,()->new SectorRegistration(f,d));}
     @Test public void refusesWrongHash()throws Exception{StructuralData d=data();JSONObject f=form(d).put("modelHash","0".repeat(64));assertThrows(IllegalArgumentException.class,()->new SectorRegistration(f,d));}
     @Test public void quaternionSignIsSameRotation(){assertEquals(0,SectorRegistration.angle(new Pose(new float[3],new float[]{0,0,0,1}),new Pose(new float[3],new float[]{0,0,0,-1})),1e-6);}
-    @Test public void resetDoesNotInventMeasures()throws Exception{StructuralData d=data();SectorRegistration r=new SectorRegistration(form(d),d);r.reset();assertEquals(JSONObject.NULL,r.report().get("rms_m"));assertThrows(IllegalStateException.class,()->r.measure(new float[3],new float[3],"control",60000));}
+    @Test public void resetDoesNotInventMeasures()throws Exception{StructuralData d=data();SectorRegistration r=new SectorRegistration(form(d),d);r.checks.add(new JSONObject().put("error_m",.02));r.reset();assertEquals(JSONObject.NULL,r.report().get("rms_m"));assertThrows(IllegalStateException.class,()->r.measure(new float[3],new float[3],"control",60000));}
 }

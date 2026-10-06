@@ -14,6 +14,10 @@ public final class ARRenderer implements GLSurfaceView.Renderer {
     private Anchor anchor;
     private AugmentedImage activeImage;
     private volatile boolean resetPending;
+    private float[] measurePoint;
+    private String measureLabel;
+    private long measureElapsed;
+    public void requestMeasurement(float[] p,String label,long elapsed){synchronized(activity.sessionLock){measurePoint=p;measureLabel=label;measureElapsed=elapsed;}}
     private final FloatBuffer quad=buffer(new float[]{-1,-1,1,-1,-1,1,1,1});
     private final FloatBuffer uv=buffer(new float[8]);
     private final float[] view=new float[16],projection=new float[16],world=new float[16],pv=new float[16],mvp=new float[16];
@@ -35,14 +39,15 @@ public final class ARRenderer implements GLSurfaceView.Renderer {
         synchronized(activity.sessionLock){
             Session session=activity.session;if(session==null)return;
             try{
-                if(resetPending){if(anchor!=null)try{anchor.detach();}catch(Exception ignored){}anchor=null;activeImage=null;activeId=-1;resetPending=false;}
+                if(resetPending){if(anchor!=null)try{anchor.detach();}catch(Exception ignored){}anchor=null;activeImage=null;activeId=-1;if(activity.sector!=null)activity.sector.reset();resetPending=false;}
                 session.setCameraTextureName(cameraTexture);
                 session.setDisplayGeometry(activity.getWindowManager().getDefaultDisplay().getRotation(),width,height);
                 Frame frame=session.update();if(frame.getTimestamp()==0)return;
                 drawCamera(frame);
                 Camera camera=frame.getCamera();
-                if(camera.getTrackingState()!=TrackingState.TRACKING){activity.cameraStatus("Seguimiento pausado · "+camera.getTrackingFailureReason()+" · mueve el teléfono lentamente");return;}
+                if(camera.getTrackingState()!=TrackingState.TRACKING){activity.labels(Collections.emptyList(),Collections.emptyList());activity.cameraStatus("Seguimiento pausado · "+camera.getTrackingFailureReason()+" · mueve el teléfono lentamente");return;}
                 if(!activity.scanning)return;
+                if(activity.sector!=null){drawSector(session,frame,camera);return;}
                 AugmentedImage candidate=null;
                 for(AugmentedImage image:session.getAllTrackables(AugmentedImage.class)){
                     if(image.getTrackingState()==TrackingState.TRACKING&&image.getTrackingMethod()==AugmentedImage.TrackingMethod.FULL_TRACKING){candidate=image;if(image==activeImage)break;}
@@ -71,6 +76,50 @@ public final class ARRenderer implements GLSurfaceView.Renderer {
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,cameraTexture);GLES20.glUniform1i(GLES20.glGetUniformLocation(backgroundProgram,"uCamera"),0);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);GLES20.glDisableVertexAttribArray(pos);GLES20.glDisableVertexAttribArray(tex);
     }
+    private void drawSector(Session session,Frame frame,Camera camera)throws Exception{
+        SectorRegistration sector=activity.sector;sector.update(session,session.getAllTrackables(AugmentedImage.class));
+        activity.cameraStatus("Sector · "+sector.state+" · aceptados "+sector.accepted+" · rechazados "+sector.rejected);
+        Pose pose=sector.pose();if(pose==null||sector.state.startsWith("DISAGREEMENT")){activity.labels(Collections.emptyList(),Collections.emptyList());return;}
+        if(measurePoint!=null){List<HitResult> hits=frame.hitTest(width/2f,height/2f);
+            HitResult valid=null;for(HitResult hit:hits)if(hit.getTrackable() instanceof Plane&&((Plane)hit.getTrackable()).isPoseInPolygon(hit.getHitPose()) || hit.getTrackable() instanceof Point){valid=hit;break;}
+            if(valid==null)activity.cameraStatus("Medición no disponible: apunta a una superficie detectable");
+            else{sector.measure(measurePoint,valid.getHitPose().getTranslation(),measureLabel,measureElapsed);activity.cameraStatus("Punto independiente medido; exporta el reporte");}measurePoint=null;}
+        camera.getViewMatrix(view,0);camera.getProjectionMatrix(projection,0,.05f,100);pose.toMatrix(world,0);
+        Matrix.multiplyMM(pv,0,projection,0,view,0);Matrix.multiplyMM(mvp,0,pv,0,world,0);
+        GLES20.glEnable(GLES20.GL_BLEND);GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA,GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        Set<Integer> chosen=new LinkedHashSet<>();synchronized(activity.compared){chosen.addAll(activity.compared);}
+        if(chosen.isEmpty() && activity.selected!=null)chosen.add(activity.selected.id);
+        List<String> labels=new ArrayList<>();List<float[]> labelPositions=new ArrayList<>();
+        for(int id:sector.elements){StructuralData.Member m=activity.data.members.get(id);float[] a=sector.local(m.start),b=sector.local(m.end);
+            lines(new float[]{a[0],a[1],a[2],b[0],b[1],b[2]},.27f,.88f,.75f,chosen.contains(id)?1:.35f,chosen.contains(id)?4:2);
+            if(!chosen.contains(id))continue;
+            StructuralData.Response r=m.cases.get(activity.loadCase);if(r==null)continue;
+            float[] clip=new float[4];float[] labelPoint={(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2,1};Matrix.multiplyMV(clip,0,mvp,0,labelPoint,0);
+            if(clip[3]>0){float x=(clip[0]/clip[3]+1)*width/2,y=(1-clip[1]/clip[3])*height/2;if(x>=0&&x<width&&y>=0&&y<height){labels.add("ID "+id+" · "+activity.loadCase+" · "+StructuralData.COMPONENTS[activity.component]+" "+String.format(Locale.US,"%+.2f",r.at(activity.component,activity.station))+(activity.component<3?" kN":" kN·m")+(activity.showDeformed?"\nHermite nodal ×100":"")+(activity.showAreas?"\nÁrea "+String.format(Locale.US,"%.2f",m.loadInfo.tributaryArea)+" m²":""));labelPositions.add(new float[]{x,y});}}
+            ArrayList<Float> vertices=new ArrayList<>();float maximum=Math.max(1,r.maxAbs(activity.component));
+            for(int k=0;k<r.s.length;k++){float s=r.s[k];float[] p=new float[3];for(int v=0;v<3;v++)p[v]=a[v]+(b[v]-a[v])*s+.35f*m.localY[v]*r.values[activity.component][k]/maximum;add(vertices,p);}
+            polyline(array(vertices),.45f,.70f,1,1,3);
+            if(activity.showDeformed){vertices.clear();for(int k=0;k<=40;k++){float s=k/40f;float[] u=r.displacement(s,m.length,m.localX),p=new float[3];for(int v=0;v<3;v++)p[v]=a[v]+(b[v]-a[v])*s+100*u[v];add(vertices,p);}polyline(array(vertices),1,.25f,.70f,1,3);}
+            if(activity.showCapacity && m.pm.length>0)drawCapacity(m,r,a,b);
+        }
+        activity.labels(labels,labelPositions);
+        if(activity.showAreas)activity.data.drawAreas(this,sector,chosen);
+        if(activity.showDeformed)activity.data.drawWalls(this,sector,activity.loadCase);
+        GLES20.glDisable(GLES20.GL_BLEND);
+    }
+    void drawCapacity(StructuralData.Member m,StructuralData.Response r,float[] a,float[] b)throws Exception{
+        org.json.JSONObject snapshot=activity.capacitySnapshot;ArrayList<float[]> current=new ArrayList<>(),prior=new ArrayList<>();
+        if(snapshot!=null&&snapshot.getInt("elementTag")==m.id&&snapshot.getString("modelHash").equals(activity.data.modelHash)){
+            for(String field:new String[]{"curves","previous"}){org.json.JSONArray curves=snapshot.getJSONArray(field);for(int k=0;k<curves.length();k++){org.json.JSONObject curve=curves.getJSONObject(k);if(!curve.getString("axis").equals("Mz"))continue;org.json.JSONArray points=curve.getJSONArray("points");for(int j=0;j<points.length();j++){org.json.JSONObject p=points.getJSONObject(j);(field.equals("curves")?current:prior).add(new float[]{(float)p.getDouble("P_kN"),(float)p.getDouble("M_kNm")});}}}
+        }else for(StructuralData.PMPoint p:m.pm)current.add(new float[]{p.p,p.m});
+        ArrayList<float[]> all=new ArrayList<>(current);all.addAll(prior);float maxP=1,maxM=1;for(float[] p:all){maxP=Math.max(maxP,Math.abs(p[0]));maxM=Math.max(maxM,Math.abs(p[1]));}
+        for(ArrayList<float[]> curve:Arrays.asList(prior,current)){ArrayList<Float> v=new ArrayList<>();for(float[] p:curve)add(v,capacityPoint(m,a,b,p[0],p[1],maxP,maxM));polyline(array(v),curve==prior?.6f:.1f,curve==prior?.6f:.95f,curve==prior?.6f:.85f,1,3);}
+        float[] p=capacityPoint(m,a,b,r.at(0,activity.station),r.at(5,activity.station),maxP,maxM);
+        lines(new float[]{p[0]-.04f,p[1],p[2],p[0]+.04f,p[1],p[2],p[0],p[1]-.04f,p[2],p[0],p[1]+.04f,p[2]},1,.8f,.2f,1,4);
+    }
+    float[] capacityPoint(StructuralData.Member m,float[] a,float[] b,float p,float moment,float maxP,float maxM){float[] point=new float[3];for(int v=0;v<3;v++)point[v]=a[v]+(b[v]-a[v])*.5f+m.localY[v]*(.5f+Math.abs(moment)/maxM*.5f)+m.localX[v]*p/maxP*.5f;return point;}
+    void polyline(float[] v,float r,float g,float b,float alpha,float width){ArrayList<Float> list=new ArrayList<>();for(int k=3;k<v.length;k+=3){add(list,new float[]{v[k-3],v[k-2],v[k-1]});add(list,new float[]{v[k],v[k+1],v[k+2]});}lines(array(list),r,g,b,alpha,width);}
+    void polygon(float[] v){GLES20.glUseProgram(lineProgram);int pos=GLES20.glGetAttribLocation(lineProgram,"aPosition");GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(lineProgram,"uMvp"),1,false,mvp,0);GLES20.glUniform4f(GLES20.glGetUniformLocation(lineProgram,"uColor"),.2f,.85f,.75f,.22f);GLES20.glEnableVertexAttribArray(pos);GLES20.glVertexAttribPointer(pos,3,GLES20.GL_FLOAT,false,0,buffer(v));GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN,0,v.length/3);GLES20.glDisableVertexAttribArray(pos);}
     private void drawMember(StructuralData.Member m){
         float scale=activity.scale,half=m.length/2f,normal=activity.normalOffset;
         float[] start=m.modelToMarker(m.start,scale),end=m.modelToMarker(m.end,scale);

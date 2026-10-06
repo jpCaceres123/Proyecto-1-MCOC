@@ -26,6 +26,13 @@ public final class MainActivity extends Activity {
     volatile float station=0.5f, scale=0.10f;
     volatile float normalOffset=0;
     volatile boolean scanning=true;
+    volatile SectorRegistration sector;
+    volatile boolean showDeformed,showAreas,showCapacity;
+    final LinkedHashSet<Integer> compared=new LinkedHashSet<>();
+    private long sectorStarted;
+    private String baseModelHash;
+    final AnalysisBackend backend=new AnalysisBackend();
+    volatile org.json.JSONObject capacitySnapshot;
     private GLSurfaceView surface;
     private ARRenderer renderer;
     private TextView status,title,values,position,coordinates,hash,extraSummary;
@@ -37,13 +44,18 @@ public final class MainActivity extends Activity {
     private long lastUiUpdate;
     private String lastTracking="", error="";
     private LinearLayout controls;
+    private FrameLayout sceneRoot;
+    private final ArrayList<TextView> sceneLabels=new ArrayList<>();
+    private long lastLabelUpdate;
 
     @Override public void onCreate(Bundle state){
         super.onCreate(state);getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FrameLayout root=new FrameLayout(this); root.setBackgroundColor(Color.rgb(16,26,41));setContentView(root);
+        sceneRoot=root;
         root.setOnApplyWindowInsetsListener((v,insets)->{v.setPadding(insets.getSystemWindowInsetLeft(),insets.getSystemWindowInsetTop(),insets.getSystemWindowInsetRight(),insets.getSystemWindowInsetBottom());return insets;});
         surface=new GLSurfaceView(this);surface.setEGLContextClientVersion(2);surface.setPreserveEGLContextOnPause(true);
         renderer=new ARRenderer(this);surface.setRenderer(renderer);root.addView(surface,new FrameLayout.LayoutParams(-1,-1));
+        for(int k=0;k<4;k++){TextView label=text("",11,Color.WHITE);label.setBackgroundColor(0xC0101A29);label.setVisibility(View.GONE);root.addView(label,new FrameLayout.LayoutParams(-2,-2));sceneLabels.add(label);}
         LinearLayout header=column();header.setPadding(dp(16),dp(10),dp(16),dp(10));header.setBackgroundColor(0xE6101A29);
         TextView brand=text("EDIFICIO  /  AR",17,0xFF45E0C0);brand.setTypeface(null,Typeface.BOLD);header.addView(brand);
         status=text("Cargando resultados estructurales…",13,0xFFE4ECF3);header.addView(status);
@@ -69,7 +81,15 @@ public final class MainActivity extends Activity {
         LinearLayout buttons=row();buttons.addView(button("Resultados +",this::details),new LinearLayout.LayoutParams(0,dp(43),1));buttons.addView(button("Escanear IDs",this::chooseMarkers),new LinearLayout.LayoutParams(0,dp(43),1));buttons.addView(button("Catálogo",this::catalog),new LinearLayout.LayoutParams(0,dp(43),1));controls.addView(buttons);
         LinearLayout extras=row();scaleButton=button("Maqueta 1:10",()->{float newScale=scale<1?1:0.1f;normalOffset*=newScale/scale;scale=newScale;scaleButton.setText(scale<1?"Maqueta 1:10":"Escala real 1:1");});extras.addView(scaleButton,new LinearLayout.LayoutParams(0,dp(40),1));extras.addView(button("Reanclar",()->{renderer.reset();scanning=true;setStatus("Apunta otra vez al marcador para crear un anclaje.");}),new LinearLayout.LayoutParams(0,dp(40),1));extras.addView(button("Ayuda",this::help),new LinearLayout.LayoutParams(0,dp(40),0.7f));controls.addView(extras);
         hash=text("",10,0xFF94AABF);controls.addView(hash);
-        new Thread(()->{try{data=new StructuralData(getAssets());runOnUiThread(()->{hash.setText(data.members.size()+" elementos · modelo "+data.modelHash.substring(0,12));setStatus("Preparando AR · marcadores 1, 241 y 246");if(foreground)resumeAR();});}catch(Exception e){runOnUiThread(()->setStatus("Error de datos: "+e.getMessage()));}},"structural-data").start();
+        LinearLayout advanced=row();advanced.addView(button("Sector JSON",()->{Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT);i.setType("application/json");i.addCategory(Intent.CATEGORY_OPENABLE);startActivityForResult(i,31);}),new LinearLayout.LayoutParams(0,dp(40),1));
+        advanced.addView(button("Añadir/quitar",()->{if(selected==null)return;synchronized(compared){if(!compared.remove(selected.id)){if(compared.size()>=4){setStatus("Máximo cuatro barras comparadas");return;}compared.add(selected.id);}}setStatus("Comparando "+compared);}),new LinearLayout.LayoutParams(0,dp(40),1));
+        advanced.addView(button("Deformada",()->{showDeformed=!showDeformed;setStatus(showDeformed?"Hermite nodal ×100; no flecha interior exacta":"Deformada oculta");}),new LinearLayout.LayoutParams(0,dp(40),1));controls.addView(advanced);
+        LinearLayout evidence=row();evidence.addView(button("Áreas",()->{showAreas=!showAreas;}),new LinearLayout.LayoutParams(0,dp(40),1));
+        evidence.addView(button("P–Mz",()->{showCapacity=!showCapacity;setStatus("Capacidad nominal uniaxial Mz; no comprobación biaxial");}),new LinearLayout.LayoutParams(0,dp(40),1));
+        evidence.addView(button("Medir error",this::measureSector),new LinearLayout.LayoutParams(0,dp(40),1));evidence.addView(button("Exportar",this::exportSector),new LinearLayout.LayoutParams(0,dp(40),1));controls.addView(evidence);
+        controls.addView(button("Salir del sector medido",this::leaveSector));
+        LinearLayout live=row();live.addView(button("PC Wi-Fi",this::configureBackend),new LinearLayout.LayoutParams(0,dp(40),1));live.addView(button("Q +2 / calcular",()->remoteCalculation(false)),new LinearLayout.LayoutParams(0,dp(40),1));live.addView(button("Refuerzo Ø32",()->remoteCalculation(true)),new LinearLayout.LayoutParams(0,dp(40),1));live.addView(button("Cancelar",()->backend.cancel=true),new LinearLayout.LayoutParams(0,dp(40),1));controls.addView(live);
+        new Thread(()->{try{data=new StructuralData(getAssets());baseModelHash=data.modelHash;runOnUiThread(()->{restoreSector();hash.setText(data.members.size()+" elementos · modelo "+data.modelHash.substring(0,12));setStatus("Preparando AR · marcadores 1, 241 y 246");if(foreground)resumeAR();});}catch(Exception e){runOnUiThread(()->setStatus("Error de datos: "+e.getMessage()));}},"structural-data").start();
     }
     private interface Choice{void select(int index);}
     private Spinner spinner(String[] labels,int initial,Choice choice){
@@ -107,7 +127,7 @@ public final class MainActivity extends Activity {
         box.addView(text("Los totales son resultantes verticales distribuidas. EX/EY se aplican en nodos de diafragma; por eso su carga directa en esta barra es 0 kN.",11,0xFF526A7F));
         box.addView(text("Curva P-M",16,0xFF101A29));
         box.addView(text(m.pmNote,12,0xFF526A7F));
-        if(m.pm.length>0){float p=r.at(0,station),my=r.at(4,station),mz=r.at(5,station);PMChartView chart=new PMChartView(this);chart.show(m.pm,p,(float)Math.sqrt(my*my+mz*mz));box.addView(chart,new LinearLayout.LayoutParams(-1,dp(235)));box.addView(text("Punto amarillo: P y resultante |M| de la estación. Comparación referencial con envolvente uniaxial; no constituye verificación biaxial de capacidad.",11,0xFF526A7F));}
+        if(m.pm.length>0){float p=r.at(0,station),mz=r.at(5,station);PMChartView chart=new PMChartView(this);chart.show(m.pm,p,Math.abs(mz));box.addView(chart,new LinearLayout.LayoutParams(-1,dp(235)));box.addView(text("Punto amarillo: P y |Mz| del mismo eje de la curva nominal. No verifica demanda biaxial ni capacidad de miembro.",11,0xFF526A7F));}
         new AlertDialog.Builder(this).setTitle(m.label()+" · resultados").setView(scroll).setPositiveButton("Cerrar",null).show();
     }
     private void calibrate(){
@@ -118,9 +138,30 @@ public final class MainActivity extends Activity {
     }
     void detected(int id,String tracking){
         long now=android.os.SystemClock.elapsedRealtime();if(now-lastUiUpdate<300&&tracking.equals(lastTracking)&&selected!=null&&selected.id==id)return;lastUiUpdate=now;lastTracking=tracking;
-        runOnUiThread(()->{if(!scanning)return;StructuralData.Member m=data.members.get(id);if(m==null)return;selected=m;setStatus(tracking+" · "+m.label());refresh();});
+        runOnUiThread(()->{if(!scanning)return;StructuralData.Member m=data.members.get(id);if(m==null)return;if(sector==null||selected==null)selected=m;setStatus(tracking+" · "+m.label());refresh();});
     }
     void cameraStatus(String message){long now=android.os.SystemClock.elapsedRealtime();if(now-lastUiUpdate<1000)return;lastUiUpdate=now;runOnUiThread(()->{if(scanning)setStatus(message);});}
+    @Override protected void onActivityResult(int request,int result,Intent intent){super.onActivityResult(request,result,intent);
+        if(request!=31||result!=RESULT_OK||intent==null)return;
+        try(InputStream in=getContentResolver().openInputStream(intent.getData())){ByteArrayOutputStream bytes=new ByteArrayOutputStream();byte[] buf=new byte[8192];int n;while((n=in.read(buf))!=-1){bytes.write(buf,0,n);if(bytes.size()>1000000)throw new IOException("Formulario demasiado grande");}
+            String json=bytes.toString("UTF-8");SectorRegistration next=new SectorRegistration(new org.json.JSONObject(json),data);
+            synchronized(sessionLock){if(sector!=null)sector.reset();renderer.reset();sector=next;}
+            try(FileOutputStream out=openFileOutput("sector.json",MODE_PRIVATE)){out.write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));}
+            sectorStarted=android.os.SystemClock.elapsedRealtime();scale=1;normalOffset=0;scaleButton.setText("Sector métrico 1:1");scanning=true;useSectorMarkers();setStatus("Sector medido cargado · muestra dos marcadores");
+        }catch(Exception e){setStatus("Sector rechazado: "+e.getMessage());}}
+    private void measureSector(){if(sector==null){setStatus("Importa primero un sector medido");return;}
+        EditText input=new EditText(this);input.setHint("Etiqueta, X, Y, Z del punto de control independiente [m]");
+        new AlertDialog.Builder(this).setTitle("Error de alineamiento").setMessage("Apunta el centro de la cámara al punto físico independiente. Se usará un hit ARCore; no un error estimado desde el marcador.").setView(input).setPositiveButton("Medir",(d,w)->{
+            try{String[] a=input.getText().toString().split(",");if(a.length!=4)throw new IllegalArgumentException("Etiqueta,X,Y,Z");float[] p={Float.parseFloat(a[1]),Float.parseFloat(a[2]),Float.parseFloat(a[3])};for(float v:p)if(!Float.isFinite(v))throw new IllegalArgumentException("Coordenada no finita");renderer.requestMeasurement(p,a[0],android.os.SystemClock.elapsedRealtime()-sectorStarted);}
+            catch(Exception e){setStatus(e.getMessage());}}).setNegativeButton("Cancelar",null).show();}
+    private void exportSector(){try{if(sector==null)throw new IllegalStateException("Sin sector");File file=new File(getExternalFilesDir(null),"sector-errors-"+System.currentTimeMillis()+".json");synchronized(sessionLock){try(FileOutputStream out=new FileOutputStream(file)){out.write(sector.report().toString(2).getBytes(java.nio.charset.StandardCharsets.UTF_8));}}setStatus("Reporte: "+file.getAbsolutePath());}catch(Exception e){setStatus(e.getMessage());}}
+    private void restoreSector(){try{File f=new File(getFilesDir(),"sector.json");if(!f.exists())return;ByteArrayOutputStream bytes=new ByteArrayOutputStream();try(InputStream in=new FileInputStream(f)){byte[] b=new byte[8192];int n;while((n=in.read(b))!=-1)bytes.write(b,0,n);}sector=new SectorRegistration(new org.json.JSONObject(bytes.toString("UTF-8")),data);sectorStarted=android.os.SystemClock.elapsedRealtime();scale=1;normalOffset=0;scaleButton.setText("Sector métrico 1:1");activeIds.clear();activeIds.addAll(sector.markers.keySet());}catch(Exception e){sector=null;setStatus("Calibración anterior incompatible; importa nuevo sector");}}
+    private void useSectorMarkers(){surface.onPause();synchronized(sessionLock){if(session!=null){session.close();session=null;}activeIds.clear();activeIds.addAll(sector.markers.keySet());}surface.onResume();resumeAR();}
+    private void leaveSector(){synchronized(sessionLock){if(sector!=null)sector.reset();sector=null;renderer.reset();}deleteFile("sector.json");synchronized(compared){compared.clear();}for(TextView label:sceneLabels)label.setVisibility(View.GONE);scale=.1f;normalOffset=0;scaleButton.setText("Maqueta 1:10");setStatus("Modo marcador individual · calibración guardada eliminada");}
+    private void configureBackend(){LinearLayout box=column();EditText url=new EditText(this),token=new EditText(this);url.setText(backend.server);token.setHint("Token del PC");token.setInputType(android.text.InputType.TYPE_CLASS_TEXT|android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);box.addView(url);box.addView(token);
+        new AlertDialog.Builder(this).setTitle("Backend PC · misma Wi-Fi").setView(box).setPositiveButton("Aplicar",(d,w)->{if(backend.busy){setStatus("Espera o cancela el trabajo antes de cambiar conexión");return;}backend.server=url.getText().toString().replaceAll("/+$","");backend.token=token.getText().toString();}).setNegativeButton("Cerrar",null).show();}
+    private void remoteCalculation(boolean capacity){if(selected==null){setStatus("Selecciona una barra");return;}if(capacity&&(!selected.type.equals("COLUMN")||!data.modelHash.equals(baseModelHash))){setStatus("Capacidad: columna HA del modelo base");return;}
+        final int tag=selected.id;backend.tagType=selected.isColumn()?"Columna":"Viga";backend.submit(baseModelHash,tag,capacity,new File(getFilesDir(),"AnalysisJobs"),new AnalysisBackend.Listener(){public void status(String s){runOnUiThread(()->setStatus(s));}public void accepted(StructuralData next,org.json.JSONObject result){runOnUiThread(()->{synchronized(sessionLock){if(next!=null){if(sector!=null)sector.reset();sector=null;renderer.reset();data=next;selected=data.members.get(tag);capacitySnapshot=null;hash.setText("Variante · modelo "+data.modelHash.substring(0,12));}else capacitySnapshot=result;}refresh();});}});}
     @Override protected void onResume(){super.onResume();foreground=true;surface.onResume();if(data!=null)resumeAR();}
     @Override protected void onPause(){foreground=false;surface.onPause();synchronized(sessionLock){if(session!=null)session.pause();}super.onPause();}
     @Override protected void onDestroy(){destroyed=true;synchronized(sessionLock){if(session!=null){session.close();session=null;}}super.onDestroy();}
@@ -176,6 +217,8 @@ public final class MainActivity extends Activity {
         }));dialog.show();
     }
     private void catalog(){
+        if(sector!=null){String[] labels=new String[sector.elements.size()];int[] ids=new int[labels.length];int k=0;for(int id:sector.elements){ids[k]=id;labels[k++]=data.members.get(id).label();}
+            new AlertDialog.Builder(this).setTitle("Seleccionar en sector · después Añadir/quitar").setItems(labels,(d,w)->{selected=data.members.get(ids[w]);scanning=true;refresh();}).setNegativeButton("Cerrar",null).show();return;}
         if(data==null)return;LinearLayout content=column();EditText search=new EditText(this);search.setHint("Buscar ID, viga o columna");content.addView(search);
         ListView list=new ListView(this);content.addView(list,new LinearLayout.LayoutParams(-1,dp(350)));
         ArrayList<String> labels=new ArrayList<>();for(StructuralData.Member m:data.members.values())labels.add(m.id+" · "+(m.isColumn()?"Columna":"Viga")+" · "+String.format(Locale.US,"%.2f m",m.length));
@@ -184,5 +227,7 @@ public final class MainActivity extends Activity {
         AlertDialog dialog=new AlertDialog.Builder(this).setTitle("Catálogo · "+data.members.size()+" elementos").setView(content).setNegativeButton("Cerrar",null).create();
         list.setOnItemClickListener((p,v,pos,id)->{String label=adapter.getItem(pos);int tag=Integer.parseInt(label.split(" · ")[0]);scanning=false;renderer.reset();selected=data.members.get(tag);setStatus("Catálogo · selección manual · sin detección AR");refresh();dialog.dismiss();});dialog.show();
     }
+    void labels(List<String> messages,List<float[]> positions){long now=android.os.SystemClock.elapsedRealtime();if(now-lastLabelUpdate<150)return;lastLabelUpdate=now;
+        runOnUiThread(()->{for(int k=0;k<sceneLabels.size();k++){TextView label=sceneLabels.get(k);if(k>=messages.size()){label.setVisibility(View.GONE);continue;}float[] p=positions.get(k);label.setText(messages.get(k));label.setX(p[0]);label.setY(p[1]);label.setVisibility(View.VISIBLE);}});}
     private void help(){new AlertDialog.Builder(this).setTitle("Identificación y esfuerzos").setMessage("1. Imprime el marcador completo a 20 × 20 cm, sin ajustar escala.\n2. Colócalo fijo, con ARRIBA vertical, centrado en el punto medio del elemento. En vigas, el lado derecho apunta de i a j; en columnas, ARRIBA apunta de i a j.\n3. Activa su ID en Escanear IDs y apunta con buena luz. La aplicación crea un anclaje; Reanclar permite corregirlo.\n4. Cambia caso, esfuerzo y estación. N/V se expresan en kN; T/M en kN·m. Los signos corresponden a los ejes locales OpenSees.\n5. Maqueta 1:10 reduce la geometría; Escala real 1:1 permite alinear el eje en obra. La altura del diagrama siempre está normalizada a 0,35 m.\n\nLa cámara identifica una imagen, no calcula esfuerzos a partir de la apariencia del hormigón. Los resultados se calcularon previamente; no se reanaliza en el teléfono. Las imágenes deben representar el ID físico correcto.\n\nLa colocación del marcador y su offset se deben calibrar en terreno. La imagen en la cara exterior dibuja el eje sobre esa cara, con un desfase respecto al eje del modelo. Ver guía para el ajuste de profundidad.\n\nModelo: "+(data==null?"cargando":data.modelHash)).setPositiveButton("Entendido",null).show();}
 }

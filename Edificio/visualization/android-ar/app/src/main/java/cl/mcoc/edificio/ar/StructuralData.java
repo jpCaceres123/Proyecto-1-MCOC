@@ -13,15 +13,26 @@ public final class StructuralData {
     public static final String[] FIELDS = {"n", "vy", "vz", "t", "my", "mz"};
     public final SortedMap<Integer, Member> members = new TreeMap<>();
     public final String modelHash, resultsHash, markerHash;
+    private JSONObject overlay;
 
-    public StructuralData(AssetManager assets) throws Exception {
+    static JSONObject read(AssetManager assets,String name)throws Exception{
         JSONObject root;
-        try (InputStream in = assets.open("structural_data.json")) {
+        try (InputStream in = assets.open(name)) {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             byte[] buffer = new byte[16384]; int count;
             while ((count = in.read(buffer)) != -1) bytes.write(buffer, 0, count);
             root = new JSONObject(new String(bytes.toByteArray(), StandardCharsets.UTF_8));
         }
+        return root;
+    }
+    public StructuralData(AssetManager assets)throws Exception{
+        this(read(assets,"structural_data.json"));
+        try{setOverlay(read(assets,"overlay_geometry.json"));}catch(FileNotFoundException e){overlay=null;}
+    }
+    public void setOverlay(JSONObject data)throws Exception{
+        if(data.getInt("schema")!=1||!modelHash.equals(data.getString("modelHash"))||!resultsHash.equals(data.getString("resultsHash")))throw new IOException("Geometría AR incompatible");overlay=data;
+    }
+    public StructuralData(JSONObject root)throws Exception{
         if (root.getInt("schema") != 2) throw new IOException("Versión de datos incompatible");
         modelHash = root.getString("model_sha256"); resultsHash = root.getString("results_sha256");markerHash=root.getString("marker_set_sha256");
         JSONArray rows = root.getJSONArray("members");
@@ -39,6 +50,18 @@ public final class StructuralData {
         }
         return result;
     }
+    void drawAreas(ARRenderer renderer,SectorRegistration sector,Set<Integer> chosen)throws Exception{
+        if(overlay==null)return;JSONArray rows=overlay.getJSONArray("polygons");
+        for(int k=0;k<rows.length();k++){JSONObject row=rows.getJSONObject(k);boolean visible=false;JSONArray ids=row.getJSONArray("receivers");for(int j=0;j<ids.length();j++)if(chosen.contains(ids.getInt(j)))visible=true;if(!visible)continue;
+            JSONArray points=row.getJSONArray("points");float[] v=new float[points.length()*3];boolean nearby=true;
+            for(int j=0;j<points.length();j++){float[] p=sector.local(floats(points.getJSONArray(j)));if(SectorRegistration.distance(p,new float[3])>8)nearby=false;System.arraycopy(p,0,v,j*3,3);}if(nearby)renderer.polygon(v);}
+    }
+    void drawWalls(ARRenderer renderer,SectorRegistration sector,String loadCase)throws Exception{
+        if(overlay==null)return;JSONArray rows=overlay.getJSONArray("shells");JSONObject motions=overlay.getJSONObject("motions").getJSONObject(loadCase);
+        for(int k=0;k<rows.length();k++){JSONObject row=rows.getJSONObject(k);JSONArray points=row.getJSONArray("points"),ids=row.getJSONArray("nodes");float[] v=new float[15],reference=new float[15];boolean nearby=true;
+            for(int j=0;j<4;j++){float[] p=floats(points.getJSONArray(j));if(SectorRegistration.distance(p,sector.origin)>8)nearby=false;p=sector.local(p);float[] u=floats(motions.getJSONArray(Integer.toString(ids.getInt(j))));for(int a=0;a<3;a++){reference[j*3+a]=p[a];v[j*3+a]=p[a]+u[a]*100;}}
+            System.arraycopy(v,0,v,12,3);System.arraycopy(reference,0,reference,12,3);if(nearby){renderer.polyline(reference,.6f,.6f,.6f,.6f,1);renderer.polyline(v,1,.25f,.70f,.7f,2);}}
+    }
     public static final class Response {
         public final float[] s;
         public final float[] ui, uj, ri, rj;
@@ -48,6 +71,8 @@ public final class StructuralData {
             ui=floats(json.getJSONArray("ui"));uj=floats(json.getJSONArray("uj"));
             ri=floats(json.getJSONArray("ri"));rj=floats(json.getJSONArray("rj"));
             if (s.length < 2) throw new JSONException("Faltan estaciones");
+            if(s[0]!=0||s[s.length-1]!=1||ui.length!=3||uj.length!=3||ri.length!=3||rj.length!=3)throw new JSONException("Contrato nodal/estaciones inválido");
+            for(int k=1;k<s.length;k++)if(s[k]<=s[k-1])throw new JSONException("Estaciones no crecientes");
             for (int i=0; i<6; i++) {
                 values[i] = floats(json.getJSONArray(FIELDS[i]));
                 if (values[i].length != s.length) throw new JSONException("Estaciones incompatibles");

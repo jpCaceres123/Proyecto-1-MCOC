@@ -4,6 +4,8 @@ import hashlib
 import json
 import re
 import zipfile
+import argparse
+import subprocess
 
 PROJECT = Path(__file__).resolve().parents[1]
 BUILDING = PROJECT.parents[1]
@@ -15,7 +17,13 @@ def digest(data):
 
 
 def main():
-    apk = PROJECT / 'dist/EdificioAR.apk'
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--apk',type=Path,default=PROJECT/'dist/EdificioAR.apk')
+    parser.add_argument('--report',type=Path,default=PROJECT/'dist/delivery.json')
+    parser.add_argument('--honors',action='store_true')
+    parser.add_argument('--apksigner',type=Path)
+    args=parser.parse_args()
+    apk = args.apk
     snapshot_bytes = (ASSETS / 'structural_data.json').read_bytes()
     snapshot = json.loads(snapshot_bytes)
     verification = json.loads((PROJECT / 'verification.json').read_text(encoding='utf-8'))
@@ -30,6 +38,8 @@ def main():
     with zipfile.ZipFile(apk) as package:
         if package.read('assets/structural_data.json') != snapshot_bytes:
             raise ValueError('El APK contiene resultados antiguos.')
+        if args.honors and package.read('assets/overlay_geometry.json')!=(ASSETS/'overlay_geometry.json').read_bytes():
+            raise ValueError('Las superficies y deformaciones del APK están desactualizadas.')
         for member in snapshot['members']:
             path = member['marker']
             image = (ASSETS / path).read_bytes()
@@ -57,7 +67,16 @@ def main():
                 features=['N/V/T/M por estación', 'desplazamiento Ux/Uy/Uz interpolado',
                           'área tributaria y losas asociadas', 'carga aplicada G/Q/EX/EY/R',
                           'curva P-M para columnas HA de referencia'], physical_device_test='PENDING')
-    (PROJECT / 'dist/delivery.json').write_text(json.dumps(info, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    if args.honors:
+        info['commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=PROJECT,text=True).strip()
+        info['source_has_uncommitted_changes']=bool(subprocess.check_output(['git','status','--porcelain','--','app','tools'],cwd=PROJECT,text=True).strip())
+        info['features']+=['registro común de sector medido', 'comparación hasta cuatro barras', 'Hermite ×100 y desplazamientos nodales de muros', 'superficies tributarias', 'error por punto/RMS/máximo', 'backend LAN y refuerzo editable']
+        info['signature']='Verificación independiente requerida mediante apksigner'
+        info['field_registration_test']='PENDING'
+    if args.apksigner:
+        subprocess.run([str(args.apksigner),'verify','--verbose',str(apk)],check=True)
+        info['signature']='VERIFIED by apksigner'
+    args.report.write_text(json.dumps(info, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     print(f'APK y exportación coherentes: {len(snapshot["members"])} barras; '
           f'modelo {snapshot["model_sha256"][:12]}; imágenes {info["marker_quality_status"]}')
 

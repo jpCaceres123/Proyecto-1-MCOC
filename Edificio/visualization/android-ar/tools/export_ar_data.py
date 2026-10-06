@@ -46,7 +46,8 @@ def make_marker(tag, path):
     image.save(path)
 
 
-def main():
+def main(building=BUILDING, assets=ASSETS, markers=MARKERS, regenerate_markers=True, marker_source=None):
+    BUILDING, ASSETS, MARKERS = Path(building), Path(assets), Path(markers)
     ASSETS.mkdir(parents=True, exist_ok=True)
     (ASSETS / 'markers').mkdir(exist_ok=True)
     MARKERS.mkdir(exist_ok=True)
@@ -110,20 +111,21 @@ def main():
         members.append(dict(id=tag, type=meta['type'], i=bar['i'], j=bar['j'], start=a, end=b,
                             length_m=length, width_m=width, height_m=height, local_x=bar['x'], local_y=bar['y'], local_z=bar['z'],
                             section=section, load_info=load_info, cases=responses,
-                            pm_curve=pm_curve if meta['type'] == 'COLUMN' else [],
+                            pm_curve=pm_curve if meta['type'] == 'COLUMN' and not e.get('section_override') else [],
                             pm_note=('Curva nominal P-M de la columna HA de referencia 70x70 cm.' if meta['type'] == 'COLUMN'
                                      else 'No aplica: no existe una curva P-M verificada para este tipo de elemento.'),
                             marker=f'markers/element_{tag}.png', marker_width_m=0.20))
-        make_marker(tag, ASSETS / f'markers/element_{tag}.png')
+        if regenerate_markers:make_marker(tag, ASSETS / f'markers/element_{tag}.png')
     # Results are kept at their source precision; signs/local basis are not altered.
     marker_hash = hashlib.sha256()
     for member in members:
         marker_hash.update(str(member['id']).encode('ascii'))
-        marker_hash.update((ASSETS/member['marker']).read_bytes())
+        marker_hash.update((Path(marker_source or ASSETS)/member['marker']).read_bytes())
     snapshot = dict(schema=2, marker_set_sha256=marker_hash.hexdigest(), model_sha256=hashlib.sha256(model_path.read_bytes()).hexdigest(),
                     results_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), units='m, kN, kN*m',
                     origin='OpenSees, resultados precalculados', members=members)
     (ASSETS / 'structural_data.json').write_text(json.dumps(snapshot, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
+    if not regenerate_markers:return snapshot
     manifest = dict(width_m=0.20, model_sha256=snapshot['model_sha256'], elements=[dict(id=m['id'], type=m['type'], start=m['start'], end=m['end'], image='../app/src/main/assets/'+m['marker']) for m in members])
     (MARKERS / 'catalog.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
     html = '''<!doctype html><html lang="es"><meta charset="utf-8"><title>Marcadores · Edificio AR</title>
