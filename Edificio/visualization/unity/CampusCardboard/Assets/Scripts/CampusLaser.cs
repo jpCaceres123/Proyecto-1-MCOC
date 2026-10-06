@@ -20,7 +20,7 @@ public class CampusLaser : MonoBehaviour {
     public void ShowPreview(string element){key=element;pinned=true;active=true;point=transform.position+Vector3.forward*10;}
     void Start() {
         player=GetComponent<CampusPlayer>();
-        var asset=Resources.Load<TextAsset>("inspeccion_estructural");
+        var asset=CampusData.Load("inspeccion_estructural");
         if(asset){database=JsonUtility.FromJson<Database>(asset.text);foreach(var e in database.entries)entries[e.key]=e;}
         var go=new GameObject("Laser de inspeccion estructural");beam=go.AddComponent<LineRenderer>();
         beamMaterial=new Material(Shader.Find("Standard"));beamMaterial.color=Color.red;beamMaterial.EnableKeyword("_EMISSION");beamMaterial.SetColor("_EmissionColor",Color.red*3);

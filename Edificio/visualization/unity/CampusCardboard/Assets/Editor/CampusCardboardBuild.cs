@@ -20,6 +20,7 @@ public static class CampusCardboardBuild
         PlayerSettings.Android.applicationEntry=AndroidApplicationEntry.Activity;
         PlayerSettings.Android.optimizedFramePacing=false;
         PlayerSettings.Android.forceInternetPermission=true;
+        PlayerSettings.insecureHttpOption=InsecureHttpOption.AlwaysAllowed; // LAN-only client validates IP and token.
         PlayerSettings.defaultInterfaceOrientation=UIOrientation.LandscapeLeft;
         PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.Android,false);
         PlayerSettings.SetGraphicsAPIs(BuildTarget.Android,new[]{GraphicsDeviceType.OpenGLES3});
@@ -50,8 +51,15 @@ public static class CampusCardboardBuild
         var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{"Assets/CampusCardboard.unity"},
             locationPathName="Build/Android/CampusCardboard.apk",target=BuildTarget.Android,options=BuildOptions.None});
         if(report.summary.result!=BuildResult.Succeeded)throw new InvalidOperationException("Falló APK: "+report.summary.result);
+        using(var sha=System.Security.Cryptography.SHA256.Create()){
+            string hash=BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes("Build/Android/CampusCardboard.apk"))).Replace("-","").ToLowerInvariant();
+            string geometry=BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes("Assets/Resources/estructura_principal.csv"))).Replace("-","");
+            string results=BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes("Assets/Resources/inspeccion_estructural.json"))).Replace("-","");
+            File.WriteAllText("Build/Android/delivery.json","{\"commit\":\""+SourceCommit()+"\",\"unity\":\""+Application.unityVersion+"\",\"apkSha256\":\""+hash+"\",\"geometrySha256\":\""+geometry+"\",\"resultsSha256\":\""+results+"\",\"physicalDeviceTest\":\"PENDING\"}");
+        }
         Debug.Log("CAMPUS_CARDBOARD_APK_READY "+Path.GetFullPath("Build/Android/CampusCardboard.apk"));
     }
+    private static string SourceCommit(){try{using(var p=System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("git","rev-parse HEAD"){UseShellExecute=false,RedirectStandardOutput=true,CreateNoWindow=true})){string value=p.StandardOutput.ReadToEnd().Trim();p.WaitForExit();return p.ExitCode==0&&value.Length==40?value:"UNAVAILABLE";}}catch{return "UNAVAILABLE";}}
 }
 
 #if UNITY_ANDROID

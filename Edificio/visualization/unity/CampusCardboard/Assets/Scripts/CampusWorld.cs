@@ -44,7 +44,7 @@ public partial class CampusWorld : MonoBehaviour
     public void Generate()
     {
         if (architecture != null) return;
-        var asset=Resources.Load<TextAsset>("estructura_principal");
+        var asset=CampusData.Load("estructura_principal");
         if(!asset) throw new Exception("Falta Resources/estructura_principal.csv");
         foreach(string line in asset.text.Split('\n')) {
             var r=line.Trim().Split(','); if(r.Length<2 || r[0]=="kind")continue; records.Add(r);

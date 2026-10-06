@@ -17,9 +17,14 @@ public sealed class CampusCardboard : MonoBehaviour
     CampusPlayer player;
     CampusLaser inspector;
     CampusBeamDiagram beamDiagram;
+    AnalysisNetworkClient network;
+    ReinforcementPanel reinforcement;
+    CampusCapacityDiagram capacityDiagram;
+    Transform backendSelector;
     StructuralIdentity selectedBar;
     Transform selector;
     Transform menu;
+    TextMesh backendStatus;
     TextMesh heading,readout,sampleLabel;
     LineRenderer diagram,reticle,progress,outline;
     readonly List<Material> materials=new List<Material>();
@@ -36,6 +41,8 @@ public sealed class CampusCardboard : MonoBehaviour
     int sleepBefore;
     public const float Dwell=2f;
     const float WalkSpeed=1.4f;
+    public bool PointLocomotion { get; private set; }
+    bool stepAvailable=true;
     readonly Color accent=new Color(.18f,.86f,.75f);
 #if UNITY_ANDROID && !UNITY_EDITOR
     Google.XR.Cardboard.XRLoader loader;
@@ -45,6 +52,8 @@ public sealed class CampusCardboard : MonoBehaviour
     {
         player=GetComponent<CampusPlayer>();inspector=GetComponent<CampusLaser>();
         beamDiagram=gameObject.AddComponent<CampusBeamDiagram>();
+        gameObject.AddComponent<CampusPerformance>();
+        network=gameObject.AddComponent<AnalysisNetworkClient>();reinforcement=gameObject.AddComponent<ReinforcementPanel>();capacityDiagram=gameObject.AddComponent<CampusCapacityDiagram>();
         yield return null;
         bool validate=Environment.GetCommandLineArgs().Contains("-campus-vr-check");
 #if UNITY_EDITOR
@@ -100,7 +109,7 @@ public sealed class CampusCardboard : MonoBehaviour
         if(menu)Destroy(menu.gameObject);
         if(reticle)Destroy(reticle.gameObject);if(progress)Destroy(progress.gameObject);
         if(outline)Destroy(outline.gameObject);
-        if(beamDiagram)beamDiagram.Clear();
+        if(beamDiagram)beamDiagram.Clear();if(capacityDiagram)capacityDiagram.Clear();
         buttons.Clear();buttonRenderers.Clear();forwardButton=backButton=null;previousTarget=null;previousKey="";activated=false;
         foreach(var material in materials)if(material)Destroy(material);materials.Clear();
         player.world.SetStructuralOnly(structuralBefore);player.SetVRControl(false);player.SetThirdPerson(thirdBefore);
@@ -129,7 +138,7 @@ public sealed class CampusCardboard : MonoBehaviour
         Quaternion rotation;
         bool tracked=head.TryGetFeatureValue(UnityEngine.XR.CommonUsages.centerEyeRotation,out rotation) ||
             head.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation,out rotation);
-        if(!tracked){Status="Sin seguimiento de cabeza · movimiento detenido";return;}
+        if(!tracked){Status="Sin seguimiento de cabeza · movimiento detenido";gazeSince=Time.unscaledTime;activated=false;return;}
         player.eye.transform.localRotation=rotation;
 #else
         if(Keyboard.current!=null && (Keyboard.current.f7Key.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)){Exit();return;}
@@ -150,15 +159,17 @@ public sealed class CampusCardboard : MonoBehaviour
         foreach(var hit in Physics.RaycastAll(ray,45,~0,QueryTriggerInteraction.Collide).OrderBy(h=>h.distance)){
             if(buttons.ContainsKey(hit.collider)){
                 if(selector && selector.gameObject.activeSelf && !hit.collider.transform.IsChildOf(selector))continue;
+                if(backendSelector && backendSelector.gameObject.activeSelf && !hit.collider.transform.IsChildOf(backendSelector))continue;
                 target=hit.collider;break;
             }
-            if(selector && selector.gameObject.activeSelf)continue;
+            if(selector && selector.gameObject.activeSelf || backendSelector && backendSelector.gameObject.activeSelf)continue;
             var id=hit.collider.GetComponentInParent<StructuralIdentity>();
             if(id && !string.IsNullOrEmpty(id.key)){target=hit.collider;key=id.key;break;}
         }
         // Look into empty space and press the viewer button to bring controls to that direction.
         if(trigger && !target)RecenterMenu();
         if(target!=previousTarget || key!=previousKey){
+            stepAvailable=true;
             if(previousTarget && buttonRenderers.ContainsKey(previousTarget))buttonRenderers[previousTarget].material.color=new Color(.06f,.12f,.17f);
             previousTarget=target;previousKey=key;gazeSince=Time.unscaledTime;activated=false;
         }
@@ -172,9 +183,15 @@ public sealed class CampusCardboard : MonoBehaviour
                 caseIndex=0;stationIndex=0;Highlight(target.bounds);Refresh();}
         }
         if(!Active)return;
+        if(network){if(network.Busy)Status=network.Status;if(backendStatus)backendStatus.text=network.Status;
+            if(selected!=null && selected.cases!=null && selected.cases.Length>0)capacityDiagram.Show(selectedBar,reinforcement.Result,selected.cases[caseIndex%selected.cases.Length]);else capacityDiagram.Clear();}
         Vector3 direction=Vector3.ProjectOnPlane(menu.forward,Vector3.up).normalized;
         // Walking requires looking at its control; looking away immediately stops horizontal motion.
         float movement=activated?(target==forwardButton?1:target==backButton?-1:0):0;
+        if(PointLocomotion){
+            if(movement!=0 && stepAvailable){SafeStep(direction*movement);stepAvailable=false;}
+            movement=0;
+        }
         Vector3 velocity=direction*(movement*WalkSpeed);
         if(player.controller.isGrounded && fallVelocity<0)fallVelocity=-2;
         fallVelocity-=18*Time.deltaTime;
@@ -183,6 +200,22 @@ public sealed class CampusCardboard : MonoBehaviour
     }
     void RecenterMenu(){if(menu)menu.rotation=Quaternion.Euler(0,player.eye.transform.eulerAngles.y,0);}
     void Highlight(Bounds bounds)
+    {
+        HighlightBounds(bounds);
+    }
+    void SafeStep(Vector3 direction)
+    {
+        Vector3 destination=transform.position+direction*2;
+        float radius=player.controller.radius;
+        Vector3 bottom=transform.position+player.controller.center-Vector3.up*(player.controller.height/2-radius);
+        Vector3 top=bottom+Vector3.up*(player.controller.height-2*radius);
+        var obstacles=Physics.CapsuleCastAll(bottom,top,radius,direction,2,~0,QueryTriggerInteraction.Ignore);
+        if(obstacles.Any(h=>!h.collider.transform.IsChildOf(transform)) ||
+           !Physics.Raycast(destination+Vector3.up*.4f,Vector3.down,out var floor,1,~0,QueryTriggerInteraction.Ignore) ||
+           Vector3.Dot(floor.normal,Vector3.up)<.7f){Status="Paso bloqueado: obstáculo o falta de suelo";return;}
+        player.Teleport(destination);fallVelocity=0;
+    }
+    void HighlightBounds(Bounds bounds)
     {
         Vector3 lo=bounds.min-Vector3.one*.025f,hi=bounds.max+Vector3.one*.025f;
         Vector3[] corners={new Vector3(lo.x,lo.y,lo.z),new Vector3(hi.x,lo.y,lo.z),new Vector3(hi.x,hi.y,lo.z),new Vector3(lo.x,hi.y,lo.z),
@@ -228,6 +261,7 @@ public sealed class CampusCardboard : MonoBehaviour
         panel.transform.localScale=new Vector3(1.52f,1.88f,.025f);Destroy(panel.GetComponent<Collider>());
         panel.GetComponent<Renderer>().sharedMaterial=Material(new Color(.025f,.045f,.065f));
         heading=Text("Título","CAMPUS / CARDBOARD",new Vector3(-.70f,.66f,-.04f),.018f,menu);
+        backendStatus=Text("Estado backend","",new Vector3(-.70f,.73f,-.04f),.008f,menu);
         readout=Text("Resultado","",new Vector3(-.70f,.55f,-.04f),.012f,menu);
         sampleLabel=Text("Estación","",new Vector3(-.70f,-.06f,-.04f),.011f,menu);
         diagram=Line("Diagrama · estaciones OpenSees",menu,accent,.006f);
@@ -242,12 +276,47 @@ public sealed class CampusCardboard : MonoBehaviour
         Button("Otro piso",-.49f,-.63f,NextFloor);
         Button("Recentrar",0,-.63f,RecenterMenu);
         Button("Soltar ficha",.49f,-.63f,()=>{selected=null;selectedBar=null;selectedKey="";outline.positionCount=0;beamDiagram.Clear();Refresh();});
-        Button("Salir VR",0,-.81f,Exit);
+        Button("Modo marcha",-.49f,-.81f,()=>{PointLocomotion=!PointLocomotion;Status=PointLocomotion?"Marcha por puntos · suelo validado":"Marcha continua";activated=false;gazeSince=Time.unscaledTime;Refresh();});
+        Button("Backend",0,-.81f,()=>backendSelector.gameObject.SetActive(true));
+        Button("Salir VR",.49f,-.81f,Exit);
         Text("Ayuda","Mirada 2 s / botón · apartar la mirada detiene",new Vector3(-.70f,-.91f,-.04f),.0085f,menu);
         reticle=Line("Mira VR",player.eye.transform,Color.white,.002f);reticle.transform.localPosition=Vector3.forward*.65f;DrawRing(reticle,.007f,1);
         progress=Line("Progreso de mirada",player.eye.transform,accent,.002f);progress.transform.localPosition=Vector3.forward*.65f;
         outline=Line("Elemento seleccionado · contorno",null,accent,.012f);outline.useWorldSpace=true;
         BuildSelector();
+        BuildBackendSelector();
+    }
+    void BuildBackendSelector(){
+        backendSelector=new GameObject("Backend Wi-Fi").transform;backendSelector.SetParent(menu,false);backendSelector.localPosition=new Vector3(0,-.1f,-.18f);
+        var panel=GameObject.CreatePrimitive(PrimitiveType.Cube);panel.transform.SetParent(backendSelector,false);panel.transform.localScale=new Vector3(1.48f,1.2f,.025f);Destroy(panel.GetComponent<Collider>());panel.GetComponent<Renderer>().sharedMaterial=Material(new Color(.025f,.045f,.065f));
+        Text("Backend título","PC / OPENSEES · WI-FI",new Vector3(-.68f,.56f,-.04f),.016f,backendSelector);
+        Button("Configurar",-.49f,.31f,()=>StartCoroutine(ConfigureBackend()),backendSelector);
+        Button("Q +2 kN/m",0,.31f,()=>Reanalyse(2),backendSelector);Button("Q +5 kN/m",.49f,.31f,()=>Reanalyse(5),backendSelector);
+        Button("5/cara Ø28",-.49f,.13f,()=>RegenerateCapacity(.028),backendSelector);Button("5/cara Ø32",0,.13f,()=>RegenerateCapacity(.032),backendSelector);Button("5/cara Ø36",.49f,.13f,()=>RegenerateCapacity(.036),backendSelector);
+        Button("Cancelar",-.49f,-.05f,()=>network.Cancel(),backendSelector);Button("Modelo base",0,-.05f,()=>{if(network.Busy){network.Cancel();return;}CampusData.Activate(null);UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);},backendSelector);
+        Button("Cerrar",.49f,-.05f,()=>backendSelector.gameObject.SetActive(false),backendSelector);
+        Text("Backend nota","Q: carga adicional uniforme, vertical −Z\nRefuerzo: sección nominal P–Mz · EI sin cambio\nRequiere columna HA y modelo base",new Vector3(-.68f,-.23f,-.04f),.011f,backendSelector);backendSelector.gameObject.SetActive(false);
+    }
+    IEnumerator ConfigureBackend(){
+        string file=System.IO.Path.Combine(Application.persistentDataPath,"backend.json");
+        if(System.IO.File.Exists(file)){var config=JsonUtility.FromJson<BackendConfig>(System.IO.File.ReadAllText(file));network.Server=config.server;network.Token=config.token;Status="Configuración local cargada";yield break;}
+#if UNITY_ANDROID && !UNITY_EDITOR
+        var keyboard=TouchScreenKeyboard.Open(network.Server,TouchScreenKeyboardType.URL,false,false,false);while(keyboard.status==TouchScreenKeyboard.Status.Visible)yield return null;if(keyboard.status!=TouchScreenKeyboard.Status.Done)yield break;network.Server=keyboard.text;
+        keyboard=TouchScreenKeyboard.Open("",TouchScreenKeyboardType.Default,false,false,true);while(keyboard.status==TouchScreenKeyboard.Status.Visible)yield return null;if(keyboard.status==TouchScreenKeyboard.Status.Done)network.Token=keyboard.text;
+#else
+        Status="Configura backend.json en persistentDataPath; token no se guarda en el repositorio";
+#endif
+    }
+    [Serializable] class BackendConfig { public string server,token; }
+    void Reanalyse(double q){
+        if(!selectedBar || !selectedBar.isBar || network.Busy){Status="Selecciona una barra y espera el cálculo";return;}
+        int id=int.Parse(selectedBar.key.Split(':')[1]);string kind=selectedBar.description.StartsWith("Columna")?"Columna":"Viga";
+        backendSelector.gameObject.SetActive(false);StartCoroutine(network.Submit(new AnalysisNetworkClient.Input{modelHash=AnalysisNetworkClient.BaseHash,
+            changes=new[]{new AnalysisNetworkClient.Edit{kind=kind,id=id,changeLoad=true,q=q}}},(folder,manifest)=>{CampusData.Activate(folder);UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);}));
+    }
+    void RegenerateCapacity(double diameter){
+        if(!selectedBar || !selectedBar.description.StartsWith("Columna") || !string.IsNullOrEmpty(CampusData.DirectoryPath)){Status="Refuerzo: selecciona una columna HA del modelo base";return;}
+        backendSelector.gameObject.SetActive(false);reinforcement.Calculate(int.Parse(selectedBar.key.Split(':')[1]),5,diameter);
     }
     void BuildSelector()
     {
@@ -282,7 +351,7 @@ public sealed class CampusCardboard : MonoBehaviour
     void Refresh()
     {
         if(!readout)return;diagram.positionCount=0;sampleLabel.text="";beamDiagram.Clear();
-        if(selected==null){heading.text="CAMPUS / CARDBOARD";readout.text=Status+"\nMira una viga, columna, muro o losa.\nLa ficha conserva el identificador del modelo.\nResultados previamente calculados; no reanálisis.";return;}
+        if(selected==null){heading.text="CAMPUS / CARDBOARD";readout.text=Status+"\nMira una viga, columna, muro o losa.\nLa ficha conserva el identificador del modelo.\nResultados verificados; reanálisis opcional en PC Wi-Fi.";return;}
         var cases=selected.cases;
         if(cases==null || cases.Length==0){readout.text=selectedKey+"\nSin resultados exportados.";return;}
         var result=cases[caseIndex%cases.Length];
@@ -379,11 +448,22 @@ public sealed class CampusCardboard : MonoBehaviour
         while(Time.realtimeSinceStartup<deadline && Vector3.ProjectOnPlane(transform.position-origin,Vector3.up).magnitude<=.04f)yield return null;
         checks["backward_direction"]=Vector3.Dot(transform.position-origin,menu.forward)<-.04f;
         checks["two_second_dwell"]=Mathf.Approximately(Dwell,2f);
+        // Isolated collider fixture: exercise point mode without depending on campus geometry.
+        Vector3 savedPosition=transform.position;
+        var testFloor=GameObject.CreatePrimitive(PrimitiveType.Cube);testFloor.name="VR_TEST_FLOOR";testFloor.transform.position=new Vector3(1000,-.1f,1000);testFloor.transform.localScale=new Vector3(12,.2f,12);
+        player.Teleport(new Vector3(1000,.04f,1000));Physics.SyncTransforms();origin=transform.position;SafeStep(Vector3.forward);
+        checks["point_step_two_metres"]=Mathf.Abs(Vector3.Distance(origin,transform.position)-2)<.01f;
+        var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);obstacle.name="VR_TEST_OBSTACLE";obstacle.transform.position=transform.position+Vector3.forward+Vector3.up;obstacle.transform.localScale=new Vector3(1,2,.2f);Physics.SyncTransforms();origin=transform.position;SafeStep(Vector3.forward);
+        checks["point_step_collision_rejected"]=Vector3.Distance(origin,transform.position)<.01f;
+        obstacle.SetActive(false);testFloor.SetActive(false);Physics.SyncTransforms();SafeStep(Vector3.right);
+        checks["point_step_void_rejected"]=Vector3.Distance(origin,transform.position)<.01f;
+        Destroy(obstacle);Destroy(testFloor);player.Teleport(savedPosition);
         NextFloor();checks["floor_platform"]=Mathf.Abs(transform.position.y-(CampusWorld.Storey+CampusWorld.Finish+.04f))<.05f;
         player.world.SetVRStructuralOnly(true);checks["structural_view"]=player.world.StructuralOnly && player.world.structure.Find("Vigas_originales_IDS").gameObject.activeInHierarchy;
         Exit();checks["restore_desktop"]=!Active && !player.VRControlled && player.world.StructuralOnly==structuralBefore;
         Enter();while(starting)yield return null;yield return null;
         checks["repeated_enter_exit"]=Active;Exit();
+        if(Environment.GetCommandLineArgs().Contains("-campus-vr-network-check"))yield return ValidateNetwork(checks);
         foreach(var check in checks)Debug.Log("CAMPUS_VR_CHECK "+check.Key+"="+check.Value);
         bool passed=checks.Values.All(v=>v);Debug.Log("CAMPUS_VR_CHECK_COMPLETE passed="+passed);
 #if UNITY_EDITOR
@@ -415,6 +495,20 @@ public sealed class CampusCardboard : MonoBehaviour
             player.world.SetVRStructuralOnly(structural);menu.gameObject.SetActive(true);
             player.eye.transform.position=position;player.eye.transform.rotation=rotation;Refresh();
         }
+    }
+    IEnumerator ValidateNetwork(Dictionary<string,bool> checks){
+        string path=Environment.GetCommandLineArgs().First(a=>a.StartsWith("--backend-config=")).Substring("--backend-config=".Length);
+        var config=JsonUtility.FromJson<BackendConfig>(System.IO.File.ReadAllText(path));network.Server=config.server;network.Token=config.token;
+        bool accepted=false;
+        yield return network.Submit(new AnalysisNetworkClient.Input{modelHash=AnalysisNetworkClient.BaseHash,changes=new[]{new AnalysisNetworkClient.Edit{kind="Viga",id=207,changeLoad=true,q=2}}},
+            (folder,manifest)=>{accepted=System.IO.File.Exists(System.IO.Path.Combine(folder,"inspeccion_estructural.json")) && manifest.modelHash!=AnalysisNetworkClient.BaseHash;});
+        checks["http_opensees_new_verified_revision"]=accepted;
+        Debug.Log("HONORS_NETWORK_ANALYSIS "+network.Status);
+        accepted=false;
+        yield return network.Submit(new AnalysisNetworkClient.Input{modelHash=AnalysisNetworkClient.BaseHash,operation="capacity",elementTag=1,barsPerFace=5,diameter_m=.032},
+            (folder,manifest)=>{var result=JsonUtility.FromJson<ReinforcementPanel.Snapshot>(System.IO.File.ReadAllText(System.IO.Path.Combine(folder,"capacity.json")));accepted=result.elementTag==1 && result.curves.Length==2 && !result.globalStiffnessChanged;});
+        checks["http_reinforcement_regeneration"]=accepted;
+        Debug.Log("HONORS_NETWORK_CAPACITY "+network.Status);
     }
     void CapturePreview(string name="CampusCardboardPreview.png")
     {
