@@ -16,11 +16,12 @@ public sealed class CampusBeamDiagram : MonoBehaviour
     Transform root;
     Material material;
     LineRenderer marker;
+    TextMesh stationText;
     public static readonly string[] Modes={"Axial N","Cortante Vy","Cortante Vz","Torsión T","Momento My","Momento Mz","Deformada","Ocultar"};
     public void Clear()
     {
         if(root){root.gameObject.SetActive(false);Destroy(root.gameObject);root=null;}
-        marker=null;Curve=new Vector3[0];Values=new float[0];Stations=new float[0];Description="Sin diagrama sobre el elemento.";
+        marker=null;stationText=null;Curve=new Vector3[0];Values=new float[0];Stations=new float[0];Description="Sin diagrama sobre el elemento.";
     }
     public static Vector3 ToUnity(Vector3 v){return new Vector3(v.x,v.z,v.y);}
     public static Vector3 Vector(float[] v,int offset=0){return new Vector3(v[offset],v[offset+1],v[offset+2]);}
@@ -84,13 +85,15 @@ public sealed class CampusBeamDiagram : MonoBehaviour
         Text(bar.key+" · "+result.name+" · "+Label+"\nPico muestreado="+Number(Values[peak])+" "+Unit+"\n"+scale,
             Curve[peak]+Vector3.up*.16f,viewer,.020f);
         Text("i",bar.start,viewer,.035f);Text("j",bar.end,viewer,.035f);
-        marker=Draw("Estación consultada",new Vector3[5],new Color(1,.78f,.18f),.016f);SetStation(0);
+        marker=Draw("Estación consultada",new Vector3[5],new Color(1,.78f,.18f),.016f);
+        stationText=Text("",Curve[0],viewer,.015f);stationText.color=new Color(1,.78f,.18f);SetStation(0);
     }
     public void SetStation(int index)
     {
         if(!marker || Curve.Length==0)return;
         var p=Curve[index%Curve.Length];
         marker.SetPositions(new[]{p-Vector3.right*.04f,p+Vector3.right*.04f,p,p+Vector3.up*.04f,p-Vector3.up*.04f});
+        if(stationText){int k=index%Curve.Length;stationText.transform.position=p-Vector3.up*.22f;stationText.text="x/L="+Number(Stations[k])+" · "+Label+"="+Number(Values[k])+" "+Unit;}
     }
     LineRenderer Draw(string name,Vector3[] points,Color color,float width)
     {
@@ -100,13 +103,14 @@ public sealed class CampusBeamDiagram : MonoBehaviour
         line.startWidth=line.endWidth=width;line.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;line.receiveShadows=false;
         return line;
     }
-    void Text(string content,Vector3 position,Vector3 viewer,float size)
+    TextMesh Text(string content,Vector3 position,Vector3 viewer,float size)
     {
         var go=new GameObject("Etiqueta de resultados");go.transform.SetParent(root,false);go.transform.position=position;
         go.transform.rotation=Quaternion.LookRotation(position-viewer);
         var text=go.AddComponent<TextMesh>();text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         text.fontSize=48;text.characterSize=size;text.anchor=TextAnchor.MiddleCenter;text.text=content;text.color=Color.white;
         go.GetComponent<Renderer>().sharedMaterial=text.font.material;
+        return text;
     }
     static string Number(float value){float n=Mathf.Abs(value);return value.ToString(n>0 && (n<.01f || n>1e6f)?"0.##E+0":"0.###",CultureInfo.InvariantCulture);}
     void LateUpdate()

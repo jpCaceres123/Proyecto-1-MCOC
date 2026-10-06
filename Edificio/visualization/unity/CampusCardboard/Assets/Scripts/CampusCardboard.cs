@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
@@ -24,13 +23,12 @@ public sealed class CampusCardboard : MonoBehaviour
     StructuralIdentity selectedBar;
     Transform selector;
     Transform menu;
-    TextMesh backendStatus;
-    TextMesh heading,readout,sampleLabel;
-    LineRenderer diagram,reticle,progress,outline;
+    Transform mainPage;
+    LineRenderer reticle,progress,outline;
     readonly List<Material> materials=new List<Material>();
     readonly Dictionary<Collider,Action> buttons=new Dictionary<Collider,Action>();
     readonly Dictionary<Collider,Renderer> buttonRenderers=new Dictionary<Collider,Renderer>();
-    Collider forwardButton,backButton,previousTarget;
+    Collider forwardButton,backButton,leftButton,rightButton,previousTarget;
     string previousKey="",selectedKey="";
     float gazeSince,fallVelocity,previewYaw,previewPitch;
     bool activated,starting,structuralBefore,thirdBefore;
@@ -110,7 +108,7 @@ public sealed class CampusCardboard : MonoBehaviour
         if(reticle)Destroy(reticle.gameObject);if(progress)Destroy(progress.gameObject);
         if(outline)Destroy(outline.gameObject);
         if(beamDiagram)beamDiagram.Clear();if(capacityDiagram)capacityDiagram.Clear();
-        buttons.Clear();buttonRenderers.Clear();forwardButton=backButton=null;previousTarget=null;previousKey="";activated=false;
+        buttons.Clear();buttonRenderers.Clear();forwardButton=backButton=leftButton=rightButton=null;previousTarget=null;previousKey="";activated=false;
         foreach(var material in materials)if(material)Destroy(material);materials.Clear();
         player.world.SetStructuralOnly(structuralBefore);player.SetVRControl(false);player.SetThirdPerson(thirdBefore);
         player.eye.transform.localRotation=cameraRotationBefore;
@@ -183,11 +181,11 @@ public sealed class CampusCardboard : MonoBehaviour
                 caseIndex=0;stationIndex=0;Highlight(target.bounds);Refresh();}
         }
         if(!Active)return;
-        if(network){if(network.Busy)Status=network.Status;if(backendStatus)backendStatus.text=network.Status;
+        if(network){if(network.Busy)Status=network.Status;
             if(selected!=null && selected.cases!=null && selected.cases.Length>0)capacityDiagram.Show(selectedBar,reinforcement.Result,selected.cases[caseIndex%selected.cases.Length]);else capacityDiagram.Clear();}
-        Vector3 direction=Vector3.ProjectOnPlane(menu.forward,Vector3.up).normalized;
+        Vector3 direction=MovementDirection(target);
         // Walking requires looking at its control; looking away immediately stops horizontal motion.
-        float movement=activated?(target==forwardButton?1:target==backButton?-1:0):0;
+        float movement=activated && mainPage.gameObject.activeInHierarchy && direction.sqrMagnitude>0?1:0;
         if(PointLocomotion){
             if(movement!=0 && stepAvailable){SafeStep(direction*movement);stepAvailable=false;}
             movement=0;
@@ -197,6 +195,28 @@ public sealed class CampusCardboard : MonoBehaviour
         fallVelocity-=18*Time.deltaTime;
         player.controller.Move((velocity+Vector3.up*fallVelocity)*Time.deltaTime);
         if(transform.position.y<-10){player.Teleport(player.world.Entrance);fallVelocity=0;}
+    }
+    Vector3 MovementDirection(Collider target){
+        if(!target)return Vector3.zero;
+        if(target==forwardButton)return Vector3.ProjectOnPlane(menu.forward,Vector3.up).normalized;
+        if(target==backButton)return -Vector3.ProjectOnPlane(menu.forward,Vector3.up).normalized;
+        if(target==leftButton)return -Vector3.ProjectOnPlane(menu.right,Vector3.up).normalized;
+        if(target==rightButton)return Vector3.ProjectOnPlane(menu.right,Vector3.up).normalized;
+        return Vector3.zero;
+    }
+    void SetPage(Transform page){
+        // Exactly one page is visible and interactive; no panels stacked in front of movement.
+        foreach(var candidate in new[]{mainPage,selector,backendSelector})if(candidate)candidate.gameObject.SetActive(candidate==page);
+        foreach(var renderer in buttonRenderers.Values)if(renderer)renderer.sharedMaterial.color=new Color(.06f,.12f,.17f);
+        previousTarget=null;previousKey="";activated=false;stepAvailable=true;gazeSince=Time.unscaledTime;
+        if(progress)DrawRing(progress,.013f,0);
+    }
+    Transform Page(string name,float height=.54f){
+        var page=new GameObject(name).transform;page.SetParent(menu,false);
+        var panel=GameObject.CreatePrimitive(PrimitiveType.Cube);panel.transform.SetParent(page,false);
+        panel.transform.localScale=new Vector3(1.18f,height,.025f);Destroy(panel.GetComponent<Collider>());
+        panel.GetComponent<Renderer>().sharedMaterial=Material(new Color(.025f,.045f,.065f));
+        return page;
     }
     void RecenterMenu(){if(menu)menu.rotation=Quaternion.Euler(0,player.eye.transform.eulerAngles.y,0);}
     void Highlight(Bounds bounds)
@@ -239,7 +259,8 @@ public sealed class CampusCardboard : MonoBehaviour
         go.transform.localPosition=new Vector3(x,y,-.015f);go.transform.localScale=new Vector3(.34f,.12f,.025f);
         var renderer=go.GetComponent<Renderer>();renderer.sharedMaterial=Material(new Color(.06f,.12f,.17f));
         var collider=go.GetComponent<Collider>();collider.isTrigger=true;buttons[collider]=action;buttonRenderers[collider]=renderer;
-        Text(label,label,new Vector3(x-.15f,y+.038f,-.035f),label.Length>=10?.010f:.012f,container);return collider;
+        var text=Text(label,label,new Vector3(x,y,-.035f),label.Length>=10?.010f:.012f,container);
+        text.anchor=TextAnchor.MiddleCenter;text.alignment=TextAlignment.Center;return collider;
     }
     LineRenderer Line(string name,Transform parent,Color color,float width)
     {
@@ -256,46 +277,36 @@ public sealed class CampusCardboard : MonoBehaviour
     void BuildMenu()
     {
         menu=new GameObject("Campus · panel estructural VR").transform;
-        var panel=GameObject.CreatePrimitive(PrimitiveType.Cube);panel.transform.SetParent(menu,false);
-        panel.transform.localPosition=new Vector3(0,-.08f,0);
-        panel.transform.localScale=new Vector3(1.52f,1.88f,.025f);Destroy(panel.GetComponent<Collider>());
-        panel.GetComponent<Renderer>().sharedMaterial=Material(new Color(.025f,.045f,.065f));
-        heading=Text("Título","CAMPUS / CARDBOARD",new Vector3(-.70f,.66f,-.04f),.018f,menu);
-        backendStatus=Text("Estado backend","",new Vector3(-.70f,.73f,-.04f),.008f,menu);
-        readout=Text("Resultado","",new Vector3(-.70f,.55f,-.04f),.012f,menu);
-        sampleLabel=Text("Estación","",new Vector3(-.70f,-.06f,-.04f),.011f,menu);
-        diagram=Line("Diagrama · estaciones OpenSees",menu,accent,.006f);
-        var baseline=Line("Cero del diagrama",menu,new Color(.25f,.36f,.42f),.002f);baseline.positionCount=2;
-        baseline.SetPositions(new[]{new Vector3(-.67f,.07f,-.048f),new Vector3(.67f,.07f,-.048f)});
-        Button("Caso >",-.49f,-.27f,()=>{caseIndex++;stationIndex=0;Refresh();});
-        Button("Diagrama",0,-.27f,()=>selector.gameObject.SetActive(true));
-        Button("i / x / j >",.49f,-.27f,()=>{stationIndex++;Refresh();});
-        forwardButton=Button("AVANZAR",-.49f,-.45f,()=>{});
-        backButton=Button("RETROCEDER",0,-.45f,()=>{});
-        Button("Estructura",.49f,-.45f,()=>{player.world.SetVRStructuralOnly(!player.world.StructuralOnly);});
-        Button("Otro piso",-.49f,-.63f,NextFloor);
-        Button("Recentrar",0,-.63f,RecenterMenu);
-        Button("Soltar ficha",.49f,-.63f,()=>{selected=null;selectedBar=null;selectedKey="";outline.positionCount=0;beamDiagram.Clear();Refresh();});
-        Button("Modo marcha",-.49f,-.81f,()=>{PointLocomotion=!PointLocomotion;Status=PointLocomotion?"Marcha por puntos · suelo validado":"Marcha continua";activated=false;gazeSince=Time.unscaledTime;Refresh();});
-        Button("Backend",0,-.81f,()=>backendSelector.gameObject.SetActive(true));
-        Button("Salir VR",.49f,-.81f,Exit);
-        Text("Ayuda","Mirada 2 s / botón · apartar la mirada detiene",new Vector3(-.70f,-.91f,-.04f),.0085f,menu);
+        mainPage=Page("Movimiento y controles",.86f);
+        leftButton=Button("IZQUIERDA",-.37f,.32f,()=>{},mainPage);
+        forwardButton=Button("AVANZAR",0,.32f,()=>{},mainPage);
+        rightButton=Button("DERECHA",.37f,.32f,()=>{},mainPage);
+        backButton=Button("RETROCEDER",-.37f,.16f,()=>{},mainPage);
+        Button("Modo marcha",0,.16f,()=>{PointLocomotion=!PointLocomotion;Status=PointLocomotion?"Marcha por puntos · suelo validado":"Marcha continua";activated=false;gazeSince=Time.unscaledTime;Refresh();},mainPage);
+        Button("Recentrar",.37f,.16f,RecenterMenu,mainPage);
+        Button("Diagrama",-.37f,0,()=>SetPage(selector),mainPage);
+        Button("Caso >",0,0,()=>{caseIndex++;stationIndex=0;Refresh();},mainPage);
+        Button("i / x / j >",.37f,0,()=>{stationIndex++;Refresh();},mainPage);
+        Button("Estructura",-.37f,-.16f,()=>{player.world.SetVRStructuralOnly(!player.world.StructuralOnly);},mainPage);
+        Button("Otro piso",0,-.16f,NextFloor,mainPage);
+        Button("Soltar ficha",.37f,-.16f,()=>{selected=null;selectedBar=null;selectedKey="";outline.positionCount=0;beamDiagram.Clear();Refresh();},mainPage);
+        Button("Backend",-.185f,-.32f,()=>SetPage(backendSelector),mainPage);
+        Button("Salir VR",.185f,-.32f,Exit,mainPage);
         reticle=Line("Mira VR",player.eye.transform,Color.white,.002f);reticle.transform.localPosition=Vector3.forward*.65f;DrawRing(reticle,.007f,1);
         progress=Line("Progreso de mirada",player.eye.transform,accent,.002f);progress.transform.localPosition=Vector3.forward*.65f;
         outline=Line("Elemento seleccionado · contorno",null,accent,.012f);outline.useWorldSpace=true;
         BuildSelector();
         BuildBackendSelector();
+        SetPage(mainPage);
     }
     void BuildBackendSelector(){
-        backendSelector=new GameObject("Backend Wi-Fi").transform;backendSelector.SetParent(menu,false);backendSelector.localPosition=new Vector3(0,-.1f,-.18f);
-        var panel=GameObject.CreatePrimitive(PrimitiveType.Cube);panel.transform.SetParent(backendSelector,false);panel.transform.localScale=new Vector3(1.48f,1.2f,.025f);Destroy(panel.GetComponent<Collider>());panel.GetComponent<Renderer>().sharedMaterial=Material(new Color(.025f,.045f,.065f));
-        Text("Backend título","PC / OPENSEES · WI-FI",new Vector3(-.68f,.56f,-.04f),.016f,backendSelector);
-        Button("Configurar",-.49f,.31f,()=>StartCoroutine(ConfigureBackend()),backendSelector);
-        Button("Q +2 kN/m",0,.31f,()=>Reanalyse(2),backendSelector);Button("Q +5 kN/m",.49f,.31f,()=>Reanalyse(5),backendSelector);
-        Button("5/cara Ø28",-.49f,.13f,()=>RegenerateCapacity(.028),backendSelector);Button("5/cara Ø32",0,.13f,()=>RegenerateCapacity(.032),backendSelector);Button("5/cara Ø36",.49f,.13f,()=>RegenerateCapacity(.036),backendSelector);
-        Button("Cancelar",-.49f,-.05f,()=>network.Cancel(),backendSelector);Button("Modelo base",0,-.05f,()=>{if(network.Busy){network.Cancel();return;}CampusData.Activate(null);UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);},backendSelector);
-        Button("Cerrar",.49f,-.05f,()=>backendSelector.gameObject.SetActive(false),backendSelector);
-        Text("Backend nota","Q: carga adicional uniforme, vertical −Z\nRefuerzo: sección nominal P–Mz · EI sin cambio\nRequiere columna HA y modelo base",new Vector3(-.68f,-.23f,-.04f),.011f,backendSelector);backendSelector.gameObject.SetActive(false);
+        backendSelector=Page("Backend Wi-Fi");
+        Button("Configurar",-.37f,.16f,()=>StartCoroutine(ConfigureBackend()),backendSelector);
+        Button("Q +2 kN/m",0,.16f,()=>Reanalyse(2),backendSelector);Button("Q +5 kN/m",.37f,.16f,()=>Reanalyse(5),backendSelector);
+        Button("5/cara Ø28",-.37f,0,()=>RegenerateCapacity(.028),backendSelector);Button("5/cara Ø32",0,0,()=>RegenerateCapacity(.032),backendSelector);Button("5/cara Ø36",.37f,0,()=>RegenerateCapacity(.036),backendSelector);
+        Button("Cancelar",-.37f,-.16f,()=>network.Cancel(),backendSelector);Button("Modelo base",0,-.16f,()=>{if(network.Busy){network.Cancel();return;}CampusData.Activate(null);UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);},backendSelector);
+        Button("Volver",.37f,-.16f,()=>SetPage(mainPage),backendSelector);
+        backendSelector.gameObject.SetActive(false);
     }
     IEnumerator ConfigureBackend(){
         string file=System.IO.Path.Combine(Application.persistentDataPath,"backend.json");
@@ -311,27 +322,21 @@ public sealed class CampusCardboard : MonoBehaviour
     void Reanalyse(double q){
         if(!selectedBar || !selectedBar.isBar || network.Busy){Status="Selecciona una barra y espera el cálculo";return;}
         int id=int.Parse(selectedBar.key.Split(':')[1]);string kind=selectedBar.description.StartsWith("Columna")?"Columna":"Viga";
-        backendSelector.gameObject.SetActive(false);StartCoroutine(network.Submit(new AnalysisNetworkClient.Input{modelHash=AnalysisNetworkClient.BaseHash,
+        SetPage(mainPage);StartCoroutine(network.Submit(new AnalysisNetworkClient.Input{modelHash=AnalysisNetworkClient.BaseHash,
             changes=new[]{new AnalysisNetworkClient.Edit{kind=kind,id=id,changeLoad=true,q=q}}},(folder,manifest)=>{CampusData.Activate(folder);UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);}));
     }
     void RegenerateCapacity(double diameter){
         if(!selectedBar || !selectedBar.description.StartsWith("Columna") || !string.IsNullOrEmpty(CampusData.DirectoryPath)){Status="Refuerzo: selecciona una columna HA del modelo base";return;}
-        backendSelector.gameObject.SetActive(false);reinforcement.Calculate(int.Parse(selectedBar.key.Split(':')[1]),5,diameter);
+        SetPage(mainPage);reinforcement.Calculate(int.Parse(selectedBar.key.Split(':')[1]),5,diameter);
     }
     void BuildSelector()
     {
-        selector=new GameObject("Elegir diagrama sobre el elemento").transform;selector.SetParent(menu,false);
-        selector.localPosition=new Vector3(0,-.10f,-.12f);
-        var panel=GameObject.CreatePrimitive(PrimitiveType.Cube);panel.transform.SetParent(selector,false);
-        panel.transform.localPosition=new Vector3(0,.13f,.02f);panel.transform.localScale=new Vector3(1.48f,1.10f,.025f);
-        Destroy(panel.GetComponent<Collider>());panel.GetComponent<Renderer>().sharedMaterial=Material(new Color(.025f,.045f,.065f));
-        Text("Selector","DIAGRAMA SOBRE LA VIGA",new Vector3(-.68f,.61f,-.04f),.017f,selector);
+        selector=Page("Elegir diagrama sobre el elemento");
         for(int index=0;index<CampusBeamDiagram.Modes.Length;index++){
-            int mode=index;Button(CampusBeamDiagram.Modes[index],-.49f+(index%3)*.49f,.38f-(index/3)*.18f,
-                ()=>{graphIndex=mode;stationIndex=0;selector.gameObject.SetActive(false);Refresh();},selector);
+            int mode=index;Button(CampusBeamDiagram.Modes[index],-.37f+(index%3)*.37f,.16f-(index/3)*.16f,
+                ()=>{graphIndex=mode;stationIndex=0;SetPage(mainPage);Refresh();},selector);
         }
-        Button("Cerrar",.49f,.02f,()=>selector.gameObject.SetActive(false),selector);
-        Text("Escalas","Esfuerzos: estaciones exportadas\nDeformada: Hermite nodal amplificada\nLa escala se indica junto al elemento",new Vector3(-.68f,-.11f,-.04f),.011f,selector);
+        Button("Volver",.37f,-.16f,()=>SetPage(mainPage),selector);
         selector.gameObject.SetActive(false);
     }
     void NextFloor()
@@ -346,44 +351,15 @@ public sealed class CampusCardboard : MonoBehaviour
         }
         player.Teleport(destination);fallVelocity=0;Status="Piso "+next;Refresh();
     }
-    string Number(float value){float magnitude=Mathf.Abs(value);
-        return value.ToString(magnitude>0 && (magnitude<.01f || magnitude>=1000000)?"0.##E+0":"0.###",CultureInfo.InvariantCulture);}
     void Refresh()
     {
-        if(!readout)return;diagram.positionCount=0;sampleLabel.text="";beamDiagram.Clear();
-        if(selected==null){heading.text="CAMPUS / CARDBOARD";readout.text=Status+"\nMira una viga, columna, muro o losa.\nLa ficha conserva el identificador del modelo.\nResultados verificados; reanálisis opcional en PC Wi-Fi.";return;}
+        beamDiagram.Clear();
+        if(selected==null)return;
         var cases=selected.cases;
-        if(cases==null || cases.Length==0){readout.text=selectedKey+"\nSin resultados exportados.";return;}
+        if(cases==null || cases.Length==0)return;
         var result=cases[caseIndex%cases.Length];
         beamDiagram.Show(selectedBar,result,graphIndex,player.eye.transform.position);
         beamDiagram.SetStation(stationIndex);
-        heading.text="CAMPUS / "+selectedKey+" / "+result.name;
-        string values="";
-        if(result.endI!=null && result.endI.Length>=6)values="Acciones i · ejes locales\nN "+Number(result.endI[0])+" kN   Vy "+Number(result.endI[1])+" kN\nMy "+Number(result.endI[4])+" kN·m   Mz "+Number(result.endI[5])+" kN·m";
-        else if(result.wall!=null && result.wall.Length>0)values="Paño: demanda P "+Number(result.wall[0])+" kN";
-        else values="G "+Number(selected.loadG)+" kN   Q "+Number(selected.loadQ)+" kN\nLosa de reparto: sin esfuerzos de placa.";
-        string movement=result.moveI!=null && result.moveI.Length>=3?"\nUx/y/z [mm] "+Number(result.moveI[0]*1000)+" / "+Number(result.moveI[1]*1000)+" / "+Number(result.moveI[2]*1000):"";
-        readout.text=selected.title+"\n"+values+movement;
-        if(graphIndex==7){sampleLabel.text="Diagramas ocultos.";return;}
-        CampusLaser.Graph graph;
-        if(graphIndex==6){
-            graph=new CampusLaser.Graph{label=beamDiagram.Label,unit=beamDiagram.Unit,values=beamDiagram.Values,stations=beamDiagram.Stations};
-            if(graph.values.Length==0){sampleLabel.text=beamDiagram.Description;return;}
-        }else{
-            if(result.graphs==null || graphIndex>=result.graphs.Length){sampleLabel.text="Sin diagrama exportado para este elemento/caso.";return;}
-            graph=result.graphs[graphIndex];
-        }
-        if(graph.values==null || graph.values.Length==0){sampleLabel.text="Sin estaciones exportadas.";return;}
-        // Preserve every exported station and sign. Normalization is display-only.
-        float range=Mathf.Max(.000001f,graph.values.Max(v=>Mathf.Abs(v)));
-        int count=graph.values.Length;diagram.positionCount=count;
-        for(int i=0;i<count;i++){
-            float station=graph.stations!=null && graph.stations.Length==count?graph.stations[i]:(count==1?0:i/(float)(count-1));
-            diagram.SetPosition(i,new Vector3(-.67f+station*1.34f,.07f+graph.values[i]/range*.10f,-.05f));
-        }
-        int index=stationIndex%count;
-        float x=graph.stations!=null && graph.stations.Length==count?graph.stations[index]:(count==1?0:index/(float)(count-1));
-        sampleLabel.text="Sección "+graph.label+" ["+graph.unit+"] · x/L="+Number(x)+" · valor="+Number(graph.values[index])+"\nmín="+Number(graph.values.Min())+" · máx="+Number(graph.values.Max());
     }
     void OnGUI()
     {
@@ -408,8 +384,18 @@ public sealed class CampusCardboard : MonoBehaviour
         selectedBar=UnityEngine.Object.FindObjectsByType<StructuralIdentity>(FindObjectsSortMode.None).FirstOrDefault(id=>id.key=="E:207");
         selectedKey="E:207";Refresh();
         checks["all_stations_preserved"]=selected!=null && selected.cases!=null && selected.cases.Length>0 &&
-            selected.cases[0].graphs!=null && selected.cases[0].graphs.Length>0 && diagram.positionCount==selected.cases[0].graphs[graphIndex%selected.cases[0].graphs.Length].values.Length;
+            selected.cases[0].graphs!=null && selected.cases[0].graphs.Length>0 && beamDiagram.Stations.SequenceEqual(selected.cases[0].graphs[graphIndex%selected.cases[0].graphs.Length].stations);
+        checks["compact_menu_buttons_only"]=mainPage.GetComponentsInChildren<TextMesh>().Length==14 && mainPage.GetComponentsInChildren<TextMesh>().All(t=>buttons.Keys.Any(b=>b.transform.parent==mainPage && b.name=="VR · "+t.text));
         CapturePreview();
+        SetPage(selector);Physics.SyncTransforms();
+        checks["diagram_exclusive_page"]=selector.gameObject.activeInHierarchy && !mainPage.gameObject.activeInHierarchy && !backendSelector.gameObject.activeInHierarchy && !forwardButton.gameObject.activeInHierarchy;
+        CapturePreview("CampusCompactDiagrams.png");
+        SetPage(backendSelector);Physics.SyncTransforms();
+        checks["backend_exclusive_page"]=backendSelector.gameObject.activeInHierarchy && !mainPage.gameObject.activeInHierarchy && !selector.gameObject.activeInHierarchy && !leftButton.gameObject.activeInHierarchy;
+        CapturePreview("CampusCompactBackend.png");
+        SetPage(mainPage);Physics.SyncTransforms();
+        checks["return_restores_movement_page"]=mainPage.gameObject.activeInHierarchy && !selector.gameObject.activeInHierarchy && !backendSelector.gameObject.activeInHierarchy;
+        checks["four_direction_controls"]=MovementDirection(leftButton)==-menu.right && MovementDirection(rightButton)==menu.right && MovementDirection(forwardButton)==menu.forward && MovementDirection(backButton)==-menu.forward;
         checks["beam_overlay_stations"]=beamDiagram.Curve.Length==selected.cases[0].graphs[graphIndex].values.Length;
         var savedValues=selected.cases[0].graphs[graphIndex].values;
         checks["beam_overlay_values_unchanged"]=beamDiagram.Values.SequenceEqual(savedValues);
@@ -447,6 +433,14 @@ public sealed class CampusCardboard : MonoBehaviour
         deadline=Time.realtimeSinceStartup+Dwell+3;
         while(Time.realtimeSinceStartup<deadline && Vector3.ProjectOnPlane(transform.position-origin,Vector3.up).magnitude<=.04f)yield return null;
         checks["backward_direction"]=Vector3.Dot(transform.position-origin,menu.forward)<-.04f;
+        foreach(var side in new[]{leftButton,rightButton}){
+            previewYaw+=150;yield return null;Physics.SyncTransforms();
+            origin=transform.position;aim=side.bounds.center-player.eye.transform.position;
+            previewYaw=Quaternion.LookRotation(aim).eulerAngles.y;previewPitch=Quaternion.LookRotation(aim).eulerAngles.x;if(previewPitch>180)previewPitch-=360;
+            deadline=Time.realtimeSinceStartup+Dwell+3;
+            while(Time.realtimeSinceStartup<deadline && Vector3.ProjectOnPlane(transform.position-origin,Vector3.up).magnitude<=.04f)yield return null;
+            checks[side==leftButton?"left_locomotion":"right_locomotion"]=Vector3.Dot(transform.position-origin,side==leftButton?-menu.right:menu.right)>.04f;
+        }
         checks["two_second_dwell"]=Mathf.Approximately(Dwell,2f);
         // Isolated collider fixture: exercise point mode without depending on campus geometry.
         Vector3 savedPosition=transform.position;

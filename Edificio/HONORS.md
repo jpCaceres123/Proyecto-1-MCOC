@@ -1,5 +1,7 @@
 # H1–H5: implementación y validación
 
+Guía unificada de aplicaciones, controles, APKs, backend y presentación: [GUIA_EJECUCION_Y_ENTREGA.md](GUIA_EJECUCION_Y_ENTREGA.md).
+
 Estado de entrega: funcionalidades implementadas y pruebas de software realizadas; **los cinco honors todavía no están certificados en terreno**. No se han inventado medidas, FPS del Redmi, videos ni persistencia autónoma de anclajes.
 
 ## Estado y límites
@@ -21,6 +23,8 @@ El backend no modifica apoyos ni ejes locales. Las losas continúan representada
 - Visor técnico: `visualization/unity/UnityVisualization`.
 - Cardboard: abrir `visualization/unity/CampusCardboard` con Unity **6000.5.9f1**. Entrar al modo Cardboard; usar mirada 2 s y el botón de modo de locomoción. El movimiento se detiene al apartar la mirada. `PC Wi-Fi` permite solicitar Q adicional o capacidad de columna.
 - AR: instalar `visualization/android-ar/dist/EdificioAR-Honors.apk`; aplicación `cl.mcoc.edificio.ar`. Es una APK de depuración para pruebas, no publicación en tienda.
+
+Cardboard: menú compacto solo de botones. `Diagrama` y `Backend` sustituyen al menú principal; `Volver` restaura los controles de movimiento. `IZQUIERDA`/`DERECHA` desplazan lateralmente con la misma mirada de 2 s y el mismo modo continuo/por pasos. Los valores, caso, unidades y amplificación permanecen junto al diagrama sobre la barra; el botón `i / x / j >` mueve la estación y su valor amarillo. En preview PC, botón derecho para mirar y `M` para recentrar.
 
 ### Bloqueo actual de APK Cardboard
 

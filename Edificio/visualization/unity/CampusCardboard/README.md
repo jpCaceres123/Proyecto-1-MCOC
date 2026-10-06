@@ -5,7 +5,8 @@ Abrir esta carpeta como un proyecto nuevo en Unity Hub, usando Unity **6000.5.9f
 Al pulsar Play en el editor se inicia la previsualización. En Android se inicia el SDK Cardboard real, con vista estéreo, lentes del visor y orientación de la cabeza. La previsualización no acredita el funcionamiento físico en el teléfono.
 
 - Mirar un elemento o botón **2 segundos** para seleccionarlo; el aro indica el progreso. El botón del visor confirma inmediatamente de forma explícita.
-- **AVANZAR / RETROCEDER**: mantener la mirada después de los 2 segundos. Apartarla detiene el desplazamiento. Ambos usan el eje frontal del menú; cambiar entre ellos cancela el movimiento y exige una nueva confirmación.
+- **AVANZAR / RETROCEDER / IZQUIERDA / DERECHA**: mantener la mirada después de los 2 segundos. Apartarla detiene el desplazamiento. Se usan los ejes frontal y lateral del menú; cambiar entre controles cancela el movimiento y exige una nueva confirmación. `Modo marcha` alterna movimiento continuo o pasos de 2 m.
+- Menú compacto solo de botones: `Diagrama` y `Backend` sustituyen al menú principal; `Volver` recupera movimiento. Valores y unidades permanecen sobre la barra, no en una ficha del menú.
 - Botón del visor mirando un espacio vacío: recolocar el menú frente a esa dirección.
 - Caso / Diagrama / i-x-j: consultar resultados originales de OpenSees, sin recalcular ni modificar signos o unidades.
 - **Diagrama** abre un selector explícito: N, Vy, Vz, T, My, Mz, Deformada u Ocultar. La curva se dibuja sobre la barra seleccionada, con extremos i/j, caso, unidades y escala. Un marcador amarillo sigue la estación consultada. Cambiar de caso actualiza el diagrama del mismo elemento.
@@ -18,6 +19,8 @@ No incluye menú de pausa del juego PC, rifle ni tercera persona. El juego Windo
 ## APK
 
 Instalar Android Build Support, SDK/NDK y OpenJDK para **6000.5.9f1**. Luego `Campus > Cardboard > Configurar Android`, reiniciar si lo pide y `Campus > Cardboard > Construir APK`. Salida esperada tras una compilación exitosa: `Build/Android/CampusCardboard.apk`. El sistema de entrada de este proyecto es **Input System Package (New)**, independiente del juego PC.
+
+En esta entrega todavía falta el módulo Android y no se ha generado esa APK. La APK `EdificioAR-Honors.apk` corresponde a AR, no Cardboard. Ver [guía general de ejecución](../../../GUIA_EJECUCION_Y_ENTREGA.md).
 
 ## Pruebas
 
