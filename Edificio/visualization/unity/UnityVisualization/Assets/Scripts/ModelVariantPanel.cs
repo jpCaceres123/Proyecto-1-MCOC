@@ -26,6 +26,8 @@ public sealed class ModelVariantPanel : MonoBehaviour
     private string editingKind, q = "0", b = "0.6", h = "0.8";
     private string repository, python;
     private Process process;
+    private AnalysisNetworkClient network;
+    private bool remote;
     private readonly StringBuilder log = new StringBuilder();
     public static ModelVariantPanel Get(GameObject owner)
     {
@@ -36,6 +38,8 @@ public sealed class ModelVariantPanel : MonoBehaviour
         applied.changes.Exists(e => e.kind == kind && e.id == id && e.changeSection);
     private void Awake()
     {
+        network=gameObject.AddComponent<AnalysisNetworkClient>();
+        remote=Application.platform==RuntimePlatform.Android;
         repository = PlayerPrefs.GetString("AnalysisRepository", "");
         python = PlayerPrefs.GetString("AnalysisPython", "python");
         if (string.IsNullOrEmpty(repository))
@@ -65,8 +69,10 @@ public sealed class ModelVariantPanel : MonoBehaviour
             b = (prior != null && section ? prior.b : width).ToString("G6", CultureInfo.InvariantCulture);
             h = (prior != null && section ? prior.h : height).ToString("G6", CultureInfo.InvariantCulture);
         }
-        GUILayout.Label("Cambios por ID · OpenSees en Windows");
-        bool wasEnabled = GUI.enabled; GUI.enabled = wasEnabled && !busy;
+        GUILayout.Label("Cambios por ID · OpenSees local o PC por Wi-Fi");
+        remote=GUILayout.Toggle(remote,"Backend del PC por Wi-Fi");
+        if(remote){GUILayout.Label("IP del PC (http://192.168.x.x:8765)");network.Server=GUILayout.TextField(network.Server);GUILayout.Label("Token de sesión");network.Token=GUILayout.PasswordField(network.Token,'*');GUILayout.Label(network.Status);if(network.Busy && GUILayout.Button("Cancelar cálculo"))network.Cancel();}
+        bool wasEnabled = GUI.enabled; GUI.enabled = wasEnabled && !busy && !network.Busy;
         load = GUILayout.Toggle(load, "Modificar carga Q del elemento");
         if (load)
         {
@@ -100,7 +106,9 @@ public sealed class ModelVariantPanel : MonoBehaviour
                 draft.changes.RemoveAll(e => e.kind == kind && e.id == id);
                 if (section || load) draft.changes.Add(edit);
                 selectedKind = kind; selectedId = id;
-                StartCoroutine(Calculate(JsonUtility.ToJson(draft, true)));
+                if(remote){var input=new AnalysisNetworkClient.Input{modelHash=AnalysisNetworkClient.BaseHash,changes=draft.changes.ConvertAll(e=>new AnalysisNetworkClient.Edit{kind=e.kind,id=e.id,changeLoad=e.changeLoad,changeSection=e.changeSection,q=e.q,b=e.b,h=e.h}).ToArray()};
+                    StartCoroutine(network.Submit(input,(folder,manifest)=>{applied=JsonUtility.FromJson<Request>(JsonUtility.ToJson(draft));AnalysisResources.Activate(folder);message="Variante de red "+manifest.revision;SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);}));}
+                else StartCoroutine(Calculate(JsonUtility.ToJson(draft, true)));
             }
             catch (Exception ex) { message = ex.Message; }
         }

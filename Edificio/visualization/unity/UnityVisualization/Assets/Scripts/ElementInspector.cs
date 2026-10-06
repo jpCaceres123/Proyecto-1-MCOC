@@ -228,6 +228,11 @@ public class ElementInspector : MonoBehaviour
         GUILayout.Label(selected.kind + " ID " + selected.id + " · Caso " + loadCase);
         GUILayout.Label(selected.details);
         ModelVariantPanel.Get(gameObject).Draw(selected.kind, selected.id);
+        var reinforcement=GetComponent<ReinforcementPanel>();if(!reinforcement)reinforcement=gameObject.AddComponent<ReinforcementPanel>();
+        double[] capacityDemand;
+        if(selected.kind=="Columna" && TryForces(loadCase,selected.id,out capacityDemand))
+            reinforcement.Draw(selected.id,!AnalysisResources.IsVariant&&!StructuralPostprocessor.Get(gameObject).IsSteel(selected.id),
+                (float)capacityDemand[0],(float)-capacityDemand[5],(float)-capacityDemand[4]);
         if (selected.kind == "Losa")
         {
             DrawSlabWeight(selected.id);

@@ -35,5 +35,11 @@ class ContractTests(unittest.TestCase):
             self.assertEqual(original[f], graph['values'])
             self.assertEqual(original['s'], graph['stations'])
 
+    def test_reject_missing_nodes_and_duplicate_bars(self):
+        data=copy.deepcopy(self.data);data['cases'][0]['nodes'].pop()
+        with self.assertRaises(ValueError):contracts.validate(data)
+        data=copy.deepcopy(self.data);data['cases'][0]['bars'].append(data['cases'][0]['bars'][0])
+        with self.assertRaises(ValueError):contracts.validate(data)
+
 
 if __name__ == '__main__': unittest.main()
