@@ -1,0 +1,7 @@
+# Python 3.12: numerical versions recorded by the delivered structural baseline.
+openseespy==3.8.0.0
+openseespywin==3.8.0.0; platform_system == 'Windows'
+numpy==2.5.2
+matplotlib==3.11.1
+openpyxl==3.1.5
+-r analysis/backend/requirements.txt

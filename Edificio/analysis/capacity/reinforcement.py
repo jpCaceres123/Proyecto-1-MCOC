@@ -27,7 +27,9 @@ def generate(config, count, diameter, samples=161):
     body=dict(schema=1,units=dict(P='kN',M='kN*m'),section=c,curves=curves,
               concreteArea_m2=float(f[f[:,3]==1,2].sum()),steelArea_m2=float(f[f[:,3]==2,2].sum()),
               scope='nominal uniaxial section; sampled material-limit path, not biaxial/member/code verification',
-              globalStiffnessChanged=False,reinforcementSource=c.get('fuente_armadura','academic assumption'))
+              globalStiffnessChanged=False,
+              reinforcementSource=f'Hipótesis académica editada: {4*count-4} barras Ø{diameter*1000:g} mm; recubrimiento al centro {c["recubrimiento_al_centro_barra_m"]*1000:g} mm',
+              baseReinforcementSource=config.get('fuente_armadura','academic assumption'))
     body['capacityRevision']=hashlib.sha256(json.dumps(body,sort_keys=True,allow_nan=False).encode()).hexdigest()
     return body
 

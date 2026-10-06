@@ -224,7 +224,11 @@ def create_app(root=ROOT,storage=None,token=None,runner=None):
 
 if __name__=='__main__':
     import argparse
+    import importlib.metadata
     import uvicorn
+    expected={'openseespy':'3.8.0.0','numpy':'2.5.2','matplotlib':'3.11.1'}
+    if any(importlib.metadata.version(name)!=version for name,version in expected.items()):
+        raise RuntimeError('Use the isolated Python 3.12 environment and Edificio/requirements_honors.txt to match baseline numerical versions')
     p=argparse.ArgumentParser();p.add_argument('--host',default='127.0.0.1');p.add_argument('--port',type=int,default=8765);a=p.parse_args()
     ip=ipaddress.ip_address(a.host)
     if not ip.is_private or ip.is_unspecified:raise ValueError('Bind to a specific private LAN address, never 0.0.0.0')
