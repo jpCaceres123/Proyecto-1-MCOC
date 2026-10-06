@@ -1,0 +1,43 @@
+{
+  "apk": "EdificioAR-Honors.apk",
+  "application_id": "cl.mcoc.edificio.ar",
+  "version": "1.0.0",
+  "abi": "arm64-v8a",
+  "min_sdk": 24,
+  "target_sdk": 35,
+  "size_bytes": 24014237,
+  "sha256": "b96505e025262f22867524a0cc064036f807caf2f449894faa38df451ffc8724",
+  "model_sha256": "8780ea467977c5fdc85b3d73e4deb6a5aba6944d56d61d02f6228836e4037b47",
+  "results_sha256": "a794fcda9d573dfbd35253508bcf1494eec70b11cbcb39881f7921f95da6e666",
+  "members": 612,
+  "cases": [
+    "G",
+    "Q",
+    "EX",
+    "EY",
+    "R"
+  ],
+  "markers_quality_minimum": null,
+  "marker_quality_status": "PENDING",
+  "embedded_assets": "verified against delivered references",
+  "build": "SUCCESS",
+  "lint": "assembleDebug lintDebug succeeded",
+  "signature": "VERIFIED by apksigner",
+  "features": [
+    "N/V/T/M por estación",
+    "desplazamiento Ux/Uy/Uz interpolado",
+    "área tributaria y losas asociadas",
+    "carga aplicada G/Q/EX/EY/R",
+    "curva P-M para columnas HA de referencia",
+    "registro común de sector medido",
+    "comparación hasta cuatro barras",
+    "Hermite ×100 y desplazamientos nodales de muros",
+    "superficies tributarias",
+    "error por punto/RMS/máximo",
+    "backend LAN y refuerzo editable"
+  ],
+  "physical_device_test": "PENDING",
+  "commit": "5f2572e417507f6cc15e98e560a153509f645b8d",
+  "source_has_uncommitted_changes": false,
+  "field_registration_test": "PENDING"
+}

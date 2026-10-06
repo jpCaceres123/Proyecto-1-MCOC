@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-06",
+  "unity": "6000.5.9f1",
+  "mode": "editor preview plus real loopback HTTP",
+  "native_stereo_test": "PENDING",
+  "passed": 26,
+  "failed": 0,
+  "checks": [
+    "preview_not_native_stereo", "desktop_controls_suspended", "exported_id_and_diagram",
+    "all_stations_preserved", "beam_overlay_stations", "beam_overlay_values_unchanged",
+    "deformed_i_matches_export", "deformed_j_matches_export", "rigid_translation_preserved",
+    "rotation_sign_open_to_unity", "hide_diagram", "no_early_selection", "gaze_locomotion",
+    "forward_direction", "look_away_stops", "backward_direction", "two_second_dwell",
+    "point_step_two_metres", "point_step_collision_rejected", "point_step_void_rejected",
+    "floor_platform", "structural_view", "restore_desktop", "repeated_enter_exit",
+    "http_opensees_new_verified_revision", "http_reinforcement_regeneration"
+  ],
+  "numerical_versions": {"openseespy": "3.8.0.0", "numpy": "2.5.2"},
+  "physical_device": "PENDING"
+}
