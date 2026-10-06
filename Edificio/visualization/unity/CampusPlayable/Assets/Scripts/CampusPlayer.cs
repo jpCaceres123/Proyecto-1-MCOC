@@ -9,7 +9,9 @@ public class CampusPlayer : MonoBehaviour
     public void Recoil(float amount){pitch=Mathf.Clamp(pitch-amount,-82,82);}
     public Camera eye;
     public CharacterController controller;
-    public bool ThirdPerson { get; private set; }
+    public enum CameraView { FirstPerson, ThirdPersonBehind, ThirdPersonFront }
+    public CameraView View { get; private set; }
+    public bool ThirdPerson { get { return View!=CameraView.FirstPerson; } }
     CampusAvatar avatar;
     Vector3 headPosition=new Vector3(0,1.65f,0);
     int selectedLift;
@@ -50,13 +52,14 @@ public class CampusPlayer : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape)){if(lift)lift=false;else paused=!paused;SetCursor();}
         if(paused||lift)return;
-        if(Input.GetKeyDown(KeyCode.F5))SetThirdPerson(!ThirdPerson);
+        if(Input.GetKeyDown(KeyCode.P) && world.earthquake){world.earthquake.Toggle();Notify(world.earthquake.Active?"Terremoto activado · P para detener (efecto visual).":"Terremoto detenido.");}
+        if(Input.GetKeyDown(KeyCode.F5))CycleCamera();
         if(Input.GetKeyDown(KeyCode.F6)){world.SetStructuralOnly(!world.StructuralOnly);Notify(world.StructuralOnly?"Modo estructural: losas, columnas y muros. F6 restaura arquitectura.":"Arquitectura restaurada.");}
         if(Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1))equippedTool=1;
         if(Input.GetKeyDown(KeyCode.Alpha2)||Input.GetKeyDown(KeyCode.Keypad2))equippedTool=2;
         yaw+=Input.GetAxis("Mouse X")*sensitivity;
         pitch=Mathf.Clamp(pitch-Input.GetAxis("Mouse Y")*sensitivity,-82,82);
-        transform.rotation=Quaternion.Euler(0,yaw,0);eye.transform.localRotation=Quaternion.Euler(pitch,0,0);
+        transform.rotation=Quaternion.Euler(0,yaw,0);
         float speed=Input.GetKey(KeyCode.LeftShift)?6.2f:walkSpeed;
         Vector3 move=transform.right*Input.GetAxisRaw("Horizontal")+transform.forward*Input.GetAxisRaw("Vertical");
         if(move.sqrMagnitude>1)move.Normalize();
@@ -70,6 +73,7 @@ public class CampusPlayer : MonoBehaviour
         focused=null;identity=null;
         RaycastHit hit;
         Vector3 interactionOrigin=transform.TransformPoint(headPosition);
+        UpdateCamera();
         if(Physics.Raycast(interactionOrigin,eye.transform.forward,out hit,3.5f)){
             focused=hit.collider.GetComponentInParent<CampusAction>();identity=hit.collider.GetComponentInParent<StructuralIdentity>();
         }
@@ -83,11 +87,13 @@ public class CampusPlayer : MonoBehaviour
             }else if(identity!=null)Notify(identity.description);
         }
     }
-    public void SetThirdPerson(bool value){ThirdPerson=value;UpdateCamera();}
-    void LateUpdate(){UpdateCamera();}
+    public void SetThirdPerson(bool value){View=value?CameraView.ThirdPersonBehind:CameraView.FirstPerson;UpdateCamera();}
+    public void CycleCamera(){View=(CameraView)(((int)View+1)%3);UpdateCamera();}
+    void LateUpdate(){UpdateCamera();if(world && world.earthquake)world.earthquake.ShakeCamera(eye);}
     void UpdateCamera()
     {
         if(!eye)return;
+        eye.transform.localRotation=View==CameraView.ThirdPersonFront?Quaternion.Euler(-pitch,180,0):Quaternion.Euler(pitch,0,0);
         if(!ThirdPerson){eye.transform.localPosition=headPosition;if(avatar)avatar.SetVisible(false);return;}
         Vector3 pivot=transform.TransformPoint(new Vector3(0,1.25f,0));
         Vector3 desired=pivot-eye.transform.forward*3.2f+Vector3.up*.25f;
@@ -111,8 +117,9 @@ public class CampusPlayer : MonoBehaviour
         Styles();int level=Mathf.Clamp(Mathf.RoundToInt((transform.position.y-CampusWorld.Finish)/CampusWorld.Storey),0,5);
         GUI.color=new Color(.04f,.07f,.10f,.94f);GUI.Box(new Rect(20,20,330,88),"");GUI.color=Color.white;
         GUI.Label(new Rect(36,30,300,30),"CAMPUS / INGENIERÍA",title);
-        GUI.Label(new Rect(36,62,300,24),CampusWorld.FloorNames[level]+" · "+(world.StructuralOnly?"ESTRUCTURA":"CAMPUS")+" · "+(ThirdPerson?"3ª persona":"1ª persona"),small);
-        GUI.Label(new Rect(20,Screen.height-37,Screen.width-40,24),"WASD mover  ·  Mouse mirar  ·  Shift correr  ·  Espacio saltar  ·  E interactuar  ·  1 láser  ·  2 AK47  ·  clic disparar  ·  T recargar  ·  Q caso  ·  clic derecho fijar  ·  F linterna  ·  Esc menú",small);
+        GUI.Label(new Rect(36,62,300,24),CampusWorld.FloorNames[level]+" · "+(world.StructuralOnly?"ESTRUCTURA":"CAMPUS")+" · "+(View==CameraView.ThirdPersonFront?"3ª de frente":ThirdPerson?"3ª desde atrás":"1ª persona"),small);
+        if(world.earthquake && world.earthquake.Active){GUI.color=new Color(1,.62f,.25f);GUI.Label(new Rect(365,30,430,32),"TERREMOTO · "+Mathf.CeilToInt(world.earthquake.Remaining)+" s · P detener",text);GUI.color=Color.white;}
+        GUI.Label(new Rect(20,Screen.height-37,Screen.width-40,24),"WASD mover  ·  Mouse mirar  ·  Shift correr  ·  Espacio saltar  ·  E interactuar  ·  1 láser  ·  2 AK47  ·  clic disparar  ·  T recargar  ·  Q caso  ·  clic derecho fijar  ·  F linterna  ·  P terremoto  ·  Esc menú",small);
         if(!paused && !lift){
             GUI.Label(new Rect(Screen.width/2-5,Screen.height/2-10,20,20),"+");
             if(focused!=null || identity!=null){var style=new GUIStyle(text){alignment=TextAnchor.MiddleCenter};
@@ -126,11 +133,12 @@ public class CampusPlayer : MonoBehaviour
             GUI.Label(new Rect(x+28,y+78,465,92),"Explora el edificio, sube por la escalera naranja o utiliza el ascensor. Abre las puertas con E y descubre los cinco espacios de ingeniería.",text);
             GUI.Label(new Rect(x+28,y+174,330,25),"Sensibilidad del mouse",small);sensitivity=GUI.HorizontalSlider(new Rect(x+28,y+207,460,20),sensitivity,.6f,4);
             if(GUI.Button(new Rect(x+28,y+238,465,36),world.StructuralOnly?"F6 · Restaurar arquitectura":"F6 · Solo losas, columnas y muros"))world.SetStructuralOnly(!world.StructuralOnly);
-            if(GUI.Button(new Rect(x+28,y+282,465,36),ThirdPerson?"F5 · Primera persona":"F5 · Tercera persona / Among Us"))SetThirdPerson(!ThirdPerson);
+            string nextView=View==CameraView.FirstPerson?"Tercera persona desde atrás":View==CameraView.ThirdPersonBehind?"Tercera persona de frente":"Primera persona";
+            if(GUI.Button(new Rect(x+28,y+282,465,36),"F5 · "+nextView))CycleCamera();
             if(GUI.Button(new Rect(x+28,y+330,465,42),"Entrar / continuar")){paused=false;SetCursor();}
             if(GUI.Button(new Rect(x+28,y+384,226,36),"Volver al acceso")){Teleport(world.Entrance);paused=false;SetCursor();}
             if(GUI.Button(new Rect(x+267,y+384,226,36),"Salir"))Application.Quit();
-            GUI.Label(new Rect(x+28,y+435,460,35),"F5 cámara · F6 estructura · E ascensores interiores",small);
+            GUI.Label(new Rect(x+28,y+435,460,35),"F5 cámara · F6 estructura · P terremoto · E ascensor",small);
         }
         if(lift){
             float x=(Screen.width-440)/2f,y=(Screen.height-425)/2f;
@@ -143,3 +151,4 @@ public class CampusPlayer : MonoBehaviour
         }
     }
 }
+

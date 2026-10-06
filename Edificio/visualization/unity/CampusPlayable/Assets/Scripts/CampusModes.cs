@@ -83,7 +83,9 @@ public partial class CampusWorld
     void InteriorElevators()
     {
         StructuralSlabs();
-        for(int shaft=0;shaft<2;shaft++) {
+        // The larger front opening is the stair core; the smaller rear opening is the lift.
+        InteriorStairCore();
+        for(int shaft=1;shaft<2;shaft++) {
             Rect h=elevatorHoles[shaft];float w=h.width-.24f,d=h.height-.24f;
             foreach(int level in ElevatorFloors(shaft)) {
                 float y=level*Storey+Finish;Vector3 center=new Vector3(h.center.x,y,h.center.y);
@@ -97,8 +99,8 @@ public partial class CampusWorld
                 Box("Ascensor umbral",new Vector3(h.center.x,y-.04f,front),new Vector3(1.4f,.08f,.5f),floor);
                 var panel=Box("Ascensor panel "+(shaft+1),new Vector3(h.center.x-.50f,y+1.1f,front+(shaft==0?-.22f:.22f)),new Vector3(.20f,.48f,.10f),orange);
                 var action=panel.AddComponent<CampusAction>();action.kind=1;action.index=shaft;
-                action.title="Ascensor interior "+(shaft+1)+" · elegir nivel";actions.Add(action);
-                Label(new Vector3(h.center.x-.50f,y+2.35f,front),"ASCENSOR "+(shaft+1)+" / "+level,.075f);
+                action.title="Ascensor interior · elegir nivel";actions.Add(action);
+                Label(new Vector3(h.center.x-.50f,y+2.35f,front),"ASCENSOR / "+level,.075f);
             }
         }
     }

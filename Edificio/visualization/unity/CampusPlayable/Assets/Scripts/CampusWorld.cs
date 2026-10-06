@@ -13,6 +13,7 @@ public partial class CampusWorld : MonoBehaviour
     public int nodeCount, memberCount, slabCount, wallCount;
     public Transform architecture, structure;
     public CampusPlayer player;
+    public CampusEarthquake earthquake;
     public readonly List<CampusAction> actions = new List<CampusAction>();
     readonly Dictionary<int, Vector3> nodes = new Dictionary<int, Vector3>();
     readonly Dictionary<int, Slab> slabs = new Dictionary<int, Slab>();
@@ -20,7 +21,7 @@ public partial class CampusWorld : MonoBehaviour
     readonly Dictionary<int, List<Rect>> footprints = new Dictionary<int, List<Rect>>();
     Material concrete, orange, glass, metal, floor, wood, blue, dark, green, soil, light, white, textMaterial;
     readonly System.Random random = new System.Random(441);
-    public static readonly string[] FloorNames = { "Acceso · Talleres", "Aulas", "Biblioteca", "Laboratorios", "Estudio y proyectos", "Terraza" };
+    public static readonly string[] FloorNames = { "Acceso", "Nivel 1", "Nivel 2", "Nivel 3", "Nivel 4", "Terraza" };
     class Slab { public int id; public float height; public Rect rect; public List<Rect> holes = new List<Rect>(); }
     struct Edge { public Vector2 a,b; public Edge(Vector2 a,Vector2 b){this.a=a;this.b=b;} }
     float F(string v) { return float.Parse(v, CultureInfo.InvariantCulture); }
@@ -30,6 +31,7 @@ public partial class CampusWorld : MonoBehaviour
         var go = new GameObject("Visitante");
         player = go.AddComponent<CampusPlayer>();
         player.world = this;
+        earthquake=gameObject.AddComponent<CampusEarthquake>();earthquake.player=player;
         go.AddComponent<CampusLaser>();
         go.AddComponent<CampusRifle>();
         player.Teleport(Entrance);
@@ -39,7 +41,7 @@ public partial class CampusWorld : MonoBehaviour
         else if (Environment.GetCommandLineArgs().Contains("-campus-ui-preview")) StartCoroutine(InspectorPreview());
         else if (Environment.GetCommandLineArgs().Contains("-campus-capture")) StartCoroutine(CaptureRevision());
     }
-    public Vector3 Spawn(int level) { return ElevatorArrival(0,level); }
+    public Vector3 Spawn(int level) { return ElevatorArrival(1,level); }
     public Vector3 Entrance { get { return new Vector3(-28,Finish+.08f,-16); } }
     public void Generate()
     {
@@ -164,6 +166,7 @@ public partial class CampusWorld : MonoBehaviour
                 var id=g.AddComponent<StructuralIdentity>();id.key="E:"+r[1];id.description=(col?"Columna ":"Viga ")+r[1]+"\nNodos "+r[3]+" → "+r[4]+"\nGeometría del modelo principal";memberCount++;
             } else if(r[0]=="W") {
                 var a=new Vector3(F(r[3]),0,F(r[4]));var b=new Vector3(F(r[6]),0,F(r[7]));float lo=F(r[5]),hi=F(r[8]);
+                if(DrawConnectingPortal(r,a,b,lo,hi)){wallCount++;continue;}
                 if(Mathf.Abs(a.z-16.4f)<.03f && Mathf.Abs(b.z-16.4f)<.03f && lo<4.5f && hi>6.7f && hi<8.1f && Mathf.Max(a.x,b.x)>33 && Mathf.Min(a.x,b.x)<36) {
                     Rect panel=Rect.MinMaxRect(Mathf.Min(a.x,b.x),lo,Mathf.Max(a.x,b.x),hi);
                     foreach(var part in Cut(panel,Rect.MinMaxRect(33,Storey+Finish-.01f,36,Storey+Finish+2.65f))) {
@@ -221,7 +224,7 @@ public partial class CampusWorld : MonoBehaviour
     }
     void Facade(int level) {
         float y=level*Storey+Finish;
-        foreach(var e in Boundary(level)) {
+        foreach(var e in Boundary(level).SelectMany(edge=>FacadeEdges(level,edge))) {
             Vector3 a=new Vector3(e.a.x,y,e.a.y),b=new Vector3(e.b.x,y,e.b.y),dir=(b-a).normalized;float len=(b-a).magnitude;
             var band=Box("Banda de hormigon",(a+b)/2+Vector3.up*.12f,new Vector3(len,.24f,.55f),concrete,!(portalEdge(e) || (level==1 && Mathf.Abs(e.a.y-e.b.y)<.01f && e.a.y>16.9f) || (level==2 && e.a.x>45 && e.a.x<46 && Mathf.Abs(e.a.x-e.b.x)<.01f)));
             band.transform.rotation=Quaternion.FromToRotation(Vector3.right,dir);
@@ -241,42 +244,6 @@ public partial class CampusWorld : MonoBehaviour
                 fin.transform.rotation=band.transform.rotation;
                 if(!portal){var mull=Box("Travesano ventana",mid+Vector3.up*1.95f,new Vector3(bay,.045f,.1f),metal,false);mull.transform.rotation=band.transform.rotation;}
             }
-        }
-    }
-    void Interior(int level) {
-        float y=level*Storey+Finish;var names=new[]{"TALLER DE INGENIERÍA","AULAS · NIVEL 1","BIBLIOTECA","LABORATORIOS","ESTUDIO Y PROYECTOS"};
-        Station(new Vector3(-23,y+1.4f,3),names[level],level);
-        for(float x=-27;x<48;x+=8) {
-            if(!Inside(level,x,11) || !Inside(level,x+6,15))continue;
-            Box("Separacion de aula",new Vector3(x,y+1.5f,12),new Vector3(.12f,3,6),white);
-            Box("Frente aula izquierda",new Vector3(x+1.35f,y+1.5f,9),new Vector3(2.7f,3,.12f),white);
-            Box("Frente aula derecha",new Vector3(x+6.05f,y+1.5f,9),new Vector3(3.5f,3,.12f),white);
-            Box("Dintel puerta",new Vector3(x+3.5f,y+2.8f,9),new Vector3(1.6f,.4f,.12f),white);
-            Door(new Vector3(x+2.7f,y,9),1.6f);
-            Box("Cielo acustico",new Vector3(x+3.8f,y+3.25f,12),new Vector3(7.5f,.08f,5.8f),white,false);
-            Box("Luz lineal",new Vector3(x+3.5f,y+3.17f,12),new Vector3(4,.035f,.12f),light,false);
-            Label(new Vector3(x+1.4f,y+2.0f,8.88f),level==2?"LECTURA":(level==3?"LAB "+Mathf.RoundToInt(x+30):"SALA "+(level+1)+Mathf.RoundToInt(x+30)),.10f);
-            if(level==2) {
-                for(int s=0;s<3;s++){float sx=x+1+s*1.8f;Box("Estante",new Vector3(sx,y+1,15),new Vector3(1.5f,2,.35f),wood);
-                    for(int shelf=0;shelf<4;shelf++)for(int k=0;k<7;k++)Box("Libro",new Vector3(sx-.62f+k*.18f,y+.2f+shelf*.43f,14.76f),new Vector3(.13f,.32f,.24f),(k%2==0?blue:orange),false);}
-                Table(new Vector3(x+4,y,11.5f),2.2f,1);
-            } else {
-                for(int row=0;row<2;row++)for(int col=0;col<2;col++){
-                    Vector3 p=new Vector3(x+1.8f+col*3,y,10.7f+row*2);Table(p,1.6f,.8f);
-                    if(level==3 || level==4) {Box("Monitor",p+new Vector3(0,1.1f,.1f),new Vector3(.58f,.36f,.045f),dark,false);Box("Pantalla",p+new Vector3(0,1.1f,.07f),new Vector3(.52f,.3f,.012f),blue,false);}
-                }
-                Box("Pizarra",new Vector3(x+7.6f,y+1.6f,12),new Vector3(.08f,1.2f,2.5f),white);
-            }
-        }
-        for(float x=-18;x<40;x+=13) if(Inside(level,x,5)) {
-            Box("Banco de estudio",new Vector3(x,y+.45f,5),new Vector3(2.2f,.45f,.8f),blue);
-            Box("Respaldo",new Vector3(x,y+.82f,5.35f),new Vector3(2.2f,.55f,.12f),blue);
-            Planter(new Vector3(x+2.2f,y,5));
-        }
-        // A few local lights illuminate rooms without a costly shadow per light.
-        for(float x=-24;x<45;x+=18) if(Inside(level,x,10)) {
-            var l=new GameObject("Luz interior").AddComponent<Light>();l.transform.SetParent(architecture);l.transform.position=new Vector3(x,y+2.8f,11);
-            l.type=LightType.Point;l.range=12;l.intensity=.75f;l.color=new Color(1,.9f,.75f);l.shadows=LightShadows.None;
         }
     }
     void Table(Vector3 p,float w,float d) {
@@ -346,10 +313,11 @@ public partial class CampusWorld : MonoBehaviour
         Landing(9.7f,12.5f,4,-2.76f);
         Box("Llegada superior LT1",new Vector3(1.2f,5*Storey+Finish-.1f,-.6f),new Vector3(2.1f,.2f,3.1f),concrete);
         Box("Acceso inferior LT1",new Vector3(39.8f,2*Storey+Finish-.1f,-.65f),new Vector3(3.2f,.2f,3.1f),concrete);
-        // Lower flight turns back toward the central forecourt, following the purple annotation.
-        StairFlight(new Vector3(29.2f,Storey+Finish,-6.35f),new Vector3(39.2f,2*Storey+Finish,-6.35f),"LT1 acceso inferior · lado exterior rojo",orange);
+        // Add 2.04 m toward the building (red annotation), keeping the outer edge at Y=-7.37 m.
+        // One-storey rise and longitudinal direction stay unchanged.
+        StairFlight(new Vector3(29.2f,Storey+Finish,-5.33f),new Vector3(39.2f,2*Storey+Finish,-5.33f),"LT1 acceso inferior · ancho ampliado",orange,4.08f);
         // Flat access slab before taking the first exterior flight.
-        Box("LT1 losa de llegada a nivel de tierra",new Vector3(28.2f,Storey+Finish-.12f,-6.35f),new Vector3(4,.24f,3.4f),concrete);
+        Box("LT1 losa de llegada a nivel de tierra",new Vector3(28.2f,Storey+Finish-.12f,-5.33f),new Vector3(4,.24f,5.44f),concrete);
         Box("LT1 acceso a losa inferior",new Vector3(28.2f,Storey+Finish-.04f,-9.1f),new Vector3(3,.08f,2.1f),floor);
         // Broad side apron visible in the oblique photograph, connected to the stair landing.
         float accessY=2*Storey+Finish;
@@ -479,13 +447,13 @@ public partial class CampusWorld : MonoBehaviour
     void SideEntrance() {
         float y=2*Storey+Finish;
         // Raised soil meets the occupied side facade, covering the previous void beneath it.
-        Box("Entrada lateral · losa hasta terreno",new Vector3(49.25f,y-.12f,10),new Vector3(7.5f,.24f,5),floor);
-        Door(new Vector3(45.8f,y,10.8f),1.6f);
+        Box("Entrada lateral · losa hasta terreno",new Vector3(49.25f,y-.12f,8.5f),new Vector3(7.5f,.24f,3.6f),floor);
+        Door(new Vector3(45.8f,y,9.3f),1.6f);
         var door=actions.Last().door;door.transform.Find("Hoja").GetComponent<Renderer>().sharedMaterial=glass;door.baseYaw=90;door.transform.localRotation=Quaternion.Euler(0,90,0);
-        Box("Entrada lateral · marquesina",new Vector3(47.3f,y+2.7f,10),new Vector3(3.6f,.16f,4),concrete);
-        var sign=Box("Entrada lateral · letrero",new Vector3(45.95f,y+2.4f,10),new Vector3(.12f,.35f,1.7f),dark,false);
+        Box("Entrada lateral · marquesina",new Vector3(47.3f,y+2.7f,8.5f),new Vector3(3.6f,.16f,3),concrete);
+        var sign=Box("Entrada lateral · letrero",new Vector3(45.95f,y+2.6f,8.5f),new Vector3(.12f,.35f,1.7f),dark,false);
         // A clear approach continues behind the doorway into the corridor.
-        Box("Entrada lateral · pavimento interior",new Vector3(43.5f,y-.08f,10),new Vector3(4,.16f,4),floor);
+        Box("Entrada lateral · pavimento interior",new Vector3(43.5f,y-.08f,8.5f),new Vector3(4,.16f,1.8f),floor);
     }
     void RearTerrace() {
         // Architectural podium inferred from the second photograph; no analytical members are changed.

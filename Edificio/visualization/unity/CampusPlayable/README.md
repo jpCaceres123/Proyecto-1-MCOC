@@ -1,5 +1,23 @@
 # Campus de Ingeniería — recorrido jugable
 
+## Distribución interior por columnas
+
+Corrección de accesos: las fachadas se generan únicamente en el perímetro exterior, excluyendo los huecos de los núcleos y la junta entre edificios. El pasillo continúa entre LT1 y LT2 sin vidrio ni aletas interiores. La entrada lateral de nivel 2 se centra en Y=8,50 m, alineada con el pasillo, y el acceso de planta baja del LT2 abre en su prolongación.
+
+La distribución actual tiene laboratorios hacia la fachada frontal y salas al lado posterior, intercambiando la versión anterior. En las salas, pizarra y pupitres se orientan hacia el tabique transversal del eje de columnas, con las sillas giradas junto con sus mesas. Se mantiene la cafetería y sus accesos. Estas revisiones son arquitectónicas; el CSV y los resultados analíticos permanecen intactos.
+
+El pasillo longitudinal conecta LT1 y LT2, con laboratorios hacia la fachada frontal y salas de clases al otro lado. Los tabiques y el ancho de cada recinto siguen los ejes X de las columnas de la fila Y=7,25 m del CSV original, según el nivel; las habitaciones se ajustan a las superficies de piso disponibles y no ocupan los núcleos. Las puertas dan al pasillo. La cafetería de nivel 1 y su entrada a la terraza se conservan.
+
+El núcleo delantero grande (hueco aproximadamente X=3,40–6,70 m, Y=2,405–6,95 m) ahora contiene escaleras interiores de dos tramos y descanso intermedio; el núcleo posterior pequeño contiene el único ascensor, con selección de nivel mediante E. El pasillo cruza la junta entre módulos mediante una losa arquitectónica de paso. Donde el muro de unión atraviesa el paso se dibuja un vano visual; conserva el ID del paño y no modifica el CSV ni los resultados analíticos. La asignación de núcleos y la planta son una interpretación arquitectónica de la indicación del usuario.
+
+Esta distribución se compiló para Windows. No se ejecutaron pruebas de recorrido; las comprobaciones históricas de dos ascensores corresponden a la distribución anterior.
+
+## Actualización del 6 de octubre de 2026
+
+La escalera inferior exterior del LT1 se amplió de 2,04 a 4,08 m hacia el edificio, sumando el ancho marcado en rojo y manteniendo el borde exterior, su dirección y la subida de un piso. La losa al pie se amplió hacia el mismo lado a 5,44 m, conservando el acceso al paseo. Es geometría arquitectónica del recorrido; el contrato y resultados estructurales no se modificaron.
+
+F5 alterna entre primera persona, tercera persona desde atrás y tercera persona de frente; la siguiente pulsación vuelve a primera persona. El menú de pausa permite el mismo ciclo. El avatar se mantiene visible en ambas vistas de tercera persona y la cámara conserva su protección contra paredes. Esta revisión se compiló para Windows; no se ejecutaron pruebas de juego.
+
 Proyecto independiente para Unity 6000.5.9f1 (versión actual guardada). Creado el 4 de octubre de 2026.
 
 ## Aplicación Cardboard separada
@@ -86,3 +104,11 @@ Esta revisión se compiló, sin nuevas pruebas de juego.
 ## Panel de inspección rediseñado
 
 El inspector usa tarjetas con valores y unidades, encabezado por elemento y casos de carga, y cuatro secciones: Resumen, Cargas, Diagramas y Movimiento. Tab cambia de sección; Q cambia de caso; I alterna los extremos i/j; clic derecho fija el elemento; rueda desplaza la ficha. Los diagramas usan todas las estaciones guardadas y muestran mínimos y máximos. Los desplazamientos se presentan en mm y los giros en rad. El diseño reemplaza el texto JSON y las tablas crudas del panel anterior. Se conservan resultados de cálculo y controles 1/2 del personaje. Compilación realizada; sin nuevas pruebas de juego.
+
+
+El antiguo laboratorio 2-7 se deja libre: no se generan su cerramiento, puerta, mobiliario ni letrero. Los identificadores de los demás recintos se conservan.
+
+## Terremoto con P
+Durante el recorrido, P inicia un terremoto visual de 25 segundos; otra pulsación lo detiene con una transición suave. Incluye balanceo gradual de las superficies, vibración de cámara en las tres vistas, retumbo y contador. El menú y el ascensor suspenden el efecto. Las mallas de colisión, el CSV y los esfuerzos guardados del láser no cambian; no es un análisis sísmico ni se calcula daño estructural.
+
+Corrección: se aplica explícitamente la exclusión del recinto 2-7 antes de generar cualquier objeto. El terremoto ahora muestra un desplazamiento lateral exagerado de hasta aproximadamente 1,65 m en las plantas superiores, con base fija y terreno/vegetación inmóviles. La vibración de cámara es menor para apreciar el movimiento relativo del edificio. Es una animación visual, sin modificación de los resultados analíticos.
