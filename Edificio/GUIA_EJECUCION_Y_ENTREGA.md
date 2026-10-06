@@ -2,6 +2,8 @@
 
 Actualización: 6 de octubre de 2026. Todas las rutas siguientes parten de la raíz del repositorio.
 
+Lista de cierre por prioridad y criterios de aceptación: [PENDIENTES.md](PENDIENTES.md).
+
 ## 1. Qué contiene la entrega
 
 Hay **cuatro aplicaciones**. Cardboard y VR son la misma aplicación, no dos proyectos distintos. Python/OpenSees es un servicio de cálculo en el PC, no una quinta aplicación de recorrido.
