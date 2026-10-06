@@ -1,6 +1,10 @@
 # Campus de Ingeniería — recorrido jugable
 
-Proyecto independiente para Unity 6000.5.11f1. Creado el 4 de octubre de 2026.
+Proyecto independiente para Unity 6000.5.9f1 (versión actual guardada). Creado el 4 de octubre de 2026.
+
+## Aplicación Cardboard separada
+
+Este proyecto conserva el juego de Windows y no activa VR con F7. La aplicación móvil está en `../CampusCardboard`, tiene configuración independiente y se abre como otro proyecto en Unity Hub. Allí se consulta su README y se construye la APK.
 
 ## Jugar en Windows
 
