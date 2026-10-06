@@ -30,8 +30,16 @@ def fibers(c, n=None):
     face_positions = np.linspace(-h/2+a,h/2-a,nb)
     for y, diameter in zip(face_positions, face_diameters):
         bars.extend([(y,-b/2+a,diameter),(y,b/2-a,diameter)])
-    for z, diameter in zip(face_positions[1:-1], face_diameters[1:-1]):
+    horizontal_positions = np.linspace(-b/2+a,b/2-a,nb)
+    for z, diameter in zip(horizontal_positions[1:-1], face_diameters[1:-1]):
         bars.extend([(-h/2+a,z,diameter),(h/2-a,z,diameter)])
+    if any(not math.isfinite(d) or d<=0 or d/2>=a for _,_,d in bars):
+        raise ValueError('Diametro invalido o barra fuera del hormigon')
+    for k,(y,z,d) in enumerate(bars):
+        if any(math.hypot(y-v,z-w)<(d+e)/2 for v,w,e in bars[k+1:]):
+            raise ValueError('Barras superpuestas')
+    if sum(math.pi*d*d/4 for _,_,d in bars)>=b*h:
+        raise ValueError('Area de acero mayor que area de seccion')
     cells = [[-h/2+(iy+0.5)*h/n, -b/2+(iz+0.5)*b/n, b*h/n**2, 1]
              for iy in range(n) for iz in range(n)]
     # Descontar acero del hormigon evita contar dos veces el area ocupada.
