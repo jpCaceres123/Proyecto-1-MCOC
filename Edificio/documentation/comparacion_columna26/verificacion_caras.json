@@ -1,0 +1,317 @@
+{
+  "offset_hypothesis_m": [
+    0.4,
+    0.4
+  ],
+  "clear_length_m": 3.16,
+  "treatment": "Section readout only; analytical rigid offsets NOT introduced",
+  "incident_beams": {
+    "i": [],
+    "j": [
+      {
+        "id": 405,
+        "type": "BEAM_X"
+      },
+      {
+        "id": 406,
+        "type": "BEAM_X"
+      },
+      {
+        "id": 233,
+        "type": "BEAM_Y"
+      },
+      {
+        "id": 420,
+        "type": "BEAM_Y"
+      }
+    ]
+  },
+  "fresh_solver_checks": [
+    {
+      "case": "G",
+      "max_end_action_difference": 0.0,
+      "equilibrium_force_relative_error": 6.515611469074087e-09,
+      "equilibrium_force_pass": true,
+      "stored_reproduction_pass": true,
+      "moment_equilibrium_not_certified": "Inherited equalDOF constraints at non-coincident wall/frame nodes"
+    },
+    {
+      "case": "Q",
+      "max_end_action_difference": 0.0,
+      "equilibrium_force_relative_error": 3.079044197884501e-09,
+      "equilibrium_force_pass": true,
+      "stored_reproduction_pass": true,
+      "moment_equilibrium_not_certified": "Inherited equalDOF constraints at non-coincident wall/frame nodes"
+    }
+  ],
+  "face_comparisons": [
+    {
+      "case": "G",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "n",
+      "unit": "kN",
+      "reference": -3556.504,
+      "model_section": 3644.3396422455758,
+      "magnitude_difference_pct": 2.4697186407094174,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "vy",
+      "unit": "kN",
+      "reference": -3.09,
+      "model_section": 4.671759321875532,
+      "magnitude_difference_pct": 51.189622067169324,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "vz",
+      "unit": "kN",
+      "reference": -10.309,
+      "model_section": -9.367221258460665,
+      "magnitude_difference_pct": -9.135500451443734,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "t",
+      "unit": "kN*m",
+      "reference": 0.402987,
+      "model_section": 1.0676666801362873e-08,
+      "magnitude_difference_pct": -99.99999735061756,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "my",
+      "unit": "kN*m",
+      "reference": -10.254164,
+      "model_section": 4.566258532555975,
+      "magnitude_difference_pct": -55.46922662290192,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "mz",
+      "unit": "kN*m",
+      "reference": -5.591646,
+      "model_section": 2.0537055093304355,
+      "magnitude_difference_pct": -63.27189687382864,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "n",
+      "unit": "kN",
+      "reference": -3518.542,
+      "model_section": 3606.3781000955755,
+      "magnitude_difference_pct": 2.496377763732127,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "vy",
+      "unit": "kN",
+      "reference": -3.09,
+      "model_section": 4.671759321875532,
+      "magnitude_difference_pct": 51.189622067169324,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "vz",
+      "unit": "kN",
+      "reference": -10.309,
+      "model_section": -9.367221258460665,
+      "magnitude_difference_pct": -9.135500451443734,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "t",
+      "unit": "kN*m",
+      "reference": 0.402987,
+      "model_section": 1.0676666801362871e-08,
+      "magnitude_difference_pct": -99.99999735061756,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "my",
+      "unit": "kN*m",
+      "reference": 22.321961,
+      "model_section": -25.03416064417973,
+      "magnitude_difference_pct": 12.150364585708795,
+      "axes_verified": false
+    },
+    {
+      "case": "G",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "mz",
+      "unit": "kN*m",
+      "reference": 4.172415,
+      "model_section": -12.709053947796244,
+      "magnitude_difference_pct": 204.5970726257154,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "n",
+      "unit": "kN",
+      "reference": -1062.18,
+      "model_section": 1261.7307009663357,
+      "magnitude_difference_pct": 18.78690061631132,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "vy",
+      "unit": "kN",
+      "reference": -2.125,
+      "model_section": 1.6122202269137633,
+      "magnitude_difference_pct": -24.13081285111702,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "vz",
+      "unit": "kN",
+      "reference": -5.819,
+      "model_section": -2.8955357386796114,
+      "magnitude_difference_pct": -50.2399769946793,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "t",
+      "unit": "kN*m",
+      "reference": 0.045327,
+      "model_section": 6.2270964424382385e-09,
+      "magnitude_difference_pct": -99.99998626183854,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "my",
+      "unit": "kN*m",
+      "reference": -5.817738,
+      "model_section": 1.3963350844612534,
+      "magnitude_difference_pct": -75.99865988359646,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 0.0,
+      "model_cut_x_m": 0.4,
+      "field": "mz",
+      "unit": "kN*m",
+      "reference": -2.308048,
+      "model_section": 0.6998666961780439,
+      "magnitude_difference_pct": -69.67711693266155,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "n",
+      "unit": "kN",
+      "reference": -1062.18,
+      "model_section": 1261.7307009663357,
+      "magnitude_difference_pct": 18.78690061631132,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "vy",
+      "unit": "kN",
+      "reference": -2.125,
+      "model_section": 1.6122202269137633,
+      "magnitude_difference_pct": -24.13081285111702,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "vz",
+      "unit": "kN",
+      "reference": -5.819,
+      "model_section": -2.8955357386796114,
+      "magnitude_difference_pct": -50.2399769946793,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "t",
+      "unit": "kN*m",
+      "reference": 0.045327,
+      "model_section": 6.2270964424382385e-09,
+      "magnitude_difference_pct": -99.99998626183854,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "my",
+      "unit": "kN*m",
+      "reference": 12.570612,
+      "model_section": -7.7535578497663185,
+      "magnitude_difference_pct": -38.31996525096536,
+      "axes_verified": false
+    },
+    {
+      "case": "Q",
+      "reference_station_m": 3.16,
+      "model_cut_x_m": 3.56,
+      "field": "mz",
+      "unit": "kN*m",
+      "reference": 4.40711,
+      "model_section": -4.394749220869448,
+      "magnitude_difference_pct": -0.2804735786161916,
+      "axes_verified": false
+    }
+  ],
+  "clear_span_self_weight_kN": 37.96154215,
+  "model_face_axial_drop_kN": 37.96154215000024,
+  "reference_axial_drop_kN": 37.962,
+  "note": "Lower node has no incident beam in current topology; cannot substantiate two rigid joint zones from that topology."
+}

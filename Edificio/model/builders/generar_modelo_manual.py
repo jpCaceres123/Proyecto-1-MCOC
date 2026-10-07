@@ -295,6 +295,44 @@ def main(geometry_path=None):
                 next_split_element += 1
     elements = split_elements
     eid = next_split_element
+    # User-requested inward continuations, added after base IDs are assigned.
+    # Preserve each source cantilever and share nodes at crossed frame beams.
+    for continuation in config.get("beam_continuations", []):
+        source = next(e for e in elements if e["id"] == continuation["source_id"])
+        if source["type"] != "BEAM_Y":
+            raise ValueError("Only Y beam continuations are supported")
+        start = next(n for n in nodes if n["id"] == source["j"])
+        x, y0, z = start["x_m"], start["y_m"], start["z_m"]
+        y1 = float(continuation["to_y_m"])
+        if y1 <= y0:
+            raise ValueError("Continuation must proceed toward positive Y")
+        cuts = {y0, y1}
+        for other in list(elements):
+            if not other["type"].startswith("BEAM"):
+                continue
+            a, b = beam_coordinates(other)
+            if abs(a["z_m"]-z)>1e-6 or abs(b["z_m"]-z)>1e-6:
+                continue
+            if abs(a["x_m"]-x)<1e-6 and abs(b["x_m"]-x)<1e-6:
+                if min(y1,max(a["y_m"],b["y_m"]))-max(y0,min(a["y_m"],b["y_m"]))>1e-6:
+                    raise ValueError("Continuation overlaps an existing beam")
+            if abs(a["y_m"]-b["y_m"])>1e-6:
+                continue
+            y = a["y_m"]
+            if not y0-1e-6<=y<=y1+1e-6 or not min(a["x_m"],b["x_m"])-1e-6<=x<=max(a["x_m"],b["x_m"])+1e-6:
+                continue
+            joint = ensure_beam_node(x,y,z)
+            cuts.add(y)
+            if min(a["x_m"],b["x_m"])+1e-6<x<max(a["x_m"],b["x_m"])-1e-6:
+                previous_j=other["j"]
+                other["j"]=joint["id"]
+                other["status"]="SPLIT_CONTINUATION_INTERSECTION"
+                elements.append(dict(other,id=eid,i=joint["id"],j=previous_j))
+                eid+=1
+        for ya,yb in zip(sorted(cuts),sorted(cuts)[1:]):
+            a=ensure_beam_node(x,ya,z); b=ensure_beam_node(x,yb,z)
+            new=dict(source,id=eid,i=a["id"],j=b["id"],status="USER_INWARD_CONTINUATION",source_beam_id=source["id"])
+            elements.append(new);eid+=1
     for element in elements:
         dims = config.get("element_section_overrides", {}).get(str(element["id"]))
         if dims:

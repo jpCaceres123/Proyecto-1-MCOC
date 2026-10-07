@@ -3008,22 +3008,22 @@
     },
     {
       "id": 679,
-      "type": "BEAM_RIGID_OFFSET",
+      "type": "BEAM_X",
       "has_capacity": false
     },
     {
       "id": 680,
-      "type": "BEAM_RIGID_OFFSET",
+      "type": "BEAM_Y",
       "has_capacity": false
     },
     {
       "id": 681,
-      "type": "BEAM_RIGID_OFFSET",
+      "type": "BEAM_X",
       "has_capacity": false
     },
     {
       "id": 682,
-      "type": "BEAM_RIGID_OFFSET",
+      "type": "BEAM_Y",
       "has_capacity": false
     },
     {
@@ -3083,6 +3083,26 @@
     },
     {
       "id": 694,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 695,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 696,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 697,
+      "type": "BEAM_RIGID_OFFSET",
+      "has_capacity": false
+    },
+    {
+      "id": 698,
       "type": "BEAM_RIGID_OFFSET",
       "has_capacity": false
     }

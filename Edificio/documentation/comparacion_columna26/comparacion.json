@@ -1,0 +1,446 @@
+{
+  "element_id": 26,
+  "reference_label": "C9",
+  "mapping_source": "User statement; unverified without original model",
+  "model_length_m": 3.96,
+  "reference_length_m": 3.16,
+  "original_CM_axial_drop_kN": 37.962,
+  "model_G_axial_drop_kN": 47.57205914999986,
+  "internal_station_equilibrium_checked_cases": 9,
+  "bars_per_case": 612,
+  "stale_inspector": [
+    {
+      "project": "CampusPlayable",
+      "case": "G",
+      "previous_axial_i_kN": 3695.3070554820433,
+      "current_axial_i_kN": 3649.144900745576
+    },
+    {
+      "project": "CampusPlayable",
+      "case": "Q",
+      "previous_axial_i_kN": 1243.4034620993502,
+      "current_axial_i_kN": 1261.7307009663357
+    },
+    {
+      "project": "CampusCardboard",
+      "case": "G",
+      "previous_axial_i_kN": 3695.3070554820433,
+      "current_axial_i_kN": 3649.144900745576
+    },
+    {
+      "project": "CampusCardboard",
+      "case": "Q",
+      "previous_axial_i_kN": 1243.4034620993502,
+      "current_axial_i_kN": 1261.7307009663357
+    }
+  ],
+  "visual_ids_without_current_results": [
+    {
+      "project": "CampusPlayable",
+      "key": "E:695"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:696"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:697"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:698"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:699"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:700"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:701"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:702"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:703"
+    },
+    {
+      "project": "CampusPlayable",
+      "key": "E:704"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:695"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:696"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:697"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:698"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:699"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:700"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:701"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:702"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:703"
+    },
+    {
+      "project": "CampusCardboard",
+      "key": "E:704"
+    }
+  ],
+  "comparisons": [
+    {
+      "caso": "G",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "n",
+      "unidad": "kN",
+      "referencia": -3556.504,
+      "modelo_seccion": 3649.144900745576,
+      "diferencia_magnitud_pct": 2.6048304949348067,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "vy",
+      "unidad": "kN",
+      "referencia": -3.09,
+      "modelo_seccion": 4.671759321875532,
+      "diferencia_magnitud_pct": 51.189622067169324,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "vz",
+      "unidad": "kN",
+      "referencia": -10.309,
+      "modelo_seccion": -9.367221258460665,
+      "diferencia_magnitud_pct": -9.135500451443734,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "t",
+      "unidad": "kN*m",
+      "referencia": 0.402987,
+      "modelo_seccion": 1.0676666801362871e-08,
+      "diferencia_magnitud_pct": -99.99999735061756,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "my",
+      "unidad": "kN*m",
+      "referencia": -10.254164,
+      "modelo_seccion": 8.313147035940242,
+      "diferencia_magnitud_pct": -18.929061053243913,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "mz",
+      "unidad": "kN*m",
+      "referencia": -5.591646,
+      "modelo_seccion": 3.9224092380806486,
+      "diferencia_magnitud_pct": -29.852332603304134,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "n",
+      "unidad": "kN",
+      "referencia": -3518.542,
+      "modelo_seccion": 3601.572841595576,
+      "diferencia_magnitud_pct": 2.359808170417632,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "vy",
+      "unidad": "kN",
+      "referencia": -3.09,
+      "modelo_seccion": 4.671759321875532,
+      "diferencia_magnitud_pct": 51.189622067169324,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "vz",
+      "unidad": "kN",
+      "referencia": -10.309,
+      "modelo_seccion": -9.367221258460665,
+      "diferencia_magnitud_pct": -9.135500451443734,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "t",
+      "unidad": "kN*m",
+      "referencia": 0.402987,
+      "modelo_seccion": 1.0676666801362871e-08,
+      "diferencia_magnitud_pct": -99.99999735061756,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "my",
+      "unidad": "kN*m",
+      "referencia": 22.321961,
+      "modelo_seccion": -28.78104914756399,
+      "diferencia_magnitud_pct": 28.936024695876796,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "G",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "mz",
+      "unidad": "kN*m",
+      "referencia": 4.172415,
+      "modelo_seccion": -14.57775767654646,
+      "diferencia_magnitud_pct": 249.38417383089794,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "n",
+      "unidad": "kN",
+      "referencia": -1062.18,
+      "modelo_seccion": 1261.7307009663357,
+      "diferencia_magnitud_pct": 18.78690061631132,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "vy",
+      "unidad": "kN",
+      "referencia": -2.125,
+      "modelo_seccion": 1.6122202269137633,
+      "diferencia_magnitud_pct": -24.13081285111702,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "vz",
+      "unidad": "kN",
+      "referencia": -5.819,
+      "modelo_seccion": -2.8955357386796114,
+      "diferencia_magnitud_pct": -50.2399769946793,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "t",
+      "unidad": "kN*m",
+      "referencia": 0.045327,
+      "modelo_seccion": 6.2270964424382385e-09,
+      "diferencia_magnitud_pct": -99.99998626183854,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "my",
+      "unidad": "kN*m",
+      "referencia": -5.817738,
+      "modelo_seccion": 2.554549379933098,
+      "diferencia_magnitud_pct": -56.0903330481177,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "i",
+      "estacion_referencia_m": 0.0,
+      "estacion_modelo_m": 0,
+      "componente": "mz",
+      "unidad": "kN*m",
+      "referencia": -2.308048,
+      "modelo_seccion": 1.3447547869435492,
+      "diferencia_magnitud_pct": -41.73627294824244,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "n",
+      "unidad": "kN",
+      "referencia": -1062.18,
+      "modelo_seccion": 1261.7307009663357,
+      "diferencia_magnitud_pct": 18.78690061631132,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "vy",
+      "unidad": "kN",
+      "referencia": -2.125,
+      "modelo_seccion": 1.6122202269137633,
+      "diferencia_magnitud_pct": -24.13081285111702,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "vz",
+      "unidad": "kN",
+      "referencia": -5.819,
+      "modelo_seccion": -2.8955357386796114,
+      "diferencia_magnitud_pct": -50.2399769946793,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "t",
+      "unidad": "kN*m",
+      "referencia": 0.045327,
+      "modelo_seccion": 6.2270964424382385e-09,
+      "diferencia_magnitud_pct": -99.99998626183854,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "my",
+      "unidad": "kN*m",
+      "referencia": 12.570612,
+      "modelo_seccion": -8.911772145238164,
+      "diferencia_magnitud_pct": -29.10629852199588,
+      "ejes_originales_confirmados": false
+    },
+    {
+      "caso": "Q",
+      "extremo": "j",
+      "estacion_referencia_m": 3.16,
+      "estacion_modelo_m": 3.96,
+      "componente": "mz",
+      "unidad": "kN*m",
+      "referencia": 4.40711,
+      "modelo_seccion": -5.039637311634953,
+      "diferencia_magnitud_pct": 14.352428499287573,
+      "ejes_originales_confirmados": false
+    }
+  ],
+  "inputs_sha256": {
+    "model": "7dcbbc26e5afd66fb2a3eeb06285e014acac01285e8b92fcc7fe308572089e6a",
+    "G_fuerzas_locales.json": "904b17268d5670259ff55a9c0b7c9b94ab54089a42af7777a537ca1c59ddd818",
+    "G_diagramas_barras.json": "5cca0ecdf7d5986badef51e5dd65d0e55415e8b6d0b70f38b1d3c7b100a19cc3",
+    "G.npz": "d48bfbd37e24f05c3d58165f091ea48e65daab55550b0756b1755b1367158744",
+    "Q_fuerzas_locales.json": "6d904458fb8ae07a188b211a343440296f9ea6da6c9efe0c1375a3cd83703397",
+    "Q_diagramas_barras.json": "b2a14d9e73cfa6d41ea9afa0950b136dd25cbe0d493023df0f7be6aacca5b0ee",
+    "Q.npz": "41248fd00771a63baedbc4dc9264eb50106e7b4638234859a18059269f733dcf",
+    "EX_fuerzas_locales.json": "39a5354808f16efdec1a0972812b5ac72858ae72f2359331e14a891103b0b51c",
+    "EX_diagramas_barras.json": "e81415713116cf1ed70d77c2f91a8f573b6b9b05b4926cc6b88c471c5779ce84",
+    "EX.npz": "a6d098f0a6f41f6e6ba3fb4d1e3e4669bf1ec06bf1426085306f57999f9a3ef6",
+    "EY_fuerzas_locales.json": "c05703b252accf9c7e10c65d612a3beabf754cb92c4c91e0deaee868c37e7457",
+    "EY_diagramas_barras.json": "b75d5227799b51f624eb93cfb719394dafbc484d75a59b55d2bee01cad27217f",
+    "EY.npz": "b96163be18fee4043999432f38cc8962d096e0183b6241ccd24de5075fca9268",
+    "R_fuerzas_locales.json": "cb13b5fe6e27a5c286b8c8fdaf2bf63b867727fc11432db6daaeb1bed8d242b9",
+    "R_diagramas_barras.json": "b0ebf2ec11ec740aef865758bc16e2550b11cc2143c37401ebcfec39830aac3e",
+    "R.npz": "cbf88d62a4035a1b14caec491cc1565465e1c9321709015110126182ef433aa4",
+    "EXG_fuerzas_locales.json": "cd645d412f7e13b69119089648cda3d0828787adf26a2a69552dd428ebb96e67",
+    "EXG_diagramas_barras.json": "26121d565c1746849f257978f2861f5a70442ea02de512f3fa94be100fdcfe76",
+    "EXG.npz": "aa9f53db32ac774bdcd350cc834aa17e244d4af1d3c5461847d5466742f96788",
+    "EXQ_fuerzas_locales.json": "aaabcd04dadc0e6a3f63556a0a1c617e7f728502718fed6ffedad2cd3cf1615d",
+    "EXQ_diagramas_barras.json": "f563094a4e6eb2fb8ef056797f0e56ef9771b89467476884fb78b8c3ac48718a",
+    "EXQ.npz": "68bfb16303f4e8fc4a3bab1aa82df71e2bdab07b5e89068bfeede7755c44829d",
+    "EYG_fuerzas_locales.json": "0afbb1a482602575105533a88f14788baf45e6f5e28e1dd06aaee9249ea4cb9a",
+    "EYG_diagramas_barras.json": "1c789b60d439a46c8897e835ec8bb8ef2b8c677b8cd02b6034ff5e2dd7e1f2f9",
+    "EYG.npz": "234e3934e2d8ec14a3aaadd903e73f2c1f6969a0c60bf03d6ba6b948ec810d81",
+    "EYQ_fuerzas_locales.json": "2a06437bf29fe5ab0a7ef7920ee60776dc26d7f13dab328aff8cded5e4ae2e3a",
+    "EYQ_diagramas_barras.json": "cb0388085806e7a94827554c4fa75b993602c435cbb0aeab00042a4e04107cd4",
+    "EYQ.npz": "8774498fcaf03fc9b5cf77aee5490eea8abfa92a2714c61a859a9baccb93c9e3"
+  },
+  "conclusions": [
+    "Inspector bar results were stale.",
+    "Nodal end actions differ in sign from section diagrams; use section diagrams for internal-force cards.",
+    "Reference length differs by 0.800 m; end offsets/clear length are a hypothesis, not confirmed.",
+    "CM=G and CV=Q are tentative mappings; original axes and loading unavailable.",
+    "No analytical inputs adjusted to fit the photograph."
+  ]
+}

@@ -1,3 +1,11 @@
+# Integración con el proyecto actual
+
+Se integra el recorrido anterior (terrazas, cafetería, interiores, F5 en tres vistas, láser 1, AK47 2 y terremoto P) con la geometría y los nueve casos de la ampliación de vigas 240 y 341. Las nuevas vigas 680 y 682 se incluyen. El laboratorio 2-7 queda libre. Las tarjetas usan esfuerzos de sección de los diagramas, N positivo en compresión.
+
+La exportación automática está en Edificio/visualization/exports/exportar_inspeccion_campus.py y se llama desde ejecutar.py. Actualiza geometría, barras, muros, losas, cargas y movimientos en las fuentes de CampusPlayable y CampusCardboard. Cada ejecutable/ZIP/APK requiere reconstrucción después; no se modifica por cambiar un archivo analítico.
+
+Entrega actual: ejecutable Windows reconstruido con Unity 6000.5.11f1, sin errores de compilación, y carpeta del escritorio actualizada. No se ejecutaron pruebas de recorrido. Los apartados siguientes conservan el historial; sus advertencias sobre entregas anteriores o licencias no describen esta compilación.
+
 # Campus de Ingeniería — recorrido jugable
 
 ## Distribución interior por columnas
@@ -112,3 +120,5 @@ El antiguo laboratorio 2-7 se deja libre: no se generan su cerramiento, puerta, 
 Durante el recorrido, P inicia un terremoto visual de 25 segundos; otra pulsación lo detiene con una transición suave. Incluye balanceo gradual de las superficies, vibración de cámara en las tres vistas, retumbo y contador. El menú y el ascensor suspenden el efecto. Las mallas de colisión, el CSV y los esfuerzos guardados del láser no cambian; no es un análisis sísmico ni se calcula daño estructural.
 
 Corrección: se aplica explícitamente la exclusión del recinto 2-7 antes de generar cualquier objeto. El terremoto ahora muestra un desplazamiento lateral exagerado de hasta aproximadamente 1,65 m en las plantas superiores, con base fija y terreno/vegetación inmóviles. La vibración de cámara es menor para apreciar el movimiento relativo del edificio. Es una animación visual, sin modificación de los resultados analíticos.
+
+

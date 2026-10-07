@@ -542,7 +542,8 @@ def main():
                  ROOT/'visualization'/'unity'/'UnityVisualization'/'Assets'/'Resources'/'semana3_pm_muros.json')
     sources=[args.parametros,casos.base.MODEL,casos.verification.LOADS,
              casos.verification.GEOMETRY,Path(casos.base.__file__),Path(casos.verification.__file__),
-             Path(casos.__file__),ROOT/'analysis'/'seismic'/'sismo.py',ROOT/'analysis'/'capacity'/'capacidad.py',
+             Path(casos.__file__),ROOT/'visualization'/'exports'/'exportar_inspeccion_campus.py',
+             ROOT/'analysis'/'seismic'/'sismo.py',ROOT/'analysis'/'capacity'/'capacidad.py',
              ROOT/'analysis'/'capacity'/'capacidad_muros.py',ROOT/'data'/'reinforcement'/'enfierradura_muros.md',
              ROOT/'data'/'reinforcement'/'asignacion_armadura_muros.json',
              ROOT/'visualization'/'exports'/'exportar_aceleraciones.py',ROOT/'verification'/'load_transfer'/'exportar_reparto_losas.py',Path(__file__)]
@@ -551,6 +552,8 @@ def main():
                   inputs={str(p.relative_to(ROOT.parent)) if p.is_relative_to(ROOT.parent) else str(p):
                           hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},parametros=cfg)
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
+    from exportar_inspeccion_campus import export_campus
+    export_campus(ROOT)
     report(cfg,g,c,w,out)
     if args.carga_movil:
         from carga_movil import generate

@@ -98,13 +98,17 @@ public class CampusLaser : MonoBehaviour {
         Txt(new Rect(16,y+126,w-32,20),"mín  "+Number(lo)+"     máx  "+Number(hi),caption);
         Txt(new Rect(w-112,y+145,100,17),"i  →  x/L  →  j",caption);y+=178;
     }
+    float[] SectionValues(Case current) {
+        if(current.graphs==null || current.graphs.Length<6)return null;
+        return current.graphs.Take(6).Select(g=>g.values==null || g.values.Length==0?float.NaN:g.values[endJ?g.values.Length-1:0]).ToArray();
+    }
     float Layout(float w,Entry entry,Case current,bool draw) {
         // Called inside an off-screen group once to determine scroll height.
         float y=0;
         if(page==0) {
             if(entry.key.StartsWith("E:")) {
-                Section(w,ref y,"Esfuerzos internos", "Extremo "+(endJ?"j":"i")+" · ejes locales · I para cambiar extremo");
-                Metrics(w,ref y,endJ?current.endJ:current.endI,new[]{"N · AXIAL","Vy · CORTANTE","Vz · CORTANTE","T · TORSIÓN","My · MOMENTO","Mz · MOMENTO"},new[]{"kN","kN","kN","kN·m","kN·m","kN·m"});
+                Section(w,ref y,"Esfuerzos internos", "Sección "+(endJ?"j":"i")+" · N positivo: compresión · I cambia extremo");
+                Metrics(w,ref y,SectionValues(current),new[]{"N · AXIAL","Vy · CORTANTE","Vz · CORTANTE","T · TORSIÓN","My · MOMENTO","Mz · MOMENTO"},new[]{"kN","kN","kN","kN·m","kN·m","kN·m"});
             } else if(entry.key.StartsWith("W:")) {
                 Section(w,ref y,"Demandas del paño","Corte inferior del piso · signos del archivo de resultados");
                 Metrics(w,ref y,current.wall,new[]{"P · COMPRESIÓN","V · EN PLANO","V · FUERA DEL PLANO","M · PRINCIPAL","M · VERTICAL"},new[]{"kN","kN","kN","kN·m","kN·m"});

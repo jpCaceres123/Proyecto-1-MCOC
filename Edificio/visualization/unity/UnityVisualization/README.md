@@ -22,3 +22,6 @@ Si el ejecutable falla, el registro se encuentra en `%USERPROFILE%/AppData/Local
 El CSV es generado por `Edificio/model/builders/generar_modelo_manual.py` desde
 `Edificio/data/geometry/geometria_manual.json`. No editarlo manualmente: modificar la fuente
 de geometría y volver a ejecutar el generador.
+
+## Prolongaciones 240 y 341
+Las nuevas vigas 680 y 682 continúan rectamente desde Y=0 hasta el eje central Y=7,25 m, a X=17,49 m, en cotas 7,92 y 11,88 m. Se recalcularon nueve casos; 72 controles globales en OK. Ver Edificio/documentation/vigas_240_341.md. Salir y volver a entrar en Play para recargar los recursos.
