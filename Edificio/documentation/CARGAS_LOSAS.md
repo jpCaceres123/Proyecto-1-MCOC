@@ -37,7 +37,7 @@ en datos estructurados. Todas las coordenadas estan en metros y se expresan como
 | 15.84 | 3 | 260 | 300 | Vacio central |
 | 15.84 | 4 | 200 | 200 | Zona ampliada |
 | 19.80 | 1 | 350 | 100 | Zona central |
-| 19.80 | 2 | 260 | 500 | Dos poligonos |
+| 19.80 | 2 | 200 | 200 | Dos poligonos |
 | 19.80 | 3 | 7600 | 800 | Franja interior |
 | 19.80 | LT2 | 200 | 200 | Pasadas excluidas |
 

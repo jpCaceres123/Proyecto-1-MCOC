@@ -1,6 +1,6 @@
 {
   "width_m": 0.2,
-  "model_sha256": "8780ea467977c5fdc85b3d73e4deb6a5aba6944d56d61d02f6228836e4037b47",
+  "model_sha256": "31d683ed5193f61a7e6d84d780ff4d28fa48903eeb65393e74ea95f4f49ffd8a",
   "elements": [
     {
       "id": 1,
@@ -4841,7 +4841,7 @@
         7.92
       ],
       "end": [
-        20.0,
+        17.49,
         7.25,
         7.92
       ],
@@ -8141,7 +8141,7 @@
         11.88
       ],
       "end": [
-        20.0,
+        17.49,
         7.25,
         11.88
       ],
@@ -8944,6 +8944,66 @@
     },
     {
       "id": 679,
+      "type": "BEAM_X",
+      "start": [
+        17.49,
+        7.25,
+        7.92
+      ],
+      "end": [
+        20.0,
+        7.25,
+        7.92
+      ],
+      "image": "../app/src/main/assets/markers/element_679.png"
+    },
+    {
+      "id": 680,
+      "type": "BEAM_Y",
+      "start": [
+        17.49,
+        0.0,
+        7.92
+      ],
+      "end": [
+        17.49,
+        7.25,
+        7.92
+      ],
+      "image": "../app/src/main/assets/markers/element_680.png"
+    },
+    {
+      "id": 681,
+      "type": "BEAM_X",
+      "start": [
+        17.49,
+        7.25,
+        11.88
+      ],
+      "end": [
+        20.0,
+        7.25,
+        11.88
+      ],
+      "image": "../app/src/main/assets/markers/element_681.png"
+    },
+    {
+      "id": 682,
+      "type": "BEAM_Y",
+      "start": [
+        17.49,
+        0.0,
+        11.88
+      ],
+      "end": [
+        17.49,
+        7.25,
+        11.88
+      ],
+      "image": "../app/src/main/assets/markers/element_682.png"
+    },
+    {
+      "id": 683,
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         -0.8,
@@ -8955,66 +9015,6 @@
         16.15,
         15.84
       ],
-      "image": "../app/src/main/assets/markers/element_679.png"
-    },
-    {
-      "id": 680,
-      "type": "BEAM_RIGID_OFFSET",
-      "start": [
-        0.0,
-        7.25,
-        19.8
-      ],
-      "end": [
-        -0.25,
-        7.25,
-        19.8
-      ],
-      "image": "../app/src/main/assets/markers/element_680.png"
-    },
-    {
-      "id": 681,
-      "type": "BEAM_RIGID_OFFSET",
-      "start": [
-        0.0,
-        0.0,
-        3.96
-      ],
-      "end": [
-        -0.25,
-        0.0,
-        3.96
-      ],
-      "image": "../app/src/main/assets/markers/element_681.png"
-    },
-    {
-      "id": 682,
-      "type": "BEAM_RIGID_OFFSET",
-      "start": [
-        0.0,
-        7.25,
-        3.96
-      ],
-      "end": [
-        -0.25,
-        7.25,
-        3.96
-      ],
-      "image": "../app/src/main/assets/markers/element_682.png"
-    },
-    {
-      "id": 683,
-      "type": "BEAM_RIGID_OFFSET",
-      "start": [
-        0.0,
-        16.15,
-        3.96
-      ],
-      "end": [
-        -0.25,
-        16.15,
-        3.96
-      ],
       "image": "../app/src/main/assets/markers/element_683.png"
     },
     {
@@ -9022,13 +9022,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        0.0,
-        7.92
+        7.25,
+        19.8
       ],
       "end": [
         -0.25,
-        0.0,
-        7.92
+        7.25,
+        19.8
       ],
       "image": "../app/src/main/assets/markers/element_684.png"
     },
@@ -9037,13 +9037,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        7.25,
-        7.92
+        0.0,
+        3.96
       ],
       "end": [
         -0.25,
-        7.25,
-        7.92
+        0.0,
+        3.96
       ],
       "image": "../app/src/main/assets/markers/element_685.png"
     },
@@ -9052,13 +9052,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        16.15,
-        7.92
+        7.25,
+        3.96
       ],
       "end": [
         -0.25,
-        16.15,
-        7.92
+        7.25,
+        3.96
       ],
       "image": "../app/src/main/assets/markers/element_686.png"
     },
@@ -9067,13 +9067,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        0.0,
-        11.88
+        16.15,
+        3.96
       ],
       "end": [
         -0.25,
-        0.0,
-        11.88
+        16.15,
+        3.96
       ],
       "image": "../app/src/main/assets/markers/element_687.png"
     },
@@ -9082,13 +9082,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        7.25,
-        11.88
+        0.0,
+        7.92
       ],
       "end": [
         -0.25,
-        7.25,
-        11.88
+        0.0,
+        7.92
       ],
       "image": "../app/src/main/assets/markers/element_688.png"
     },
@@ -9097,13 +9097,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        16.15,
-        11.88
+        7.25,
+        7.92
       ],
       "end": [
         -0.25,
-        16.15,
-        11.88
+        7.25,
+        7.92
       ],
       "image": "../app/src/main/assets/markers/element_689.png"
     },
@@ -9112,13 +9112,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        0.0,
-        15.84
+        16.15,
+        7.92
       ],
       "end": [
         -0.25,
-        0.0,
-        15.84
+        16.15,
+        7.92
       ],
       "image": "../app/src/main/assets/markers/element_690.png"
     },
@@ -9127,13 +9127,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        7.25,
-        15.84
+        0.0,
+        11.88
       ],
       "end": [
         -0.25,
-        7.25,
-        15.84
+        0.0,
+        11.88
       ],
       "image": "../app/src/main/assets/markers/element_691.png"
     },
@@ -9142,13 +9142,13 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
-        16.15,
-        15.84
+        7.25,
+        11.88
       ],
       "end": [
         -0.25,
-        16.15,
-        15.84
+        7.25,
+        11.88
       ],
       "image": "../app/src/main/assets/markers/element_692.png"
     },
@@ -9157,6 +9157,66 @@
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
+        16.15,
+        11.88
+      ],
+      "end": [
+        -0.25,
+        16.15,
+        11.88
+      ],
+      "image": "../app/src/main/assets/markers/element_693.png"
+    },
+    {
+      "id": 694,
+      "type": "BEAM_RIGID_OFFSET",
+      "start": [
+        0.0,
+        0.0,
+        15.84
+      ],
+      "end": [
+        -0.25,
+        0.0,
+        15.84
+      ],
+      "image": "../app/src/main/assets/markers/element_694.png"
+    },
+    {
+      "id": 695,
+      "type": "BEAM_RIGID_OFFSET",
+      "start": [
+        0.0,
+        7.25,
+        15.84
+      ],
+      "end": [
+        -0.25,
+        7.25,
+        15.84
+      ],
+      "image": "../app/src/main/assets/markers/element_695.png"
+    },
+    {
+      "id": 696,
+      "type": "BEAM_RIGID_OFFSET",
+      "start": [
+        0.0,
+        16.15,
+        15.84
+      ],
+      "end": [
+        -0.25,
+        16.15,
+        15.84
+      ],
+      "image": "../app/src/main/assets/markers/element_696.png"
+    },
+    {
+      "id": 697,
+      "type": "BEAM_RIGID_OFFSET",
+      "start": [
+        0.0,
         0.0,
         19.8
       ],
@@ -9165,10 +9225,10 @@
         0.0,
         19.8
       ],
-      "image": "../app/src/main/assets/markers/element_693.png"
+      "image": "../app/src/main/assets/markers/element_697.png"
     },
     {
-      "id": 694,
+      "id": 698,
       "type": "BEAM_RIGID_OFFSET",
       "start": [
         0.0,
@@ -9180,7 +9240,7 @@
         16.15,
         19.8
       ],
-      "image": "../app/src/main/assets/markers/element_694.png"
+      "image": "../app/src/main/assets/markers/element_698.png"
     }
   ]
 }

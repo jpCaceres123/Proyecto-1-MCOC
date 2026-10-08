@@ -42,7 +42,7 @@ public static class CampusCardboardBuild
     public static void Build()
     {
         if(!BuildPipeline.IsBuildTargetSupported(BuildTargetGroup.Android,BuildTarget.Android))
-            throw new InvalidOperationException("Instala Android Build Support, SDK/NDK y OpenJDK para Unity 6000.5.9f1 en Unity Hub.");
+            throw new InvalidOperationException("Instala Android Build Support, SDK/NDK y OpenJDK para Unity "+Application.unityVersion+" en Unity Hub.");
         Configure();
         if(!EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android,BuildTarget.Android))
             throw new InvalidOperationException("No fue posible cambiar a Android. Repite el menú después de importar los paquetes.");

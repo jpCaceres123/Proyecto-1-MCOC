@@ -16,6 +16,8 @@ desktop.ini
 # Entornos virtuales locales
 .venv/
 analysis/.venv/
+# Entorno, APK anterior y diagnósticos locales de la auditoría Honors
+/.audit-honors/
 __pycache__/
 Edificio/results/sq4_cache/
 *.py[cod]
@@ -72,3 +74,18 @@ UnityProject/*.csproj
 UnityProject/*.sln
 UnityProject/*.slnx
 UnityProject/.vs/
+
+# Entornos y artefactos locales de preparación de la entrega
+.venv-p1l1/
+Reports/.release_tools/
+reports/.release_tools/
+Reports/.latex_tools/
+reports/.latex_tools/
+Edificio/visualization/unity/*/Library/
+Edificio/visualization/unity/*/Temp/
+Edificio/visualization/unity/*/Logs/
+Edificio/visualization/unity/*/UserSettings/
+Edificio/visualization/unity/*/Build/
+Edificio/visualization/unity/*/MemoryCaptures/
+Edificio/visualization/unity/*/Assets/_Recovery/
+Edificio/visualization/unity/*/Assets/_Recovery.meta

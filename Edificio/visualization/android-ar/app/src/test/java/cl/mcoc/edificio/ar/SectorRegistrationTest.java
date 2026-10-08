@@ -16,5 +16,13 @@ public class SectorRegistrationTest {
     @Test public void refusesUnsurveyed()throws Exception{StructuralData d=data();JSONObject f=form(d).put("surveyed",false);assertThrows(IllegalArgumentException.class,()->new SectorRegistration(f,d));}
     @Test public void refusesWrongHash()throws Exception{StructuralData d=data();JSONObject f=form(d).put("modelHash","0".repeat(64));assertThrows(IllegalArgumentException.class,()->new SectorRegistration(f,d));}
     @Test public void quaternionSignIsSameRotation(){assertEquals(0,SectorRegistration.angle(new Pose(new float[3],new float[]{0,0,0,1}),new Pose(new float[3],new float[]{0,0,0,-1})),1e-6);}
+    @Test public void pmOverlayPreservesNegativeMomentBranch()throws Exception{
+        StructuralData.Member m=data().members.get(1);ARRenderer renderer=new ARRenderer(null);
+        float[] origin=renderer.capacityPoint(m,m.start,m.end,0,0,100,100);
+        float[] positive=renderer.capacityPoint(m,m.start,m.end,0,100,100,100);
+        float[] negative=renderer.capacityPoint(m,m.start,m.end,0,-100,100,100);
+        assertEquals(1f,SectorRegistration.distance(positive,negative),1e-5);
+        for(int k=0;k<3;k++)assertEquals(positive[k]-origin[k],origin[k]-negative[k],1e-5);
+    }
     @Test public void resetDoesNotInventMeasures()throws Exception{StructuralData d=data();SectorRegistration r=new SectorRegistration(form(d),d);r.checks.add(new JSONObject().put("error_m",.02));r.reset();assertEquals(JSONObject.NULL,r.report().get("rms_m"));assertThrows(IllegalStateException.class,()->r.measure(new float[3],new float[3],"control",60000));}
 }

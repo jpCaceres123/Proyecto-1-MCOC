@@ -1,0 +1,649 @@
+{
+  "python_tests": {
+    "count": 55,
+    "status": "OK"
+  },
+  "unity_version": "6000.5.10f1",
+  "unity_build": "SUCCESS",
+  "structural_input_hashes": "16/16 coincidentes",
+  "demand_capacity": {
+    "checks": 1650,
+    "outside": 0
+  },
+  "android_apk": "APK existente cotejada byte a byte con datos y marcadores actuales; hash coincide con reporte de firma previo. No se recompiló por ausencia del toolchain Android.",
+  "pending": [
+    "Prueba funcional del nuevo ejecutable Windows",
+    "Calidad oficial de marcadores AR",
+    "Medición física de alineamiento y deriva AR",
+    "APK y prueba física Cardboard"
+  ],
+  "windows_files": [
+    {
+      "file": "D3D12/D3D12Core.dll",
+      "sha256": "625bd40005b1c3708695d5256ecf230d278e6b8edba5a88af70f3d91324f3052"
+    },
+    {
+      "file": "EdificioViewer_Data/app.info",
+      "sha256": "7747d082958b030c7551c0538af8107a934dd45dac3ff11cde13dbe2b154e367"
+    },
+    {
+      "file": "EdificioViewer_Data/boot.config",
+      "sha256": "7cd2ee72f96eb8863a515c4569da35c2d38b002101ad55ffa5c5ef060104eff2"
+    },
+    {
+      "file": "EdificioViewer_Data/globalgamemanagers",
+      "sha256": "e4df1b30e11f414edbb26a43bc3110e15f8b75445583ba322fe8f4e7033682fc"
+    },
+    {
+      "file": "EdificioViewer_Data/globalgamemanagers.assets",
+      "sha256": "220e0bf2c007c48a4c37b8c3f83ba34dddd159f0a9bf4c90237a2aad479b0369"
+    },
+    {
+      "file": "EdificioViewer_Data/globalgamemanagers.assets.resS",
+      "sha256": "39dd38fcd8dd95d41d6d55fe16a448d29fe2c31d9a162c825c24c6d99a893d7a"
+    },
+    {
+      "file": "EdificioViewer_Data/level0",
+      "sha256": "f2af0e50ddbd214d1c59e66b5c3833214e2bcdb15ae5ecd99255da38ea986a79"
+    },
+    {
+      "file": "EdificioViewer_Data/resources.assets",
+      "sha256": "f24378b07c95f71c6912feb755caf0ba302a33db5377d955ea3375eb4f2c6eef"
+    },
+    {
+      "file": "EdificioViewer_Data/resources.assets.resS",
+      "sha256": "ad4094b808a75891762a27e6aacdfb17e341bdf0d4766c92c19e22869402a36c"
+    },
+    {
+      "file": "EdificioViewer_Data/RuntimeInitializeOnLoads.json",
+      "sha256": "f3dae1090755dfd6f4db3cc6a7481757a8460eb7bee22028a3656e81293db75d"
+    },
+    {
+      "file": "EdificioViewer_Data/ScriptingAssemblies.json",
+      "sha256": "561dec448ae22e860ea44b0ba1c940d18f89cb556b81c3fccfd0d2bf2fa93d45"
+    },
+    {
+      "file": "EdificioViewer_Data/sharedassets0.assets",
+      "sha256": "ccfda99dbed37c7de5b17ac1e9cc5daaf4aabec6340c5a6398caaee91072174d"
+    },
+    {
+      "file": "EdificioViewer_Data/sharedassets0.assets.resS",
+      "sha256": "87a4847eade1de49f6aac782a74b9929acbdb3c0f8b36d7750474215f1880479"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/Assembly-CSharp.dll",
+      "sha256": "b4f89e187b348067d4a0d4590a2d22dd9e4afac44f7dd8fe79a7d09b2b8e46d2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/Mono.Security.dll",
+      "sha256": "0faa3284472f68bd58c47c8b9114410ae72861124cff960e207953796346a0ce"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/mscorlib.dll",
+      "sha256": "cf957d332f0a6d91c397dcc630887f04ee67ef54a054b609360abd31ae4b53a9"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/netstandard.dll",
+      "sha256": "6ae62e082dc494a2433984177f60ca4db5fae69b1f360a8b33754172b310b8c5"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Buffers.dll",
+      "sha256": "762f8fdbe975e05b76be5fe996c53ce7c75e4a2830f2f50b02a5948ef6ba0aeb"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Collections.Immutable.dll",
+      "sha256": "5b1b1c83ba3d135c2fdfe425842fbe9c7432878b7e468623acb554c69b4c130f"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.ComponentModel.Composition.dll",
+      "sha256": "b682d2befbade74422ff27650329682ee5673d3e35649f148a52badf1ed107f1"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Configuration.dll",
+      "sha256": "e78fb1597fe0da100a118da53dbfd0b865b3517ed67bfdbe76ee6f57820af0b7"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Core.dll",
+      "sha256": "6068ccfc08ea3d50ee849a390e81e6019e40a7328323e39fee8b6fe84b9c8818"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Data.DataSetExtensions.dll",
+      "sha256": "e84f64489ac182181caee46d090d701076a94e1eb608de2b00583e29a66aae19"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Data.dll",
+      "sha256": "c1dc1e3ba1b6ace16d8e539931f49a968dfc710a11071ebd1de664a2979606ae"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.dll",
+      "sha256": "937c84b714227ae3f58670c9c448933b99500609c6de6d96fe88f1f241b09122"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Drawing.dll",
+      "sha256": "bf5d1915623514f4990e9d5d12f8f87393bd20fa410cd78c3f16167b59f67458"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.EnterpriseServices.dll",
+      "sha256": "12c3c7bf6545fbc8dee20934d1aecfc129d8ffceba4e1708471ec62437833993"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.IO.Compression.dll",
+      "sha256": "c7fdcf07e7053d0698eb61e5f4a5a23df2faa89041d757a8e9712dc9781f3781"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.IO.Compression.FileSystem.dll",
+      "sha256": "653dd0d3b284543f227d6cb7eca6aca65fa0b3fb9e5a63a8ba68468349778f89"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Memory.dll",
+      "sha256": "c4f030a2cba7da7cdcf493257c24560e203d355904aee490d645a935842f834a"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Net.Http.dll",
+      "sha256": "9e220588542a00ee3af52cff347ef0ddb8ec679adaf5bb06f66b3220f6d132f5"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Numerics.dll",
+      "sha256": "e9745bcb81e183ba0d1f1116a59b7598167a9ff85aa652f032c42cf12224e7d1"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Reflection.Metadata.dll",
+      "sha256": "afcfd6c166fe0d59f45cc6363082806f6a7ea8ceed9dc6c75eec9fd79ccb5717"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Runtime.CompilerServices.Unsafe.dll",
+      "sha256": "fd67abc4c4af10affbcd42fd68a2a7bc361b26714afe6965d4d0d139459d8297"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Runtime.Serialization.dll",
+      "sha256": "808d545a339f174b204907e85c67a713dc9257f51a581f1ea227bb410f8580d7"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Security.dll",
+      "sha256": "b55ad49e8ba399c3f7ae41c6fd27cc024280b72e459ce09f376922354f38b17a"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.ServiceModel.Internals.dll",
+      "sha256": "771524d6406ac76de18c715b71c196be1a97b833388c67f6b6c5a1d04dbd8fe2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Transactions.dll",
+      "sha256": "035dc66a5ca874446c55d4e6e0c0cab7d367dc2c6872ae1965ad9ac356f460ed"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Xml.dll",
+      "sha256": "5b9f29bbcf896a091a83da47d9c741ea502a543066a6e9680cfcaeb93ac4ad36"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/System.Xml.Linq.dll",
+      "sha256": "29e23c25f5821eaf9e3a4e1981b2dc691591eb34c4411a1fd7791dcc6f3ea9c7"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/Unity.Multiplayer.Center.Common.dll",
+      "sha256": "c2d616bd7a0504d3ac3aa6b99aae93fbb4736554d8d8906cac722163559f3a5b"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/Unity.Scripting.dll",
+      "sha256": "a75bf90db6309956b943a523971f0e0c75c134b494181c8b08f1211a6b4a0e78"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.AccessibilityModule.dll",
+      "sha256": "1a1822c64cc6694caffe920314cbea8a705faeba53082ef1c847c1e9353246ca"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.AdaptivePerformanceModule.dll",
+      "sha256": "649b9312890100fb5b4112ffe7d69a261e17bf3932160802226384d4f0079d25"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.AIModule.dll",
+      "sha256": "f8033a415529f09a4a9d72b01002fc5daee10bba6016ff67caad018ca91373f6"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.AMDModule.dll",
+      "sha256": "c085e17d74094abd15bfc9ae71066ff7d92fe65a4ed9e75d05f8be00476efe17"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.AndroidJNIModule.dll",
+      "sha256": "71fadc0dc385d75632a4db2d6db2b3cafc317580a991c8a46dbaa6dd617ee785"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.AnimationModule.dll",
+      "sha256": "eb04a410ae39ad5a9ed840904cb4478f945ab4002158aa3eb32fb03990801cef"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ARModule.dll",
+      "sha256": "60db59da50d37eb394786fa8807c98d746a5ef728cfb0bf91d101ffe348971ad"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.AssetBundleModule.dll",
+      "sha256": "5b079f88c01ddff41dca9889797cb34cd54b4d72d692adb6eaa25e29ebb81250"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.AudioModule.dll",
+      "sha256": "c86713296a66212048edaeb0a5ffd1dc7454cc8846c07d3ff1efac158dbaec4d"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ClothModule.dll",
+      "sha256": "93af7b74db9bd441eddfe55f73a28a15c475c2a1d4999bc4f5343c574d9f31bb"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ClusterInputModule.dll",
+      "sha256": "4e62a0be019813140d017f7410207b024dfd5ad05da4ef3d750879038ca7b7a0"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ClusterRendererModule.dll",
+      "sha256": "e4ec84c6745059105eb3364a7f56936a8f6a1b0ae1a1a86257ef813ec74d8a90"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ContentLoadModule.dll",
+      "sha256": "a2baf6517e9f08963b5ea9093e0604e02fdb1b27e754239fdb7118692ff541ed"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.CoreModule.dll",
+      "sha256": "1ce0150776f1b0c1f25ddc2c0eff03b276b067049589dbeb39d1b0a63034faaa"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.CrashReportingModule.dll",
+      "sha256": "287b8a22b707d4022fed8f575b829a3f9759d2955acf4e2db9f7b57e3b7c4e29"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.DirectorModule.dll",
+      "sha256": "4f582008c2902e975c10eaabc6a0888859214bc0e05e4044ac9c0cb9f9516fbe"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.dll",
+      "sha256": "2fdea647bd81d92fba0d4642ddf34f635c7f66741ef695ea37592828adf1f334"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.DSPGraphModule.dll",
+      "sha256": "703415a54ded2c5d9bdab4a68d9fe721c2d3ee92c85e186d2cc9c335e2ca28c2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.GameCenterModule.dll",
+      "sha256": "1e5ab85023d48a95ed25aa67afb34bc28af4e343a574f428b2c56c7184576372"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.GIModule.dll",
+      "sha256": "271adc8870369573b0ee2d65141d7eba00bee98e055aa639239c70c3d3b54c05"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.GraphicsStateCollectionSerializerModule.dll",
+      "sha256": "76ec242bc63792bcf9ca1a8b2f4c57b093dee1c75cd8ada12f54bb92e8b09a21"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.GridModule.dll",
+      "sha256": "5d5fc6f1a11a4008d5dfee98024862d461720ee83a0d05b01b3e7e05c0da5144"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.HierarchyCoreModule.dll",
+      "sha256": "ad2c3482c6350e2d1658e54663b62ad33358c749e5b7aeff20d7c59c6369d548"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.HierarchyModule.dll",
+      "sha256": "7bf7fb3faabab25fbdaad1cab13e4e91f6264b33d47551668c7ba56b657ca273"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.HotReloadModule.dll",
+      "sha256": "07532f50e9c6de097047f3aac48b85a0b237825c7b4b1123ed0f3440e5f615f4"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.IdentifiersModule.dll",
+      "sha256": "5b76f0a2e0447c13a26fbc9ebb37afbdabb7a9ef0a4c832d31a0fa72fbc98a73"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ImageConversionModule.dll",
+      "sha256": "7d5a19fee97b30a19cedf042340c359e5e9387202583cb33a4765033d55f1443"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.IMGUIModule.dll",
+      "sha256": "22846aaa265b5245186bf7756541e41c2bdb1a51eccaa8f023bb0ee2ebf05f2b"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.InputForUIModule.dll",
+      "sha256": "5d55fd8f1b50297dca4fed1a7246a4238cbb979dca2c5743ca147264c3e6fae5"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.InputLegacyModule.dll",
+      "sha256": "65010e7e47411596ddd7057eec5f5cf28950205912434f3e738e00a6e867f158"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.InputModule.dll",
+      "sha256": "3a187f1c485ad7c2b09cfb5e2f0b69e6ef19a0f4c5f07afe3dc2f31a27d84707"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.InsightsModule.dll",
+      "sha256": "1a4be64e63a75bc72c5684ee4a8ea62ab5785b097e44350419baa31e04c31cc2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.JSONSerializeModule.dll",
+      "sha256": "3c380a108e21691ca2a493e42ac06ca10598a51dc3898a3f502fb884e82d82d2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.LocalizationModule.dll",
+      "sha256": "8cf392e4fa5d74001d7a1b1a365bb18c9610482c248b482807fd6c26124c5182"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.MarshallingModule.dll",
+      "sha256": "6fb9628c725803f4f905a77d5fe867e3664790dc5501be6b7d5f7ff20b5fa83c"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.MathematicsModule.dll",
+      "sha256": "f641253a83073c78df47d72c0238e598c7821f578d8b04df97da8618aa378892"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.MultiplayerModule.dll",
+      "sha256": "6a02bf22eb8d3023b22c189601f34670c7841cbcd34af4affcabc7ec7ccb0cf4"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.NVIDIAModule.dll",
+      "sha256": "81a5540cc4bd31a9ddc9daf8483e461a122fef6cbd2af3e505cfbbd704e32dcb"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ParticleSystemModule.dll",
+      "sha256": "95ae0097560494f31be722c580668324ea8633b6519bc505671c7cbc1e7e31a4"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.PerformanceReportingModule.dll",
+      "sha256": "09fa7eb125e05c92ba85baec7fd0836d0a56e0b48277d3018bb215071167267d"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.Physics2DModule.dll",
+      "sha256": "fedb2879f5b79fa67667e4eae10772cfa75b9dc7072003516fc3dd92aa24a2a2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.PhysicsBackendPhysXModule.dll",
+      "sha256": "ac30a82cbfd942ccc07740b265feff292130863d870ee9a97a6b60ccc46b85cc"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.PhysicsCore2DModule.dll",
+      "sha256": "ed36154893546eb237eaa8d3492e032c66d483599fc02d9ee0cb2abdd4dd1e85"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.PhysicsModule.dll",
+      "sha256": "abc6f1b98b20d6338d1382a4c2d89de75d185c67bdbfbe6bf0ed112294cc39e1"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.PropertiesModule.dll",
+      "sha256": "401622049285cb84e0be7c143056234e101d35077daaa909da56c695a6636e2f"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.RenderAs2DModule.dll",
+      "sha256": "a33047cf49a3afcfb76d8d227492031dbe57f229fe04c65abcb7bb5a2d397723"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll",
+      "sha256": "d7f0681c2b467dce2d7e99a108cb160554bd3f1990f8e716c262a1552bb0b6c4"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ScreenCaptureModule.dll",
+      "sha256": "d269270302b6be3f6f9f9a2644b2d8bb4a58a913d185af65db378ce0ff3b3d9f"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ScriptingModule.dll",
+      "sha256": "3bcd24e7fc7d6765d32ca0146cac8e44090b137e1a8e7437551fac30f7b46ee9"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.ShaderVariantAnalyticsModule.dll",
+      "sha256": "b45d5854bb8f3786f901106cbf94b26942f86242e8ff80fb58aeb2328dadf1e7"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.SharedInternalsModule.dll",
+      "sha256": "6af36ec5b413f310333e35a86fb4e75220df7066300842c87a44ef6f09c78bd2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.SpriteMaskModule.dll",
+      "sha256": "e0ad032394a23dd27995e750c372c9cbc6413b02399e2cfd8f2add1643853df0"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.SpriteShapeModule.dll",
+      "sha256": "a3f16eae2e16e55d294283dca8fda1d8fcc08803e38bbd2b08a7ed7992f660e4"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.StreamingModule.dll",
+      "sha256": "96e286090e8500c09d05089ebd99223117b553442848293c295ef75ff7d53030"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.SubstanceModule.dll",
+      "sha256": "e272ed803520fbf7bb5228c1365df854278c443c4e24f275e9bd003c2d52a5d6"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.SubsystemsModule.dll",
+      "sha256": "1f3167ef2301e125ffb19fbbee6bd1ba2b015e24d4b9391efe856c9a3c574bb0"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.TerrainModule.dll",
+      "sha256": "d2e1a695e6535c54ded5232f6628eaab746fd6701e5cd1d0b79ac54da9dfd32c"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.TerrainPhysicsModule.dll",
+      "sha256": "f58f6aa4c5cbab95e1db25fb38511e76f1ff6a2a1c6b06bcb6e1e028d29cf493"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.TextCoreFontEngineModule.dll",
+      "sha256": "d1e039eb5cdab417cbf6182a99a9008fbe69208f36f6eb9a1a6bfeb023068ec2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.TextCoreTextEngineModule.dll",
+      "sha256": "972df9b258e10064485656ee71f9556dd82c099c0c5e1ffcc892ead08d33378b"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.TextRenderingModule.dll",
+      "sha256": "26c4dfbba50cf2c2664f1e8cb009e2f8accf2594b25e9da9546f06b84e0e0666"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.TilemapModule.dll",
+      "sha256": "f88ef99d1d776a665cbd3c61a23648e213a69a6449e40db8130a8568609677c3"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.TLSModule.dll",
+      "sha256": "36132e0d75f9db31ba8f570cd0fdb319c4ae98a5371da063ea820af503336ce2"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.U2DRuntimeModule.dll",
+      "sha256": "ae6d1b421d08aeebc56e5beb50518b21ad03667c9a5cb8321cf7d0f6759696af"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UIElementsModule.dll",
+      "sha256": "a7952f51608eaa4c2be732b1f5257aeaa7c3df40601860ed557ae77e0cd8c29c"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UIModule.dll",
+      "sha256": "9767eeb1f35918e127916257ce3e1e4366f1fe29dfcde281cccb23ebf06cf47e"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UmbraModule.dll",
+      "sha256": "138079faacaf27bf91ea028a45664e101bdae3a5e9cd5e1786ac2b96e22ab293"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll",
+      "sha256": "e70ca6c4880ed45e549159fa5ddb796eb0d416a9f26c0827a48972debb50f843"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityAnalyticsModule.dll",
+      "sha256": "08a7993dda63102f0f09b9e210780350ebb6336cec3789b33091cd1d11dc2a05"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityConnectModule.dll",
+      "sha256": "85ca3a9f147afdb3fd6bc944caf9862a210a0992d4532899c4fe48bc8be707f3"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityConsentModule.dll",
+      "sha256": "63ede5409c1022d1800bcd47079cea1f912eda1514d258f6d169289b1197ad81"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityCurlModule.dll",
+      "sha256": "de011515011435b495a374a6e4b7db2a7cfb98831b6e246984a17480f249b5bf"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityWebRequestAssetBundleModule.dll",
+      "sha256": "4d1ed00060d9f783495b99ec3787857823a8a58bab73d98881209528f3359d4e"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityWebRequestAudioModule.dll",
+      "sha256": "95e1609dfc15f9d20a4fdcbc200d2a525e030d8584c2229c18bfece6fc77e048"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityWebRequestModule.dll",
+      "sha256": "1fbbb780a5c1d37fdab634304707d589a1c5bea498eebcb8e5201ac394e02954"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityWebRequestTextureModule.dll",
+      "sha256": "7eb0d7b339dcf03d46eaa57d468eddbe15a3100618033ab566cff137a3c54f32"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.UnityWebRequestWWWModule.dll",
+      "sha256": "3b6785b9883adfa7da85db06838c5035ad8eb33f1d6689248ee5c158babda02c"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.VectorGraphicsModule.dll",
+      "sha256": "e0cadc23ee1df92ef71539fc8bde13e3e65db321da632b66573051341457d54c"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.VehiclesModule.dll",
+      "sha256": "7bfaff54bb7bf8c42ae132f66d76b0304d16ac3310e08bebe452e3544e6c2a1f"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.VFXModule.dll",
+      "sha256": "03af458a5c5782cab3f5be1db4d3fd5535249b40f31eae0be58243992ad982a3"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.VideoModule.dll",
+      "sha256": "8ca3d4375a50475fecfa2dafcc37eefe90e8c744b1855f05bf0cbd9bbe89ffd7"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.VirtualTexturingModule.dll",
+      "sha256": "b31eb1bab738ec9f428968840c982a4e888413c3a0beb6f2cf48b6dd19b2db14"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.WindModule.dll",
+      "sha256": "ce0622e241da4b616a027f1860db3b8227518a9688019a1250dd0206e5d93967"
+    },
+    {
+      "file": "EdificioViewer_Data/Managed/UnityEngine.XRModule.dll",
+      "sha256": "0443d4022b1d14b71177f4badfb1106d074d622ffe5b97d903fa9286005de648"
+    },
+    {
+      "file": "EdificioViewer_Data/Resources/unity default resources",
+      "sha256": "1fbaff511bdec6cf276529de02215fee9fdcf7298ea9d7c49dc6b984ee73a7f5"
+    },
+    {
+      "file": "EdificioViewer_Data/Resources/unity_builtin_extra",
+      "sha256": "bfe1661eaea85f2f5498907dfba6e867dd4f727dbac6b348d2dbb5e6d29ade47"
+    },
+    {
+      "file": "MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll",
+      "sha256": "82b40f2de1280f3a13a242e42005414bee270b22b75b96ec34ecfc453fbcfb4e"
+    },
+    {
+      "file": "MonoBleedingEdge/EmbedRuntime/MonoPosixHelper.dll",
+      "sha256": "5b59f02c0695400a17c828f1e3a61ebd4a84a1286dfc829e7784130e4c4bfe09"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/browscap.ini",
+      "sha256": "4ddd50f31fb968f30bedefc253a46dc3f2890192d05cdaa9e0a64a056eee807e"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/config",
+      "sha256": "5776169973a26a387b8b3e5c0f2301a7ab9a6dd7c7d3efa22a96abc47fbf8662"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/2.0/DefaultWsdlHelpGenerator.aspx",
+      "sha256": "751861040b69ea63a3827507b7c8da9c7f549dc181c1c8af4b7ca78cc97d710a"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/2.0/machine.config",
+      "sha256": "e91782a27fa39fc6c1d6ee8b08529f5d35052310d0006034b878eb04b8f2af30"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/2.0/settings.map",
+      "sha256": "49c6160f9d54af4270a3b4e997fc4a8301f79b9e2070118fa46ddbcbbc44f9a2"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/2.0/web.config",
+      "sha256": "cf2b54339e069b9e42f7d6795eecbf562c50c1011f4ca8f65f578fe52d97ff92"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.0/DefaultWsdlHelpGenerator.aspx",
+      "sha256": "751861040b69ea63a3827507b7c8da9c7f549dc181c1c8af4b7ca78cc97d710a"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.0/machine.config",
+      "sha256": "e60aec2c5115d65b3acb3c55ea21576dbd770f579166c017125571e46ae560ed"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.0/settings.map",
+      "sha256": "ce1db1ad8a9512073164e3eccdc193f7eda036e1a9733caec4635de21b2865c8"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.0/web.config",
+      "sha256": "e38bb8cc68fe5b4edecdfd288d094b9e8ced7629039b2a347682aba0d8bd7492"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.5/DefaultWsdlHelpGenerator.aspx",
+      "sha256": "751861040b69ea63a3827507b7c8da9c7f549dc181c1c8af4b7ca78cc97d710a"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.5/machine.config",
+      "sha256": "ee950004b576fb28dc85f4b0435ed04bf96612de2e8b53be84d07afe85a0de6c"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.5/settings.map",
+      "sha256": "ce1db1ad8a9512073164e3eccdc193f7eda036e1a9733caec4635de21b2865c8"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.5/web.config",
+      "sha256": "c4cbddd4fd9347b58cc5a72b36dc4ba1ad2bb699e65869d05cd3fb9865f0d824"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/mconfig/config.xml",
+      "sha256": "0c56e34c69124510fa8c19e7b4c2ca6c1c4ff460ae19f798dd0ca035809e396d"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/2.0/Browsers/Compat.browser",
+      "sha256": "8a1082057ac5681dcd4e9c227ed7fb8eb42ac1618963b5de3b65739dd77e2741"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.0/Browsers/Compat.browser",
+      "sha256": "8a1082057ac5681dcd4e9c227ed7fb8eb42ac1618963b5de3b65739dd77e2741"
+    },
+    {
+      "file": "MonoBleedingEdge/etc/mono/4.5/Browsers/Compat.browser",
+      "sha256": "8a1082057ac5681dcd4e9c227ed7fb8eb42ac1618963b5de3b65739dd77e2741"
+    },
+    {
+      "file": "dstorage.dll",
+      "sha256": "cae65787f61514bec6f012f44546e68b19e39d8854a9ab52af813370d44b272a"
+    },
+    {
+      "file": "dstoragecore.dll",
+      "sha256": "cf85b19a92a8276f8baca0db9bbcd60735bad50768deb303d310e84d5f4fdd11"
+    },
+    {
+      "file": "EdificioViewer.exe",
+      "sha256": "6cd16edfbe85284eb69cd2efe1170aa1cffdf0dbdb309c3269e2f8454811adab"
+    },
+    {
+      "file": "UnityCrashHandler64.exe",
+      "sha256": "8c319c48b9947d85e2f6ee4ced10afaf80e03ca30c6686482f40ebd026114df5"
+    },
+    {
+      "file": "UnityPlayer.dll",
+      "sha256": "e5506b748f33c8d8337ae6e6994adf04dd666be71c9cd6b9590e22b25b495819"
+    }
+  ],
+  "windows_startup": {
+    "exit_code": 0,
+    "cases": [
+      "G",
+      "Q",
+      "EX",
+      "EY",
+      "R"
+    ],
+    "nodes": 1253,
+    "bars": 616,
+    "walls": 82,
+    "slabs": 654
+  },
+  "independent_baseline_audit": "OK, sin violaciones ni diferencias de cargas regeneradas"
+}

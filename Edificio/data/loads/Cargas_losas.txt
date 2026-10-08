@@ -354,8 +354,8 @@ Polígono exterior Zona 1:
 Zona 2:
 Carga de Diseño:
 	- PP.LOSA = e(m) x 2500 Kg/m^3
-	- PM. ADIC. = 260 Kg/m^2
-	- SC = 500 Kg/m^2
+	- PM. ADIC. = 200 Kg/m^2
+	- SC = 200 Kg/m^2
 
 
 Polígono 1 Zona 2:

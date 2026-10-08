@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="cl.mcoc.edificio.ar.SectorRegistrationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-07T03:24:29" hostname="LAPTOP-OD9FUOP9" time="14.393">
+  <properties/>
+  <testcase name="acceptsSurveyAndStartsUnanchored" classname="cl.mcoc.edificio.ar.SectorRegistrationTest" time="3.727"/>
+  <testcase name="resetDoesNotInventMeasures" classname="cl.mcoc.edificio.ar.SectorRegistrationTest" time="2.685"/>
+  <testcase name="pmOverlayPreservesNegativeMomentBranch" classname="cl.mcoc.edificio.ar.SectorRegistrationTest" time="2.53"/>
+  <testcase name="refusesWrongHash" classname="cl.mcoc.edificio.ar.SectorRegistrationTest" time="2.685"/>
+  <testcase name="refusesUnsurveyed" classname="cl.mcoc.edificio.ar.SectorRegistrationTest" time="2.757"/>
+  <testcase name="quaternionSignIsSameRotation" classname="cl.mcoc.edificio.ar.SectorRegistrationTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,10 @@
+{
+  "contractVersion": 1,
+  "requestId": "a880a469-d942-429c-985b-1dc164953d8f",
+  "modelHash": "1ca9fa4ee95f9f3d11ba87509da9aaf888c401decb1a76bdafa3c50563d1cff2",
+  "operation": "capacity",
+  "changes": [],
+  "elementTag": 1,
+  "barsPerFace": 5,
+  "diameter_m": 0.032
+}

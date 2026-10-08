@@ -56,7 +56,8 @@ class MovingLoadTests(unittest.TestCase):
         self.assertEqual(data['modelHash'],hashlib.sha256((ROOT/'results/modelo_3d_manual.json').read_bytes()).hexdigest())
         self.assertEqual(len(data['panels']),audit['panels'])
         self.assertEqual(data['schema'],3)
-        self.assertEqual(len(data['panels']),652)
+        model=json.loads((ROOT/'results/modelo_3d_manual.json').read_text())
+        self.assertEqual({p['id'] for p in data['panels']},{s['id'] for s in model['slabs']})
         bases=set(data['basisNodes']);bars={b['id']:b for b in data['bars']}
         for panel in data['panels']:
             for tag in panel['receivers']:

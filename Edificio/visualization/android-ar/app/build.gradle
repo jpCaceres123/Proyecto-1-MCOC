@@ -2,7 +2,7 @@ plugins { id 'com.android.application' }
 android {
     namespace 'cl.mcoc.edificio.ar'
     compileSdk 35
-    buildToolsVersion '36.0.0'
+    buildToolsVersion providers.gradleProperty('mcocBuildToolsVersion').getOrElse('36.0.0')
     defaultConfig {
         applicationId 'cl.mcoc.edificio.ar'
         minSdk 24

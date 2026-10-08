@@ -1,0 +1,20 @@
+{
+  "contractVersion": 1,
+  "requestId": "58efeb43-52a0-4429-a40b-ff176a08ebbe",
+  "modelHash": "1ca9fa4ee95f9f3d11ba87509da9aaf888c401decb1a76bdafa3c50563d1cff2",
+  "operation": "analysis",
+  "changes": [
+    {
+      "kind": "Viga",
+      "id": 207,
+      "changeLoad": true,
+      "changeSection": false,
+      "q": 2.0,
+      "b": 0.0,
+      "h": 0.0
+    }
+  ],
+  "elementTag": 0,
+  "barsPerFace": 5,
+  "diameter_m": 0.028
+}

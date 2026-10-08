@@ -113,11 +113,13 @@ public final class ARRenderer implements GLSurfaceView.Renderer {
             for(String field:new String[]{"curves","previous"}){org.json.JSONArray curves=snapshot.getJSONArray(field);for(int k=0;k<curves.length();k++){org.json.JSONObject curve=curves.getJSONObject(k);if(!curve.getString("axis").equals("Mz"))continue;org.json.JSONArray points=curve.getJSONArray("points");for(int j=0;j<points.length();j++){org.json.JSONObject p=points.getJSONObject(j);(field.equals("curves")?current:prior).add(new float[]{(float)p.getDouble("P_kN"),(float)p.getDouble("M_kNm")});}}}
         }else for(StructuralData.PMPoint p:m.pm)current.add(new float[]{p.p,p.m});
         ArrayList<float[]> all=new ArrayList<>(current);all.addAll(prior);float maxP=1,maxM=1;for(float[] p:all){maxP=Math.max(maxP,Math.abs(p[0]));maxM=Math.max(maxM,Math.abs(p[1]));}
-        for(ArrayList<float[]> curve:Arrays.asList(prior,current)){ArrayList<Float> v=new ArrayList<>();for(float[] p:curve)add(v,capacityPoint(m,a,b,p[0],p[1],maxP,maxM));polyline(array(v),curve==prior?.6f:.1f,curve==prior?.6f:.95f,curve==prior?.6f:.85f,1,3);}
+        // The configured section and perimeter reinforcement are symmetric.
+        // Mirror the sampled uniaxial branch while preserving the demand's signed Mz.
+        for(ArrayList<float[]> curve:Arrays.asList(prior,current))for(int side:new int[]{-1,1}){ArrayList<Float> v=new ArrayList<>();for(float[] p:curve)add(v,capacityPoint(m,a,b,p[0],side*p[1],maxP,maxM));polyline(array(v),curve==prior?.6f:.1f,curve==prior?.6f:.95f,curve==prior?.6f:.85f,1,3);}
         float[] p=capacityPoint(m,a,b,r.at(0,activity.station),r.at(5,activity.station),maxP,maxM);
         lines(new float[]{p[0]-.04f,p[1],p[2],p[0]+.04f,p[1],p[2],p[0],p[1]-.04f,p[2],p[0],p[1]+.04f,p[2]},1,.8f,.2f,1,4);
     }
-    float[] capacityPoint(StructuralData.Member m,float[] a,float[] b,float p,float moment,float maxP,float maxM){float[] point=new float[3];for(int v=0;v<3;v++)point[v]=a[v]+(b[v]-a[v])*.5f+m.localY[v]*(.5f+Math.abs(moment)/maxM*.5f)+m.localX[v]*p/maxP*.5f;return point;}
+    float[] capacityPoint(StructuralData.Member m,float[] a,float[] b,float p,float moment,float maxP,float maxM){float[] point=new float[3];for(int v=0;v<3;v++)point[v]=a[v]+(b[v]-a[v])*.5f+m.localY[v]*(.5f+moment/maxM*.5f)+m.localX[v]*p/maxP*.5f;return point;}
     void polyline(float[] v,float r,float g,float b,float alpha,float width){ArrayList<Float> list=new ArrayList<>();for(int k=3;k<v.length;k+=3){add(list,new float[]{v[k-3],v[k-2],v[k-1]});add(list,new float[]{v[k],v[k+1],v[k+2]});}lines(array(list),r,g,b,alpha,width);}
     void polygon(float[] v){GLES20.glUseProgram(lineProgram);int pos=GLES20.glGetAttribLocation(lineProgram,"aPosition");GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(lineProgram,"uMvp"),1,false,mvp,0);GLES20.glUniform4f(GLES20.glGetUniformLocation(lineProgram,"uColor"),.2f,.85f,.75f,.22f);GLES20.glEnableVertexAttribArray(pos);GLES20.glVertexAttribPointer(pos,3,GLES20.GL_FLOAT,false,0,buffer(v));GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN,0,v.length/3);GLES20.glDisableVertexAttribArray(pos);}
     private void drawMember(StructuralData.Member m){

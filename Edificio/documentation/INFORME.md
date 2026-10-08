@@ -43,7 +43,7 @@ de receptores. La tolerancia es 0,002 kN por piso por redondeo del contrato.
 | 7.920000 | 1367.873306 | 5427.242434 | 5427.242393 | -0.000042 |
 | 11.880000 | 1391.723306 | 5536.081834 | 5536.081785 | -0.000049 |
 | 15.840000 | 1494.555506 | 5268.791291 | 5268.791259 | -0.000032 |
-| 19.800000 | 1486.376931 | 5346.815901 | 5346.815899 | -0.000002 |
+| 19.800000 | 1486.376931 | 2956.483209 | 2956.483207 | -0.000002 |
 
 `transferencia_Q.csv` identifica cada losa, receptor (viga o muro), área e intensidad.
 En muros las resultantes se reparten entre los nodos del borde receptor. En
@@ -88,12 +88,12 @@ No se añade excentricidad accidental. Los giros calculados se exportan por piso
 | LT2 | 11.880 | 836.309 | -17.894 | 8.300 | 1640.279 |
 | LT1 | 15.840 | 1359.181 | 23.810 | 7.539 | 2665.803 |
 | LT2 | 15.840 | 842.976 | -17.713 | 8.331 | 1653.355 |
-| LT1 | 19.800 | 1505.237 | 24.811 | 7.029 | 2952.267 |
+| LT1 | 19.800 | 1334.615 | 24.615 | 6.924 | 2617.620 |
 | LT2 | 19.800 | 655.760 | -18.232 | 8.262 | 1286.162 |
 
-Carga lateral total en EX y en EY: **19436.276 kN**.
-Corte de apoyos en EX: **19436.276 kN**;
-en EY: **19436.274 kN**.
+Carga lateral total en EX y en EY: **19101.629 kN**.
+Corte de apoyos en EX: **19101.624 kN**;
+en EY: **19101.630 kN**.
 El corte se define como la suma de reacciones externas de todos los apoyos,
 incluidos los situados sobre Z=0. No es un corte exclusivo de la sección Z=0.
 
@@ -147,9 +147,9 @@ de cargas; no se obtiene del resultado superpuesto para efectuar la comparación
 
 | Respuesta | Muestra | Superpuesta | Explícita | Error relativo máximo |
 | --- | --- | --- | --- | --- |
-| desplazamientos | nodo 900116, DOF 3 | -0.0170474745 | -0.0170474744 | 7.37853529e-08 |
-| reacciones de apoyo | nodo 700006, DOF 3 | 8074.73475 | 8074.73475 | 1.20278324e-07 |
-| fuerzas internas | elemento 688, componente global 3 | 16495.8163 | 16495.8084 | 6.7081856e-07 |
+| desplazamientos | nodo 900116, DOF 3 | -0.0169837285 | -0.0169837285 | 5.79181772e-08 |
+| reacciones de apoyo | nodo 700006, DOF 3 | 8074.85218 | 8074.85218 | 9.60312323e-08 |
+| fuerzas internas | elemento 688, componente global 3 | 16115.2975 | 16115.3052 | 6.40525806e-07 |
 
 La comparación abarca todos los DOF, todos los apoyos y todas las componentes
 de fuerzas nodales resistentes de barras y shells, con tags ordenados.
@@ -231,15 +231,15 @@ resultados se guardan en `results/PM_muros_envolvente.csv`,
 
 | Control | Error | Tolerancia | Estado |
 | --- | --- | --- | --- |
-| G: equilibrio apoyos / carga | 3.003e-09 | 1.000e-04 | OK |
-| G: compatibilidad diafragmas [m] | 4.953e-10 | 1.000e-05 | OK |
-| Q: equilibrio apoyos / carga | 4.982e-09 | 1.000e-04 | OK |
-| Q: compatibilidad diafragmas [m] | 1.567e-10 | 1.000e-05 | OK |
-| EX: equilibrio apoyos / carga | 1.909e-09 | 1.000e-04 | OK |
-| EX: compatibilidad diafragmas [m] | 1.686e-10 | 1.000e-05 | OK |
-| EX: carga lateral total [kN] | 3.638e-12 | 1.000e-07 | OK |
+| G: equilibrio apoyos / carga | 3.378e-09 | 1.000e-04 | OK |
+| G: compatibilidad diafragmas [m] | 4.841e-10 | 1.000e-05 | OK |
+| Q: equilibrio apoyos / carga | 3.499e-09 | 1.000e-04 | OK |
+| Q: compatibilidad diafragmas [m] | 1.011e-10 | 1.000e-05 | OK |
+| EX: equilibrio apoyos / carga | 2.770e-07 | 1.000e-04 | OK |
+| EX: compatibilidad diafragmas [m] | 1.625e-10 | 1.000e-05 | OK |
+| EX: carga lateral total [kN] | 0.000e+00 | 1.000e-07 | OK |
 | EX: resultante aplicada equivalente a fuerzas en CM [kNm] | 0.000e+00 | 1.000e-06 | OK |
-| EX: corte basal relativo | 1.852e-09 | 1.000e-04 | OK |
+| EX: corte basal relativo | 2.770e-07 | 1.000e-04 | OK |
 | EX: pisos con desplazamiento contrario | 0.000e+00 | 0.000e+00 | OK |
 | EX: F=m*a piso 1 LT1 | 0.000e+00 | 1.000e-07 | OK |
 | EX: F=m*a piso 1 LT2 | 0.000e+00 | 1.000e-07 | OK |
@@ -252,11 +252,11 @@ resultados se guardan en `results/PM_muros_envolvente.csv`,
 | EX: F=m*a piso 5 LT1 | 0.000e+00 | 1.000e-07 | OK |
 | EX: F=m*a piso 5 LT2 | 0.000e+00 | 1.000e-07 | OK |
 | EX: momento aplicado respecto al CM [kNm] | 0.000e+00 | 1.000e-07 | OK |
-| EY: equilibrio apoyos / carga | 7.575e-08 | 1.000e-04 | OK |
-| EY: compatibilidad diafragmas [m] | 2.344e-09 | 1.000e-05 | OK |
-| EY: carga lateral total [kN] | 3.638e-12 | 1.000e-07 | OK |
+| EY: equilibrio apoyos / carga | 4.394e-08 | 1.000e-04 | OK |
+| EY: compatibilidad diafragmas [m] | 2.061e-09 | 1.000e-05 | OK |
+| EY: carga lateral total [kN] | 0.000e+00 | 1.000e-07 | OK |
 | EY: resultante aplicada equivalente a fuerzas en CM [kNm] | 2.910e-11 | 1.000e-06 | OK |
-| EY: corte basal relativo | 7.573e-08 | 1.000e-04 | OK |
+| EY: corte basal relativo | 4.394e-08 | 1.000e-04 | OK |
 | EY: pisos con desplazamiento contrario | 0.000e+00 | 0.000e+00 | OK |
 | EY: F=m*a piso 1 LT1 | 0.000e+00 | 1.000e-07 | OK |
 | EY: F=m*a piso 1 LT2 | 0.000e+00 | 1.000e-07 | OK |
@@ -269,40 +269,40 @@ resultados se guardan en `results/PM_muros_envolvente.csv`,
 | EY: F=m*a piso 5 LT1 | 0.000e+00 | 1.000e-07 | OK |
 | EY: F=m*a piso 5 LT2 | 0.000e+00 | 1.000e-07 | OK |
 | EY: momento aplicado respecto al CM [kNm] | 0.000e+00 | 1.000e-07 | OK |
-| R: equilibrio apoyos / carga | 5.004e-08 | 1.000e-04 | OK |
-| R: compatibilidad diafragmas [m] | 1.382e-09 | 1.000e-05 | OK |
-| EXG: equilibrio apoyos / carga | 9.263e-08 | 1.000e-04 | OK |
-| EXQ: equilibrio apoyos / carga | 1.530e-07 | 1.000e-04 | OK |
-| EX: bases de masa reproducen u | 8.774e-08 | 1.000e-05 | OK |
-| EX: bases de masa reproducen support_r | 9.779e-08 | 1.000e-05 | OK |
-| EX: bases de masa reproducen demanda de muro P_compresion_kN | 4.416e-07 | 1.000e-05 | OK |
-| EX: bases de masa reproducen demanda de muro M_principal_kNm | 1.224e-07 | 1.000e-05 | OK |
-| EYG: equilibrio apoyos / carga | 4.698e-07 | 1.000e-04 | OK |
-| EYQ: equilibrio apoyos / carga | 3.356e-07 | 1.000e-04 | OK |
-| EY: bases de masa reproducen u | 5.199e-07 | 1.000e-05 | OK |
-| EY: bases de masa reproducen support_r | 2.898e-07 | 1.000e-05 | OK |
-| EY: bases de masa reproducen demanda de muro P_compresion_kN | 7.409e-07 | 1.000e-05 | OK |
-| EY: bases de masa reproducen demanda de muro M_principal_kNm | 3.458e-07 | 1.000e-05 | OK |
-| EX: masa 0.8G+0.3Q explícita u | 4.180e-07 | 1.000e-05 | OK |
-| EX: masa 0.8G+0.3Q explícita support_r | 2.834e-07 | 1.000e-05 | OK |
-| EX: masa 0.8G+0.3Q explícita local_forces | 5.668e-07 | 1.000e-05 | OK |
-| EY: masa 0.8G+0.3Q explícita u | 5.319e-07 | 1.000e-05 | OK |
-| EY: masa 0.8G+0.3Q explícita support_r | 3.566e-07 | 1.000e-05 | OK |
-| EY: masa 0.8G+0.3Q explícita local_forces | 5.872e-07 | 1.000e-05 | OK |
+| R: equilibrio apoyos / carga | 9.724e-09 | 1.000e-04 | OK |
+| R: compatibilidad diafragmas [m] | 1.211e-09 | 1.000e-05 | OK |
+| EXG: equilibrio apoyos / carga | 8.915e-07 | 1.000e-04 | OK |
+| EXQ: equilibrio apoyos / carga | 1.253e-07 | 1.000e-04 | OK |
+| EX: bases de masa reproducen u | 5.530e-07 | 1.000e-05 | OK |
+| EX: bases de masa reproducen support_r | 5.021e-07 | 1.000e-05 | OK |
+| EX: bases de masa reproducen demanda de muro P_compresion_kN | 2.847e-07 | 1.000e-05 | OK |
+| EX: bases de masa reproducen demanda de muro M_principal_kNm | 5.673e-07 | 1.000e-05 | OK |
+| EYG: equilibrio apoyos / carga | 1.223e-07 | 1.000e-04 | OK |
+| EYQ: equilibrio apoyos / carga | 1.271e-07 | 1.000e-04 | OK |
+| EY: bases de masa reproducen u | 2.536e-07 | 1.000e-05 | OK |
+| EY: bases de masa reproducen support_r | 7.708e-08 | 1.000e-05 | OK |
+| EY: bases de masa reproducen demanda de muro P_compresion_kN | 6.420e-07 | 1.000e-05 | OK |
+| EY: bases de masa reproducen demanda de muro M_principal_kNm | 2.198e-07 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita u | 1.181e-06 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita support_r | 9.775e-07 | 1.000e-05 | OK |
+| EX: masa 0.8G+0.3Q explícita local_forces | 1.250e-06 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita u | 1.534e-07 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita support_r | 1.449e-07 | 1.000e-05 | OK |
+| EY: masa 0.8G+0.3Q explícita local_forces | 7.977e-08 | 1.000e-05 | OK |
 | Q: conservacion piso 3.96 [kN] | 3.874e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 7.92 [kN] | 4.168e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 11.88 [kN] | 4.855e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 15.84 [kN] | 3.188e-05 | 2.000e-03 | OK |
 | Q: conservacion piso 19.8 [kN] | 1.961e-06 | 2.000e-03 | OK |
-| Superposicion: desplazamientos, error relativo maximo | 7.379e-08 | 1.000e-05 | OK |
-| Superposicion: reacciones de apoyo, error relativo maximo | 1.203e-07 | 1.000e-05 | OK |
-| Superposicion: fuerzas internas, error relativo maximo | 6.708e-07 | 1.000e-05 | OK |
-| Superposicion: demanda de muros P_compresion_kN, error relativo maximo | 5.791e-08 | 1.000e-05 | OK |
-| Superposicion: demanda de muros M_principal_kNm, error relativo maximo | 5.914e-07 | 1.000e-05 | OK |
-| Superposicion: demanda de muros V_en_plano_kN, error relativo maximo | 4.559e-07 | 1.000e-05 | OK |
-| Superposicion: demanda de muros V_fuera_plano_kN, error relativo maximo | 8.020e-07 | 1.000e-05 | OK |
-| EX: sensibilidad penalty x10 | 3.765e-05 | 1.000e-02 | OK |
-| EY: sensibilidad penalty x10 | 8.322e-04 | 1.000e-02 | OK |
+| Superposicion: desplazamientos, error relativo maximo | 5.792e-08 | 1.000e-05 | OK |
+| Superposicion: reacciones de apoyo, error relativo maximo | 9.603e-08 | 1.000e-05 | OK |
+| Superposicion: fuerzas internas, error relativo maximo | 6.405e-07 | 1.000e-05 | OK |
+| Superposicion: demanda de muros P_compresion_kN, error relativo maximo | 3.928e-08 | 1.000e-05 | OK |
+| Superposicion: demanda de muros M_principal_kNm, error relativo maximo | 4.933e-07 | 1.000e-05 | OK |
+| Superposicion: demanda de muros V_en_plano_kN, error relativo maximo | 3.751e-07 | 1.000e-05 | OK |
+| Superposicion: demanda de muros V_fuera_plano_kN, error relativo maximo | 6.361e-07 | 1.000e-05 | OK |
+| EX: sensibilidad penalty x10 | 3.762e-05 | 1.000e-02 | OK |
+| EY: sensibilidad penalty x10 | 7.674e-04 | 1.000e-02 | OK |
 
 El comando termina con código distinto de cero si cualquier control resulta
 REVISAR. Los supuestos físicos pendientes se mantienen visibles aunque los

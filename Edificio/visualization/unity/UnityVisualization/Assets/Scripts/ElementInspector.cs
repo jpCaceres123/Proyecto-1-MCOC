@@ -291,8 +291,8 @@ public class ElementInspector : MonoBehaviour
         string[] tabs = selected.kind == "Viga"
             ? new[] { "Diagramas de esfuerzos", "Deformada" }
             : selected.kind == "Muro"
-                ? new[] { "Diagrama de interaccion", "Seccion de fibras", "Momento-curvatura", "Puntos A-G", "Deformada" }
-                : new[] { "Diagrama de interaccion", "Seccion de fibras", "Tension-deformacion", "Diagramas de esfuerzos", "Momento-curvatura", "Puntos A-G", "Deformada" };
+                ? new[] { "Diagrama de interaccion", "Seccion de fibras", "Deformada" }
+                : new[] { "Diagrama de interaccion", "Seccion de fibras", "Tension-deformacion", "Diagramas de esfuerzos", "Deformada" };
         resultTab = (int)Mathf.Clamp(resultTab, 0, tabs.Length - 1);
         resultTab = GUILayout.Toolbar(resultTab, tabs);
         if (resultTab == tabs.Length - 1)
@@ -325,8 +325,6 @@ public class ElementInspector : MonoBehaviour
             else if (resultTab == 1) GetComponent<Semana3Visualizer>().DrawGlobalResult(1);
             else if (resultTab == 2) graphs.Draw(selected.id, loadCase, values, 1);
             else if (resultTab == 3) StructuralPostprocessor.Get(gameObject).DrawMember(selected.id, loadCase, values);
-            else if (resultTab == 4) GetComponent<Semana3Visualizer>().DrawGlobalResult(2);
-            else GetComponent<Semana3Visualizer>().DrawGlobalResult(3);
         }
     }
 

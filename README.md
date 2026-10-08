@@ -4,7 +4,7 @@ Proyecto de modelación estructural de un edificio en OpenSeesPy, con análisis 
 
 El modelo global se encuentra en `Edificio/`. El benchmark de Semana 1 permanece separado en `P1L1/`. **Los comandos de esta guía se ejecutan en PowerShell para Windows, desde la raíz del repositorio**, donde está este README. No es necesario abrir Unity para ejecutar el análisis.
 
-El informe final se entrega en PDF y está disponible en [Semana07.pdf](reports/Informes%20pdf/Semana07.pdf).
+El informe final se entrega en PDF y está disponible en [Semana07.pdf](reports/Informes%20pdf/Semana07.pdf). Los productos descargables se publican en la [release entrega-final](https://github.com/jpCaceres123/Proyecto-1-MCOC/releases/tag/entrega-final).
 
 ## Inicio rápido
 
@@ -344,6 +344,8 @@ Las rutas siguientes parten de la raíz del repositorio. Las salidas esperadas d
 Conservar junto a la entrega los reportes que corresponden al artefacto distribuido. Los hashes permiten comprobar su identidad, mientras que los logs de construcción y las pruebas de uso documentan aspectos distintos. Regenerar y volver a compilar cuando cambien los datos que deben incorporar las aplicaciones.
 
 ## 10. Estado de validación documentado
+
+La revisión de publicación aprobó 55 pruebas Python, cotejó las 16 entradas del manifiesto, reconstruyó demanda-capacidad, compiló el visor Windows y comprobó su arranque. La auditoría numérica independiente terminó en OK. El [registro de entrega](Edificio/documentation/release_final/README.md) conserva el alcance, los hashes y las comprobaciones pendientes. La APK AR se verificó contra sus recursos actuales sin una nueva compilación Android.
 
 Esta tabla distingue los registros disponibles de las comprobaciones que deben completarse para una nueva entrega. La actualización de este README no ejecuta nuevamente las pruebas ni certifica aplicaciones recién construidas.
 

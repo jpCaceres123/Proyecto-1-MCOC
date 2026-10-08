@@ -1,5 +1,5 @@
 {
-  "member_count": 612,
+  "member_count": 616,
   "cases": [
     "G",
     "Q",
@@ -9,7 +9,7 @@
   ],
   "source_identity": "OK",
   "station_values_and_local_signs": "exact_source_match",
-  "model_sha256": "8780ea467977c5fdc85b3d73e4deb6a5aba6944d56d61d02f6228836e4037b47",
+  "model_sha256": "31d683ed5193f61a7e6d84d780ff4d28fa48903eeb65393e74ea95f4f49ffd8a",
   "transforms": "right_handed_rigid_rotation_and_uniform_scale",
   "physical_device_test": "PENDING"
 }

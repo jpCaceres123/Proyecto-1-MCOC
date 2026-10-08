@@ -1,0 +1,42 @@
+{
+  "status": "OK",
+  "modelHash": "31d683ed5193f61a7e6d84d780ff4d28fa48903eeb65393e74ea95f4f49ffd8a",
+  "freshInputHashes": "verified",
+  "comparisons": [
+    {
+      "case": "G",
+      "maxTranslationDifference_m": 0.0
+    },
+    {
+      "case": "Q",
+      "maxTranslationDifference_m": 0.0
+    },
+    {
+      "case": "EX",
+      "maxTranslationDifference_m": 0.0
+    },
+    {
+      "case": "EY",
+      "maxTranslationDifference_m": 0.0
+    },
+    {
+      "case": "R",
+      "maxTranslationDifference_m": 0.0
+    }
+  ],
+  "violations": [],
+  "historicalVersions": {
+    "openseespy": "3.8.0.0",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.1"
+  },
+  "freshVersions": {
+    "openseespy": "3.8.0.0",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.1"
+  },
+  "regeneratedLoadDifferences": [],
+  "sourceOriginalResults": "unchanged",
+  "job": "C:\\Users\\benja\\AppData\\Local\\Temp\\MCOC-base-audit-26g2zdu1\\8dca8d30-7859-4181-bb27-c69e8c3c2772",
+  "historicalManifest": "preserved; fresh manifest accompanies isolated rerun"
+}

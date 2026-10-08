@@ -21,14 +21,14 @@ El backend no modifica apoyos ni ejes locales. Las losas continúan representada
 
 - PC: mantener `visualization/unity/CampusPlayable` separado y sin sobrescribir su entrega anterior.
 - Visor técnico: `visualization/unity/UnityVisualization`.
-- Cardboard: abrir `visualization/unity/CampusCardboard` con Unity **6000.5.9f1**. Entrar al modo Cardboard; usar mirada 2 s y el botón de modo de locomoción. El movimiento se detiene al apartar la mirada. `PC Wi-Fi` permite solicitar Q adicional o capacidad de columna.
+- Cardboard: abrir `visualization/unity/CampusCardboard` con Unity **6000.5.10f1**. Entrar al modo Cardboard; usar mirada 2 s y el botón de modo de locomoción. El movimiento se detiene al apartar la mirada. `PC Wi-Fi` permite solicitar Q adicional o capacidad de columna.
 - AR: instalar `visualization/android-ar/dist/EdificioAR-Honors.apk`; aplicación `cl.mcoc.edificio.ar`. Es una APK de depuración para pruebas, no publicación en tienda.
 
 Cardboard: menú compacto solo de botones. `Diagrama` y `Backend` sustituyen al menú principal; `Volver` restaura los controles de movimiento. `IZQUIERDA`/`DERECHA` desplazan lateralmente con la misma mirada de 2 s y el mismo modo continuo/por pasos. Los valores, caso, unidades y amplificación permanecen junto al diagrama sobre la barra; el botón `i / x / j >` mueve la estación y su valor amarillo. En preview PC, botón derecho para mirar y `M` para recentrar.
 
 ### Bloqueo actual de APK Cardboard
 
-Falta Android Build Support (SDK/NDK/OpenJDK) de **6000.5.9f1**. La instalación automática no finalizó porque la elevación de Windows se canceló/no se completó. En Unity Hub: Installations → 6000.5.9f1 → Add modules → Android Build Support, SDK/NDK y OpenJDK; aceptar la autorización de Windows. Luego menú `Campus > Cardboard > Construir APK`. Salida: `Build/Android/CampusCardboard.apk` y `delivery.json` con hashes/commit. No cambiar de editor ni licencia para conseguirlo.
+Falta Android Build Support (SDK/NDK/OpenJDK) de **6000.5.10f1**. El editor instalado en este PC no incluye ese módulo. En Unity Hub: Installations → 6000.5.10f1 → Add modules → Android Build Support, SDK/NDK y OpenJDK; aceptar la autorización de Windows. Luego menú `Campus > Cardboard > Construir APK`. Salida: `Build/Android/CampusCardboard.apk` y `delivery.json` con hashes/commit. No cambiar de editor ni licencia para conseguirlo.
 
 Referencia de configuración: [Google Cardboard Unity](https://developers.google.com/cardboard/develop/unity/quickstart). Head tracking aquí significa orientación, no seguimiento posicional 6 DOF.
 
@@ -84,14 +84,14 @@ La sección debe pertenecer al modelo base; no asignar la curva de referencia a 
 ```powershell
 $honorsPython=Join-Path $env:USERPROFILE '.mcoc-honors/Python312/Scripts/python.exe'
 & $honorsPython -m unittest discover -s Edificio/verification/tests -v
-& $honorsPython Edificio/verification/interactive/verify_unity_backend.py --unity 'C:/Program Files/Unity/Hub/Editor/6000.5.9f1/Editor/Unity.exe'
+& $honorsPython Edificio/verification/interactive/verify_unity_backend.py --unity 'C:/Program Files/Unity/Hub/Editor/6000.5.10f1/Editor/Unity.exe'
 ```
 
 La segunda prueba abre Unity en batch, lanza un servidor aislado de loopback y ejecuta dos trabajos reales; cierra su servidor al terminar. No demuestra Wi-Fi, estéreo ni AR físico. La comparación independiente `verify_backend_direct.py --help` ejecuta una variante en un árbol temporal distinto y contrasta desplazamientos/acciones/diagramas de G,Q,EX,EY,R (rtol 1e−5; absolutos por unidad).
 
 Android: `assembleDebug lintDebug testDebugUnitTest`; verificar firma con `apksigner verify --verbose` y datos con `tools/verify_apk.py --honors --apk dist/EdificioAR-Honors.apk --report dist/delivery_honors.json`. Requiere SDK/build-tools disponibles; no editar el SDK original para corregir un lint.
 
-Para reconstruir con las herramientas del proyecto: instalar mediante SDK Manager `platforms;android-35`, `build-tools;36.0.0` y `platform-tools`, revisar sus licencias, y usar `build-apk.ps1 -Honors`. Esa opción conserva la APK anterior. La ejecución verificada utilizó OpenJDK de Unity 6000.3.22f1 y un SDK Android temporal aislado; **no** cambió el editor Cardboard de 6000.5.9f1.
+Para reconstruir con las herramientas del proyecto: instalar mediante SDK Manager `platforms;android-35`, `build-tools;35.0.0` o superior y `platform-tools`, revisar sus licencias, y usar `build-apk.ps1 -Honors`. Esa opción conserva la APK anterior. La ejecución verificada utilizó OpenJDK de Unity 6000.3.22f1 y un SDK Android temporal aislado; **no** cambió el editor Cardboard de 6000.5.10f1.
 
 `& $honorsPython Edificio/verification/interactive/audit_honors_base.py` crea una corrida base nueva, sin cambios, en una carpeta temporal. Comprueba hashes de sus entradas y equivalencia numérica con la instantánea histórica. El manifiesto histórico permanece intacto; una modificación de código no se oculta actualizando su hash a mano.
 

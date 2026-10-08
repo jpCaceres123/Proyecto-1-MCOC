@@ -1,0 +1,39 @@
+{
+  "status": "OK",
+  "backendJob": "C:\\Users\\benja\\AppData\\Local\\Temp\\MCOC-unity-http-2s2848yt\\Jobs\\8cde6ad7-ec14-4173-af24-311a128c8e30",
+  "directRun": "C:\\Users\\benja\\AppData\\Local\\Temp\\MCOC-direct-gl4iqxrb\\Edificio",
+  "comparisons": [
+    {
+      "case": "G",
+      "maxDisplacementDifference_m": 0.0,
+      "maxRotationDifference_rad": 0.0
+    },
+    {
+      "case": "Q",
+      "maxDisplacementDifference_m": 0.0,
+      "maxRotationDifference_rad": 0.0
+    },
+    {
+      "case": "EX",
+      "maxDisplacementDifference_m": 0.0,
+      "maxRotationDifference_rad": 0.0
+    },
+    {
+      "case": "EY",
+      "maxDisplacementDifference_m": 0.0,
+      "maxRotationDifference_rad": 0.0
+    },
+    {
+      "case": "R",
+      "maxDisplacementDifference_m": 0.0,
+      "maxRotationDifference_rad": 0.0
+    }
+  ],
+  "relativeTolerance": 1e-05,
+  "absoluteTolerances": {
+    "translation_m": 1e-08,
+    "rotation_rad": 1e-09,
+    "force_kN": 1e-05,
+    "moment_kNm": 1e-05
+  }
+}
